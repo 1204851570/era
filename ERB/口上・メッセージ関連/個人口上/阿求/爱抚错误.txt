@@ -1,0 +1,19 @@
+﻿	ELSE LOCAL:1 && NOWEX:0
+		IF TALENT:ﾁｵﾄｽ
+			PRINTFORML
+			PRINTFORMW ｡ｸﾟﾞﾑｽ~ﾒｪ｡ｭ｡ｭﾒｪﾈ･ﾁﾋ｡｢ｲｻｿﾉﾒﾔ｡ｭ｡ｭ倏ｰ｡~｡ｹ
+			PRINTFORMW ｰ｢ﾇｻｶﾏｵﾘｷ｢ｳﾉｰｮｵﾄｽｿｴｭ｡｢ｳ｢ﾊﾔﾗﾅﾈﾌﾄﾍｿ・ﾐ｡｣
+			PRINTFORMW ﾌﾗﾅｰ｢ﾇ狹ﾆｵﾘｴｭﾏ｢ﾉｬ%CALLNAME:MASTER%ｻｵﾐｦﾗﾅﾇ睇眇ｫﾋｵﾄﾒﾙｺｬﾗ｡｡｣
+			PRINTFORMW ﾒｻｱﾟﾓﾃﾁｦﾋｱﾎ・｢ﾒｻｱﾟﾓﾃﾉ猩ｷﾔﾚｿﾚﾇｻﾖﾐﾗﾒﾍ貲ｪﾃﾐｵﾄﾒﾙ｡｣
+			PRINTFORMW ﾋｲｼ茱ｬｰ｢ﾇｻﾓﾉﾗﾔﾖﾄｹｭﾆﾋﾉ﨓蝪｣ﾓｭｽﾓﾗﾅﾅﾓｴﾄｿ・ﾐ｡｣
+			PRINTFORMW ｡ｸﾒｪﾈ･ﾁﾋ~｡ｪ｡ｪ｡ｪ｡ｪﾒｪﾈ･ﾁﾋ｡ｪ｡ｪ｡ｪ｡ｪｰ｡~｡ｭ｡ｭ｡ｹ
+		ELSE
+			PRINTFORML
+			PRINTFORMW ｡ｸｹ倏｡ｭ｡ｭ倏ﾑｽ｡｢倏~｡ｭ｡ｭ%CALLNAME:MASTER%ﾏﾈﾉ奣ｬﾎﾒｸﾐｾｭ｡ｭｺﾃﾆ貉ﾖ｡｣｡ｹ
+			PRINTFORMW ｰ｢ﾇﾐｹ貭ﾉｵﾄｴｭﾏ｢ﾗﾅ｡｢ｲ｢ｷｴﾉ菻ﾔｵﾄﾏ・ｪｽｫｴﾈｺﾏﾉﾏ｡｣
+			PRINTFORMW ﾕ箏耙｡ﾐ｡ｵﾄｵﾖｿｹｿﾉﾊﾇﾃｻﾓﾐﾓﾃｵﾄﾅｶ｡｣
+			PRINTFORMW %CALLNAME:MASTER%ｼﾓｿ・ｱﾎ・ﾋｵﾄﾆｵﾂﾊ｡｢ｲ｢ﾍｬﾊｱｿ・ﾙｲｦﾅｪ｡｣
+			PRINTFORMW ﾔﾚｰ｢ﾇﾟｿｺｵﾄｴｭﾏ｢ﾉﾐ｣ｬ%CALLNAME:MASTER%ﾆｷｳ｢ﾗﾅﾃﾀﾎｶｵﾄﾒﾋ｡｣
+		ENDIF
+		RETURN 1
+	ENDIF

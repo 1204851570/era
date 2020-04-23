@@ -1,0 +1,576 @@
+﻿
+@GETINFO_DLC(NUM)
+#DIM NUM
+#DIM TMP
+#DIM FARM
+#DIM LOVERPEP = 0
+#DIM GETOUJINJIN
+	SELECTCASE NUM
+		CASE 1
+			PRINTFORML 多恋人补丁介绍
+			PRINTFORML 多恋人补丁移除了恋人上限，因此可以无限制的获得恋人。
+			IF MORELOVEER == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF MORELOVEER == 0
+					IF GETBIT(CFLAG:MASTER:既成事実 , 2)
+						PRINTFORML 检测到既成事实，设置中
+						CLEARBIT CFLAG:MASTER:既成事実, 2
+					ENDIF
+					PRINTFORML 追加恋人上限
+					FLAG:追加恋人枠 = 98
+					PRINTFORML 多恋人补丁已启动
+					MORELOVEER = 1
+				ELSE
+					FOR TMP,1,CHARANUM
+						IF TALENT:TMP:7 == 1
+							PRINTFORMLC [{TMP, 3}] %CALLNAME:TMP%
+							LOVERPEP ++
+						ENDIF
+					NEXT
+					WHILE LOVERPEP > 1
+						PRINTFORML 检测到存在多个恋人
+						PRINTFORML 请选择要抛弃的角色
+						INPUT
+						TMP = RESULT
+						SELECTCASE TMP
+							CASE 1 TO CHARANUM
+								IF TALENT:TMP:7 == 1
+									TALENT:TMP:7 = 0
+									PRINTFORML %CALLNAME:TMP%和你不再是恋人了
+									LOVERPEP --
+								ENDIF
+							CASEELSE
+						ENDSELECT
+					WEND
+					PRINTFORML 检测到恋人少于等于一个
+					IF LOVERPEP == 1
+						PRINTFORML 设置既成事实
+						SETBIT CFLAG:MASTER:既成事実, 2
+					ENDIF
+					FLAG:追加恋人枠 = 0
+					PRINTFORML 补丁修正完毕
+					MORELOVEER = 0
+					PRINTFORML 多恋人补丁已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 2
+			PRINTFORML 天之声补丁介绍
+			PRINTFORML 聆听天之声不会流逝时间了，同时在时停时可用
+			
+			IF SKYSOUND == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF SKYSOUND == 0
+					SKYSOUND = 1
+					PRINTFORML 天之声补丁已启用
+				ELSE
+					SKYSOUND = 0
+					PRINTFORML 天之声补丁已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 3
+			PRINTFORML 无限制泡澡介绍
+			PRINTFORML 可频繁入浴，变相无限体、气力
+		
+			IF WASH == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF WASH == 0
+					WASH = 1
+					PRINTFORML 无限制泡澡已启用
+				ELSE
+					WASH = 0
+					PRINTFORML 无限制泡澡已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 4
+			PRINTFORML 防袭击补丁介绍
+			PRINTFORML 防止在野外回家的路上被袭击，在人间之里的堇子处办理。
+
+			IF ENCOUNTDLC == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF ENCOUNTDLC == 0
+					ENCOUNTDLC = 1
+					PRINTFORML 防袭击补丁已启用
+				ELSE
+					ENCOUNTDLC = 0
+					PRINTFORML 防袭击补丁已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 5
+			PRINTFORML 丰富的天气介绍
+			PRINTFORML 重制了原版的天气系统，对部分天气增加了特效，新增了部分天气
+			IF WEATHERDLC == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			PRINTFORML [3]查看详细的天气列表
+			INPUT
+			IF RESULT == 1
+				IF WEATHERDLC == 0
+					IF TIME:5 != 0 && FLAG:異常気象 == 0
+						PRINTFORML 强制转换为晴天
+						TIME:5 = 0
+					ENDIF
+					WEATHERDLC = 1
+					PRINTFORML 丰富的天气已启用
+				ELSE
+					IF TIME:5 != 0
+						IF TIME:5 == 13
+							PRINTFORML 检测到冰雹，重置气力上限
+							FOR TMP, 0, CHARANUM
+								MAXBASE:TMP:気力 -= 300
+								IF BASE:TMP:気力 >= MAXBASE:TMP:気力
+									BASE:TMP:気力 = MAXBASE:TMP:気力
+								ENDIF
+							NEXT
+						ENDIF
+						PRINTFORML 强制转换为晴天
+						TIME:5 = 0
+					ENDIF
+					IF FLAG:異常気象 > 8
+						PRINTFORML 检测到异常气象数值超上限
+						PRINTFORML 异常气象消失了，强制转换为晴天
+						FLAG:異常気象 = 0
+						TIME:5 = 0
+					ENDIF
+					WEATHERDLC = 0
+					PRINTFORML 丰富的天气已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSEIF RESULT == 3
+				CALL CHECKWEATHERLISTINFO
+				RESTART
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 6
+			PRINTFORML 幻想乡之主介绍
+			PRINTFORML TW用DEBUG菜单，已经修复了素质修改不方便的问题
+
+			IF DEBUGGERR == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF DEBUGGERR == 0
+					DEBUGGERR = 1
+					PRINTFORML 幻想乡之主已启用
+				ELSE
+					DEBUGGERR = 0
+					PRINTFORML 幻想乡之主已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 7
+			PRINTFORML 重选欧金金介绍
+			PRINTFORML 允许重新设置欧金金的形状，已囊括超巨根修正。
+
+			IF OUJINJIN == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 请选择关闭补丁，或者进行其他角色的修改。
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			IF OUJINJIN == 0
+				PRINTFORML [1]是
+				PRINTFORML [2]否
+			ELSE
+				PRINTFORML [0]对其他角色进行修正
+				PRINTFORML [3]关闭补丁
+				PRINTFORML [999]取消并返回
+			ENDIF
+			INPUT
+			GETOUJINJIN = RESULT
+			IF RESULT == 1 || RESULT == 0
+				PRINTFORML 为哪个角色重置呢？如果是玩家角色请输入0
+				PRINTFORML 如果是游戏内的其他人物，请输入对应的编号
+				PRINTFORML 需要取消并返回的话请输入999
+				INPUT
+				IF RESULT == 0
+					CALL REBUILTOUJINJIN(MASTER, GETOUJINJIN)
+				ELSEIF RESULT != 999
+					IF RESULT >= CHARANUM
+						PRINTFORML 检测到输入值超出角色上限
+						PRINTFORML 操作已取消，未做任何改动
+					ELSEIF TALENT:RESULT:性別 == 2
+						PRINTFORML 检测到%CALLNAME:RESULT%性别错误
+						PRINTFORML 操作已取消，未做任何改动
+					ELSE
+						CALL REBUILTOUJINJIN(RESULT, GETOUJINJIN)
+					ENDIF
+				ELSEIF RESULT == 999
+					PRINTFORML 操作已取消，未做任何改动
+				ENDIF
+		
+			ELSEIF RESULT == 2 || RESULT == 999
+				PRINTFORML 未做任何改动
+
+			ELSEIF RESULT == 3
+				PRINTFORMW 准备关闭修正补丁，注意，所有的修正都将会移除，需要根据提示重新设置
+				FOR TMP, 0, CHARANUM
+					IF TALENT:TMP:形状 == 10
+						PRINTFORMW 检测到%CALLNAME:TMP%的男性器为超巨根，请重新设置。
+						CALL REBUILTOUJINJIN(TMP, 3)
+					ENDIF
+				NEXT
+				OUJINJIN = 0
+				PRINTFORMW 修正补丁已关闭
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 8
+			PRINTFORML 简单化实绩介绍
+			PRINTFORML 将实绩解锁条件简单化。
+			
+			SETCOLOR C_RED
+			PRINTFORML 本补丁会降低游戏难度，请自己酌情选择比例
+			RESETCOLOR
+			PRINTFORML 请输入实绩解锁条件的简易化百分比。
+			PRINTL 例如：输入80则为原实绩的80%的要求。
+			PRINTFORML 最低为50，最高为100，输入100即关闭该补丁
+			SIF BONUSX == 0
+				BONUSX = 100
+			PRINTFORML 当前值为%TOSTR(BONUSX)%
+			INPUT
+			IF RESULT < 50 || RESULT > 100
+				PRINTFORML 检测到输入值越界
+				PRINTFORML 操作已取消，未做任何改动
+			ELSEIF RESULT == 100
+				BONUSX = 100
+				PRINTFORMW 简单化实绩已关闭
+			ELSE
+				BONUSX = RESULT
+				PRINTFORMW 简单化实绩已启动
+			ENDIF
+		CASE 9
+			PRINTFORML 道歉免时间介绍
+			PRINTFORML 道歉不再耗时
+		
+			IF APLOGIZEDLC == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF APLOGIZEDLC == 0
+					APLOGIZEDLC = 1
+					PRINTFORML 道歉免时间已启用
+				ELSE
+					APLOGIZEDLC = 0
+					PRINTFORML 道歉免时间已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 10
+			PRINTFORML 无条件访问补丁介绍
+			PRINTFORML 外出模式可自由出入目标房间（不再受时停影响）
+		
+			IF HOMEWEL == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF HOMEWEL == 0
+					HOMEWEL = 1
+					PRINTFORML 无条件访问已启用
+				ELSE
+					HOMEWEL = 0
+					PRINTFORML 无条件访问已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 11
+			PRINTFORML 工作可推倒补丁介绍
+			PRINTFORML 可壁咚工作中的目标
+		
+			IF JOBFUCKING == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF JOBFUCKING == 0
+					JOBFUCKING = 1
+					PRINTFORML 工作可推倒已启用
+				ELSE
+					JOBFUCKING = 0
+					PRINTFORML 工作可推倒已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 12
+			PRINTFORML 药物简易化补丁介绍
+			PRINTFORML 媚药、利尿剂、排卵诱发剂不再受药毒耐性与时停影响
+		
+			IF DRUG == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF DRUG == 0
+					DRUG = 1
+					PRINTFORML 药物简易化已启用
+				ELSE
+					DRUG = 0
+					PRINTFORML 药物简易化已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 13
+			PRINTFORML 属性简易化介绍
+			PRINTFORML 加强属性等级的提升效率（B感觉、V感觉、精液中毒等）。
+			
+			SETCOLOR C_RED
+			PRINTFORML 本补丁会降低游戏难度，请自己酌情选择比例
+			RESETCOLOR
+			PRINTFORML 请输入实绩解锁条件的简易化百分比。
+			PRINTL 例如：输入80则为原实绩的80%的要求。
+			PRINTFORML 最低为10，最高为100，输入100即关闭该补丁
+			SIF ABLDLC == 0
+				ABLDLC = 100
+			PRINTFORML 当前值为%TOSTR(ABLDLC)%
+			INPUT
+			IF RESULT < 10 || RESULT > 100
+				PRINTFORML 检测到输入值越界
+				PRINTFORML 操作已取消，未做任何改动
+			ELSEIF RESULT == 100
+				ABLDLC = 100
+				PRINTFORMW 简单化实绩已关闭
+			ELSE
+				ABLDLC = RESULT
+				PRINTFORMW 简单化实绩已启动
+			ENDIF
+		CASE 14
+			PRINTFORML 弹幕战强化补丁介绍
+			PRINTFORML 同一目标每天不限次数，每次耗时变为15分钟
+		
+			IF BATTLEDLC == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF BATTLEDLC == 0
+					BATTLEDLC = 1
+					PRINTFORML 药物简易化已启用
+				ELSE
+					BATTLEDLC = 0
+					PRINTFORML 药物简易化已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 15
+			PRINTFORML 新妻泛用化补丁介绍
+			PRINTFORML 浴室play状态可同时进行新妻play状态
+			PRINTFORML 拥有爱欲的角色也可新妻play了
+		
+			IF NEWWIFE == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF NEWWIFE == 0
+					NEWWIFE = 1
+					PRINTFORML 药物简易化已启用
+				ELSE
+					NEWWIFE = 0
+					PRINTFORML 药物简易化已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 16
+			PRINTFORML 胖次弹幕战补丁介绍
+			PRINTFORML 弹幕胜负现在消耗更低，并会根据每个角色身上装备的胖次提高战斗力
+			PRINTFORML 每经过一天，所有角色都将从胖次中获得一些强化
+			PRINTFORML 使她们在弹幕胜负中更具优势，而战斗能力越高，这个提升越快
+			PRINTFORML 为了应对对手胖次的特殊能力，选择正确的战术，偷窃合适的胖次并换上，是这个游戏的基本规则
+			PRINTFORML 请注意，建议通过时停掀裙子来观察对手的胖次！
+			PRINTFORML 如果将其脱下，让对手处于真空状态下与你对决，最终得到的很可能不会是你想要的结果……
+			PRINTFORML 作者——狼exb
+
+			IF PANGCI == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF PANGCI == 0
+					PANGCI = 1
+					PRINTFORML 胖次弹幕战已启用
+				ELSE
+					PANGCI = 0
+					PRINTFORML 胖次弹幕战已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+		CASE 17
+		PRINTL 生动的记忆补丁介绍
+			PRINTL 在角色如果超过10天没有与主角进行过任何的互动的话
+			PRINTL  就会每天基于当前的好感度和信赖降低百分比的数值
+			PRINTL 如果主角和与该角色存在相性的角色进行过互动，那么降低的百分比会减少
+			PRINTL 恋人为减少当前数值的3% ，而恋慕与爱欲为5% ，思慕与炮友为7% ，其他情况统一为9%
+			PRINTL 如果主角和与该角色存在相性的角色进行过互动则依次改为1% ，3% ，5% ，7%
+			PRINTL
+			PRINTL 如果和角色进行了任何的互动，并且不是恋慕/恋人的话
+			PRINTL 当天结算时会根据相性和好感，信赖的增加量
+			PRINTL  增加其他角色 (10*相性)%  的好感度和信赖
+			IF MEETCHECKDLC == 0
+				PRINTFORML 要启动吗？
+			ELSE
+				PRINTFORML 要关闭吗？
+			ENDIF
+			PRINTFORML 
+			PRINTFORML 
+			PRINTFORML [1]是
+			PRINTFORML [2]否
+			INPUT
+			IF RESULT == 1
+				IF MEETCHECKDLC == 0
+					PRINTFORML 正在设置中。
+					FOR TMP, 0, CHARANUM
+						MEETTIME:0:TMP = DAY
+						MEETTIME:1:TMP = CFLAG:TMP:2
+						MEETTIME:2:TMP = CFLAG:TMP:4
+					NEXT
+					MEETCHECKDLC = 1
+					PRINTFORML 生动的记忆已启用
+				ELSE
+					PRINTFORML 正在设置中。
+					FOR TMP, 0, CHARANUM
+						MEETTIME:0:TMP = 0
+					NEXT
+					MEETCHECKDLC = 0
+					PRINTFORML 生动的记忆已关闭
+				ENDIF
+			ELSEIF RESULT == 2
+				PRINTFORML 	未做任何改动
+			ELSE
+				PRINTFORMW 无效输入
+			ENDIF
+	ENDSELECT

@@ -1,0 +1,78 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;### 口上存在判定 ###################################
+@M_KOJO_K106(ARG)
+	;CFLAG:X:眠姦口上有 = 0
+	CFLAG:106:時間停止口上有 = 1
+	CFLAG:106:破瓜中止口上有 = 1
+
+	RETURN 1
+
+;### 口上色判定 ###################################
+@M_KOJO_COLOR_K106
+
+	SETCOLOR 0xEE82EE
+
+[SKIPSTART]
+
+;オナバレ遭遇時の地の文。口上色はここで付けてください。
+;CFLAG等のキャラ変数を使う場合、キャラ番号の指定が必要になります。
+;デフォルトのものと置き換えたい場合は上下のSKIPSTART~SKIPENDを外してください。
+;置き換える気がないならスルー。
+
+@M_KOJO_EVENT_K106_ONABARE_1(ARG)
+
+IF ARG
+	PRINTFORML A弄ってる場合
+ELSE
+	PRINTFORML V弄ってる場合
+ENDIF
+
+
+
+;オナバレでそのまま続けてもらう場合の地の文。口上色はここで付けてください。
+;CFLAG等のキャラ変数を使う場合、キャラ番号の指定が必要になります。
+;デフォルトのものと置き換えたい場合は上下のSKIPSTART~SKIPENDを外してください。
+;置き換える気がないならスルー。
+
+@M_KOJO_EVENT_K106_ONABARE_2(ARG)
+
+IF ARG
+	PRINTFORML A弄ってる場合
+ELSE
+	PRINTFORML V弄ってる場合
+ENDIF
+
+
+
+;オナバレなし崩しックスの地の文。口上色はここで付けてください。
+;CFLAG等のキャラ変数を使う場合、キャラ番号の指定が必要になります。
+;デフォルトのものと置き換えたい場合は上下のSKIPSTART~SKIPENDを外してください。
+;置き換える気がないならスルー。
+
+@M_KOJO_EVENT_K106_ONABARE_3(前戯１,本番はどっちか,回数,注入量)
+
+#DIM 前戯１
+;1=C 2=B 3=M
+#DIM 本番はどっちか
+;0でＶ、1でＡ
+#DIM 注入量
+#DIM 回数
+
+SELECTCASE 前戯１
+	CASE 1
+		PRINTFORML Ｃ責め
+	CASE 2
+		PRINTFORML Ｂ責め
+	CASE 3
+		PRINTFORML Ｍ責め
+ENDSELECT
+
+IF 本番はどっちか
+	PRINTFORML Aで本番
+ELSE
+	PRINTFORML Vで本番
+ENDIF
+
+[SKIPEND]

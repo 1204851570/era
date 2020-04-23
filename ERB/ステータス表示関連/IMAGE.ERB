@@ -1,0 +1,615 @@
+﻿;*******************************************************************************************************
+;キャラクター表示用関数群
+;*******************************************************************************************************
+@PRINT_TARGET_IMAGE(ターゲット)
+#DIM REF ターゲット
+#DIM 現在ターゲット
+#DIM ターゲット人数
+#DIM 表示番号
+#DIM iFont_Hei_mag
+#DIM iSpaceSize
+#DIMS sPrint_Text
+#DIM CONST kFontSize = 1000	;フォントサイズ倍率
+#DIM Save_RESULT			;RESULTの保護
+#DIM iPrintStart = 1		;描画を開始するTARGET配列番号
+#DIM CHARA
+#DIMS リソース名
+#DIMS リソース名_マウスオーバー
+#DIMS 服装
+#DIMS 表示形式
+#DIMS 特殊服装
+#DIMS 特殊画像
+
+;デフォルト画像サイズ比リセット
+キャラ画像表示サイズ比 = 100
+
+SIF !ターゲット
+	RETURN RESULT
+
+SIF GETCONFIGS("描画インターフェース") == "WINAPI"
+	THROW 设置里的绘图界面请改成TextRenderer
+
+;RESULTの保護
+SAVE_RESULT = RESULT
+
+;ターゲット情報の取得
+ターゲット人数 = GET_TARGETNUM()
+現在ターゲット = FINDELEMENT(ターゲット,ターゲット:0,1)
+
+;フォントサイズと高さとの倍率差　四捨五入
+iFont_Hei_mag = GETCONFIG("一行の高さ") * kFontSize*10 / GETCONFIG("フォントサイズ")
+iFont_Hei_mag = (iFont_Hei_mag/10) + (iFont_Hei_mag%10 >= 5?1#0)
+
+
+
+;画像表示数に合わせてサイズ比を調整
+IF FLAG:画像表示 * デフォルトキャラ画像横幅 > GETCONFIG("ウィンドウ幅") && FLAG:画像表示 <= ターゲット人数
+	キャラ画像表示サイズ比 = GETCONFIG("ウィンドウ幅") / FLAG:画像表示 * 100 / デフォルトキャラ画像横幅
+ENDIF
+キャラ画像表示サイズ比 = キャラ画像表示サイズ比 * (100 + isModifier) / 100
+
+;描画開始位置の決定
+IF FLAG:画像表示 != 1
+	IF 現在ターゲット >= (iPrintStart + FLAG:画像表示) || 現在ターゲット < iPrintStart
+		;画面外
+		iPrintStart = 現在ターゲット -1
+	ELSEIF iPrintStart == 現在ターゲット
+		;画面左端
+		iPrintStart--
+	ELSEIF (iPrintStart + FLAG:画像表示)-1 ==  現在ターゲット && ターゲット人数 > FLAG:画像表示
+		;画面右端
+		iPrintStart++
+	ENDIF
+	
+	;始端終端
+	iPrintStart = LIMIT(iPrintStart, 1, MAX(ターゲット人数-FLAG:画像表示+1, FLAG:画像表示))
+ELSEIF FLAG:画像表示 == 1
+	iPrintStart = 現在ターゲット
+ENDIF
+;-----------------
+;テキストタグボタン
+;-----------------
+sPrint_Text =  <p align='\@FLAG:画像表示位置?left#center\@'><nobr>
+FOR LOCAL, iPrintStart, FLAG:画像表示 + iPrintStart
+	SIF !ターゲット:LOCAL
+		BREAK
+	;左右幅合わせ　[名前] -120は[]分
+	STRLENFORMU %CALLNAME:(ターゲット:LOCAL)%
+	IF キャラ画像表示サイズ比 <= 60
+		iSpaceSize	=	(iFont_Hei_mag-(RESULT*120)-120) / 2
+	ELSEIF キャラ画像表示サイズ比 <= 70
+		iSpaceSize	=	(iFont_Hei_mag-(RESULT*100)-120) / 2
+	ELSEIF キャラ画像表示サイズ比 <= 80
+		iSpaceSize	=	(iFont_Hei_mag-(RESULT*60)-120) / 2
+	ELSEIF キャラ画像表示サイズ比 <= 90
+		iSpaceSize	=	(iFont_Hei_mag-(RESULT*40)-120) / 2
+	ELSEIF キャラ画像表示サイズ比 <= 120
+		iSpaceSize	=	(iFont_Hei_mag-(RESULT*20)-120) / 2
+	ELSE
+		iSpaceSize	=	(iFont_Hei_mag-(RESULT*5)-120) / 2
+	ENDIF
+	sPrint_Text += @"<shape type = 'space' param = '{iSpaceSize * キャラ画像表示サイズ比 / 100}'>"
+	
+	SIF ターゲット == ターゲット:LOCAL
+		sPrint_Text += @"<font color='#%CONVERT(C_AQUA,16)%'>"
+	sPrint_Text += @"<button value='{1000+ターゲット:LOCAL}' title='ターゲット{LOCAL}'>[%CALLNAME:(ターゲット:LOCAL)%]</button>"
+	SIF ターゲット == ターゲット:LOCAL
+		sPrint_Text += @"</font>"
+	
+	sPrint_Text += @"<shape type = 'space' param = '{iSpaceSize * キャラ画像表示サイズ比 / 100}'>"
+	
+NEXT
+HTML_PRINT sPrint_Text
+
+;-----------------
+;画像表示
+;-----------------
+FOR LOCAL, iPrintStart, FLAG:画像表示 + iPrintStart
+	CHARA = ターゲット:LOCAL
+	SIF !CHARA
+		BREAK
+	RESULT = 0
+	IF FLAG:画像表示
+		IF TALENT:CHARA:路人 && !GCREATED(CFLAG:CHARA:路人子素材CFLAG開始位置)
+			CALL 路人子生成(CHARA, 0)
+			CALL 路人子生成(CHARA, 1)
+		ENDIF
+		;形式をひとつずつ決めていく,表情変化は式内関数化し、マウスオーバー時はRESULTS:1を使用
+		IF FLAG:立絵種類
+			表示形式 = 顔絵
+		ELSE
+			表示形式 = 立絵
+		ENDIF
+		IF 裸表示(CHARA)
+			服装 = 裸
+			特殊服装 = 
+		ELSE
+			服装 = 服
+			特殊服装 = %特殊服装(CHARA)%
+		ENDIF
+		特殊画像 = %特殊画像(CHARA)%
+		リソース名 = %表示形式%_%服装%%特殊服装%_%表情変化(CHARA, 服装)%_{CHARA}%特殊画像%
+		リソース名_マウスオーバー = %表示形式%_%服装%%特殊服装%_%RESULTS:1%_{CHARA}%特殊画像%
+		;リソースのチェック 見つからない場合は通常服装時のリソースに切り替え
+		IF !SPRITECREATED(リソース名)
+			リソース名 = %表示形式%_%服装%_%表情変化(CHARA)%_{CHARA}%特殊画像%
+			;それでも見つからない場合は通常状態の通常顔に切り替え
+			SIF !SPRITECREATED(リソース名)
+				リソース名 = %表示形式%_服_通常_{CHARA}
+		ENDIF
+		;時間停止時はマウスオーバー表示しない
+		SIF FLAG:時間停止
+			リソース名_マウスオーバー =
+		;画像セット
+		CALL 画像セット(リソース名, 0, 0, キャラ画像表示サイズ比, 1, @"{1000+CHARA}", @"ターゲット:{LOCAL}", リソース名_マウスオーバー)
+	ENDIF
+NEXT
+CALL 画像一斉表示(@"\@FLAG:画像表示位置?左#中央\@", 0, 0)
+
+;-----------------
+;照れ表示
+;-----------------
+IF FLAG:立絵種類
+	FOR LOCAL, iPrintStart, FLAG:画像表示 + iPrintStart
+		CHARA = ターゲット:LOCAL
+		SIF !CHARA
+			BREAK
+		IF FLAG:画像表示
+			RESULT = 0
+			;現在は文とマミゾウの5枚表情パターン用
+			IF TARGET_BLUSH_EXCEPTION(CHARA)
+				;すでに照れ状態
+				CALL 画像セット("ダミー", 0, 0, キャラ画像表示サイズ比)
+			ELSEIF BLUSH(CHARA)
+				IF TALENT:CHARA:路人
+					;モブ子表示用 今はまだない
+				ELSE
+					リソース名 = 顔絵_%特殊照れ(CHARA, 特殊服装)%照れ_{CHARA}%特殊画像%
+					CALL 画像セット(リソース名, 0, 0, キャラ画像表示サイズ比)
+				ENDIF
+			ELSE
+				CALL 画像セット("ダミー", 0, 0, キャラ画像表示サイズ比)
+			ENDIF
+		ENDIF
+	NEXT
+	CALL 画像一斉表示(@"\@FLAG:画像表示位置?左#中央\@", 0, 0)
+ENDIF
+;----------------------------------
+;	時間停止時の処理
+;上から背景色と同じ色を透過度入れて重ねる
+;キャラとのブレンドは出来ないので背景色に合わせる
+;----------------------------------
+IF FLAG:時間停止
+	FOR LOCAL, iPrintStart, FLAG:画像表示 + iPrintStart
+		SIF !ターゲット:LOCAL
+			BREAK
+		CALL 画像セット("時間停止", 0, 0, キャラ画像表示サイズ比)
+	NEXT
+	CALL 画像一斉表示(@"\@FLAG:画像表示位置?左#中央\@", 0, 0)
+ENDIF
+
+;----------------------------------
+;	フレーム描画
+;----------------------------------
+IF FLAG:画像枠表示
+	FOR LOCAL, iPrintStart, FLAG:画像表示 + iPrintStart
+		SIF !ターゲット:LOCAL
+			BREAK
+		IF TALENT:(ターゲット:LOCAL):心情 == -1
+			CALL 画像セット("フレーム_憤怒", 0, 0, キャラ画像表示サイズ比)
+		ELSEIF TALENT:(ターゲット:LOCAL):心情 == 1
+			CALL 画像セット("フレーム_笑顔", 0, 0, キャラ画像表示サイズ比)
+		ELSE
+			CALL 画像セット("フレーム_通常", 0, 0, キャラ画像表示サイズ比)
+		ENDIF
+	NEXT
+	CALL 画像一斉表示(@"\@FLAG:画像表示位置?左#中央\@", 0, 0)
+ENDIF
+CALL 画像表示("ダミー", @"\@FLAG:画像表示位置?左#中央\@", 0, 0, キャラ画像表示サイズ比, 1)
+
+CALL 画像描画終了
+IF FLAG:画像表示設定
+	;-----------------
+	;表示設定関連
+	;-----------------
+	sPrint_Text = <p align='\@FLAG:画像表示位置?left#center\@'>
+	sPrint_Text += @"<button value='3105' title='現在：\@FLAG:立絵種類?顔絵#立絵\@'>"
+	sPrint_Text += @"立絵種類[\@FLAG:立絵種類?顔絵#立絵\@]　</button>"
+	sPrint_Text += @"<button value='3103' title='現在：\@FLAG:画像表示位置?左寄せ#中央寄せ\@'>"
+	sPrint_Text += @"表示位置[\@FLAG:画像表示位置?left#center\@]　</button>"
+	sPrint_Text += @"<button value='3104' title='現在：\@FLAG:画像枠表示?ON#OFF\@'>"
+	sPrint_Text += @"显示外框[\@FLAG:画像枠表示?ON#OFF\@]</button>"
+	sPrint_Text += "<br>"
+	
+	;-----------------
+	;表示人数の増減　＜＜＞＞でTARGETを横に移動
+	;-----------------
+	sPrint_Text += @"<button value='{1000+ターゲット:(MAX(現在ターゲット-1,1))}' title='ターゲット－'>＜＜</button>"
+	sPrint_Text += @"<button value='3101' title='表示人数－'>[－]</button>"
+	sPrint_Text += @"表示人数[{FLAG:画像表示}]"
+	sPrint_Text += @"<button value='3102' title='表示人数＋'>[＋]</button>"
+	sPrint_Text += @"<button value='{1000+ターゲット:(MIN(現在ターゲット+1,ターゲット人数+1))}' title='ターゲット＋'>＞＞</button>"
+	
+	sPrint_Text += @"<button value='3106' title='画像大小－'>[－]</button>"
+	sPrint_Text += @"画像サイズ[{100 + isModifier}％]"
+	sPrint_Text += @"<button value='3107' title='表示人数＋'>[＋]</button>"
+	HTML_PRINT sPrint_Text
+ENDIF
+
+
+RESULT = SAVE_RESULT
+RETURN RESULT
+
+;表情の設定
+;マウスオーバー時も同時に判定する
+@表情変化(ARG, 服装)
+#FUNCTIONS
+#DIMS 服装
+IF TALENT:ARG:心情 == -1 || CFLAG:ARG:ブチギレ
+	RESULTS:0 = 憤怒
+	LOCAL = -1
+ELSEIF TALENT:ARG:心情 == 1 || BASE:ARG:情緒 == MAXBASE:ARG:情緒 || TCVAR:ARG:烂醉
+	RESULTS:0 = 笑顔
+	LOCAL = 1
+ELSE
+	RESULTS:0 = 通常
+	LOCAL = 0
+ENDIF
+;5枚表情パターン用
+IF TARGET_BLUSH_EXCEPTION(ARG)
+	RESULTS:1 = %RESULTS:0%
+	IF CFLAG:ARG:诶嘿嘿 && !FLAG:時間停止
+		RESULTS:0 = LOVE
+		RESULTS:1 = 赤面
+	ELSE
+		RESULTS:0 = 赤面
+	ENDIF
+	RETURNF RESULTS:0
+;睡眠用
+ELSEIF CFLAG:ARG:睡眠 && FLAG:立絵種類
+	SELECTCASE ARG
+	CASE [[映姫]], [[覚]], [[夢子]], [[多来米]]
+		RESULTS:0 = 睡眠
+		RESULTS:1 = 睡眠
+	ENDSELECT
+	RETURNF RESULTS:0
+ENDIF
+;マウスオーバー時のRESULTS:1を設定
+SIF CHECK_CHARA(ARG, "陥落")
+	LOCAL ++
+SIF BATHROOM(CFLAG:ARG:現在位置) && 浴室逐出条件(ARG)
+	LOCAL --
+SIF MARK:ARG:反発刻印
+	LOCAL --
+SIF BASE:ARG:憤怒 >= 500
+	LOCAL --
+SIF BASE:ARG:情緒 >= 650
+	LOCAL ++
+SELECTCASE RESULTS:0
+CASE "笑顔"
+;	笑顔時は表情が固まらないように
+;	IF LOCAL < 0
+		RESULTS:1 = 正常
+;	ELSE
+;		RESULTS:1 = 笑顔
+;	ENDIF
+CASE "憤怒"
+	IF LOCAL > 0
+		RESULTS:1 = 正常
+	ELSE
+		RESULTS:1 = 憤怒
+	ENDIF
+CASEELSE
+	IF LOCAL > 0
+		RESULTS:1 = 笑顔
+	ELSEIF LOCAL < 0
+		RESULTS:1 = 憤怒
+	ELSE
+		RESULTS:1 = 正常
+	ENDIF
+ENDSELECT
+;専用の特殊表情変化
+IF ARG == [[覚]] && FLAG:立絵種類 && 服装 == "裸"
+	;マウスオーバーのみ変化
+	SELECTCASE RESULTS:1
+	CASE "笑顔"
+		RESULTS:1 = 裸笑顔
+	CASE "憤怒"
+		RESULTS:1 = 裸憤怒
+	CASEELSE
+		RESULTS:1 = 裸通常
+	ENDSELECT
+ELSEIF ARG == [[依姫]] && FLAG:立絵種類 && 服装 == "裸" && MARK:ARG:快楽刻印 < 3 && PALAM:ARG:欲情 < 200000 && !FLAG:時間停止
+	SELECTCASE RESULTS:0
+	CASE "笑顔"
+		RESULTS:0 = 恥笑顔
+	CASE "憤怒"
+		RESULTS:0 = 恥憤怒
+	CASEELSE
+		RESULTS:0 = 恥通常
+	ENDSELECT
+	SELECTCASE RESULTS:1
+	CASE "笑顔"
+		RESULTS:1 = 恥笑顔
+	CASE "憤怒"
+		RESULTS:1 = 恥憤怒
+	CASEELSE
+		RESULTS:1 = 恥通常
+	ENDSELECT
+ENDIF
+RETURNF RESULTS:0
+
+
+;赤面する条件
+@BLUSH(ARG)
+#FUNCTION
+SIF TCVAR:ARG:烂醉 || TCVAR:ARG:媚薬 || TCVAR:ARG:発情
+	RETURNF 1
+SIF GETPALAMLV(PALAM:ARG:好意, 15) >= 10
+	RETURNF 1
+SIF GETPALAMLV(PALAM:ARG:欲情, 15) + CFLAG:ARG:积攒度 / 200 >= 8
+	RETURNF 1
+SIF CFLAG:ARG:诶嘿嘿 && (GETPALAMLV(PALAM:ARG:欲情, 15) + CFLAG:ARG:积攒度 / 200 >= 5)
+	RETURNF 1
+RETURNF 0
+;5枚表情パターン用
+@TARGET_BLUSH_EXCEPTION(ARG)
+#FUNCTION
+SIF !BLUSH(ARG)
+	RETURNF 0
+SELECTCASE ARG
+	CASE [[文]], [[猯藏]]
+		SIF INRANGE(CFLAG:ARG:現在位置, 200, 299) && TEQUIP:ARG:下半身着衣状況 && TEQUIP:ARG:上半身着衣状況 && !BATHROOM(CFLAG:ARG:現在位置)
+			RETURNF 1
+ENDSELECT
+SIF GROUPMATCH(CFLAG:ARG:モブ顔パターン, 40, 41, 42)
+	RETURNF 1
+;SIF CFLAG:ARG:モブ顔パターン == 5
+;	RETURNF 1
+RETURNF 0
+
+@裸表示(ARG)
+#FUNCTION
+SIF !TEQUIP:ARG:上半身着衣状況
+	RETURNF 1
+SIF BATHROOM(CFLAG:ARG:現在位置)
+	RETURNF 1
+RETURNF 0
+
+
+;キャラごとの特殊変化
+@特殊服装(ARG)
+#FUNCTIONS
+LOCALS = 
+;同じ画像ファイルで拡張されているものはこっち
+SELECTCASE ARG
+CASE [[桑尼]], [[露娜]], [[斯塔]], [[阿燐]], [[荷取]], [[帕秋莉]], [[妹紅]], [[輝夜]], [[蓮子]], [[梅莉]]
+	;夏服
+	SIF DAY:2 == 2
+		LOCALS = 1
+CASE [[魔理沙]], [[静葉]], [[穣子]], [[阿求]]
+	;デート中
+	SIF FLAG:约会的对象 == ARG
+		LOCALS = 1
+CASE [[紫]]
+	;イブニングドレス
+	SIF EQUIP:ARG:連衣裙 == 7
+		LOCALS = 1
+CASE [[米斯蒂亜]]
+	;仕事中
+	SIF CFLAG:ARG:職種 == 44 && BASE:ARG:工作量 > 0
+		LOCALS = 1
+CASE [[文]], [[猯藏]]
+	;人里
+	SIF INRANGE(CFLAG:ARG:現在位置, 200, 299)
+		LOCALS = 1
+CASE [[早苗]]
+	;セーラー服
+	SIF EQUIP:ARG:上半身外衣１ == 2
+		LOCALS = 1
+CASE [[鈴仙]]
+	;ブレザー『じゃない』とき
+	SIF EQUIP:ARG:上半身外衣１ != 4
+		LOCALS = 1
+CASE [[幽幽子]]
+	;日替わり
+	SIF DAY:3 % 2 == 0
+		LOCALS = 1
+CASE [[幽香]]
+	;パジャマ
+	SIF EQUIP:ARG:上半身外衣２ == 3
+		LOCALS = 1
+CASE [[響子]]
+;	SIF 未定？
+;		LOCALS = 1
+ENDSELECT
+RETURNF LOCALS
+
+@特殊画像(ARG)
+#FUNCTIONS
+LOCALS = 
+;差分画像ファイルで拡張されているものはこっち
+;ただし5枚表情パターンは除く（現在は文とマミゾウ）
+SELECTCASE ARG
+CASE [[霊夢]]
+	;デート中
+	SIF FLAG:约会的对象 == ARG
+		LOCALS = _2
+CASE [[咲夜]]
+	;人里
+	SIF INRANGE(CFLAG:ARG:現在位置, 200, 299)
+		LOCALS = _1
+CASE [[蕾米莉亜]]
+	;低カリスマ
+	SIF CHARISMA_NOW() < 200
+		LOCALS = _1
+CASE [[愛麗絲]]
+	;現在は画像が用意されてるだけ
+	SIF 0
+		LOCALS = _2
+CASE [[慧音]]
+	;満月の日の夜
+	SIF DAY:3 == 15 && INRANGE(TIME:2, 5, 7)
+		LOCALS = _2
+CASE [[赫喀提亞]]
+	;黄,月にいるとき（夢の世界および自室は赤）
+	IF INRANGE(CFLAG:ARG:現在位置, 1050, 1099)
+		LOCALS = _2
+	;青,人里にいるとき
+	ELSEIF INRANGE(CFLAG:ARG:現在位置, 200, 299)
+		LOCALS = _1
+	;残りは赤
+	ENDIF
+ENDSELECT
+RETURNF LOCALS
+
+;照れ画像が別にあるもの
+@特殊照れ(ARG, 特殊服装)
+#FUNCTIONS
+#DIMS 特殊服装
+LOCALS = 
+SELECTCASE ARG
+CASE [[猯藏]]
+	SIF !裸表示(ARG)
+		LOCALS = 眼鏡
+CASE [[菫子]]
+;	脱いでも眼鏡かけてる
+;	SIF !裸表示(ARG)
+		LOCALS = 眼鏡
+CASE [[魅魔]], [[千百合]], [[魔理沙]], [[露米亜]], [[蕾米莉亜]], [[莉莉喀]], [[梅露蘭]]
+	SIF 裸表示(ARG)
+		LOCALS = 裸
+CASE [[露娜薩]], [[橙]], [[藍]], [[紫]], [[莉格露]], [[映姫]], [[神奈子]], [[天子]], [[恋]]
+	SIF 裸表示(ARG)
+		LOCALS = 裸
+CASE [[納茲琳]], [[小傘]], [[鵺]], [[艾倫]], [[理香子]], [[明羅]], [[露易茲]], [[荷取]]
+	SIF 裸表示(ARG)
+		LOCALS = 裸
+CASE [[白蓮]], [[神子]], [[妹紅]], [[勇儀]], [[幽幽子]], [[慧音]], [[蕾蒂]], [[一輪]]
+	SIF 裸表示(ARG)
+		LOCALS = 裸
+CASE [[村紗]], [[星]], [[芳香]], [[青娥]], [[屠自古]], [[布都]], [[依姫]], [[豊姫]], [[神綺]], [[夢子]]
+	SIF 裸表示(ARG)
+		LOCALS = 裸
+CASE [[雪]], [[鈴瑚]], [[探女]]
+	SIF 裸表示(ARG)
+		LOCALS = 裸
+CASE [[阿燐]], [[椛]]
+	SIF TCVAR:ARG:発情
+		LOCALS = 発情
+CASE [[露娜]], [[静葉]], [[穣子]], [[響子]]
+	IF 裸表示(ARG)
+		LOCALS = 裸
+	ELSEIF 特殊服装 == "1"
+		LOCALS = 特殊
+	ENDIF
+ENDSELECT
+RETURNF LOCALS
+;=========================================================
+;	ステータス画面の画像表示
+;
+;	iID		：キャラIDと同じリソース名を表示します
+;	iSize	：フォントに対するサイズ％数値　縦基準　縦横比維持　省略で1000(10倍)
+;=========================================================
+@PRINT_STATE_IMAGE(iID,iSize=1000)
+#DIM iID
+#DIM iSize
+#DIMS リソース名
+#DIMS 表示形式
+#DIM 固定表示サイズ
+
+SIF !iID
+	RETURN RESULT
+
+キャラ画像表示サイズ比 = 100 + isModifier
+IF FLAG:画像表示
+	SELECTCASE iID
+		CASE 1 TO CHARANUM - 1
+			RESULT = 0
+			IF TALENT:iID:路人 && !GCREATED(CFLAG:iID:路人子素材CFLAG開始位置)
+				CALL 路人子生成(iID,0)
+				CALL 路人子生成(iID,1)
+			ENDIF
+			;形式をひとつずつ決めていく,能力表示画面では通常状態で表示
+			IF FLAG:立絵種類
+				表示形式 = 顔絵
+				固定表示サイズ = 90
+			ELSE
+				表示形式 = 立絵
+				固定表示サイズ = 100
+			ENDIF
+			リソース名 = %表示形式%_服_通常_{iID}
+			;画像セット
+			CALL 画像セット(リソース名, 0, 0, 固定表示サイズ)
+		CASEELSE
+			CALL 画像セット("ダミー", 0, 0)
+	ENDSELECT
+	CALL 画像一斉表示("左", 0, 0)
+
+	IF FLAG:画像枠表示
+		IF TALENT:iID:心情 == -1
+			CALL 画像セット("フレーム_憤怒", 0, 0, 100)
+		ELSEIF TALENT:iID:心情 == 1
+			CALL 画像セット("フレーム_笑顔", 0, 0, 100)
+		ELSE
+			CALL 画像セット("フレーム_通常", 0, 0, 100)
+		ENDIF
+	ENDIF
+	CALL 画像一斉表示("左", 0, 0)
+	
+	CALL 画像表示("ダミー", "左", 0, 0, 100, 1)
+	CALL 画像描画終了
+ENDIF
+RETURN RESULT
+
+;=========================================================
+;	リソースの表示
+;	表示後サイズに合わせて改行を行う
+;	PRINT_IMG の拡張みたいな感じ　文中の挿絵的に使えると思う
+;
+;	sRes_Name	：リソースの名前文字列
+;	iSize		：一行の高さに対するサイズ％数値　縦基準　縦横比維持　省略で1000(10倍)
+;	sAlign		：align属性　省略で左寄せ　left, center, rightの三種が指定できます
+;=========================================================
+@PRINT_IMAGE(sRes_Name,iSize=1000,sAlign="left")
+#DIMS sRes_Name
+#DIM iSize
+#DIMS sAlign
+#DIMS sPrint_Text
+#DIM iEnter_Con
+#DIM iFont_Hei_mag
+
+SIF GETCONFIGS("描画インターフェース") == "WINAPI"
+	THROW 设置里的绘图界面请改成TextRenderer
+
+SIF !FLAG:画像表示 || sRes_Name == ""
+	RETURN RESULT
+
+iEnter_Con = 0
+iFont_Hei_mag = GETCONFIG("一行の高さ") * iSize*10 / GETCONFIG("フォントサイズ")
+iFont_Hei_mag = (iFont_Hei_mag/10) + (iFont_Hei_mag%10 >= 5?1#0)
+
+HTML_PRINT @"<p align='%sAlign%'><nobr><img src='%sRes_Name%' height='{iFont_Hei_mag}'>"
+iEnter_Con++
+
+IF FLAG:時間停止
+	sPrint_Text =  <p align='%sAlign%'><nobr>
+	sPrint_Text += @"<img src='時間停止' height='{iFont_Hei_mag}' width='{iFont_Hei_mag +20}'"
+	sPrint_Text += @"ypos='-{iEnter_Con * iFont_Hei_mag / 10+1}'>"
+	HTML_PRINT sPrint_Text
+	iEnter_Con++
+ENDIF
+
+IF FLAG:画像枠表示
+	sPrint_Text =  <p align='%sAlign%'><nobr>
+	sPrint_Text += @"<img src='フレーム_通常' height='{iFont_Hei_mag}'"
+	sPrint_Text += @"ypos='-{iEnter_Con * iFont_Hei_mag / 10+1}'>"
+	HTML_PRINT sPrint_Text
+	iEnter_Con++
+ENDIF
+
+
+FOR LOCAL,iEnter_Con-1,(iSize/100)-1
+	HTML_PRINT "<br>"
+NEXT
+RETURN RESULT

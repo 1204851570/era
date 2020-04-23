@@ -1,0 +1,1919 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;日常系指令
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;300,会話
+;TFLAG:193(1=大成功 0=成功 -1=失敗 -2=大失敗（TARGETがMASTERより教養が4以上高い)
+;TCVAR:302(0=会話可能 1>=非恋慕時会話不能)
+;MARK:反発刻印(3以上=会話不能)(4以上はバグ
+;TCVAR:泥酔(1=通常成功or大失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_300
+
+	;指令共通メッセージ(TRAIN_MESSAGE) 
+	;削除すると「～話をした。」とかが消えます。また、削除した場合は自動で口上色が付きません。
+	CALL TRAIN_MESSAGE
+	;口上メイン呼出
+
+	CALL M_KOJO_MESSAGE_COM_K106_300_1
+
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_300_1
+
+	
+	;口上启动开关
+	LOCAL = 1
+	
+	IF LOCAL
+	
+		SELECTCASE TFLAG:193
+		
+			CASE 1
+			
+				IF TALENT:恋人 || MARK:3 == 0
+				
+					IF RAND:3 == 0
+					
+						PRINTFORMW 拜托了堇子展示一下超能力
+						PRINTFORML 「嗯……想到了不错的东西，那稍微的实践一下好了」
+						PRINTFORML 「嗯～……哎嘿！」
+						PRINTFORMW ……%MASTERNAME:106%突然被一阵尿意袭击！
+						PRINTFORML 「这是超级魔美式，尿意解消法哦！」
+						PRINTFORMW ……这个笨蛋，都学了些什么！？
+					
+					ELSEIF RAND:2 == 0
+					
+						PRINTFORMW 向堇子询问了幻想乡的推荐景点
+						PRINTFORML 「和你在一起的话，哪里都可以……」
+						PRINTFORML 「没，没有，我什么都没说！！」
+						PRINTFORMW 在嘀咕些什么呢？真是让人摸不着头脑
+						PRINTFORML 「真是的，大笨蛋……」
+					
+					ELSE
+					
+						PRINTFORMW 询问了堇子一些事情
+						PRINTFORMW 想要几个小宝宝呢？
+						PRINTFORML 「哈！？嗯，嗯，可能的话我想要一个女孩子……」
+						PRINTFORMW 堇子突然变得迷迷糊糊起来……不知道又在想什么
+						PRINTFORML 「突然说这种事情，太早了吧，笨蛋！」
+					
+					ENDIF
+				
+				ELSEIF TALENT:恋人 || MARK:3 <= 2
+				
+					IF RAND:3 == 0
+					
+						PRINTFORMW 拜托了堇子展示一下超能力
+						PRINTFORML 「嗯……如果%MASTERNAME:106%愿意好好道歉的话，或许会考虑一下哦」
+						PRINTFORMW 堇子微微的噘着嘴，看上去还是有点生气的样子……
+					
+					ELSEIF RAND:2 == 0
+					
+						PRINTFORMW 向堇子询问了幻想乡的推荐景点
+						PRINTFORML 「我知道好几个很棒的约会景点哦……」
+						PRINTFORML 「如果%MASTERNAME:106%好好哄哄人家的话，那人家就准备上便当一起去吧？」
+						PRINTFORMW 虽然看上去脸颊红红的，但是还是在生气么？
+						PRINTFORML 「真是的，大笨蛋……」
+					
+					ELSE
+					
+						PRINTFORMW 询问了堇子一些事情
+						PRINTFORMW 想要几个小宝宝呢？
+						PRINTFORML 「哈！？嗯，嗯，如果%MASTERNAME:106%愿意听话的话……」
+						PRINTFORMW 堇子的声音突然变得细若蚊呐……不知道又在想什么
+						PRINTFORML 「突然说这种事情，太早了吧，笨蛋！」
+					
+					ENDIF
+				
+				ELSEIF TALENT:恋慕 || MARK:3 == 0
+					IF RAND:3 == 0
+						PRINTFORMW 拜托了堇子展示一下超能力
+						PRINTFORML 「要不要试着把主人公洗脑呢」
+						PRINTFORML 「喜欢上我，喜欢上我……」
+						PRINTFORML 「今，今天状态不太好……」
+						PRINTFORMW 堇子的脸上泛起了红潮……
+					ELSEIF RAND:2 == 0
+						PRINTFORMW 向堇子询问了幻想乡的推荐景点
+						PRINTFORML 「博丽神社的风景很棒哦，而且妖怪也好，其他的种族也好，都会在那里的宴会玩得很快乐的」
+						PRINTFORMW 的确没错，而且人也都很可爱……
+						PRINTFORML 「呜哇……心里想的全写在脸上了哦」
+					ELSE
+						PRINTFORMW 询问了堇子一些事情
+						PRINTFORMW 不考虑用隐形眼镜么？
+						PRINTFORML 「才不要。」
+						PRINTFORMW 被果断的反驳了
+					ENDIF
+				ELSEIF TALENT:思慕
+					IF RAND:3 == 0
+						PRINTFORMW 拜托了堇子展示一下超能力
+						PRINTFORML 「知道什么是ESP么？也就是超感知实验？」
+						PRINTFORML 「那就展示一下好了」
+						PRINTFORML 「kukuku~~这样的程度怎么样？」
+						PRINTFORMW ……丝毫不差的猜中了每一张卡片背后的图案
+						PRINTFORMW 这真是……让人吃惊
+					ELSEIF RAND:2 == 0
+						PRINTFORMW 向堇子询问了幻想乡的推荐景点
+						PRINTFORML 「在雾之湖周围散步很让人放松哦」
+						PRINTFORMW 确实没错，而且雾之湖水酿的清酒也很美味……
+						PRINTFORML 「……啊……就当没听到吧……还不能喝酒呜」
+					ELSE
+						PRINTFORMW 询问了堇子一些事情
+						PRINTFORML 「啊，你说外界啊，现在外界是在上课哦」
+						PRINTFORML 「虽然上课睡觉确实不太好啦」
+						PRINTFORML 「但是，我的成绩依然名列前茅所以没问题啦」
+						PRINTFORMW 啧……赤裸裸的炫耀呢
+					ENDIF
+				ELSE
+					IF RAND:3 == 0
+						PRINTFORMW 拜托了堇子展示一下强大的超能力
+						PRINTFORML 「超能力么？那种程度的东西，想看？」
+						PRINTFORML 「莫非已经做好了被卷入其中的觉悟了么？」
+						PRINTFORML 「如果你已经做出了觉悟的话」
+						PRINTFORMW 随着堇子的手中卡片慢慢发光，一个小小的旋风正在形成，堇子冰块一样寒冷的眼神没有感情的注视过来
+						PRINTFORMW ……果然还是算了
+					ELSEIF RAND:2 == 0
+						PRINTFORMW 向堇子询问了幻想乡的推荐景点
+						PRINTFORML 「香霖堂知不知道？ 店主是个很小气的人呢，但是很热心」
+						PRINTFORMW ……那边的店主，到现在还没有见到过
+						PRINTFORML 「哎？被店主嫌弃了么？」
+					ELSE
+						PRINTFORMW 询问了堇子一些事情
+						PRINTFORML 「斗篷？我的卢恩斗篷怎么了么？」
+						PRINTFORML 「是我自己做的哦，可惜我还没有能力铭文更加强大的组合符，不然的话……」
+						PRINTFORML 「可惜在幻想乡，也找不到可以参考和商量的人呢，都是些古董的魔法使」
+						PRINTFORMW 仿佛自言自语着沉浸在其中了呢
+					ENDIF
+				ENDIF
+			CASE 0
+				IF TALENT:恋人
+					IF RAND:5 == 0
+						PRINTFORML 「莫非又去勾搭别的女孩子了么……」
+						PRINTFORML 「这种事情，不可以对别的女孩子做哦？」
+						PRINTFORMW 菫子叮嘱道……
+					ELSEIF RAND:4 == 0
+						PRINTFORML 「啊，我知道这个东西！」
+						PRINTFORML 「真的很有趣呢」
+						PRINTFORMW 菫子一副乐在其中的样子……
+					ELSEIF RAND:3 == 0
+						PRINTFORML 「从刚才开始，一直让%MASTERNAME:106%说话」
+						PRINTFORML 「我也想告诉你一些事情」
+						PRINTFORMW 菫子慢慢的说出了心里话……
+					ELSEIF RAND:2 == 0
+						PRINTFORMW 菫子听着听着，露出了幸福的微笑……
+						PRINTFORML 「嗯嗯嗯，是啊……」
+					ELSE
+						PRINTFORMW 菫子盯着%MASTERNAME:106%……
+						PRINTFORML 「怎么了么？话题很有趣来着，抓紧继续啦」
+					ENDIF
+				ELSEIF TALENT:恋慕
+					IF RAND:5 == 0
+						PRINTFORML 「……对女孩子说这种话？普通」
+						PRINTFORMW 菫子微微的有些害羞……
+					ELSEIF RAND:4 == 0
+						PRINTFORMW 堇子与%MASTERNAME:106%客套的说着话
+						PRINTFORML 「啊，原来你也是这么想的」
+						PRINTFORML 「……我们意外的有点合得来呢」
+					ELSEIF RAND:3 == 0
+						PRINTFORMW 堇子与%MASTERNAME:106%客套的说着话
+						PRINTFORML 「哈？为什么会有那样的意见」
+					ELSEIF RAND:2 == 0
+						PRINTFORMW 话刚一提到女孩子，堇子就露出复杂的表情
+						PRINTFORML 「……还真是相当受欢迎啊」
+						PRINTFORML 「没什么，继续继续啦……」
+					ELSE
+						PRINTFORMW 堇子随声附和着%MASTERNAME:106%的话
+						PRINTFORML 「最强无敌的存在果然是女高中生，没错的……」
+					ENDIF
+				ELSEIF TALENT:思慕
+					IF RAND:5 == 0
+						PRINTFORML 「%MASTERNAME:106%也很辛苦呢」
+						PRINTFORMW 堇子慢慢点了点头……
+					ELSEIF RAND:4 == 0
+						PRINTFORML 「哎……不是很有趣吗」
+						PRINTFORMW 堇子好像乐在其中的样子……
+					ELSEIF RAND:3 == 0
+						PRINTFORML 「这事情太不讲理了」
+						PRINTFORML 「如果我在那里，我会用超能力……」
+						PRINTFORMW 堇子露出危险的笑容……
+					ELSEIF RAND:2 == 0
+						PRINTFORML 「%MASTERNAME:106%最近话变多了呢」
+						PRINTFORML 「应该说是，多亏我陪你锻炼了？」
+						PRINTFORMW 堇子笑眯眯的对着%MASTERNAME:106%……
+					ELSE
+						PRINTFORML 「嗯……然后呢？怎么样了？」
+						PRINTFORMW 堇子似乎很感兴趣地听着%MASTERNAME:106%的故事……
+					ENDIF
+				ELSE
+					IF RAND:5 == 0
+						PRINTFORML 「比起那样的事，灵梦怎么看的呢？」
+						PRINTFORMW 堇子对%MASTERNAME:106%的故事不太感兴趣……
+					ELSEIF RAND:4 == 0
+						PRINTFORML 「真是无聊的话啊」
+						PRINTFORMW 被堇子愚弄了……
+					ELSEIF RAND:3 == 0
+						PRINTFORML 「再稍微干脆利落地说吧」
+						PRINTFORMW 被堇子嘲讽了……
+					ELSEIF RAND:2 == 0
+						PRINTFORML 「在哪里听过呢」
+						PRINTFORMW 堇子无聊的掰着手指……
+					ELSE
+						PRINTFORML 「哇，性骚扰」
+						PRINTFORMW 被堇子讨厌了……
+					ENDIF
+				ENDIF
+			CASEELSE
+				IF TALENT:恋人
+					PRINTFORML 「又是同样的话……」
+					PRINTFORML 「%MASTERNAME:106%，有点累了么？」
+					PRINTFORMW 堇子很担心的看过来……
+				ELSEIF TALENT:思慕 || TALENT:恋慕
+					PRINTFORML 「……啊，是刚才说过的话题吧？」
+					PRINTFORMW 堇子感觉有点失望……
+				ELSE
+					PRINTFORML 「从刚才开始就一直在说同样的话……」
+					PRINTFORML 「讨厌这种没话找话的人类」
+					PRINTFORMW 堇子冰冷的目光看了过来……
+				ENDIF
+			ENDSELECT
+	ENDIF
+RETURN 1
+;==================================================
+;301,泡茶
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_301
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_301_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_301_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	SELECTCASE TFLAG:193
+	CASE 1
+		IF TALENT:恋人
+			PRINTFORML 「嗯，果然没错！」
+			PRINTFORML 「如果在幻想乡，不喝%MASTERNAME:106%泡的茶，简直是没有享受过一样」
+			PRINTFORMW 堇子开心地啜饮着茶
+			PRINTFORMW ……每天早上都给你泡吧？
+			PRINTFORML 「可，可以……嗯……」
+			PRINTFORMW 菫子的脸颊羞得通红……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「嗯，果然没错！
+			PRINTFORML 「如果在幻想乡，不喝%MASTERNAME:106%泡的茶，简直是没有享受过一样」
+			PRINTFORMW 堇子开心地啜饮着茶
+		ELSE
+			PRINTFORML 「嘿……%MASTERNAME:106%竟然有这样的才能」
+			PRINTFORML 「虽然很质朴，但是也很不错呢」
+			PRINTFORMW 堇子边啜茶边露出了淡淡的微笑……
+		ENDIF
+	CASE 0
+		IF TALENT:恋人
+			PRINTFORML 「据说喝日本茶的女性会生健康的小宝宝来着」
+			PRINTFORML 「……才没有特别深的意义哟！？」
+			PRINTFORMW 堇子害羞地品着茶……
+		ELSEIF TALENT:恋慕
+			PRINTFORML 「听说日本茶有利于美容和健康」
+			PRINTFORML 「你希望我永远保持美丽、健康吗？」
+			PRINTFORMW 堇子害羞地品着茶……
+		ELSEIF TALENT:思慕
+			PRINTFORML 「虽然茶叶很好喝，但是总有种奇怪的违和感呢……」
+			PRINTFORMW 堇子慢慢的品着茶…………
+		ELSE
+			PRINTFORML 「日本茶什么的，其实用塑料瓶就足够了」
+			PRINTFORMW 才不是这样的吧？
+			PRINTFORML 「嗯，答对了哦」
+			PRINTFORMW 堇子慢慢的品着茶…………
+		ENDIF
+	CASEELSE
+		IF TALENT:恋人
+			PRINTFORML 「这，使用了高级的茶叶吗？」
+			PRINTFORML 「奇怪的……不，有个性的味道……」
+			PRINTFORMW %MASTERNAME:106%阻止了勉强要喝的堇子……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「让这茶美味的超能力……」
+			PRINTFORML 「……没有啊」
+			PRINTFORMW 堇子喝了一半就再也喝不下去了……
+		ELSE
+			PRINTFORML 「嗯，不好喝……」
+			PRINTFORMW 堇子喝了一半就再也喝不下去了……
+		ENDIF
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;302,身体接觸
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_302
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_302_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_302_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%把手放在堇子的腋下，试着挠痒痒
+			PRINTFORML 「哎呀！？啊哈哈，啊哈哈，好痒啦！」
+			PRINTFORML 「哈……哈啊……哈哈哈哈哈呜！？」
+			PRINTFORMW 堇子看准时机，脱离了%MASTERNAME:106%的魔掌
+			PRINTFORML 「……啊、哈、哈……这……」
+			PRINTFORMW 看到堇子气喘吁吁的样子，%MASTERNAME:106%色心大起……
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%捧起堇子的手，仔细观察……
+			PRINTFORML 「%MASTERNAME:106%不会吧……有这种癖好么？」
+			PRINTFORMW 堇子的手……好白皙
+			PRINTFORML 「呜，变态！」
+			PRINTFORMW 菫子底底的哀鸣……
+		ELSE
+			PRINTFORMW %MASTERNAME:106%试图对堇子的眼镜下手
+			PRINTFORML 「呜、干什么……！」
+			PRINTFORMW 会看不见的啦！
+			PRINTFORML 「……咕呜」
+			PRINTFORMW %MASTERNAME:106%笑眯眯的看着不知所措的堇子……
+		ENDIF
+	ELSEIF TALENT:恋慕
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%试着挽起堇子的手臂
+			PRINTFORML 「呜啊，你在干什么啊」
+			PRINTFORML 「就算是朋友，这样也有点……」
+			PRINTFORMW 言不由衷的是，堇子没有抵抗……
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%蹲下摸了堇子的脚
+			PRINTFORMW 微微提高了声音,不过，堇子特别没反抗
+			PRINTFORMW 趁机试图把手伸向裙子的瞬间，头被打了……
+			PRINTFORML 「呜……痴汉！」
+		ELSE
+			PRINTFORMW %MASTERNAME:106%用手扶着堇子的腰……
+			PRINTFORML 「那个，会变得奇怪的……」
+			PRINTFORMW 堇子红着脸……
+		ENDIF
+	ELSEIF TALENT:思慕
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%慢慢蹲下试图摸堇子的脚
+			PRINTFORML 「再这样会很生气哦」
+			PRINTFORMW 堇子快速地躲开了……
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%试着握住堇子的手
+			PRINTFORML 「%MASTERNAME:106%的手，好温暖啊」
+			PRINTFORMW 堇子似乎还在渴求着什么……
+		ELSE
+			PRINTFORMW %MASTERNAME:106%把手放在堇子的肩膀上
+			PRINTFORML 「嗯？你怎么了么？」
+			PRINTFORMW 没做什么抵抗……
+		ENDIF
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%试图触摸堇子的身体
+			PRINTFORML 「摸了就杀了你」
+			PRINTFORMW 似乎意图被发现了……
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%试图触摸堇子的身体
+			PRINTFORMW 堇子在要被摸到的瞬间，立马瞬移到了%MASTERNAME:106%的身后！
+			PRINTFORMW kukuku~太迟钝了，太慢了！」
+		ELSE
+			PRINTFORMW %MASTERNAME:106%试图触摸堇子的身体
+			PRINTFORMW 被肉眼看不见的力量阻止了……
+			PRINTFORML 「切，就这种程度还想要当痴汉么」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;303,道歉
+;TFLAG:193(2=菓子折成功 1=大成功 0=成功 -1=失敗 -2=菓子折失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_303
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_303_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_303_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+ENDIF
+RETURN 1
+;==================================================
+;304,幫忙干活
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;CFLAG:350(仕事内容(JOB_仕事内容.ERB参照のこと
+;TCVAR:手伝えない(=2 手伝っても早くは終わらない、時間停止中不可 永琳の診察等)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_304
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_304_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_304_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	;時間停止中
+	IF FLAG:70
+	;通常
+	ELSE
+	ENDIF
+
+ENDIF
+RETURN 1
+;==================================================
+;305,索求膝枕
+;TFLAG:193(-5=MASTERがTARGETよりも巨体の場合(TALENT:MASTER:体型 > TALENT:体型 + 2) 1=大成功 0=成功 -1=失敗)(-5以外は地の文分岐無し)
+;ABL:親密(6以上=顔をのぞき込みながら頭を撫でてくれる 3以上=ただ頭を撫でてくれる 2以下=縮こまっている)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_305
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_305_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_305_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+ENDIF
+RETURN 1
+;==================================================
+;306,撫摸肚子
+;TFLAG:193(1=ABL:親密6以上かつ妊娠時 0=成功 -1=ABL:親密5以下)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_306
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_306_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_306_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	;時間停止中
+	IF FLAG:70
+	;通常
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;307,捏臉蛋
+;TFLAG:193(1=大成功 0=成功 -1=失敗)(地の文分岐無し
+	;以下は先に書いた条件が優先される
+	;TALENT:恋慕(受け入れつつ笑顔でやり返す
+	;ABL:親密(6以上=おずおずとやり返す
+	;ABL:従順(5以上=されるがまま
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_307
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_307_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_307_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TALENT:恋人
+		PRINTFORML 「……开心吗？」
+		PRINTFORMW 非常开心
+		PRINTFORML 「是吗……」
+		PRINTFORMW 堇子没有抵抗……
+	ELSEIF TALENT:恋慕
+		PRINTFORML 「瞎胡闹……」
+		PRINTFORMW 堇子没有抵抗……
+	ELSEIF TALENT:思慕
+		PRINTFORML 「脸颊变热了呜……」
+		PRINTFORMW 确实很温暖……
+		PRINTFORML 「……所以需要我超度你么？」
+		PRINTFORMW %MASTERNAME:106%感到身体的危险而放手……
+	ELSE
+		PRINTFORMW %MASTERNAME:106%想要抓住堇子的脸颊
+		PRINTFORMW 被肉眼看不见的力量阻止了……
+		PRINTFORML 「切，就这种程度还想要当痴汉么」
+	ENDIF
+
+ENDIF
+RETURN 1
+;==================================================
+;308,捅臉頰
+;添い寝中or睡眠中限定
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_308
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_308_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_308_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	;睡眠中
+	IF CFLAG:睡眠
+	;通常
+	ELSE
+	ENDIF
+
+ENDIF
+RETURN 1
+;==================================================
+;309,摸頭
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;ABL:親密(6以上=通常成功時分岐
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_309
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_309_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_309_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TALENT:恋人 || TALENT:恋慕
+		IF RAND:2 == 0
+			PRINTFORML 「……被男人抚摸头部，可能除了父亲以外的第一次」
+			PRINTFORMW 想要撒娇吗？
+			PRINTFORML 「父亲大人……我有想要的包……」
+			PRINTFORMW 别这样子……
+		ELSE
+			PRINTFORML 「再更多的用爱抚摸一下吧」
+			PRINTFORMW 如果是你希望的话！
+			PRINTFORML 「呜嗯！」
+			PRINTFORMW 堇子笑着任凭%MASTERNAME:106%抚摸着头……
+		ENDIF
+	ELSEIF TALENT:思慕
+		IF RAND:2 == 0
+			PRINTFORML 「头发变得乱糟糟的了」
+			PRINTFORMW 不过看起来不是那么费心的发型……
+			PRINTFORML 「%MASTERNAME:106%完全不明白呢」
+		ELSE
+			PRINTFORML 「干什么啊」
+			PRINTFORMW 堇子似乎并不特别在意……
+		ENDIF
+	ELSE
+		IF RAND:2 == 0
+			PRINTFORML 「你把我当傻瓜了吗？」
+			PRINTFORMW 堇子冷漠的盯着%MASTERNAME:106%……
+		ELSE
+			PRINTFORML 「不要伸出你的咸猪手」
+			PRINTFORMW 堇子冷漠的拍开了%MASTERNAME:106%……
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;331,泡茶（下薬）
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_331
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_331_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_331_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;332,勸酒
+;TFLAG:193(0=不會喝酒飲み成功 -1=不會喝酒飲み失敗 -2=不會喝酒飲み大失敗 -5=不會喝酒飲みあきらめ)
+;TFLAG:194(51=濁酒 52=清酒 53=鬼殺酒)
+;ALCOHOL_TASTE(TFLAG:194)(15以上=気に入る 9以下=口に合わない)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_332
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_332_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_332_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;333,聽牢騷
+;TFLAG:193(6=大成功(酔い) 5=成功(酔い) 4=失敗(酔い) 3=大成功 2=成功 1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_333
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_333_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_333_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	SELECTCASE TFLAG:193
+		CASE 6
+		;大成功（酔い）
+		CASE 5
+		;成功（酔い）
+		CASE 4
+		;失敗（酔い）
+		CASE 3
+		;大成功
+		CASE 2
+		;成功
+		CASE 1
+		;失敗
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;334,碰杯
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;CFLAG:妊娠自覚状態(1=吃飯)
+;TALENT:酒耐性(-2=吃飯)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_334
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_334_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_334_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	SELECTCASE TFLAG:193
+		CASE 1
+		;大成功
+		CASE 0
+		;成功
+		CASE -1
+		;失敗
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;335,照料
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_335
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_335_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_335_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	SELECTCASE TFLAG:193
+		CASE 1
+		;大成功
+		CASE 0
+		;成功
+		CASE -1
+		;失敗
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;336,膝枕
+;ABL:親密(4以下=居心地悪げ 9以下=恥ずかしげ それ以上=幸せそう
+;TIME_PROGRESS(TFLAG:膝枕した)(44以下=失敗
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_336
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_336_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_336_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	IF TFLAG:193 > 0
+	;寝ちゃった
+	ELSE
+	;それ以外
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;350,推倒（時姦時猥褻
+;TFLAG:194 (0=成功 1=人目がある　2=野外は嫌でござりまする　3=多人数プレイは勘弁　4=合意があっても情緒が足りぬ）
+;TCVAR:抱き寄せ初回　1=普通に合意ゲット　2=先にキスぐらいしろよ　3=媚薬or発情には勝てなかったよお……　4=悔しい……刻印さえなければﾋﾞｸﾋﾞｸﾝ
+;5=強引に迫られると断れぬ(素質膽怯持ち専用) 6=まんざらでもない　7=駄目　8=論外
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_350
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_350_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_350_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	IF TFLAG:194
+		SELECTCASE TFLAG:194
+			CASE 1
+				IF TALENT:恋人
+					PRINTFORML 「不，不……讨厌讨厌讨厌！」
+					PRINTFORML 「%MASTERNAME:106%，明明知道周围有人吧！？不明白！？」
+					PRINTFORMW 堇子在这种情况下好像不想做……
+				ENDIF
+			CASE 2
+				IF TALENT:恋人
+					PRINTFORML 「啊，是叫做野外play的事情……？」
+					PRINTFORML 「……对不起，不行」
+					PRINTFORMW 堇子好像不想在外面做……
+				ENDIF
+			CASE 3
+				IF TALENT:恋人
+					PRINTFORML 「%MASTERNAME:106%，想让别人看到并喜欢我的身体吗？」
+					PRINTFORML 「……超级讨厌」
+					PRINTFORMW 堇子伤心的流下了眼泪……
+				ENDIF
+			CASE 4
+				IF TALENT:恋人
+					PRINTFORML 「不……虽然不是不行的」
+					PRINTFORML 「但是实在是提不起兴致……」
+					PRINTFORMW 堇子一脸不高兴……
+				ENDIF
+		ENDSELECT
+	ELSEIF TCVAR:初次拥抱
+		SELECTCASE TCVAR:初次拥抱
+			CASE 1
+				IF TALENT:恋人
+					PRINTFORML 「啊……」
+					PRINTFORML 「做这种事情……呜，是啊」
+					PRINTFORML 「我们是恋人……什么的」
+					PRINTFORML 「…………」
+					PRINTFORML 「嗯，没事啊……没有什么好害怕的」
+					PRINTFORML 「……请温柔的，疼爱我……？」
+					PRINTFORMW 堇子微微哀求的直视着%MASTERNAME:106%的眼睛……
+				ENDIF
+			CASE 2
+				IF TALENT:恋人
+					PRINTFORML 「啊……」
+					PRINTFORML 「……我想先接吻之后再继续的……不过」
+					PRINTFORML 「…………」
+					PRINTFORML 「嗯，没事啊……没有什么好害怕的」
+					PRINTFORML 「……请温柔的，疼爱我……？」
+					PRINTFORMW 堇子微微哀求的直视着%MASTERNAME:106%的眼睛……
+				ENDIF
+			CASE 3
+				IF TALENT:恋人
+					PRINTFORML 「……呜，怎么说呢，%MASTERNAME:106%……！」
+					PRINTFORML 「真是个好爱好啊……」
+					PRINTFORML 「随你的便吧……」
+					PRINTFORMW 堇子露出了复杂的表情……
+				ENDIF
+			CASE 4
+			CASE 5
+			CASE 6
+				IF TALENT:恋人
+					PRINTFORML 「……这样还不算过分么？」
+					PRINTFORML 「虽然并不是特别讨厌」
+					PRINTFORML 「……至少……对我好一点」
+					PRINTFORMW 堇子露出哀求的神情……
+				ENDIF
+			CASE 7
+				IF TALENT:恋人
+					PRINTFORML 「对不起，有点勉强」
+					PRINTFORML 「总觉得心情不佳……」
+					PRINTFORMW 堇子露出疲惫的表情……
+				ENDIF
+			CASE 8
+				IF TALENT:恋人
+					PRINTFORML 「现在……不要这样」
+					PRINTFORMW 堇子低声劝告着%MASTERNAME:106%……
+				ENDIF
+		ENDSELECT
+	ELSE
+		IF TALENT:恋人
+			IF RAND:2 == 0
+				PRINTFORML 「嗯……你想做什么？」
+				PRINTFORML 「随你便吧」
+				PRINTFORML 嘴上很冷淡呢……可是身体已经做出反应了啊
+				PRINTFORMW 堇子用微微期待的眼神看着这边……
+			ELSE
+				PRINTFORML 「嗯……你想做什么？」
+				PRINTFORML 「……要做的话，就多疼爱我吧」
+				PRINTFORMW 堇子用期待的眼神看着这边……
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;351,帯出去
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_351
+;連れ出しにはTRAIN_MESSAGEが無い
+CALL M_KOJO_MESSAGE_COM_K106_351_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_351_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	;TARGET連れ出し
+	IF CFLAG:同行 == 60
+	;TARGET以外連れ出し(TARGET同行中のみ
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;352,告白
+;FLAG:甲斐性無(1=失敗)
+;TFLAG:193 (1=成功 0=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_352
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_352_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_352_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TFLAG:193 == 1
+		IF TALENT:恋慕
+			PRINTFORMW %MASTERNAME:106%鼓起勇气，向堇子进行了爱的表白
+			PRINTFORML 「什！？喂，突然想干什么……」
+			PRINTFORMW 堇子变得面红耳赤，语无伦次
+			PRINTFORML 「说起来，那种事情在现实中也遇到过来着……」
+			PRINTFORML 「怎，怎么说呢……」
+			PRINTFORML 「被那样地兴致勃勃地被告白了，也不能说立马就……」
+			PRINTFORMW 堇子挽着胳膊，像是在苦思一样
+			PRINTFORMW 在想怎么样回应么……
+			PRINTFORMW %MASTERNAME:106%不由得讨厌起了自己的鲁莽举动，
+			PRINTFORML 「不过，如果明天能好好告白的话……」
+			PRINTFORML 「……我可以回答你」
+			PRINTFORMW ……我明白了，明天，一定会再一次将思念传达给你
+			PRINTFORMW 努力的献上珍藏的爱的言词，绝对要把堇子变成自己的恋人！
+			PRINTFORML 「咿……就算被投入到那种程度！？」
+			PRINTFORML 「……嗯嗯」
+			PRINTFORML 「我很期待哦，%MASTERNAME:106%」
+		ENDIF
+		RETURN 1
+	ENDIF
+	RETURN 1
+
+ENDIF
+RETURN 1
+;==================================================
+;353,猥褻
+;FLAG:甲斐性無(1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_353
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_353_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_353_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;354,陪睡（相手は起きて布団に招く感じ）
+;CFLAG:衰弱(1以上=起きない
+;CFLAG:お招き(0以外=起きない
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_354
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_354_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_354_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;355,時止め（地の文の改変程度に留めるべき
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_355
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_355_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_355_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;360,任憑擺佈
+;TCVAR:20(27=谷間を見せる 32=前から抱きつく 35=裙子の中を見せる 53=乳交 73=ぱふぱふ 77=乳を吸わせる 85=Ｖ挿入する 86=だいしゅきホールド 87=Ａ挿入する 88=腰振りＶ 89=腰振りＡ
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_360
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_360_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_360_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;363,朗読（[幼稚]持ち専用）
+;TFLAG:193(1=大成功 0=成功 -1=失敗)(地の文分岐無し
+;CFLAG:添い寝中(1=布団orベッドの中で本を読む
+;MASTERがTARGETより大柄の場合、膝の上にTARGETを乗せる
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_363
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_363_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_363_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;364,撒豆子(萃香、勇儀、斯喀雷特姉妹用
+;TFLAG:193(撒豆子に参加してる人数
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_364
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_364_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_364_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;365,向守矢神社移動(早苗、神奈子、諏訪子用
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_365
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_365_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_365_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;402,就寝
+;TFLAG:193(0=通常 1=兒童と一緒に川の字で寝る)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_402
+;就寝にTRAIN_MESSAGEは無い
+CALL M_KOJO_MESSAGE_COM_K106_402_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_402_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;403,休憩
+;CFLAG:TARGET:睡眠(1=TARGETが寝てる隣で休憩
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_403
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_403_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_403_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;405,外出(同行時デート
+;条件が厄介なので、COMF405 外出.ERBを参照のこと
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_405
+;外出にTRAIN_MESSAGEは無い
+CALL M_KOJO_MESSAGE_COM_K106_405_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_405_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	;TARGETとデート
+	IF CFLAG:同行
+	;TARGET以外とデート
+	ELSEIF CFLAG:MASTER:同行
+	;お出かけお見送り
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;410,掃除
+;FLAG:70(1=時間停止中
+;TFLAG:193(0=見てるだけ 1=一緒に掃除)
+;TFLAG:194(3=汚れ高 2=汚れ中 1=汚れ低 0=汚れ最小
+;OUTROOF(CFLAG:現在位置)(野外掃除（冬は雪かき
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_410
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_410_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_410_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TALENT:恋人
+		PRINTFORML 「将来可以请%MASTERNAME:106%打扫一下家里」
+		PRINTFORMW 家里的打扫不是夫人的工作吗？
+		PRINTFORML 「哇，突然出现了很让人在意的言论呢」
+		PRINTFORMW 一边讨论一边进行扫除……
+	ELSEIF TALENT:恋慕
+		PRINTFORML 「我也稍微帮一下忙吧」
+		PRINTFORML 「用魔法扫帚打水……」
+		PRINTFORMW 与其说是超能力者，不如说是魔法使吧？
+		PRINTFORML 「没有帮到什么吗？……」
+	ELSEIF TALENT:思慕
+		PRINTFORML 「好干净啊」
+		PRINTFORML 「%MASTERNAME:106%这么努力……我觉得这是件好事」
+		PRINTFORMW 堇子注视着%MASTERNAME:106%的打扫……
+	ELSE
+		PRINTFORML 「今天太阳从西边出来的么？」
+		PRINTFORMW 堇子注视着%MASTERNAME:106%的打扫……
+	ENDIF
+
+ENDIF
+RETURN 1
+;==================================================
+;411,戦闘訓練
+;TFLAG:194(3=夏の昼間 2=ヤバい天気 1=悪天候 0=屋内or通常天気
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_411
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_411_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_411_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;412,學習
+;ABL:教養(ABL:MASTER:教養より大=MASTERが教えてもらう ABL:MASTER:教養より小=TARGETが教えてもらう
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_412
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_412_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_412_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;413,料理
+;TFLAG:194(100以上=禁断のメニュー 3=デザート 2=主食 1=軽食
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_413
+;TFLAG:194が100以上の場合のみ
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_413_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_413_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF RAND:3 == 0
+		PRINTFORML 「调味料什么的只要用眼睛看清楚分量就可以了」
+		PRINTFORMW %MASTERNAME:106%拼命阻止了打算随意填料的堇子……
+	ELSEIF RAND:2 == 0
+		PRINTFORML 「我会用超能力把食材切断的」
+		PRINTFORML 「……糟糕，比纸片还要薄」
+		PRINTFORMW 因为偷懒成性，所以才会变的这样糟糕的吧
+	ELSE
+		PRINTFORML 「要是做豆沙糕点的话，我可以更快速的完成」
+		PRINTFORMW %MASTERNAME:106%拼命阻止了想要动用超能力快速料理的堇子……
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;414,吃飯
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;TFLAG:194(1=ノーパン涮涮鍋 2=禁断のメニュー 31=興奮劑高湯 30=奶酪番茄沙拉 34=金吉獣料理
+;TCVAR:MASTER:308(bit0=濃い味 bit1=薄味 bit3=激辛 bit4=激甘 bit5=わさび bit6=激酸っぱ
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_414
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_414_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_414_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	SELECTCASE TFLAG:193
+	CASE 1
+		IF TALENT:恋人
+			PRINTFORML 「来、啊」
+			PRINTFORMW 堇子笑着端出菜来
+			PRINTFORMW %MASTERNAME:106%张开嘴，任由堇子喂食
+			PRINTFORML 「呜……总觉得有点害羞呢」
+			PRINTFORMW 堇子害羞地笑了……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「难道，你打算养刁我的胃口吗？！」
+			PRINTFORML 「这种程度不会屈服的！」
+			PRINTFORMW 言不由衷的是，堇子大口吃着美味的料理……
+		ELSE
+			PRINTFORML 「这个，是%MASTERNAME:106%做的！？」
+			PRINTFORML 「啊，没用的女子力……」
+			PRINTFORMW 堇子惊讶的看着%MASTERNAME:106%……
+		ENDIF
+	CASE 0
+		IF TALENT:恋人
+			PRINTFORML 「最近，肚子好饱啊……」
+			PRINTFORML 「但是无法克制欲望！很好吃嘛！」
+			PRINTFORMW 菫子好像很幸福的样子……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「嗯，很好吃」
+			PRINTFORML 「有种平民的味道的感觉」
+			PRINTFORMW 虽然说法不含糊，但堇子吃得津津有味……
+		ELSE
+			PRINTFORML 「男人做的料理……」
+			PRINTFORMW 堇子面无表情地吃着当地料理……
+		ENDIF
+	CASEELSE
+		IF TALENT:恋人
+			PRINTFORML 「男朋友的饭不好吃……」
+			PRINTFORML 「不行！不好！对将来的生活感到不安！」
+			PRINTFORMW 堇子似乎非常不安……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「不好吃！肚子里在进行着地狱交响曲！」
+			PRINTFORMW 由于太难吃，堇子错乱了……
+		ELSE
+			PRINTFORML 「好像吃泥土一样的味道……」
+			PRINTFORMW 堇子把几乎一口没动的菜端了回来……
+		ENDIF
+	ENDSELECT
+ENDIF
+RETURN 11
+;==================================================
+;415,招待吃飯
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;TCVAR:MASTER:308(bit0=濃い味 bit1=薄味 bit3=激辛 bit4=激甘 bit5=わさび bit6=激酸っぱ
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_415
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_415_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_415_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	SELECTCASE TFLAG:193
+	CASE 1
+		IF TALENT:恋人
+			PRINTFORMW 啊，要品尝么
+			PRINTFORMW 菫子看到料理之后露出了笑容
+			PRINTFORML 「我开动了」
+			PRINTFORML 「唔……多谢%MASTERNAME:106%呢」
+			PRINTFORMW 菫子幸福的笑着……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「难道，你打算养刁我的胃口吗？！」
+			PRINTFORML 「这种程度不会屈服的！」
+			PRINTFORMW 言不由衷的是，堇子大口吃着美味的料理……
+		ELSE
+			PRINTFORML 「这个，是%MASTERNAME:106%做的！？」
+			PRINTFORML 「啊，没用的女子力……」
+			PRINTFORMW 堇子惊讶的看着%MASTERNAME:106%……
+		ENDIF
+	CASE 0
+		IF TALENT:恋人
+			PRINTFORML 「最近，肚子好饱啊……」
+			PRINTFORML 「但是无法克制欲望！很好吃嘛！」
+			PRINTFORMW 菫子好像很幸福的样子……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「嗯，很好吃」
+			PRINTFORML 「有种平民的味道的感觉」
+			PRINTFORMW 虽然说法不含糊，但堇子吃得津津有味……
+		ELSE
+			PRINTFORML 「男人做的料理……」
+			PRINTFORMW 堇子面无表情地吃着当地料理……
+		ENDIF
+	CASEELSE
+		IF TALENT:恋人
+			PRINTFORML 「男朋友的饭不好吃……」
+			PRINTFORML 「不行！不好！对将来的生活感到不安！」
+			PRINTFORMW 堇子似乎非常不安……
+		ELSEIF TALENT:思慕 || TALENT:恋慕
+			PRINTFORML 「不好吃！肚子里在进行着地狱交响曲！」
+			PRINTFORMW 由于太难吃，堇子错乱了……
+		ELSE
+			PRINTFORML 「好像吃泥土一样的味道……」
+			PRINTFORMW 堇子把几乎一口没动的菜端了回来……
+		ENDIF
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;416,演奏
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;TFLAG:使用楽器(1=電子琴 2=鋼琴 3=吉他 4=小號 5=小提琴)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_416
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_416_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_416_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;417,昼寝をする
+;TFLAG:193(0=MASTERを抱き枕にして寝ている 1=MASTERの膝を枕にして寝ている 2=寝顔にキスされた 3=寝顔をのぞき込まれた 4=MASTERが膝枕されてる 5=秘処orペニス揉み
+;CFLAG:添い寝中(1=一緒に寝ている
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_417
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_417_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_417_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;421,祈願する
+;条件が複雑なので、COMF421 祈願.ERBおよび、EVENT_MESSAGE_COM400.ERBの祈願するの項を参照のこと
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_421
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_421_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_421_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;422～430は、特殊指令なのでテンプレでは対応しません
+;==================================================
+
+;==================================================
+;431,在浴室里放鬆
+;TFLAG:209(4=人类之里の銭湯で番台ちゃんを怒らせている 1=銭湯に入った
+;TFLAG:211(4=地底の温泉で番台妖怪を怒らせている 1=温泉に入った
+;TFLAG:194(1=連続入浴不可(表示しない可能性あり？
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_431
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_431_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_431_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;432,在浴室里放鬆
+;表示タイミングは入浴後なので、お浴室上がりでの
+;TFLAG:209(4=人类之里の銭湯で番台ちゃんを怒らせている 1=銭湯に入った
+;TFLAG:211(4=地底の温泉で番台妖怪を怒らせている 1=温泉に入った
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_432
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_432_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_432_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;436,読書
+;TFLAG:193(選択肢文学(1=忍殺(文学？) 2=失敗 3=文学),選択肢実用書(4=失敗 5=実用書),選択肢エッチな本(6=薄い高い本 7=保健体育 8=カーマスートラ))
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_436
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_436_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_436_1
+;==================================================
+;440,等待
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_440
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_440_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_440_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;441,聽課(慧音専用
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_441
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_441_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_441_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;442,伐採（未実装
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_442
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_442_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_442_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;442以降の指令は、実行しても口上はおそらく表示されないのでテンプレでもスルー
+;==================================================
+
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;デート系指令
+;デート系口上は文字街道外出先で発生
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+[SKIPSTART]
+;現状未実装
+;==================================================
+;600,デート会話
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_600
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_600_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_600_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;601,デート身体接觸
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_601
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_601_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_601_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;602,デートキス
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_602
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_602_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_602_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+[SKIPEND]
+;==================================================
+;603,牽手
+;TFLAG:193(1=大成功 0=成功 -1=失敗)(失敗でもふりほどかれたりはしません
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_603
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_603_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_603_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;604,散步
+;デート中の場合、CFLAG:現在位置に移動先の場所が既に入ってる
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_604
+;散步にはTRAIN_MESSAGEが無い
+CALL M_KOJO_MESSAGE_COM_K106_604_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_604_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;605,繞道
+;TFLAG:193(1=大成功 0=成功 -1=失敗)(地の文無し
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_605
+;繞道にはTRAIN_MESSAGEが無い
+CALL M_KOJO_MESSAGE_COM_K106_605_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_605_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;610,請吃飯
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_610
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_610_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_610_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;613,賺錢（オミットされました
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_613
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_613_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_613_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;614,採購食材
+;TFLAG:193(1=購入＆約會経験アップ 0=購入 -1=非購入)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_614
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_614_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_614_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;615,吃便當
+;実行可能場所　地蔵小路,倒垂的柳樹下,霧之湖,玄武之澤,大蛤蟆之池,絶景之丘,山之湖,天界
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;ABL:料理技能(2未満=微妙な出来 4未満=そこそこ美味しい 4以上=絶品)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_615
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_615_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_615_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;617,甘味処に誘う
+;TFLAG:193(1=大成功 0=成功 -1=失敗)(地の文分岐は大成功のみ追加
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_617
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_617_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_617_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;618,花屋（口上は表示されない模様？
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_618
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_618_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_618_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;620,鈴奈庵
+;TFLAG:193(1=貸し出しOK 0=貸し出し不可
+;ITEM:10X (X=1戦術指南書 X=2調理指南書 X=3字典 X=4御伽草子
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_620
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_620_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_620_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;621,釣魚
+;TFLAG:193(0=釣れない 1～4=魚 11～15=好吃的魚 610=木材 131=守矢之守札 21=跳蛋 609=氷之鱗 606=龍之爪)
+;TFLAG:194(1000以上ならTARGETが釣った)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_621
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_621_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_621_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;660,読書
+;TFLAG:193(選択肢文学(1=忍殺(文学？) 2=失敗 3=文学),選択肢実用書(4=失敗 5=実用書),選択肢エッチな本(6=薄い高い本 7=保健体育 8=カーマスートラ))
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_660
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_660_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_660_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;698,進入房間
+;TARGETの進入房間場合のみ表示
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_698
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_698_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_698_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;699,外出
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_699
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_699_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_699_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;派生指令
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;60,掏耳朵
+;前ターン膝枕後身体接觸指令
+;TFLAG:193(1=大成功 0=成功 -1=失敗)(失敗するのはTARGET
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K106_60
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K106_60_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K106_60_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;61,抱枕
+;(TARGET睡眠時間or衰弱)添い寝中、前ターン抱きつく後就寝指令
+;分岐無し
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K106_61
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K106_61_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K106_61_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;62,亲額頭
+;前ターン頭撫で後接吻
+;TFLAG:193(1=大成功 0=成功 -1=失敗)(地の文分岐無し
+;ABL:欲望(5以上=物足りない
+;ABL:親密(5以上=照れる
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K106_62
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K106_62_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K106_62_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;63,更多的接吻
+;前ターン接吻後接吻
+;分岐条件はEVENT_MESSAGE_COM500.ERB参照
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K106_63
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K106_63_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K106_63_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	IF FLAG:70
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;80,拉手
+;デート出発後目的地に着くまでの間
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K106_80
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K106_80_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K106_80_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+
+ENDIF
+RETURN 1

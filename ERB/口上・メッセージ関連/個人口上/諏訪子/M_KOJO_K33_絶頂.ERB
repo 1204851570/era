@@ -1,0 +1,1347 @@
+﻿;-------------------------------------------------
+;奴隷の絶頂時の口上
+;NOWEX:0～4 CVABM絶頂
+;NOWEX:6 二重絶頂
+;NOWEX:7 三重絶頂
+;NOWEX:8 四重絶頂
+;NOWEX:9 五重絶頂
+;NOWEX:10 噴乳
+;NOWEX:11 射精
+;NOWEX:12 放尿
+;適当に組み合わせて使ってください
+;-------------------------------------------------
+@M_KOJO_MESSAGE_PALAMCNG_B_K33
+CALL PALAM_MESSAGE_B
+;-------------------------------------------------
+;噴乳
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && NOWEX:噴乳
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「啊……啊、哇、胸部、要出来了! %UNICODE(0x2764)%」
+			DATAFORM 「哎呀%UNICODE(0x2764)%　要、要出来了%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 身体弯成弓形、从突出的乳头里、母乳飞散而出……
+			CASE 2
+				PRINTFORMW 诹访子颤抖着、脸上露出朦胧的表情、滴着母乳……
+		ENDSELECT
+	ENDIF
+ENDIF
+;-------------------------------------------------
+;射精
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && NOWEX:射精
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「哎呀……已经、要出来了%UNICODE(0x2764)%」
+			DATAFORM 「哎呀%UNICODE(0x2764)%　咳、要出来了%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 身体弯成弓形、突出的阴茎激烈地散发精液……
+			CASE 2
+				PRINTFORMW 诹访子颤抖着、脸上露出朦胧的表情射精着……
+		ENDSELECT
+	ENDIF
+ENDIF
+;-------------------------------------------------
+;放尿
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && NOWEX:放尿
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「哎呀……已经、要出来了%UNICODE(0x2764)%」
+			DATAFORM 「不行、不行啊、尿尿、要尿出来了%UNICODE(0x2764)%」
+			DATAFORM 「哎呀……已经……不……%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1, 2
+				PRINTFORMW 身体弯成弓形、诹访清水从秘所画出一道艳丽的抛物线、倾注到地上……
+			CASE 3
+				PRINTFORMW 诹访子似乎半途放弃了抵抗、在那放松的胯股之间、慢慢地滴下了温暖的东西……
+		ENDSELECT
+	ENDIF
+ENDIF
+;-------------------------------------------------
+;絶頂
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;五重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF NOWEX:五重絶頂
+		IF FLAG:70
+
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊啊啊啊%UNICODE(0x2764)%呜、啊啊呜！！」
+				DATAFORM 「全部、全部都好舒服啊%UNICODE(0x2764)%要飞了、飞上天了!」
+				DATAFORM 「哎呀、不行、不行不行！这样的、这样的喔%UNICODE(0x2764)%呜呜！！」
+			ENDDATA
+			SELECTCASE LOCAL:99
+				CASE 1
+					PRINTFORMW 诹访子在屡次接近的绝顶的波浪前、露出沉溺在快乐中的喘鸣……
+				CASE 2, 3
+					PRINTFORMW 诹访子全身颤抖、仿佛遭到雷击一般、沉浸在喜悦之中……
+			ENDSELECT
+		ENDIF
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;四重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF NOWEX:四重絶頂
+		;部位を指定せず簡易的に書く場合、[SKIPSTART]&[SKIPEND]のコメントアウトを外して、[SKIPSTART]とこのコメントの間に書いてください
+		IF FLAG:70
+
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊! %UNICODE(0x2764)%啊! !」
+				DATAFORM 「好、好厉害%UNICODE(0x2764)%已经不行了！」
+				DATAFORM 「啊ー、哈啊%UNICODE(0x2764)%啊啊啊！」
+			ENDDATA
+			SELECTCASE LOCAL:99
+				CASE 1, 2
+					PRINTFORMW 诹访子一边发出不成形的声音、一边绝顶地颤抖着身体……
+				CASE 3
+					PRINTFORMW 诹访子像是紧紧抱着什么似的、委身于从身体深处迸发出来的快感的奔流…
+			ENDSELECT
+		ENDIF
+		RETURN 1
+
+		[SKIPSTART]
+		SELECTCASE NOWEX:四重絶頂
+			;Ｃ＆Ｖ＆Ａ＆Ｂ絶頂
+			CASE 1
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ａ＆Ｍ絶頂
+			CASE 2
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ｂ＆Ｍ絶頂
+			CASE 3
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ａ＆Ｂ＆Ｍ絶頂
+			CASE 4
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ａ＆Ｂ＆Ｍ絶頂
+			CASE 5
+				PRINTFORMW 
+				RETURN 1
+		ENDSELECT
+		[SKIPEND]
+	ENDIF
+	;-------------------------------------------------
+	;三重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF NOWEX:三重絶頂
+		;部位を指定せず簡易的に書く場合、[SKIPSTART]&[SKIPEND]のコメントアウトを外して、[SKIPSTART]とこのコメントの間に書いてください
+		IF FLAG:70
+
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊%UNICODE(0x2764)%这个好、哎呀%UNICODE(0x2764)%」
+				DATAFORM 「等一下、不行、不行啊%UNICODE(0x2764)%」
+				DATAFORM 「啊啊、更加、更加%UNICODE(0x2764)%」
+			ENDDATA
+			SELECTCASE LOCAL:99
+				CASE 1
+					PRINTFORMW 诹访子一边漏出可爱的声音、一边绝顶地颤抖着身体……
+				CASE 2, 3
+					PRINTFORMW 为了得到依靠、诹访子将身体紧紧地靠近这边……
+			ENDSELECT
+		ENDIF
+		RETURN 1
+		[SKIPSTART]
+		SELECTCASE NOWEX:三重絶頂
+			;Ｃ＆Ｖ＆Ａ絶頂
+			CASE 1
+				PRINTFORMW 
+				RETURN 1
+			;Ｂ＆Ｖ＆Ａ絶頂
+			CASE 2
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｂ＆Ａ絶頂
+			CASE 3
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ｂ絶頂
+			CASE 4
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ｍ絶頂
+			CASE 5
+				PRINTFORMW 
+				RETURN 1
+			;Ｂ＆Ｖ＆Ｍ絶頂
+			CASE 6
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｖ＆Ｍ絶頂
+			CASE 7
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｂ＆Ｍ絶頂
+			CASE 8
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｂ＆Ｍ絶頂
+			CASE 9
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ａ＆Ｍ絶頂
+			CASE 10
+				PRINTFORMW 
+				RETURN 1
+		ENDSELECT
+		[SKIPEND]
+	ENDIF
+	;-------------------------------------------------
+	;二重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF NOWEX:二重絶頂
+		;部位を指定せず簡易的に書く場合、[SKIPSTART]&[SKIPEND]のコメントアウトを外して、[SKIPSTART]とこのコメントの間に書いてください
+		IF FLAG:70
+
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊%UNICODE(0x2764)%这个好、哎呀%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、同时、哪个都很舒服%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、哎呀、要去啦%UNICODE(0x2764)%」
+			ENDDATA
+			SELECTCASE LOCAL:99
+				CASE 1
+					PRINTFORMW 诹访子一边漏出可爱的声音、一边绝顶地颤抖着身体……
+				CASE 2, 3
+					PRINTFORMW 为了得到依靠、诹访子将身体紧紧地靠近这边……
+			ENDSELECT
+		ENDIF
+		RETURN 1
+
+		[SKIPSTART]
+		SELECTCASE NOWEX:二重絶頂
+			;Ｃ＆Ｖ絶頂
+			CASE 1
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ａ絶頂
+			CASE 2
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ａ絶頂
+			CASE 3
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｂ絶頂
+			CASE 4
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ｂ絶頂
+			CASE 5
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｂ絶頂
+			CASE 6
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｍ絶頂
+			CASE 7
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ｍ絶頂
+			CASE 8
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｍ絶頂
+			CASE 9
+				PRINTFORMW 
+				RETURN 1
+			;Ｂ＆Ｍ絶頂
+			CASE 10
+				PRINTFORMW 
+				RETURN 1
+		ENDSELECT
+		[SKIPEND]
+	ENDIF
+	IF NOWEX:Ｃ絶頂
+		IF FLAG:70
+			
+		;超強絶頂Ｃ
+		ELSEIF NOWEX:Ｃ絶頂 == 3
+			PRINTDATAW
+				DATAFORM 「哎呀……%UNICODE(0x2764)%　啊ー%UNICODE(0x2764)%　嗯嗯%UNICODE(0x2764)%」
+				DATAFORM 「不行啊%UNICODE(0x2764)%　好奇怪啊%UNICODE(0x2764)%　啊呜%UNICODE(0x2764)%」
+				DATAFORM 「哎呀%UNICODE(0x2764)%　更加、更加…%UNICODE(0x2764)%　啊啊%UNICODE(0x2764)%」
+			ENDDATA
+		;強絶頂Ｃ
+		ELSEIF NOWEX:Ｃ絶頂 == 2
+			PRINTDATAW
+				DATAFORM 「哎呀……%UNICODE(0x2764)% 呜%UNICODE(0x2764)%你、好麻利啊…%UNICODE(0x2764)%」
+				DATAFORM 「来了%UNICODE(0x2764)%　要来了%UNICODE(0x2764)%」
+				DATAFORM 「啊%UNICODE(0x2764)%　啊哈………呼……啊%UNICODE(0x2764)%」
+			ENDDATA
+		;絶頂Ｃ
+		ELSE
+			PRINTDATAW
+				DATAFORM 「……っ%UNICODE(0x2764)%　啊啊%UNICODE(0x2764)%」
+				DATAFORM 「啊……是……呼%UNICODE(0x2764)%」
+				DATAFORM 「哎呀…！……呼……啊%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+	ENDIF
+	IF NOWEX:Ｖ絶頂
+		IF FLAG:70
+
+		;超強絶頂Ｖ
+		ELSEIF NOWEX:Ｖ絶頂 == 3
+			PRINTDATAW
+				DATAFORM 「啊啊%UNICODE(0x2764)%　不行、不行、因为%UNICODE(0x2764)%　唔唔！」
+				DATAFORM 「啊啊、呜！里面、难受、啊%UNICODE(0x2764)%」
+				DATAFORM 「哎呀……！嗯、已经……你这家伙、好奇怪啊%UNICODE(0x2764)%　呜、一去不停啊！啊…%UNICODE(0x2764)%」
+			ENDDATA
+		;強絶頂Ｖ
+		ELSEIF NOWEX:Ｖ絶頂 == 2
+			PRINTDATAW
+				DATAFORM 「哇%UNICODE(0x2764)%　不行、那样的话%UNICODE(0x2764)%　啊……！」
+				DATAFORM 「啊啊、呜！里面、难受、啊%UNICODE(0x2764)%」
+				DATAFORM 「嗯！这样、好舒服喔%UNICODE(0x2764)%　要来了%UNICODE(0x2764)%」
+			ENDDATA
+		;絶頂Ｖ
+		ELSE
+			PRINTDATAW
+				DATAFORM 「啊%UNICODE(0x2764)%　里面要、去了…%UNICODE(0x2764)%」
+				DATAFORM 「啊、哎呀、身体、芯都麻木了%UNICODE(0x2764)%」
+				DATAFORM 「嗯……!这样、好舒服啊…%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+	ENDIF
+	IF NOWEX:Ａ絶頂
+		IF FLAG:70
+
+		;超強絶頂Ａ
+		ELSEIF NOWEX:Ａ絶頂 == 3
+			PRINTDATAW
+				DATAFORM 「啊%UNICODE(0x2764)%屁股、屁股、这样的%UNICODE(0x2764)%啊啊！」
+				DATAFORM 「啊、住手、别那么乱来啊！要变成笨蛋⑨了%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、啊！啊、这种东西明明不行的却%UNICODE(0x2764)%啊、哎呀、啊啊%UNICODE(0x2764)%」
+			ENDDATA
+		;強絶頂Ａ
+		ELSEIF NOWEX:Ａ絶頂 == 2
+			PRINTDATAW
+				DATAFORM 「啊%UNICODE(0x2764)%屁股、屁股、这样的%UNICODE(0x2764)%」
+				DATAFORM 「不行、不行啊%UNICODE(0x2764)%屁股什么的…！」
+				DATAFORM 「嗯！呀、啊、屁股、变红了！哎……%UNICODE(0x2764)%」
+			ENDDATA
+		;絶頂Ａ
+		ELSE
+			PRINTDATAW
+				DATAFORM 「啊%UNICODE(0x2764)%用屁股的穴、去了…%UNICODE(0x2764)%」
+				DATAFORM 「呜…嗯！谎言、谎言%UNICODE(0x2764)%这样的…！」
+				DATAFORM 「嗯！呀、啊、屁股、变红了！哎……%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+	ENDIF
+	IF NOWEX:Ｂ絶頂
+		IF FLAG:70
+
+		;強絶頂Ｂ
+		ELSEIF NOWEX:Ｂ絶頂 == 3
+			PRINTDATAW
+				DATAFORM 「恩恩！哈%UNICODE(0x2764)%胸部、更多、更多%UNICODE(0x2764)%啊啊！」
+				DATAFORM 「嗯！哇、胸部、不行了哦%UNICODE(0x2764)%啊啊啊啊啊！」
+				DATAFORM 「嗯、啊！去了、我不要、讨厌%UNICODE(0x2764)%恩……啊啊啊！」
+			ENDDATA
+		;強絶頂Ｂ
+		ELSEIF NOWEX:Ｂ絶頂 == 2
+			PRINTDATAW
+				DATAFORM 「啊%UNICODE(0x2764)%胸部、想要更多的疼爱啊…%UNICODE(0x2764)%」
+				DATAFORM 「啊、哎呀、胸部、变红了%UNICODE(0x2764)%哎呀……！」
+				DATAFORM 「嗯、啊！胸部、好舒服、好舒服啊%UNICODE(0x2764)%」
+			ENDDATA
+		;絶頂Ｂ
+		ELSE
+			PRINTDATAW
+				DATAFORM 「啊%UNICODE(0x2764)%胸部、想要更多的疼爱啊…%UNICODE(0x2764)%」
+				DATAFORM 「啊、哎呀、胸部、火辣辣的%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、啊！胸部、好舒服啊…%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+	ENDIF
+	IF NOWEX:Ｍ絶頂
+		IF FLAG:70
+
+		;超強絶頂Ｍ
+		ELSEIF NOWEX:Ｍ絶頂 == 3
+			PRINTDATAW
+				DATAFORM 「……恩%UNICODE(0x2764)%呵呵……恩%UNICODE(0x2764)%」
+				DATAFORM 「……嗯……%UNICODE(0x2764)%啊……呜……%UNICODE(0x2764)%」
+			ENDDATA
+		;強絶頂Ｍ
+		ELSEIF NOWEX:Ｍ絶頂 == 2
+			PRINTDATAW
+				DATAFORM 「……哇%UNICODE(0x2764)%嗯…%UNICODE(0x2764)%」
+				DATAFORM 「……啊！？呜呜……啊%UNICODE(0x2764)%」
+			ENDDATA
+		;絶頂Ｍ
+		ELSE
+			PRINTDATAW
+				DATAFORM 「……哇%UNICODE(0x2764)%谎言…这样的…%UNICODE(0x2764)%」
+				DATAFORM 「……嗯……啊%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+	ENDIF
+ENDIF
+;-------------------------------------------------
+;奴隷の睡眠絶頂時の口上
+;-------------------------------------------------
+@M_KOJO_MESSAGE_PALAMCNG_B2_K33
+CALL PALAM_MESSAGE_B
+;-------------------------------------------------
+;噴乳
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && NOWEX:噴乳
+	PRINTFORML 「……啊…….嗯…%UNICODE(0x2764)%」
+	PRINTFORMW 扭动着身体、从突出的乳头里、母乳飞散而出……
+ENDIF
+;-------------------------------------------------
+;射精
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && NOWEX:射精
+	PRINTFORML 「……啊…….嗯……%UNICODE(0x2764)%」
+	PRINTFORMW 扭动着身体、突出的阴茎激烈地散发精液……
+ENDIF
+;-------------------------------------------------
+;放尿
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && NOWEX:放尿
+	PRINTFORML 「……啊…….唔……%UNICODE(0x2764)%」
+	PRINTFORMW 微微颤抖着身体、温暖的东西从秘所那里慢慢地蔓延开…
+ENDIF
+;-------------------------------------------------
+;絶頂
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;五重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF NOWEX:五重絶頂
+		PRINTFORMW 「……啊…….嗯%UNICODE(0x2764)%」
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;四重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF NOWEX:四重絶頂
+		;部位を指定せず簡易的に書く場合、[SKIPSTART]&[SKIPEND]のコメントアウトを外して、[SKIPSTART]とこのコメントの間に書いてください
+		;[SKIPSTART]
+		SELECTCASE NOWEX:四重絶頂
+			;Ｃ＆Ｖ＆Ａ＆Ｂ絶頂
+			CASE 1
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ａ＆Ｍ絶頂
+			CASE 2
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ｂ＆Ｍ絶頂
+			CASE 3
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ａ＆Ｂ＆Ｍ絶頂
+			CASE 4
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ａ＆Ｂ＆Ｍ絶頂
+			CASE 5
+				PRINTFORMW 
+				RETURN 1
+		ENDSELECT
+		;[SKIPEND]
+	ENDIF
+	;-------------------------------------------------
+	;三重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF NOWEX:三重絶頂
+		;部位を指定せず簡易的に書く場合、[SKIPSTART]&[SKIPEND]のコメントアウトを外して、[SKIPSTART]とこのコメントの間に書いてください
+		;[SKIPSTART]
+		SELECTCASE NOWEX:三重絶頂
+			;Ｃ＆Ｖ＆Ａ絶頂
+			CASE 1
+				PRINTFORMW 
+				RETURN 1
+			;Ｂ＆Ｖ＆Ａ絶頂
+			CASE 2
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｂ＆Ａ絶頂
+			CASE 3
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ｂ絶頂
+			CASE 4
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｖ＆Ｍ絶頂
+			CASE 5
+				PRINTFORMW 
+				RETURN 1
+			;Ｂ＆Ｖ＆Ｍ絶頂
+			CASE 6
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｖ＆Ｍ絶頂
+			CASE 7
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｂ＆Ｍ絶頂
+			CASE 8
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｂ＆Ｍ絶頂
+			CASE 9
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ａ＆Ｍ絶頂
+			CASE 10
+				PRINTFORMW 
+				RETURN 1
+		ENDSELECT
+		;[SKIPEND]
+	ENDIF
+	;-------------------------------------------------
+	;二重絶頂
+	;記入チェック（=0, 非表示、1, 表示）
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF NOWEX:二重絶頂
+		;部位を指定せず簡易的に書く場合、[SKIPSTART]&[SKIPEND]のコメントアウトを外して、[SKIPSTART]とこのコメントの間に書いてください
+		;[SKIPSTART]
+		SELECTCASE NOWEX:二重絶頂
+			;Ｃ＆Ｖ絶頂
+			CASE 1
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ａ絶頂
+			CASE 2
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ａ絶頂
+			CASE 3
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｂ絶頂
+			CASE 4
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ｂ絶頂
+			CASE 5
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｂ絶頂
+			CASE 6
+				PRINTFORMW 
+				RETURN 1
+			;Ａ＆Ｍ絶頂
+			CASE 7
+				PRINTFORMW 
+				RETURN 1
+			;Ｖ＆Ｍ絶頂
+			CASE 8
+				PRINTFORMW 
+				RETURN 1
+			;Ｃ＆Ｍ絶頂
+			CASE 9
+				PRINTFORMW 
+				RETURN 1
+			;Ｂ＆Ｍ絶頂
+			CASE 10
+				PRINTFORMW 
+				RETURN 1
+		ENDSELECT
+		;[SKIPEND]
+	ENDIF
+	IF NOWEX:Ｃ絶頂
+		;超強絶頂Ｃ
+		IF NOWEX:Ｃ絶頂 == 3
+			PRINTFORMW 
+		;強絶頂Ｃ
+		ELSEIF NOWEX:Ｃ絶頂 == 2
+			PRINTFORMW 
+		;絶頂Ｃ
+		ELSE
+			PRINTFORMW 
+		ENDIF
+	ENDIF
+	IF NOWEX:Ｖ絶頂
+		;超強絶頂Ｖ
+		IF NOWEX:Ｖ絶頂 == 3
+			PRINTFORMW 
+		;強絶頂Ｖ
+		ELSEIF NOWEX:Ｖ絶頂 == 2
+			PRINTFORMW 
+		;絶頂Ｖ
+		ELSE
+			PRINTFORMW 
+		ENDIF
+	ENDIF
+	IF NOWEX:Ａ絶頂
+		;超強絶頂Ａ
+		IF NOWEX:Ａ絶頂 == 3
+			PRINTFORMW 
+		;強絶頂Ａ
+		ELSEIF NOWEX:Ａ絶頂 == 2
+			PRINTFORMW 
+		;絶頂Ａ
+		ELSE
+			PRINTFORMW 
+		ENDIF
+	ENDIF
+	IF NOWEX:Ｂ絶頂
+		;強絶頂Ｂ
+		IF NOWEX:Ｂ絶頂 == 3
+			PRINTFORMW 
+		;強絶頂Ｂ
+		ELSEIF NOWEX:Ｂ絶頂 == 2
+			PRINTFORMW 
+		;絶頂Ｂ
+		ELSE
+			PRINTFORMW 
+		ENDIF
+	ENDIF
+	IF NOWEX:Ｍ絶頂
+		;超強絶頂Ｍ
+		IF NOWEX:Ｍ絶頂 == 3
+			PRINTFORMW 
+		;強絶頂Ｍ
+		ELSEIF NOWEX:Ｍ絶頂 == 2
+			PRINTFORMW 
+		;絶頂Ｍ
+		ELSE
+			PRINTFORMW 
+		ENDIF
+	ENDIF
+ENDIF
+
+
+;-------------------------------------------------
+;射精に関する口上の表示
+;一時的にTARGETを口上主に設定している
+;-------------------------------------------------
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_00(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;TARGETの手による射精で、射精対象が非TARGET
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_0(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;コンドーム
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_23(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;イラマチオ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「嗯嗯……\@ NOWEX:MASTER:射精 >1 ? 出来了很厉害的量啊 #  \@%UNICODE(0x2764)%」
+			DATAFORM 「哼哼……真是强行啊、这个变态%UNICODE(0x2764)%」
+			DATAFORM 「嗯……嗯哼%UNICODE(0x2764)%　随心所欲地用我的嘴去吧%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1
+				IF TCVAR:33:精飲経験 > 20
+					PRINTFORMW 诹访子从喉咙里发出声音、陶醉于渗入身体深处的精液的感觉中……
+				ELSE
+					PRINTFORMW 诹访子虽然稍微有些迟疑、但并没有离开阴茎……
+				ENDIF
+			CASE 2, 3
+				PRINTFORMW 诹访子笑眯眯地持续玩弄%CALLNAME:MASTER%的阴茎…
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_22(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;シックスナイン
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	;同時射精
+	ELSEIF NOWEX:射精 && NOWEX:MASTER:射精
+		PRINTFORMW
+		RETURN 1
+	;TARGETだけ射精
+	ELSEIF NOWEX:射精
+		;PLAYERについてる
+		IF GETBIT(TALENT:PLAYER:性別,1)
+			PRINTFORMW
+			RETURN 1
+		;付いてない
+		ELSE
+			PRINTFORMW
+			RETURN 1
+		ENDIF
+	;PLAYERだけ射精
+	ELSE
+		;TARGETについてる
+		IF GETBIT(TALENT:性別,1)
+			PRINTFORMW
+			RETURN 1
+		;付いてない
+		ELSEIF NOWEX:Ｃ絶頂
+			PRINTDATAW LOCAL:99
+				DATAFORM 「恩%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 恩～ # 恩 \@%UNICODE(0x2764)%」
+				DATAFORM 「啊！？、\@ ABL:33:精液中毒 >2 ? 呼呼……恩 # 嘿嘿 \@…%UNICODE(0x2764)%」
+				DATAFORM 「嗯……呜……嗯……呜呜……%UNICODE(0x2764)%」
+			ENDDATA
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「恩%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 出来这么多、好厉害 # 不舒服的话就告诉我吧 \@%UNICODE(0x2764)%」
+				DATAFORM 「嗯、\@ ABL:33:精液中毒 >2 ? 呼呼……哼哼哼 # 哼……呵呵、呵呵 \@…%UNICODE(0x2764)%」
+				DATAFORM 「嗯……呜……呵呵%UNICODE(0x2764)%刚才、去了啊……%UNICODE(0x2764)%」
+			ENDDATA
+			SELECTCASE LOCAL:99
+				CASE 1, 3
+					PRINTFORMW 「呵呵……也希望能让我更舒服啊……%UNICODE(0x2764)%」
+					PRINTFORMW 诹访子一边慢慢玩弄%CALLNAME:MASTER%的阴茎、一边摩擦着秘所…
+				CASE 2
+					PRINTFORML 诹访子把精液\@ ABL:33:精液中毒>= 3 ?从容地咽下去、呵呵地笑了…… # 勉强把它吞下、露出苦笑… \@
+					IF TALENT:MASTER:濃厚精液
+						PRINTDATAW
+							DATAFORM 「还在喉咙里缠绕着……积累了很多吧%UNICODE(0x2764)%」
+							DATAFORM 「已经想让我的嘴怀孕了吗？真是没办法的人啊%UNICODE(0x2764)%」
+						ENDDATA
+					ENDIF
+			ENDSELECT
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_21(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;パイズリフェラ　現状はパイズリと同じ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		;ぺたんこ
+		IF TALENT:33:胸圍 < 0
+			PRINTDATAL LOCAL:99
+				DATAFORM 「哇%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 出来的量很大呢…… # 算了、不舒服的话告诉我吧 \@%UNICODE(0x2764)%」
+				DATAFORM 「变得战战兢兢了…呵呵、我再给你做更多%UNICODE(0x2764)%」
+				DATAFORM 「%CALLNAME:MASTER%对这样的胸部也会兴奋啊。嘿、%UNICODE(0x2764)%」
+				DATAFORM 「虽然胸部很小、但是很舒服吗？嘿嘿、好开心啊%UNICODE(0x2764)%」
+			ENDDATA
+		ELSE
+		;ある
+			PRINTDATAL LOCAL:99
+				DATAFORM 「哇%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 出来的量很大呢…… # 算了、不舒服的话告诉我吧 \@%UNICODE(0x2764)%」
+				DATAFORM 「变得战战兢兢了…呵呵、我再给你做更多%UNICODE(0x2764)%」
+				DATAFORM 「你喜欢胸部吗？　呵呵、好逞强啊%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子用\@ TALENT:33:胸圍< 0 ? 较单薄的胸部把阴茎压在胸前 # 乳内夹着阴茎\@、脸上浮现出一副出神的表情…
+			CASE 2
+				PRINTFORMW 诹访子把精液\@ ABL:33:精液中毒>= 3 ?用手指轻轻地舔了一下、微微一笑… # 涂在胸部、持续爱抚使之更加湿润… \@
+			CASEELSE
+				PRINTFORMW 诹访子用\@ TALENT:33:胸圍 < 0 ? 较单薄的 #  \@胸部挺起、上面散落着%CALLNAME:MASTER%的精液……
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_20(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;手淫フェラ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	PRINTDATAL LOCAL:99
+		DATAFORM 「恩%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 出来这么多、好厉害 # 不舒服的话就告诉我吧 \@%UNICODE(0x2764)%」
+		DATAFORM 「嗯、\@ ABL:33:精液中毒 >2 ? 呼呼……哼哼哼 # 哼……呵呵、呵呵 \@…%UNICODE(0x2764)%」
+		DATAFORM 「嗯…嘴里塞满了、真是不懂事的家伙%UNICODE(0x2764)%」
+		DATAFORM 「ちゅっ……ふふー、私のテクにめろめろになっちゃった？」
+	ENDDATA
+	SELECTCASE LOCAL:99
+		CASE 1, 3, 4
+			PRINTFORMW 诹访子一边舔舐着因绝顶余韵而变得敏感的阴茎、一边朝上看这边……
+		CASE 2
+			PRINTFORML 诹访子把精液\@ ABL:33:精液中毒>= 3 ?从容地咽下去、呵呵地笑了…… # 勉强把它吞下、露出苦笑… \@
+			IF TALENT:MASTER:濃厚精液
+				PRINTDATAW
+					DATAFORM 「还在喉咙里缠绕着……积累了很多吧%UNICODE(0x2764)%」
+					DATAFORM 「已经想让我的嘴怀孕了吗？真是没办法的人啊%UNICODE(0x2764)%」
+				ENDDATA
+			ENDIF
+	ENDSELECT
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_9(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;アナル奉仕
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「\@ NOWEX:MASTER:射精 >1 ? 出来的量很大呢 # 真是、吓一跳呢 \@%UNICODE(0x2764)%　这里也很舒服、啊%UNICODE(0x2764)%」
+			DATAFORM 「被屁股责备什么的……这个姿势%UNICODE(0x2764)%」
+			DATAFORM 「呼呼%UNICODE(0x2764)%想要更加欺负吗？怎么办好呢%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子目不转睛地凝视着散播精液的%CALLNAME:MASTER%的阴茎…
+			CASE 2, 3
+				PRINTFORMW 诹访子一边笑着、一边在%CALLNAME:MASTER%菊门周围打转……
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_8(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;泡踊り
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;同時射精
+	IF NOWEX:射精 && NOWEX:MASTER:射精
+		PRINTFORMW
+		RETURN 1
+	;TARGETだけ射精
+	ELSEIF NOWEX:射精
+		;PLAYERについてる
+		IF GETBIT(TALENT:PLAYER:性別,1)
+			PRINTFORMW
+			RETURN 1
+		;付いてない
+		ELSE
+			PRINTFORMW
+			RETURN 1
+		ENDIF
+	;PLAYERだけ射精
+	ELSE
+		;TARGETについてる
+		IF GETBIT(TALENT:性別,1)
+			PRINTFORMW
+			RETURN 1
+		;付いてない
+		ELSE
+			PRINTFORMW
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_7(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;足コキ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「啊哈、\@ NOWEX:MASTER:射精>1 ?飞到这种地方 # 出来了 \@%UNICODE(0x2764)%」
+			DATAFORM 「你出来了啊—%UNICODE(0x2764)%呵呵、再多给你做一点好吗？」
+			DATAFORM 「啊-啊%UNICODE(0x2764)%用脚也能感觉舒服、真是无可救药的人啊%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子将脚部沾上的精液\@ ABL:33:精液中毒 >= 3 ? 用手指轻轻地舔了一下… # 向这边看过来…… \@
+			CASE 2, 3
+				PRINTFORMW 诹访子以俯视一样的表情、象%CALLNAME:MASTER%的阴茎擦进精液一样地、不断滑动足部…
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_6(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;素股
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「啊哈、\@ NOWEX:MASTER:射精>1 ?飞到这种地方 # 出来了 \@%UNICODE(0x2764)%」
+			DATAFORM 「啊、太可惜了……下次想在这里射出来？呵呵%UNICODE(0x2764)%」
+			DATAFORM 「啊、已经、别再闹了%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1, 2
+				PRINTFORMW 诹访子将射在身上的精液\@ ABL:33:精液中毒 >= 3 ? 用手指轻轻地舔了一下… # 笑眯眯地擦着…… \@
+			CASE 3
+				PRINTFORMW 诹访子非常从容、将%CALLNAME:MASTER%被精液弄湿的阴茎一起夹入、享受着那个感觉…
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_5(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;パイズリ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		;ぺたんこ
+		IF TALENT:33:胸圍 < 0
+			PRINTDATAL LOCAL:99
+				DATAFORM 「哇%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 出来的量很大呢…… # 算了、不舒服的话告诉我吧 \@%UNICODE(0x2764)%」
+				DATAFORM 「变得战战兢兢了…呵呵、我再给你做更多%UNICODE(0x2764)%」
+				DATAFORM 「%CALLNAME:MASTER%对这样的胸部也会兴奋啊。嘿、%UNICODE(0x2764)%」
+				DATAFORM 「虽然胸部很小、但是很舒服吗？嘿嘿、好开心啊%UNICODE(0x2764)%」
+			ENDDATA
+		ELSE
+		;ある
+			PRINTDATAL LOCAL:99
+				DATAFORM 「哇%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 出来的量很大呢…… # 算了、不舒服的话告诉我吧 \@%UNICODE(0x2764)%」
+				DATAFORM 「变得战战兢兢了…呵呵、我再给你做更多%UNICODE(0x2764)%」
+				DATAFORM 「你喜欢胸部吗？　呵呵、好逞强啊%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子用\@ TALENT:33:胸圍< 0 ? 较单薄的胸部把阴茎压在胸前 # 乳内夹着阴茎\@、脸上浮现出一副出神的表情…
+			CASE 2
+				PRINTFORMW 诹访子把精液\@ ABL:33:精液中毒>= 3 ?用手指轻轻地舔了一下、微微一笑… # 涂在胸部、持续爱抚使之更加湿润… \@
+			CASEELSE
+				PRINTFORMW 诹访子用\@ TALENT:33:胸圍 < 0 ? 较单薄的 #  \@胸部挺起、上面散落着%CALLNAME:MASTER%的精液……
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_4(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;フェラチオ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「恩%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 出来这么多、好厉害 # 不舒服的话就告诉我吧 \@%UNICODE(0x2764)%」
+			DATAFORM 「嗯、\@ ABL:33:精液中毒 >2 ? 呼呼……哼哼哼 # 哼……呵呵、呵呵 \@…%UNICODE(0x2764)%」
+			DATAFORM 「嗯…嘴里塞满了、真是不懂事的家伙%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1, 3
+				PRINTFORMW 诹访子一边舔舐着因绝顶余韵而变得敏感的阴茎、一边朝上看这边……
+			CASE 2
+				PRINTFORML 诹访子把精液\@ ABL:33:精液中毒>= 3 ?从容地咽下去、呵呵地笑了…… # 勉强把它吞下、露出苦笑… \@
+				IF TALENT:MASTER:濃厚精液
+					PRINTDATAW
+						DATAFORM 「还在喉咙里缠绕着……积累了很多吧%UNICODE(0x2764)%」
+						DATAFORM 「已经想让我的嘴怀孕了吗？真是没办法的人啊%UNICODE(0x2764)%」
+					ENDDATA
+				ENDIF
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_3(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;手淫
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSE
+		PRINTDATAL LOCAL:99
+			DATAFORM 「啊哈、\@ NOWEX:MASTER:射精 >1 ? 不忍耐的话会把你榨干哦 # 会更多更多地出来吧 \@%UNICODE(0x2764)%」
+			DATAFORM 「托我的福、你那么舒服吗？嘿嘿%UNICODE(0x2764)%」
+			DATAFORM 「这里很脆弱吧。哼、有反应了、一看就知道了%UNICODE(0x2764)%」
+		ENDDATA
+		SELECTCASE LOCAL:99
+			CASE 1, 3
+				PRINTFORMW 诹访子伸出沾满精液的手、用可爱的舌头舔了一下……
+			CASE 2
+				PRINTFORMW 诹访子一边露出满意的笑容、一边温柔又下流地地持续动着手……
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_2(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;アナル
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSEIF TCVAR:PLAYER:避孕套 == 1
+		IF NOWEX:Ａ絶頂
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊……！哎呀……！啊……用屁股的穴、去了…%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、不行、好害怕、%UNICODE(0x2764)%　呜呜……%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呼呼%UNICODE(0x2764)%  哈……呼……」
+			ENDDATA
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊哈%UNICODE(0x2764)%被尻穴勒紧的感觉如何…？嘿嘿、不用问也知道%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、好害怕、%UNICODE(0x2764)%　因为很容易理解」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子一边笑着、一边仔细端详装满了%CALLNAME:MASTER%的精液的避孕套……
+			CASE 2, 3
+				PRINTFORMW 带着兴奋的表情、诹访子沉浸在接受%CALLNAME:MASTER%的绝顶余韵中
+		ENDSELECT
+	ELSE
+		IF NOWEX:Ａ絶頂
+			PRINTDATAL LOCAL:99
+				DATAFORM 「哎……啊哈%UNICODE(0x2764)%　被狠狠地突入、从屁股的穴里射出来、同时去了…%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、不行、不断地被灌注着%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 又出来了哦、好厉害… # 是……啊……好舒服啊 \@%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%　啊……呼……嗯……」
+				DATAFORM 「这边的、也很舒服……　%CALLNAME:MASTER%も\@ NOWEX:MASTER:射精 >1 ? 也给我很厉害的感觉呢…好开心啊 # 一样啊……呵呵 \@%UNICODE(0x2764)%」
+			ENDDATA
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊哈%UNICODE(0x2764)%　已经去了吗？　要用尻穴勒紧啦%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、好害怕、%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 要射出多少啊、真是的…… # 算了、不舒服的话告诉我吧 \@%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%」
+				DATAFORM 「啊……被屁股的穴紧紧地挤压、感觉舒服吗?　\@ NOWEX:MASTER:射精 >1 ? 呼呼……量很大哦 # 好的、再射出来些 \@%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子的直肠毫无保留地接受了%CALLNAME:MASTER%的精液、露出荡漾的笑容……
+			CASE 3
+				PRINTFORMW 诹访子屏住呼吸、像是要确认精液的感觉、以出神的表情闭上了眼睛。
+			CASEELSE
+				PRINTFORMW 诹访子带着兴奋的表情、沉浸在绝顶的余韵中接受了%CALLNAME:MASTER%被释放的的子种…
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K33_1(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;膣内
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+
+	ELSEIF TCVAR:PLAYER:避孕套 == 1
+		IF NOWEX:Ｖ絶頂
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊……！哎呀……！啊……同时、也去了%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、不行、好害怕、%UNICODE(0x2764)%　呜呜……%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呼呼%UNICODE(0x2764)%  哈……呼……」
+			ENDDATA
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊哈%UNICODE(0x2764)%　好舒服…？嘿嘿、不用问也能感觉到%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、好害怕、%UNICODE(0x2764)%　因为很容易理解」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子一边笑着、一边仔细端详装满了%CALLNAME:MASTER%的精液的避孕套……
+			CASE 2, 3
+				PRINTFORMW 带着兴奋的表情、诹访子沉浸在接受%CALLNAME:MASTER%的绝顶余韵中
+		ENDSELECT
+	;危険日生
+	ELSEIF CFLAG:33:生理周期 == 7
+		IF NOWEX:Ｖ絶頂
+			PRINTDATAL LOCAL:99
+				DATAFORM 「哎……啊哈%UNICODE(0x2764)%　明明是不行的日子、却被狠狠地突入、被射得满满的、一起去了……%UNICODE(0x2764)%」
+				DATAFORM 「啊、不行、我中了那个%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 又出来了哦、好厉害… # 是……啊……好舒服啊 \@%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%　啊……呼……嗯……」
+				DATAFORM 「好舒服啊……　%CALLNAME:MASTER%も\@ NOWEX:MASTER:射精 >1 ? 也给我很厉害的感觉呢…好开心啊 # 一样啊……呵呵 \@%UNICODE(0x2764)%」
+			ENDDATA
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊哈%UNICODE(0x2764)%　太过分了……明明是危险日啊%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、好害怕、%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 又出来了。已经不是满怀孕育的气息… # 已经好了的话请告诉我 \@%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%」
+				DATAFORM 「啊……舒服吗？　\@ NOWEX:MASTER:射精 >1 ? 呼呼……量很大哦 # 好的、再射出来些 \@%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 一边断断续续地喃喃自语着、诹访子一边露出荡漾的笑容……
+			CASE 3
+				PRINTFORMW 诹访子屏住呼吸、像是要确认阴道内的精液和卵子的结合一样、以出神的表情闭上了眼睛。
+			CASEELSE
+				PRINTFORMW 诹访子带着兴奋的表情、沉浸在绝顶的余韵中接受了%CALLNAME:MASTER%被释放的的子种…
+		ENDSELECT
+	ELSE
+		IF NOWEX:Ｖ絶頂
+			PRINTDATAL LOCAL:99
+				DATAFORM 「哎……啊哈%UNICODE(0x2764)%　被狠狠地突入、被射得满满的、一起去了……%UNICODE(0x2764)%」
+				DATAFORM 「啊、不行、我中了那个%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 又出来了哦、好厉害… # 是……啊……好舒服啊 \@%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%　啊……呼……嗯……」
+				DATAFORM 「好舒服啊……　%CALLNAME:MASTER%も\@ NOWEX:MASTER:射精 >1 ? 也给我很厉害的感觉呢…好开心啊 # 一样啊……呵呵 \@%UNICODE(0x2764)%」
+			ENDDATA
+		ELSE
+			PRINTDATAL LOCAL:99
+				DATAFORM 「啊哈%UNICODE(0x2764)%　已经去了吗？　要再多射出点才行啊%UNICODE(0x2764)%」
+				DATAFORM 「哎呀、好害怕、%UNICODE(0x2764)%　\@ NOWEX:MASTER:射精 >1 ? 要射出多少啊、真是的…… # 算了、不舒服的话告诉我吧 \@%UNICODE(0x2764)%」
+				DATAFORM 「啊……哈……呵呵%UNICODE(0x2764)%」
+				DATAFORM 「啊……舒服吗？　\@ NOWEX:MASTER:射精 >1 ? 呼呼……量很大哦 # 好的、再射出来些 \@%UNICODE(0x2764)%」
+			ENDDATA
+		ENDIF
+		SELECTCASE LOCAL:99
+			CASE 1
+				PRINTFORMW 诹访子毫无保留地接受了%CALLNAME:MASTER%的精液、脸上浮现出荡漾的笑容……
+			CASE 3
+				PRINTFORMW 诹访子屏住呼吸、像是要确认阴道内的精液的感觉、以出神的表情闭上了眼睛。
+			CASEELSE
+				PRINTFORMW 诹访子带着兴奋的表情、沉浸在绝顶的余韵中接受了%CALLNAME:MASTER%被释放的的子种…
+		ENDSELECT
+	ENDIF
+	RETURN 1
+ENDIF
+RETURN 1
+
+;-------------------------------------------------
+;眠姦射精に関する口上の表示
+;一時的にTARGETを口上主に設定している
+;-------------------------------------------------
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_0(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;コンドーム
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_23(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;イラマチオ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_7(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;足コキ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_5(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;パイズリ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_4(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;フェラチオ
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_3(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;手淫
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_2(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;アナル
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K33_1(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;膣内
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+
+@M_KOJO_MESSAGE_PALAMCNG_F_K33(ARG)
+CALL PALAM_MESSAGE_F
+;-------------------------------------------------
+;焦らし
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1

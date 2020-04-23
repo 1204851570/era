@@ -1,0 +1,127 @@
+﻿eraTW4.600proto用色々修正＋α
+
+ CSV┬TFLAG.csv
+	└Train.csv
+ ERB┬MOVEMENTS┬MOVEMENT_SUB.ERB
+	│		　 ├SLEEP.ERB
+	│		　 └物件関連─03紅魔館┬MAP_03.ERB
+	│							　 └ROOMSETTING_3.ERB
+	├SHOP関連─SHOP_住環境設定.ERB
+	├イベント関連┬BEFORETRAIN.ERB
+	│			　├EVENTCOMEND.ERB
+	│			　└EVENTCOMEND2.ERB
+	├指令関連┬COMABLE─COMABLE2.ERB
+	│			　├COMF┬外出系─NASIKUZUSI.ERB
+	│			　│	└日常系┬COMF416 演奏.ERB
+	│			　│			├COMF300 会話.ERB
+	│			　│			├COMF301 泡茶.ERB
+	│			　│			├COMF302 身体接觸.ERB
+	│			　│			├COMF303 道歉.ERB
+	│			　│			├COMF304 幫忙干活.ERB
+	│			　│			├COMF305 索求膝枕.ERB
+	│			　│			├COMF306 撫摸肚子.ERB
+	│			　│			├COMF307 捏臉蛋.ERB
+	│			　│			├COMF308 捅臉頰.ERB
+	│			　│			├COMF309 摸頭.ERB
+	│			　│			├COMF310 摸屁股.ERB
+	│			　│			├COMF311 擁抱.ERB
+	│			　│			├COMF312 接吻.ERB
+	│			　│			├COMF313 胸愛撫.ERB
+	│			　│			├COMF314 肛門愛撫.ERB
+	│			　│			├COMF315 陰蒂愛撫.ERB
+	│			　│			├COMF316 手指挿入.ERB
+	│			　│			├COMF330 掀起裙子.ERB
+	│			　│			├COMF331 泡茶（下薬）.ERB
+	│			　│			├COMF333 聽牢騷.ERB
+	│			　│			├COMF334 碰杯.ERB
+	│			　│			├COMF335 照料.ERB
+	│			　│			├COMF336 膝枕.ERB
+	│			　│			├COMF350 推倒.ERB
+	│			　│			├COMF351 帯出去.ERB
+	│			　│			├COMF352 告白.ERB
+	│			　│			├COMF353 猥褻.ERB
+	│			　│			├COMF360 任憑擺佈.ERB
+	│			　│			├COMF363 朗読.ERB
+	│			　│			├COMF405 外出.ERB
+	│			　│			├COMF410 掃除.ERB
+	│			　│			├COMF413 製作料理.ERB
+	│			　│			├COMF414 吃飯.ERB
+	│			　│			└COMF415 招待吃飯.ERB
+	│			　└SCOMF┬SCOMF1 六九式.ERB
+	│					 ├SCOMF3 Gスポット刺激.ERB
+	│					 ├SCOMF6 挿入Ｇ點玩弄.ERB
+	│					 ├SCOMF7 挿入子宮口玩弄.ERB
+	│					 ├SCOMF8 ６９乳交.ERB
+	│					 ├SCOMF9 雙重口交.ERB
+	│					 ├SCOMF10 雙重素股.ERB
+	│					 ├SCOMF11 雙重乳交.ERB
+	│					 ├SCOMF12 乳夾口交.ERB
+	│					 ├SCOMF13 交互挿入.ERB
+	│					 ├SCOMF14 玩弄Ｓ状結腸.ERB
+	│					 ├SCOMF15 アナル刺激Ｇ點.ERB
+	│					 ├SCOMF60 掏耳朵.ERB
+	│					 ├SCOMF62 亲額頭.ERB
+	│					 ├SCOMF63 更多的接吻.ERB
+	│					 └SCOMF80 拉手.ERB
+	├ステータス計算関連┬TRACHECK_LOST_VIRGIN.ERB
+	│					├COUNTER─COUNTER_SOURCE.ERB
+	│					└SOURCE─SOURCE_CALLCOM.ERB
+	└口上・メッセージ関連┬KOJO_MESSAGE.ERB
+						　├EVENT_MESSAGE.ERB
+						　└EVENT_MESSAGE_ORGASM.ERB
+
+改造とかしてみたい人のためのあれこれ─口上関連─口上テンプレ┬M_KOJO_KX_性騷擾指令.ERB
+															└M_KOJO_KX_日常系指令.ERB
+
+
+その１,243スレ>>250修正(EVENTCOMEND2.ERB
+	これでいい筈、多分おそらく、いやきっと
+之２,243スレ>>301修正(EVENTCOMEND.ERB
+	これ、時止め中にパンツ没収も発生してた可能性がありそうな気がする
+その３,243スレ>>348修正(ROOMSETTING_3.ERB,MAP_03.ERB
+	以前報告あったときに直ってるものだとばっかり
+	ついでに廃洋館の浴室と廚房がわかりにくかったので、MAPに恶作剧してみる
+	つか、字数制限があるせいだろうけど、部屋番号と位置名称をわかりやすくする手はないものか
+その４,243スレ>>355修正(SHOP_住環境設定.ERB
+	指摘街道に修正
+その５,243スレ>>365修正(SCOMF1,3,6～15.ERB,COUNTER_SOURCE.ERB
+	遅ればせながら修正
+	ついでなんで、counterのSOURCEの方も修正
+その６,243スレ>>381修正(
+	個人口上なのでファイル名は飛ばしてみる
+	あと、鵺っち以外にも、星ちゃんナズも同じ事になってたので修正してみる
+	ただし、現状のＴＷ脱衣は命ＯＤ個別脱がしとは違うやり方なので渋々オミット
+その７,243スレ>>445修正(NASIKUZUSI.ERB
+	無接吻経験そのものを消去しつつ、既成事実フラグを立ててないせい、だと思われるので、修正
+その８,243スレ>>463修正(COMF360 任憑擺佈.ERB
+その９,243スレ>>480修正(TRACHECK_LOST_VIRGIN.ERB
+	そもそも尻穴処女喪失関数がTARGETだけしか想定してないんですもん
+	そりゃ二穴挿入で非TARGETの処女喪失処理やらかすのはむりがありんす
+その１０,243スレ>>581修正(NASIKUZUSI.ERB
+	本来なら、回数０になる事は無さそうだけど一応念のため
+	ついでに地の文に脱字があったので修正
+その１１,243スレ>>586修正(MOVEMENT_SUB.ERB,SLEEP.ERB
+	するべきでないタイミングで起床時に诶嘿嘿終了処理を仕込んでたため
+その１２,243スレ>>605修正(EVENT_MESSAGE_ORGASM.ERB
+	地の文表示時のCALLNAMEの処理が思いっきり狂ってました
+	……多分、じぶんのせいです、申し訳ありませんでした
+その１３,243スレ>>611修正(TRACHECK_LOST_VIRGIN.ERB
+	counterの番号が抜けてたためっぽい
+その１４,243スレ>>688修正(BEFORETRAIN.ERB
+	目が覚めた時点では現在位置を居間に、もし初始位置を虫かごにしてた場合は強制的に默认的初始位置に（てか、そもそも初始位置に虫かご選べないんじゃ？
+
+＋αその１(COMABLE2.ERB
+	抱住模式時、表示される指令を変更してみるテスト
+＋αその2(COMF300～309,311,312,331,333～336,363,414～416.ERB,SCOMF60,62,63,80.ERB,TFLAG.CSV,テンプレ,M_KOJO_KX_性騷擾指令.ERB,M_KOJO_KX_日常系指令.ERB,SOURCE_CALLCOM.ERB
+	TFLAG:192を利用して、口上側から成否判定を盛り込んでみた
+	注、COMF動作の前に成否判定を決めるので、COMFによって変化するフラグを分岐条件には使えません
+	邪悪な使い方として、-2で指令そのものを終了させた後に、SOURCE等を口上側で操作するということも一応可能
+	ただし、失敗判定が立っているので地の文との齟齬に注意
+
+＋αその3（COMF310～316,330,350～353,405
+	RETURN -1している指令でも、一応DRAWLINEしてみるテスト
+
+
+
+
+byさもま

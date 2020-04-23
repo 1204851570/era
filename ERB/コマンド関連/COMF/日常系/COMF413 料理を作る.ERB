@@ -1,0 +1,1511 @@
+﻿;-------------------------------------------------
+;料理を作る
+;日常系コマンド、レベル1
+;-------------------------------------------------
+@COM413
+;食材がない
+IF !CAN_COOK("全て", MASTER)
+	DRAWLINE
+	PRINTFORMW 沒有食材
+	RETURN -1
+ENDIF
+;先に助手取得
+IF TARGET <= 0
+ELSEIF SHIRAHU(TARGET) == 1 && ABL:親密 * 500 + ABL:従順 * 500 + ABL:料理技能 * 1000 > CFLAG:310 - CFLAG:MASTER:310
+	DISHASSI = TARGET
+ENDIF
+CALL COOKING_MENU
+IF !RESULT
+	CALL RESET_DISH
+	RETURN -1
+ENDIF
+IF TFLAG:194 == 1
+	DOWNBASE:MASTER:体力 = 50
+	DOWNBASE:MASTER:気力 = 50
+	TIME += 15
+	SIF CFLAG:同行
+		CFLAG:同行 += 15
+ELSEIF TFLAG:194 == 2
+	DOWNBASE:MASTER:体力 = 100
+	DOWNBASE:MASTER:気力 = 100
+	TIME += 45
+	SIF CFLAG:同行
+		CFLAG:同行 += 45
+ELSEIF TFLAG:194 == 3
+	DOWNBASE:MASTER:体力 = 100
+	DOWNBASE:MASTER:気力 = 100
+	TIME += 45
+	SIF CFLAG:同行
+		CFLAG:同行 += 45
+ELSEIF TFLAG:194 == 4
+	DOWNBASE:MASTER:体力 = 150
+	DOWNBASE:MASTER:気力 = 150
+	TIME += 45
+	SIF CFLAG:同行
+		CFLAG:同行 += 45
+ENDIF
+
+IF TARGET > 0 && !CFLAG:睡眠 && !FLAG:70
+	IF DISHASSI
+		TFLAG:193 = 1
+		EXP:料理経験 ++
+	ELSE
+		TFLAG:193 = 0
+	ENDIF
+	;固定で獲得するソース
+	SOURCE:歓楽 = 200
+	
+	;信頼
+	TFLAG:98 = 3
+
+
+	;ABL:従順をみる
+	IF ABL:従順 <= 1
+		SOURCE:歓楽 += (ABL:従順 * 60)
+	ELSEIF ABL:従順 <= 3
+		SOURCE:歓楽 += 200 + (ABL:従順 * 60)
+	ELSEIF ABL:従順 <= 5
+		SOURCE:歓楽 += 500 + (ABL:従順 * 60)
+	ELSEIF ABL:従順 <= 8
+		SOURCE:歓楽 += 750 + (ABL:従順 * 75)
+	ELSEIF ABL:従順 <= 11
+		SOURCE:歓楽 += 1000 + (ABL:従順 * 75)
+	ELSE
+		SOURCE:歓楽 += 2000 + (ABL:従順 * 30)
+	ENDIF
+
+	;好感度をみる
+	IF CFLAG:2 <= 500
+		SOURCE:歓楽 += CFLAG:2
+	ELSEIF CFLAG:2 <= 5000
+		SOURCE:歓楽 += 500 + (CFLAG:2 - 500) / 3
+	ELSE
+		SOURCE:歓楽 += 2000 + (CFLAG:2 - 5000) / 5
+	ENDIF
+	SIF SOURCE:歓楽 < 0
+		SOURCE:歓楽 = 0
+ENDIF
+TCVAR:MASTER:308 = 0
+SIF TARGET < 1 && (!GET_OPTION_COOKING("自動味付け設定") || GET_OPTION_COOKING("異物混入可能") || GET_OPTION_COOKING("薬物混入可能"))
+	CALL MIX_MENU
+SIF GET_OPTION_COOKING("自動味付け設定")
+	CALL AUTO_SEASONING
+
+IF ITEM:調理指南書
+	SIF !RAND:2
+		EXP:MASTER:料理経験 ++
+	SIF !RAND:2 && TARGET
+		EXP:TARGET:料理経験 ++
+ENDIF
+DISHTIME = 1440 * DAY + TIME
+
+STAIN:MASTER:0 = 0
+STAIN:MASTER:1 = 0
+CFLAG:MASTER:口内精液 = 0
+CFLAG:MASTER:脸上精液 = 0
+CFLAG:MASTER:手上精液 = 0
+IF TARGET
+	STAIN:0 = 0
+	STAIN:1 = 0
+	CFLAG:口内精液 = 0
+	CFLAG:脸上精液 = 0
+	CFLAG:手上精液 = 0
+ENDIF
+
+RETURN 1
+
+
+@COOKING_MENU
+PRINTL 要做什么呢？
+{
+CALL ASK_M(
+	"果然還是放棄", 1,
+	"軽食",           CAN_COOK("軽食", MASTER),
+	"主食",           CAN_COOK("主食", MASTER),
+	"甜点",       CAN_COOK("甜点", MASTER),
+	"禁断の料理",     CAN_COOK("禁断の料理", MASTER), 
+	"魚料理",         (CAN_COOK("魚料理", MASTER) || CAN_COOK("青蛙料理", MASTER)))
+}
+SELECTCASE RESULT
+CASE 1
+	DISHTYPE = RESULT
+	CALL INGREDIENT_CHOICE
+	SIF RESULT == 0
+		RETURN 0
+	IF GET_OPTION_COOKING("料理内容自動決定")
+		CALL COOKING(, "「料理内容自動決定」")
+	ELSE
+		CALL COOKING
+		SIF RESULT == 0
+			RETURN 0
+	ENDIF
+	TFLAG:194 = 1
+	CALL VEGE_CHOICE
+	CALL REMOVE_VEGE
+	CALL SHOW_DISHDATA
+	WAIT
+	RETURN 1
+CASE 2
+	DISHTYPE = RESULT
+	CALL INGREDIENT_CHOICE
+	SIF RESULT == 0
+		RETURN 0
+	IF GET_OPTION_COOKING("料理内容自動決定")
+		CALL COOKING(, "「料理内容自動決定」")
+	ELSE
+		CALL COOKING
+		SIF RESULT == 0
+			RETURN 0
+	ENDIF
+	TFLAG:194 = 2
+	CALL VEGE_CHOICE
+	CALL REMOVE_VEGE
+	CALL SHOW_DISHDATA
+	WAIT
+	RETURN 1
+CASE 3
+	DISHTYPE = RESULT
+	CALL INGREDIENT_CHOICE
+	SIF RESULT == 0
+		RETURN 0
+	IF GET_OPTION_COOKING("料理内容自動決定")
+		CALL COOKING(, "「料理内容自動決定」")
+	ELSE
+		CALL COOKING
+		SIF RESULT == 0
+			RETURN 0
+	ENDIF
+	TFLAG:194 = 3
+	CALL VEGE_CHOICE
+	CALL REMOVE_VEGE
+	CALL SHOW_DISHDATA
+	WAIT
+	RETURN 1
+CASE 4
+	IF !ITEM:0
+		PRINTFORMW 食材不足
+		TIME += 5
+		RETURN 0
+	ENDIF
+	
+	ITEM:0 --
+	DISHTYPE = 4
+	CALL COOKING
+	TFLAG:194 = FLAG:料理
+	CALL VEGE_CHOICE
+	CALL REMOVE_VEGE
+	CALL SHOW_DISHDATA
+	WAIT
+	RETURN 1
+CASE 5
+	PRINTFORML 請選擇食材
+	CALL ASK_M(@"魚　{ITEM:魚}尾所持", ITEM:魚, @"好吃的魚　{ITEM:好吃的魚}尾所持", ITEM:好吃的魚,@"青蛙　{ITEM:青蛙}匹所持", ITEM:青蛙,"やめる",1)
+	SELECTCASE RESULT
+		CASE 0
+			DISHQUALITY = 1
+			DISHTYPE = 5
+			;@COOKING用に一時的に5と6が代入されるが後でDISHTYPE = 2で上書きされる
+			DISHTASTE += GET_TASTE_INGREDIENT("魚")
+		CASE 1
+			DISHQUALITY = 2
+			DISHTYPE = 5
+			DISHTASTE += GET_TASTE_INGREDIENT("好吃的魚")
+		CASE 2
+			DISHQUALITY = 1
+			DISHTYPE = 6
+			DISHTASTE += GET_TASTE_INGREDIENT("青蛙")
+		CASE 3
+			RETURN 0
+	ENDSELECT
+	IF GET_OPTION_COOKING("料理内容自動決定")
+		CALL COOKING(, "「料理内容自動決定」")
+	ELSE
+		CALL COOKING
+		SIF RESULT == 0
+			RETURN 0
+	ENDIF
+	TFLAG:194 = 2
+	CALL VEGE_CHOICE
+	CALL REMOVE_VEGE
+	CALL SHOW_DISHDATA
+	WAIT
+	RETURN 1
+CASE 0
+	RETURN 0
+ENDSELECT
+
+
+
+
+
+;料理実行関数
+;料理依頼に流用できるように作成
+;先に呼び出し元でDISHTYPEとDISHQUALITYを決めておくこと
+;食材の消費処理も先にすませておくこと
+@COOKING(CHARA, OP)
+#DIM  CHARA ;キャラを渡すと手伝ってくれる（依頼用、COM413は実行後に料理経験入るので不要）
+#DIMS CONST MENU_TYPE, 7 = "", "SNACK", "MAINDISH", "DESSERT", "FORBIDDEN","FISH", "FROG"
+#DIMS OP
+SIF CHARA
+	DISHASSI = CHARA
+IF STRCOUNT(OP, "「料理内容自動決定」") || MENU_TYPE:DISHTYPE == "FORBIDDEN"
+	CALL SET_DISHNAME(MENU_TYPE:DISHTYPE)
+ELSE
+	CALL SELECT_DISHNAME(MENU_TYPE:DISHTYPE)
+	SIF RESULT == 0
+		RETURN
+ENDIF
+PRINTFORMW 製作了%DISHNAME%
+SELECTCASE DISHTYPE
+CASE 1
+	CALL COOKING_TAKARI([[幽幽子]], 5)
+	CALL COOKING_TAKARI([[紫苑]], 5)
+CASE 2
+	CALL COOKING_TAKARI([[幽幽子]], 10)
+	CALL COOKING_TAKARI([[紫苑]], 10)
+	EXP:MASTER:料理経験 ++
+	IF CHARA
+		EXP:CHARA:料理経験 ++
+		SIF EXP:MASTER:料理経験 > EXP:CHARA:料理経験
+			EXP:CHARA:料理経験 ++
+	ENDIF
+CASE 3
+CASE 4
+CASE 5
+	YOGORE:(CFLAG:MASTER:現在位置) += 500
+ENDSELECT
+YOGORE:(CFLAG:MASTER:現在位置) += 500
+	EXP:MASTER:料理経験 ++
+	IF CHARA
+		EXP:CHARA:料理経験 ++
+		SIF EXP:MASTER:料理経験 > EXP:CHARA:料理経験
+			EXP:CHARA:料理経験 ++
+	ENDIF
+SIF DISHASSI
+	DISHTASTE += GET_TASTE_ASSIBONUS(DISHASSI)
+DISHTASTE += GET_TASTE_ASSIBONUS(MASTER)
+IF STRCOUNT(DISHTASTE, ESCAPE("雜糧/"))
+	ITEM:雜糧 --
+ELSEIF STRCOUNT(DISHTASTE, ESCAPE("陳米/"))
+	ITEM:陳米 --
+ELSEIF STRCOUNT(DISHTASTE, ESCAPE("白米/"))
+	ITEM:白米 --
+ELSEIF STRCOUNT(DISHTASTE, ESCAPE("好吃的魚/"))
+	ITEM:好吃的魚 --
+ELSEIF STRCOUNT(DISHTASTE, ESCAPE("魚/"))
+	ITEM:魚 --
+ELSEIF STRCOUNT(DISHTASTE, ESCAPE("青蛙料理/"))
+	ITEM:青蛙 --
+ENDIF
+RETURN 1
+
+
+;料理名手動設定関数
+@SELECT_DISHNAME(MENU_TYPE)
+#DIMS         MENU_TYPE      ;作りたいメニューの種類
+#DIM          NUM_MENUS      ;
+#DIM          FOOD_ID        ;
+#DIMS DYNAMIC FOOD_NAME, 100 ;
+#DIMS DYNAMIC FES_NAME       ;
+#DIM  DYNAMIC CNT_SHOW       ;
+FES_NAME '= FESTIVAL_MENU()
+PRINTFORML 要做什么呢？
+SELECTCASE MENU_TYPE
+CASE "SNACK"
+	PRINTFORML ＜軽食菜单＞
+	ARRAYCOPY "FOOD_SNACK", "FOOD_NAME"
+	NUM_MENUS = MENUS_SNACK
+
+CASE "MAINDISH"
+	PRINTFORML ＜主食菜单＞
+	ARRAYCOPY "FOOD_MAINDISH", "FOOD_NAME"
+	NUM_MENUS = MENUS_MAINDISH
+
+CASE "DESSERT"
+	PRINTFORML ＜甜点菜单＞
+	ARRAYCOPY "FOOD_DESSERT", "FOOD_NAME"
+	NUM_MENUS = MENUS_DESSERT
+
+CASE "FISH"
+	PRINTFORML ＜魚料理菜单＞
+	ARRAYCOPY "FOOD_FISH", "FOOD_NAME"
+	NUM_MENUS = MENUS_FISH
+
+CASE "FROG"
+	PRINTFORML ＜青蛙料理菜单＞
+	ARRAYCOPY "FOOD_FROG", "FOOD_NAME"
+	NUM_MENUS = MENUS_FROG
+ENDSELECT
+FOR FOOD_ID, NUM_MENUS - 1, -1, -1
+	SIF !STRLENS(FOOD_NAME:FOOD_ID)
+		CONTINUE
+	LOCALS = [{FOOD_ID, 2}]%FOOD_NAME:FOOD_ID, 24%
+	PRINTFORM 　
+	PRINTBUTTON LOCALS, FOOD_ID
+	CNT_SHOW ++
+	SIF CNT_SHOW % 3 == 0
+		PRINTFORML 
+NEXT
+SIF CNT_SHOW % 3
+	PRINTFORML 
+SIF STRLENS(FES_NAME) && MENU_TYPE == "MAINDISH"
+	PRINTFORML 　[90]%FES_NAME, 24%
+PRINTFORML 　[99]やめる
+DO
+	INPUT
+	SELECTCASE RESULT
+	CASE 99
+		RETURN
+	CASE 90
+		SIF !(STRLENS(FES_NAME) && MENU_TYPE == "MAINDISH")
+			GOTO RETRY
+		DISHNAME  '= FES_NAME
+		MENU_TYPE '= "FESTIVAL"
+	CASE 0 TO NUM_MENUS - 1
+		FOOD_ID = RESULT
+		SIF !STRLENS(FOOD_NAME:FOOD_ID)
+			GOTO RETRY
+		DISHNAME  '= FOOD_NAME:FOOD_ID
+	CASEELSE
+		$RETRY
+		PRINTFORML 無效輸入
+		CONTINUE
+	ENDSELECT
+	BREAK
+LOOP 1
+SELECTCASE MENU_TYPE
+CASE "SNACK"
+	DISHTYPE = 1
+	FLAG:料理 = FOOD_ID
+CASE "MAINDISH"
+	DISHTYPE = 2
+	FLAG:料理 = FOOD_ID + 10
+CASE "DESSERT"
+	DISHTYPE = 3
+	FLAG:料理 = FOOD_ID + 50
+CASE "FISH"
+	DISHTYPE = 2
+CASE "FROG"
+	DISHTYPE = 2
+CASE "FESTIVAL"
+	DISHTYPE = 5
+	FLAG:料理 = 999
+ENDSELECT
+DISHTASTE += GET_TASTE_MENUTYPE(MENU_TYPE)
+DISHTASTE += DISHNAME + "/" + GET_TASTE_DISH(DISHNAME)
+RETURN 1
+
+
+;料理抽選関数
+;料理の決定とFLAGへの記録、DISHNAME決定まで
+;DISHQUALITYの設定は呼び出し元で行うこと
+@SET_DISHNAME(MENU_TYPE)
+#DIMS MENU_TYPE
+#DIM  FOOD_ID
+SELECTCASE MENU_TYPE
+CASE "SNACK"
+	DISHTYPE = 1
+	FLAG:料理 = RAND:MENUS_SNACK + 1
+	DISHNAME = %FOOD_SNACK:(FLAG:料理)%
+CASE "MAINDISH"
+	DISHTYPE = 2
+	FOOD_ID = RAND:MENUS_MAINDISH
+	FLAG:料理 = FOOD_ID + 10
+	DISHNAME = %FOOD_MAINDISH:(FOOD_ID)%
+	IF FESTIVAL_MENU() != ""
+		DISHNAME = %FESTIVAL_MENU()%
+		FLAG:料理 = 999
+		DISHTYPE = 5
+	ENDIF
+CASE "DESSERT"
+	DISHTYPE = 3
+	FOOD_ID = RAND:MENUS_DESSERT
+	DISHNAME = %FOOD_DESSERT:(FOOD_ID)%
+	FLAG:料理 = FOOD_ID + 50
+CASE "FORBIDDEN"
+	DISHTYPE = 4
+	DISHNAME = %FOOD_FORBIDDEN:(DAY:2)%
+	FLAG:料理 = 99 + DAY:2
+CASE "FISH"
+	DISHTYPE = 2
+	DISHNAME = %FOOD_FISH:(RAND:MENUS_FISH)%
+CASE "FROG"
+	DISHTYPE = 2
+	DISHNAME = %FOOD_FROG:(RAND:MENUS_FROG)%
+ENDSELECT
+
+IF DISHTYPE == 5
+	DISHTASTE += GET_TASTE_MENUTYPE("FESTIVAL")
+ELSE
+	DISHTASTE += GET_TASTE_MENUTYPE(MENU_TYPE)
+ENDIF
+DISHTASTE += DISHNAME + "/" + GET_TASTE_DISH(DISHNAME)
+
+
+
+
+@吃飯(ARG)
+#DIM 精力回復量
+#DIM 気力回復量
+#DIM 体力回復量
+#DIM 精力回復率
+#DIM 気力回復率
+#DIM 体力回復率
+#DIMS CONST DISH_TO_満腹度 = "", "軽食", "主食", "甜点", "主食", "主食"
+;回復率は0.1%単位
+
+精力回復量 = 0
+気力回復量 = 0
+体力回復量 = 0
+精力回復率 = 0
+気力回復率 = 0
+体力回復率 = 0
+
+SELECTCASE DISHTYPE
+	CASE 1
+	;軽食
+		体力回復率 = 65
+		気力回復率 = 200
+		精力回復率 = 50
+	CASE 2
+	;主食
+		体力回復率 = 200
+		気力回復率 = 300
+		精力回復率 = 200
+	CASE 3
+	;デザート
+		体力回復率 = 50
+		気力回復率 = 500
+		精力回復率 = 50
+	CASE 4
+	;禁断の料理
+		体力回復率 = 300
+		気力回復率 = 300
+		精力回復率 = 300
+		EXP:ARG:Ｃ経験 += 30
+	CASE 5
+	;祭日メニュー
+		体力回復率 = 100
+		気力回復率 = 150
+		精力回復率 = 100
+ENDSELECT
+
+IF !DISH_RADICAL()
+ELSEIF TASTE_GIVEUP(ARG, DISH_RADICAL())
+	TIMES 体力回復率, 0.1
+	TIMES 気力回復率, 0.1
+	TIMES 精力回復率, 0.1
+ELSE
+	TIMES 体力回復率, 1.2
+	TIMES 気力回復率, 1.2
+	TIMES 精力回復率, 1.2
+ENDIF
+CALL 満腹度上昇(ARG, DISH_TO_満腹度:DISHTYPE)
+
+体力回復量 = (MAXBASE:ARG:体力 * 体力回復率 / 1000) * (ABL:MASTER:料理技能 + 5 + DISHQUALITY) / 10
+気力回復量 = (MAXBASE:ARG:気力 * 気力回復率 / 1000) * (ABL:MASTER:料理技能 + 5 + DISHQUALITY) / 10
+精力回復量 = (MAXBASE:ARG:精力 * 精力回復率 / 1000) * (ABL:MASTER:料理技能 + 5 + DISHQUALITY) / 10
+;追加食材ボーナス
+IF DISHVEGE > 0
+	体力回復量 += 50
+	気力回復量 += 50
+	精力回復量 += 50
+ENDIF
+
+CALL RECOVER(ARG, 体力回復量, "体力", "吃飯による回復")
+CALL RECOVER(ARG, 気力回復量, "気力", "吃飯による回復")
+IF ARG == MASTER
+	CALL RECOVER(ARG, 精力回復量, "精力", "吃飯による回復")
+ELSEIF STRLENS(DISHTASTE) && GET_OPTION_COOKING("採点機能オン")
+	CALL FOOD_TASTING(ARG, DISHTASTE)
+	PRINTFORML %CALLNAME:ARG + "の評価…………", 40, LEFT%{TCVAR:ARG:料理総評価値, 3}点
+	SIF TCVAR:ARG:料理総評価値 >= 80
+		CALL KIGEN_CHANGE(ARG,100,1)
+	SIF TCVAR:ARG:料理総評価値 <= 35
+		CALL KIGEN_CHANGE(ARG,100, -1)
+ENDIF
+
+;イタズラを仕込まれている
+SELECTCASE DISH_MIXTURE()
+CASE DISH_DRAG_媚薬
+	TCVAR:TARGET:媚薬 = 210
+CASE DISH_DRAG_利尿剤
+	TCVAR:TARGET:利尿剤 = 210
+CASE DISH_DRAG_催情薬
+	TCVAR:TARGET:催情薬 = 210
+CASE DISH_DRAG_睡眠薬
+	IF TCVAR:TARGET:睡眠薬強度 < 2
+		TCVAR:TARGET:睡眠薬強度 = 2
+		TCVAR:TARGET:睡眠薬茶使用 = 1
+	ENDIF
+ENDSELECT
+
+@満腹度上昇(ARG,ARGS)
+SIF TASTE_GIVEUP(ARG, DISH_RADICAL())
+	RETURN
+SELECTCASE ARGS
+	CASE "軽食"
+		TCVAR:ARG:空腹時刻 = 1440 * DAY + TIME + 180
+		SIF TALENT:ARG:大胃王
+			TCVAR:ARG:空腹時刻 -= 30
+	CASE "主食"
+		TCVAR:ARG:空腹時刻 = 1440 * DAY + TIME + 360
+		SIF TALENT:ARG:大胃王
+			TCVAR:ARG:空腹時刻 -= 90
+	CASE "甜点"
+		TCVAR:ARG:甜点空腹時刻 = 1440 * DAY + TIME + 180
+		SIF TALENT:ARG:大胃王
+			TCVAR:ARG:甜点空腹時刻 -= 30
+ENDSELECT
+
+
+;-------------------------------------------------
+;実行判定
+;-------------------------------------------------
+@COM_ABLE413
+;停止中は不可
+SIF FLAG:70 == 1
+	RETURN 0
+;掃除実行判定
+SIF !TFLAG:100
+	RETURN 0
+;一括管理
+SIF GLOBAL_COMABLE(413)
+	RETURN RESULT
+
+;厨房なのか
+SIF !KITCHEN(CFLAG:MASTER:現在位置)
+	RETURN 0
+;気力0
+SIF BASE:MASTER:気力 <= 0
+	RETURN 0
+SIF CFLAG:诶嘿嘿
+	RETURN 0
+;添い寝中
+SIF CFLAG:陪睡中
+	RETURN 0
+;イタズラ中
+SIF CFLAG:MASTER:恶作剧
+	RETURN 0
+;既に料理を作っている
+SIF DISHNAME != ""
+	RETURN 0
+RETURN 1
+
+@HUNGER(ARG)
+#FUNCTIONS
+LOCAL = TCVAR:ARG:空腹時刻 - TIME:1
+SELECTCASE LOCAL
+	CASE IS > 270
+	SETCOLOR C_GREEN
+		RETURNF "満腹"
+	CASE IS > 180
+	SETCOLOR C_P_GREEN
+		RETURNF "腹八分"
+	CASE IS > 0
+	SETCOLOR C_P_YELLOW
+		RETURNF "普通"
+	CASEELSE
+		RETURNF "吃飯可"
+ENDSELECT
+
+
+@INGREDIENT_CHOICE
+PRINTFORML 請選擇食材
+CALL ASK_M(@"雜糧({ITEM:48})", ITEM:48, @"陳米({ITEM:50})", ITEM:50, @"白米({ITEM:47})", ITEM:47,"やめる",1)
+SELECTCASE RESULT
+	CASE 0
+		DISHTASTE += GET_TASTE_INGREDIENT("雜糧")
+	CASE 1
+		DISHTASTE += GET_TASTE_INGREDIENT("陳米")
+	CASE 2
+		DISHTASTE += GET_TASTE_INGREDIENT("白米")
+	CASE 3
+		DISHTYPE = 0
+		RETURN 0
+ENDSELECT
+DISHQUALITY = RESULT + 1
+RETURN DISHQUALITY
+
+
+;追加する野菜の選択
+@VEGE_CHOICE
+#DIMS CONST VEGE_NAME = "", "捲心菜", "草莓", "芜菁", "黄瓜", "番茄", "西瓜", "茄子", "紅薯", "葡萄", "百合", "胡蘿卜", "葱"
+#DIM  VEGE_ID
+#DIM  TEMP_INPUT
+;野菜がない
+{
+IF MAX(
+	ITEM:捲心菜, ITEM:草莓,     ITEM:芜菁,   
+	ITEM:黄瓜, ITEM:番茄,     ITEM:西瓜, 
+	ITEM:茄子,     ITEM:紅薯, ITEM:葡萄, 
+	ITEM:百合,   ITEM:胡蘿卜,   ITEM:葱    ) <= 0
+}
+	RETURN
+ENDIF
+DO
+	PRINTFORML 料理に追加する食材を選んで下さい
+	FOR VEGE_ID, VARSIZE("VEGE_NAME") - 1, 0, -1
+		IF ITEM:(GETNUM(ITEM, VEGE_NAME:VEGE_ID)) > 0
+			PRINTBUTTON @"{VEGE_ID, 2, RIGHT}[%VEGE_NAME:VEGE_ID, 10%]", VEGE_ID
+		ELSE
+			SETCOLOR 0x606060
+			PRINTPLAINFORM {VEGE_ID, 2, RIGHT}[%VEGE_NAME:VEGE_ID, 10%]
+			RESETCOLOR
+		ENDIF
+		IF VEGE_ID % 3 == 1
+			PRINTFORML 
+		ELSE
+			PRINTFORM 　
+		ENDIF
+	NEXT
+	PRINTBUTTON @" 0[%"やめる", 10%]", 0
+	PRINTFORML 
+	INPUT
+	TEMP_INPUT = RESULT
+	SELECTCASE TEMP_INPUT
+	CASE 0
+		RETURN
+	CASE 1 TO VARSIZE("VEGE_NAME") - 1
+		;行儀が悪いがループ用に使ったのを使いまわしてます
+		VEGE_ID = GETNUM(ITEM, VEGE_NAME:TEMP_INPUT)
+		SIF ITEM:VEGE_ID <= 0
+			GOTO RETRY
+		BREAK
+	CASEELSE
+		$RETRY
+		PRINTFORML 無效輸入
+		CONTINUE
+	ENDSELECT
+LOOP 1
+ITEM:VEGE_ID --
+DISHVEGE  = VEGE_ID
+DISHTASTE += ITEMNAME:VEGE_ID + "/" + GET_TASTE_VEGE(ITEMNAME:VEGE_ID)
+
+
+@RESET_DISH
+DISHTIME = 0
+DISHSPOIL = 0
+FLAG:料理 = 0
+DISHQUALITY = 0
+DISHTYPE = 0
+DISHNAME =
+
+DISHTASTE =
+DISHVEGE = 0
+DISHASSI = 0
+
+
+
+;野菜除去処理実行判定関数
+;サニークラピのコンビで料理すると7割野菜抜き
+@CAN_REMOVE_VEGE
+#FUNCTION
+#DIM DYNAMIC VEGE_HATE_MAS
+#DIM DYNAMIC VEGE_HATE_ASI
+SIF !STRCOUNT(DISHTASTE, ESCAPE("野菜/"))
+	RETURNF 0
+SIF FLAG:扮演
+	VEGE_HATE_MAS = STRCOUNT(GET_STR(, "キャラデータ", FLAG:扮演, "料理：讨厌的味道"), ESCAPE("野菜/"))
+SIF RAND(1, 11) <= VEGE_HATE_MAS
+	RETURNF 1
+SIF !DISHASSI
+	RETURNF 0
+VEGE_HATE_ASI = STRCOUNT(GET_STR(, "キャラデータ", DISHASSI, "料理：讨厌的味道"), ESCAPE("野菜/"))
+SIF RAND(1, 11) <= VEGE_HATE_ASI
+	RETURNF 2
+
+
+
+;野菜除去処理実行関数
+;元々の料理の味覚にも影響が出てしまうが
+;なにかこう、料理のバランス的なサムシングが崩れてしまうと脳内補完してください
+;
+;クラピがベースであるため
+;キュウリ/サツマイモ/ネギ、は処理から抜けてるがめんどくさいしこのまま
+;
+;従来はトマト/ニンジンが相当強力だった感があるのである種バランスはとれるかも
+;野菜抜き処理で高評価を受けやすい「紅い/鮮やか」が抜けてしまうよ
+;そして影響を受けないイチゴは相変わらず強力
+@REMOVE_VEGE
+SELECTCASE CAN_REMOVE_VEGE()
+CASE 0
+	RETURN
+CASE 1
+	PRINTFORML %CALLNAME:MASTER%从料理里悄悄地把不爱吃的蔬菜挑了出去……
+CASE 2
+	PRINTFORML %CALLNAME:DISHASSI%从料理里悄悄地把不爱吃的蔬菜挑了出去……
+ENDSELECT
+
+SIF STRCOUNT(DISHTASTE, ESCAPE("捲心菜/"))
+	DISHTASTE '= REPLACE(DISHTASTE, "捲心菜\/|清爽\/", "")
+
+SIF STRCOUNT(DISHTASTE, ESCAPE("芜菁/"))
+	DISHTASTE '= REPLACE(DISHTASTE, "芜菁\/|光滑\/", "")
+
+SIF STRCOUNT(DISHTASTE, ESCAPE("番茄/"))
+	DISHTASTE '= REPLACE(DISHTASTE, "番茄\/|红的\/|新鲜的\/", "")
+
+SIF STRCOUNT(DISHTASTE, ESCAPE("茄子/"))
+	DISHTASTE '= REPLACE(DISHTASTE, "茄子\/|清爽\/", "")
+
+SIF STRCOUNT(DISHTASTE, ESCAPE("百合/"))
+	DISHTASTE '= REPLACE(DISHTASTE, "百合\/|上品\/", "")
+
+SIF STRCOUNT(DISHTASTE, ESCAPE("胡蘿卜/"))
+	DISHTASTE '= REPLACE(DISHTASTE, "胡蘿卜\/|新鲜的\/", "")
+
+DISHTASTE '= REPLACE(DISHTASTE, "野菜\/", "去掉蔬菜\/")
+
+IF DISHNAME == "炒蔬菜"
+	DISHNAME = 炒豆芽
+	DISHTASTE += "質素/貧相/"
+	DISHTASTE '= REPLACE(DISHTASTE, "炒蔬菜\/", "炒豆芽\/")
+ELSEIF DISHNAME == "涼拌菜"
+	DISHNAME = おひたさない
+	DISHTASTE += "貧相/" * 3
+	DISHTASTE '= REPLACE(DISHTASTE, "涼拌菜\/", "おひたさない\/")
+ELSEIF DISHNAME == "泡菜飯"
+	DISHNAME = 大盛り飯
+	DISHTASTE '= REPLACE(DISHTASTE, "泡菜飯\/", "大盛り飯\/")
+ELSEIF DISHNAME == "奶酪番茄沙拉"
+	DISHNAME = 牡蛎沙拉
+	DISHTASTE += "乳酪/" * 2
+	DISHTASTE '= REPLACE(DISHTASTE, "奶酪番茄沙拉\/", "牡蛎沙拉\/")
+ENDIF
+DISHVEGE = 0
+
+
+;特定のメニューの実行条件を満たしているかを判定
+;一応、MASTER以外も渡せるようにした
+@CAN_COOK(MENU_TYPE, C_ID)
+#FUNCTION
+#DIM  DYNAMIC C_ID      ;調理実行者のC_ID
+#DIMS DYNAMIC MENU_TYPE ;判定対象となる調理メニュー
+;祝日系(FESTIVAL)は判定なしなのでそこだけ注意（MAINDISHからの派生になる）
+SELECTCASE MENU_TYPE
+CASE "SNACK", "軽食"
+	SIF MAX(ITEM:白米, ITEM:雜糧, ITEM:陳米) > 0
+		RETURNF 1
+CASE "MAINDISH", "主食"
+	SIF ABL:C_ID:料理技能 > 1 && MAX(ITEM:白米, ITEM:雜糧, ITEM:陳米) > 0
+		RETURNF 1
+CASE "DESSERT", "甜点"
+	SIF ABL:C_ID:料理技能 > 2 && MAX(ITEM:白米, ITEM:雜糧, ITEM:陳米) > 0
+		RETURNF 1
+CASE "FORBIDDEN", "禁断の料理"
+	SIF ABL:C_ID:料理技能 > 2 && ITEM:跳蛋 > 0
+		RETURNF 1
+CASE "FISH", "魚料理"
+	SIF ABL:C_ID:料理技能 > 1 && MAX(ITEM:魚, ITEM:好吃的魚) > 0
+		RETURNF 1
+CASE "FROG", "青蛙料理"
+	SIF ABL:C_ID:料理技能 > 1 && ITEM:青蛙 > 0
+		RETURNF 1
+CASE "ALL", "全て", ""
+;DYNAMICを利用した再帰呼び出し
+	SIF CAN_COOK("SNACK", C_ID)
+		RETURNF 1
+	SIF CAN_COOK("MAINDISH", C_ID)
+		RETURNF 1
+	SIF CAN_COOK("DESSERT", C_ID)
+		RETURNF 1
+	SIF CAN_COOK("FORBIDDEN", C_ID)
+		RETURNF 1
+	SIF CAN_COOK("FISH", C_ID)
+		RETURNF 1
+	SIF CAN_COOK("FROG", C_ID)
+		RETURNF 1
+ENDSELECT
+RETURNF 0
+
+
+
+;料理名表示用F関数
+@EX_DISHNAME
+#FUNCTIONS
+#DIMS DYNAMIC EX_DISHNAME
+SIF DISHASSI
+	EX_DISHNAME += CALLNAME:DISHASSI + "と作った"
+SIF DISHVEGE
+	EX_DISHNAME += ITEMNAME:DISHVEGE + "風味の"
+SIF STRCOUNT(DISHTASTE, ESCAPE("赏月/"))
+	EX_DISHNAME += "赏月"
+EX_DISHNAME += DISHNAME
+IF !STRCOUNT(DISHTASTE, ESCAPE("去掉蔬菜/"))
+ELSEIF !GROUPMATCH(DISHNAME, "炒豆芽", "おひたさない", "大盛り飯", "牡蛎沙拉")
+	EX_DISHNAME += "（去掉蔬菜）"
+ENDIF
+RETURNF EX_DISHNAME
+
+
+;こんな料理ができたよ！を表示する関数
+@SHOW_DISHDATA
+PRINTFORML ＜%EX_DISHNAME()%＞
+CALL SHOW_TASTE(DISHTASTE)
+
+
+;味の表示用関数
+;味にかぎらず使いまわせそう？
+;横幅の限界に注意
+@SHOW_TASTE(TASTE_STR)
+#DIMS TASTE_STR               ;表示対象の味データ
+#DIMS DYNAMIC TASTE_LIST, 100 ;味リスト
+#DIM  DYNAMIC TASTE_CNT,  100 ;味リスト各要素の重複個数
+#DIM  DYNAMIC TASTE_NUM       ;味の種類の総数
+#DIM  DYNAMIC SHOW_NUM        ;表示した味の数
+#DIM  TASTE_ID                ;ループ用
+;味リストの取得
+CALLF CNT_SPLIT(TASTE_STR, TASTE_LIST, TASTE_CNT, TASTE_NUM)
+;味リストの表示
+FOR TASTE_ID, 0, TASTE_NUM
+	SIF !STRLENS(TASTE_LIST:TASTE_ID)
+		CONTINUE
+	LOCALS = [%TASTE_LIST:TASTE_ID%]Lv{TASTE_CNT:TASTE_ID, 2}
+	;システム側で6文字、味名称に14文字分をわりあて
+	PRINTFORM 　%LOCALS, 20%
+	SHOW_NUM ++
+	SIF SHOW_NUM % 5
+		CONTINUE
+	PRINTFORML 
+NEXT
+SIF SHOW_NUM % 5
+	PRINTFORML 
+
+
+
+;-------------------------------------------------
+;味覚評価処理関数
+;一応は文字列だけで評価できるようにはしたがTCVARも参照する
+;-------------------------------------------------
+@FOOD_TASTING(C_ID, TASTE_FOOD)
+#DIM          C_ID              ;対象キャラ
+#DIMS         TASTE_FOOD        ;出来た料理の味
+TCVAR:C_ID:料理好評価値 = TASTE_GOOD(C_ID, TASTE_FOOD)
+TCVAR:C_ID:料理悪評価値 = TASTE_BAD(C_ID, TASTE_FOOD)
+TCVAR:C_ID:料理総評価値 = TCVAR:C_ID:料理好評価値 * 100 / (TCVAR:C_ID:料理好評価値 + TCVAR:C_ID:料理悪評価値)
+
+
+;味覚評価関数GOOD
+@TASTE_GOOD(C_ID, TASTE_FOOD)
+#FUNCTION
+#DIM          C_ID              ;対象キャラ
+#DIMS         TASTE_FOOD        ;出来た料理の味
+#DIMS DYNAMIC TASTE_CHARA       ;キャラの好み
+#DIM  DYNAMIC TASTE_GOOD        ;いいね！と思った度合い
+#DIM  DYNAMIC COOK_POWER        ;キャラの調理力
+
+TASTE_CHARA '= GET_STR(, "キャラデータ", C_ID, "料理：喜欢的味道")
+TASTE_GOOD = 30 + 10 * STR_MULTI_COUNT(TASTE_CHARA, TASTE_FOOD)
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("佳肴/"))
+	TASTE_GOOD += 20
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("女仆流/"))
+	TASTE_GOOD += 5
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("家庭的/"))
+	TASTE_GOOD += 5
+;野菜嫌いは野菜抜くと喜ぶ（個々の野菜は判定しない）
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("去掉蔬菜/"))
+	TASTE_GOOD += STRCOUNT(GET_STR(, "キャラデータ", C_ID, "料理：讨厌的味道"), ESCAPE("野菜/"))
+
+;満月ボーナス
+SIF GROUPMATCH(NAME_MOON(DAY:3), "望月", "十五夜 -中秋的名月- ") && STRCOUNT(TASTE_FOOD, ESCAPE("赏月/"))
+	TASTE_GOOD += 3
+
+SIF !STRLENS(DISHNAME)
+	RETURNF MAX(TASTE_GOOD, 1)
+
+;ここより↓は通常の料理処理専用の評価処理です
+IF !DISH_RADICAL()
+ELSEIF TASTE_GIVEUP(C_ID, DISH_RADICAL())
+	TIMES TASTE_GOOD, 0.1
+ELSE
+	TIMES TASTE_GOOD, 1.5
+ENDIF
+
+;料理の腕による上方補正
+COOK_POWER = ABL:MASTER:料理技能 * 2
+SIF DISHASSI
+	COOK_POWER += ABL:DISHASSI:料理技能
+;小数点以下の係数が多いので÷10を最後にしてみる
+;TASTE_GOOD = TASTE_GOOD * (10 + COOK_POWER) / 10
+TASTE_GOOD = TASTE_GOOD * (10 + COOK_POWER)
+
+;食事結果大成功の時
+SIF TFLAG:193 == 1
+	TIMES TASTE_GOOD, 1.5
+;つくりたて
+SIF DISHSPOIL < 1
+	TIMES TASTE_GOOD, 1.2
+
+;自分が作った料理は贔屓する
+SIF DISHASSI == C_ID
+	TIMES TASTE_GOOD, 1.1
+
+;恋慕系ぼーなす
+IF TALENT:C_ID:恋慕
+	IF TALENT:C_ID:恋人
+		TIMES TASTE_GOOD, 2.0
+	ELSE
+		TIMES TASTE_GOOD, 1.5
+	ENDIF
+ELSEIF TALENT:C_ID:思慕
+	IF TALENT:C_ID:恋人
+		TIMES TASTE_GOOD, 1.5
+	ELSE
+		TIMES TASTE_GOOD, 1.2
+	ENDIF
+ENDIF
+
+;助手効果による追加処理
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("貧相/"))
+		TIMES TASTE_GOOD, 0.8
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("瀟洒/"))
+		TIMES TASTE_GOOD, 1.2
+SELECTCASE GET_TALENTNAME(GETNUM(TALENT, "神霊"), TALENT:C_ID:神霊)
+CASE "死神", "閻魔"
+CASEELSE
+	SIF TALENT:C_ID:神霊 && STRCOUNT(TASTE_FOOD, ESCAPE("霊験/"))
+		TIMES TASTE_GOOD, 1.1
+ENDSELECT
+
+SELECTCASE GET_TALENTNAME(GETNUM(TALENT, "人类"), TALENT:C_ID:人类)
+CASE "人类"
+	SIF STR_MULTI_COUNT(TASTE_FOOD, ESCAPE("可疑/不穏/"))
+		TIMES TASTE_GOOD, 0.8
+CASE "月人"
+	SIF STRCOUNT(TASTE_FOOD, ESCAPE("赏月/"))
+		TIMES TASTE_GOOD, 1.1
+ENDSELECT
+
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("弹力/")) && GET_TALENTNAME(GETNUM(TALENT, "回復速度"), TALENT:C_ID:回復速度) == "回復慢"
+		TIMES TASTE_GOOD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("繊細/")) && STR_MULTI_COUNT(TASTE_FOOD, ESCAPE("甜点/軽食/"))
+		TIMES TASTE_GOOD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("大火力/")) && STR_MULTI_COUNT(TASTE_FOOD, ESCAPE("濃厚/油/"))
+		TIMES TASTE_GOOD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("絢爛/")) && STRCOUNT(TASTE_FOOD, ESCAPE("上品/"))
+		TIMES TASTE_GOOD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("風流/")) && STRCOUNT(TASTE_FOOD, ESCAPE("和食/"))
+		TIMES TASTE_GOOD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("実験的/")) && GET_TALENTNAME(GETNUM(TALENT, "性的兴趣"), TALENT:C_ID:性的兴趣) == "好奇心"
+		TIMES TASTE_GOOD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("妖精風/")) && TALENT:C_ID:妖精
+		TIMES TASTE_GOOD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("官能的/")) && (TALENT:C_ID:炮友 || TALENT:C_ID:愛欲)
+		TIMES TASTE_GOOD, 1.1
+
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("豊穣/")) && STR_MULTI_COUNT(TASTE_FOOD, ESCAPE("野菜/米/"))
+		TIMES TASTE_GOOD, 1.2
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("琉球風/")) && STR_MULTI_COUNT(TASTE_FOOD, ESCAPE("濃厚/油/油炸食品/"))
+		TIMES TASTE_GOOD, 1.2
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("华丽/")) && STRCOUNT(TASTE_FOOD, ESCAPE("新鲜的/"))
+		TIMES TASTE_GOOD, 1.5
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("筹码/")) && STRCOUNT(TASTE_FOOD, ESCAPE("红的/"))
+		TIMES TASTE_GOOD, 1.5
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("水兵風/")) && STRCOUNT(TASTE_FOOD, ESCAPE("魚/咖喱飯/"))
+		TIMES TASTE_GOOD, 1.5
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("華人小娘/")) && STRCOUNT(TASTE_FOOD, ESCAPE("中華/"))
+		TIMES TASTE_GOOD, 2.0
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("名刀/")) && STR_MULTI_COUNT(TASTE_FOOD, ESCAPE("刺身/生制/寿司/"))
+		TIMES TASTE_GOOD, 2.0
+
+IF STRCOUNT(TASTE_FOOD, ESCAPE("天狗流/"))
+	SIF ALCOHOL_FACE(C_ID) != "　清醒　"
+		TIMES TASTE_GOOD, 1.1
+ENDIF
+IF STRCOUNT(TASTE_FOOD, ESCAPE("鬼隐藏的味道/"))
+	SELECTCASE ALCOHOL_FACE(C_ID)
+	CASE "微醺"
+		TIMES TASTE_GOOD, 1.1
+	CASE "酔酒"
+		TIMES TASTE_GOOD, 1.3
+	CASE "不省人事"
+		TIMES TASTE_GOOD, 1.5
+	ENDSELECT
+ENDIF
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("反逆/"))
+	TASTE_GOOD = TASTE_GOOD * (MARK:C_ID:反発刻印 + 1)
+
+IF STRCOUNT(TASTE_FOOD, ESCAPE("氷結/"))
+	SIF GET_MONTH() == "夏之月"
+		TIMES TASTE_GOOD, 2.0
+ELSEIF STRCOUNT(TASTE_FOOD, ESCAPE("春風/"))
+	SIF GROUPMATCH(GET_MONTH(), "冬之月", "春之月")
+		TIMES TASTE_GOOD, 1.5
+ELSEIF STRCOUNT(TASTE_FOOD, ESCAPE("秋風/"))
+	SIF GROUPMATCH(GET_MONTH(), "夏之月", "秋之月")
+		TIMES TASTE_GOOD, 1.5
+ENDIF
+
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("嫉妬/")) && (TALENT:C_ID:思慕 || TALENT:C_ID:恋慕 || TALENT:C_ID:恋人)
+		TIMES TASTE_GOOD, 0.5
+
+SIF DISHASSI > 0 && CSVRELATION(C_ID, DISHASSI)
+	TASTE_GOOD = TASTE_GOOD * CSVRELATION(C_ID, DISHASSI) / 100
+
+TASTE_GOOD = TASTE_GOOD / 10
+RETURNF MAX(TASTE_GOOD, 1)
+
+;味覚評価関数BAD
+@TASTE_BAD(C_ID, TASTE_FOOD)
+#FUNCTION
+#DIM          C_ID              ;対象キャラ
+#DIMS         TASTE_FOOD        ;出来た料理の味
+#DIMS DYNAMIC TASTE_CHARA       ;キャラの好み
+#DIM  DYNAMIC TASTE_BAD         ;ヤダね！と思った度合い
+TASTE_CHARA '= GET_STR(, "キャラデータ", C_ID, "料理：讨厌的味道")
+TASTE_BAD = 30 + 10 * STR_MULTI_COUNT(TASTE_CHARA, TASTE_FOOD)
+
+SIF !STRLENS(DISHNAME)
+	RETURNF MAX(TASTE_BAD, 1)
+
+;精度確保用
+TASTE_BAD = TASTE_BAD * 10
+
+IF !DISH_RADICAL()
+ELSEIF TASTE_GIVEUP(C_ID, DISH_RADICAL())
+	TIMES TASTE_BAD, 3.0
+ELSE
+	TIMES TASTE_BAD, 0.8
+ENDIF
+
+;食事結果大失敗の時
+SIF TFLAG:193 == -1
+	TIMES TASTE_BAD, 1.5
+;調理経過時間
+SELECTCASE DISHSPOIL
+CASE 1
+	TIMES TASTE_BAD, 1.2
+CASE 2
+	TIMES TASTE_BAD, 1.8
+ENDSELECT
+
+SIF DISHASSI == C_ID
+	TIMES TASTE_BAD, 0.9
+
+;助手効果による追加処理
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("貧相/"))
+		TIMES TASTE_BAD, 1.2
+SIF GET_TALENTNAME(GETNUM(TALENT, "人类"), TALENT:C_ID:人类) == "人类" && STR_MULTI_COUNT(TASTE_FOOD, ESCAPE("可疑/不穏/"))
+		TIMES TASTE_BAD, 1.1
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("细心/"))
+		TIMES TASTE_BAD, 0.9
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("女仆流/"))
+		TIMES TASTE_BAD, 0.9
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("家庭的/"))
+		TIMES TASTE_BAD, 0.9
+SIF STRCOUNT(TASTE_FOOD, ESCAPE("幸運/"))
+		TIMES TASTE_BAD, 0.8
+
+SIF DISHASSI > 0 && CSVRELATION(C_ID, DISHASSI)
+	TASTE_BAD = TASTE_BAD * 100 / CSVRELATION(C_ID, DISHASSI)
+
+TASTE_BAD = TASTE_BAD / 10
+
+RETURNF MAX(TASTE_BAD, 1)
+
+
+;-------------------------------------------------
+;イタズラ関連判定
+;-------------------------------------------------
+;イタズラによる食事の中断処理
+;一応判定BIT返してるがあんま意味はなかろう
+@TASTE_GIVEUP(C_ID, TASTE_TYPE)
+#FUNCTION
+#DIM          C_ID       ;判定対象キャラ
+#DIM         TASTE_TYPE  ;イタズラのタイプ
+SELECTCASE TASTE_TYPE
+CASE DISH_RADICAL_超辣
+	SIF GETBIT(CFLAG:C_ID:味覚嗜好, DISH_RADICAL_超辣)
+		RETURNF 0
+	SIF STRCOUNT(GET_STR(, "キャラデータ", C_ID, "料理：喜欢的味道"), ESCAPE("香料/"))
+		RETURNF 0
+	RETURNF DISH_RADICAL_超辣
+CASE DISH_RADICAL_超甜
+	SIF GETBIT(CFLAG:C_ID:味覚嗜好, DISH_RADICAL_超甜)
+		RETURNF 0
+	SIF STRCOUNT(GET_STR(, "キャラデータ", C_ID, "料理：喜欢的味道"), ESCAPE("甜/"))
+		RETURNF 0
+	RETURNF DISH_RADICAL_超甜
+CASE DISH_RADICAL_芥末
+	SIF GETBIT(CFLAG:C_ID:味覚嗜好, DISH_RADICAL_芥末)
+		RETURNF 0
+	SIF STRCOUNT(GET_STR(, "キャラデータ", C_ID, "料理：喜欢的味道"), ESCAPE("香料/"))
+		RETURNF 0
+	RETURNF DISH_RADICAL_芥末
+CASE DISH_RADICAL_柠檬
+	SIF GETBIT(CFLAG:C_ID:味覚嗜好, DISH_RADICAL_柠檬)
+		RETURNF 0
+	RETURNF DISH_RADICAL_柠檬
+ENDSELECT
+
+;料理にイタズラが施されているか否か
+;濃い/薄いの味付けは除外
+@DISH_MIXTURE()
+#FUNCTION
+LOCAL = DISH_RADICAL()
+SIF LOCAL
+	RETURNF LOCAL
+LOCAL = DISH_DRAG()
+	RETURNF LOCAL
+RETURNF
+
+;イタズラにより過激な味のする料理である
+@DISH_RADICAL()
+#FUNCTION
+SIF GETBIT(TCVAR:MASTER:308, DISH_RADICAL_超辣)
+	RETURNF DISH_RADICAL_超辣
+SIF GETBIT(TCVAR:MASTER:308, DISH_RADICAL_超甜)
+	RETURNF DISH_RADICAL_超甜
+SIF GETBIT(TCVAR:MASTER:308, DISH_RADICAL_芥末)
+	RETURNF DISH_RADICAL_芥末
+SIF GETBIT(TCVAR:MASTER:308, DISH_RADICAL_柠檬)
+	RETURNF DISH_RADICAL_柠檬
+RETURNF
+
+;薬物の仕込まれた料理である
+@DISH_DRAG()
+#FUNCTION
+SIF GETBIT(TCVAR:MASTER:308, DISH_DRAG_媚薬)
+	RETURNF DISH_DRAG_媚薬
+SIF GETBIT(TCVAR:MASTER:308, DISH_DRAG_利尿剤)
+	RETURNF DISH_DRAG_利尿剤
+SIF GETBIT(TCVAR:MASTER:308, DISH_DRAG_催情薬)
+	RETURNF DISH_DRAG_催情薬
+SIF GETBIT(TCVAR:MASTER:308, DISH_DRAG_睡眠薬)
+	RETURNF DISH_DRAG_睡眠薬
+RETURNF
+
+
+
+;-------------------------------------------------
+;ここから料理の味情報の記述
+;-------------------------------------------------
+;GET_TASTE系は文字列を渡して文字列が返ってくる形式
+;理由としては実際に料理を作る場面以外でも使えるようにするため
+;戻り値は"HOGE/"で必ず末尾に"/"を入れること（後からの追加に対応できるようにする）
+;-------------------------------------------------
+;料理の種類
+@GET_TASTE_MENUTYPE(ARGS)
+#FUNCTIONS
+SELECTCASE ARGS
+CASE "SNACK"
+	RETURNF "軽食/"
+CASE "MAINDISH"
+	RETURNF "主食/"
+CASE "DESSERT"
+	RETURNF "甜点/"
+CASE "FORBIDDEN"
+	RETURNF "謎料理/"
+	;"禁断"は食材側で付与してます
+CASE "FISH"
+	RETURNF "魚料理/"
+CASE "FROG"
+	RETURNF "青蛙料理/"
+CASE "FESTIVAL"
+	RETURNF "佳肴/"
+ENDSELECT
+
+
+;メイン食材
+@GET_TASTE_INGREDIENT(ARGS)
+#FUNCTIONS
+SELECTCASE ARGS
+CASE "雜糧"
+	RETURNF "雜糧/野趣/"
+CASE "陳米"
+	RETURNF "陳米/質素/"
+CASE "白米"
+	RETURNF "白米/上品/"
+CASE "青蛙"
+	RETURNF "野趣/"
+CASE "魚"
+	RETURNF "魚/質素/"
+CASE "好吃的魚"
+	RETURNF "好吃的魚/上品/"
+CASE "跳蛋"
+	RETURNF "禁断/"
+ENDSELECT
+
+
+;追加食材＝野菜
+;追加食材は呼び出し元で食材名自体を付与
+@GET_TASTE_VEGE(ARGS)
+#FUNCTIONS
+SELECTCASE ARGS
+CASE "捲心菜"
+	RETURNF "野菜/清爽/"
+CASE "草莓"
+	RETURNF "果物/可爱/红的/新鲜的/"
+CASE "芜菁"
+	RETURNF "野菜/光滑/"
+
+CASE "黄瓜"
+	RETURNF "野菜/水気/"
+CASE "番茄"
+	RETURNF "野菜/红的/新鲜的/"
+CASE "西瓜"
+	RETURNF "果物/水気/甜/红的/"
+
+CASE "茄子"
+	RETURNF "野菜/清爽/"
+CASE "紅薯"
+	RETURNF "野菜/音量感/"
+CASE "葡萄"
+	RETURNF "果物/可爱/甜/"
+
+CASE "百合"
+	RETURNF "野菜/上品/"
+CASE "胡蘿卜"
+	RETURNF "野菜/新鲜的/"
+CASE "葱"
+	RETURNF "野菜/香料/"
+ENDSELECT
+
+
+;各料理の味
+;各料理は呼び出し元で料理名自体を付与
+@GET_TASTE_DISH(ARGS)
+#FUNCTIONS
+SELECTCASE ARGS
+;主食
+CASE "雑燴粥"
+	RETURNF "和食/米/清爽/"
+CASE "蛋澆飯"
+	RETURNF "和食/米/鶏卵/清爽/光滑/简约/"
+CASE "炒蔬菜"
+	RETURNF "野菜/简约/"
+CASE "味噌汤"
+	RETURNF "和食/汁物/"
+CASE "涼拌菜"
+	RETURNF "和食/野菜/清爽/"
+CASE "烏冬面"
+	RETURNF "和食/麺類/光滑/"
+CASE "素麺"
+	RETURNF "和食/麺類/清爽/光滑/"
+CASE "荞麦面"
+	RETURNF "和食/麺類/野趣/清爽/光滑/"
+CASE "煎蛋巻"
+	RETURNF "洋食/鶏卵/音量感/"
+CASE "燉菜"
+	RETURNF "洋食/汁物/音量感/濃厚/"
+CASE "漢堡肉"
+	RETURNF "洋食/肉料理/音量感/濃厚/"
+CASE "奶汁燴菜"
+	RETURNF "洋食/乳酪/音量感/濃厚/"
+CASE "咖喱飯"
+	RETURNF "洋食/米/音量感/香料/濃厚/"
+CASE "涮涮鍋"
+	RETURNF "和食/肉料理/清爽/"
+CASE "拉麵"
+	RETURNF "中華/麺類/光滑/"
+CASE "姜汁焼肉"
+	RETURNF "和食/肉料理/音量感/油/"
+CASE "牛排"
+	RETURNF "洋食/肉料理/野趣/音量感/油/"
+CASE "油淋鶏"
+	RETURNF "中華/肉料理/鶏肉/音量感/油炸食品/油/松脆/"
+CASE "奶酪番茄沙拉"
+	RETURNF "洋食/野菜/乳酪/番茄/清爽/新鲜的/红的/"
+CASE "興奮劑高湯"
+	RETURNF "洋食/謎料理/汁物/禁断/香料/"
+CASE "澳洲鴕鳥肉"
+	RETURNF "中華/肉料理/鶏肉/虫肉/音量感/油炸食品/油/松脆/新鲜的/"
+CASE "金吉獣料理"
+	RETURNF "謎料理/音量感/简约/"
+CASE "天婦羅"
+	RETURNF "和食/油炸食品/油/松脆/"
+CASE "盛的滿滿的飯"
+	RETURNF "和食/米/音量感/简约/"
+CASE "泡菜飯"
+	RETURNF "和食/米/野菜/質素/清爽/音量感/简约/"
+
+
+;甘味
+CASE "布丁"
+	RETURNF "洋食/上品/鶏卵/扑鼻/光滑/"
+CASE "蛋糕"
+	RETURNF "洋食/上品/生地/鶏卵/音量感/新鲜的/"
+CASE "果凍"
+	RETURNF "洋食/扑鼻/清爽/新鲜的/水気/"
+CASE "蛋撻"
+	RETURNF "洋食/生地/鶏卵/可爱/"
+CASE "曲奇","マカロン"
+	RETURNF "洋食/生地/鶏卵/松脆/可爱/"
+CASE "餡餅"
+	RETURNF "洋食/生地/松脆/"
+CASE "羊羹"
+	RETURNF "和食/豆沙/音量感/光滑/"
+CASE "大福"
+	RETURNF "和食/豆沙/音量感/年糕/"
+CASE "蜂蜜蛋糕"
+	RETURNF "洋食/上品/生地/鶏卵/"
+CASE "団子"
+	SIF GROUPMATCH(NAME_MOON(DAY:3), "望月", "十五夜 -中秋的名月- ")
+		RETURNF "和食/年糕/赏月/"
+	RETURNF "和食/年糕/"
+CASE "水果拼盘"
+	RETURNF "果物/清爽/新鲜的/简约/"
+CASE "奶油蛋糕"
+	RETURNF "洋食/生地/鶏卵/"
+CASE "あんみつ"
+	RETURNF "和食/豆沙/水気/光滑/"
+CASE "やしょうま"
+	RETURNF "和食/年糕/简约/"
+CASE "タピオカミルクティー"
+	RETURNF "光滑/年糕/可爱/水気/"
+
+
+;軽食
+CASE "三明治"
+	RETURNF "洋食/生地/"
+CASE "飯団"
+	RETURNF "和食/简约/"
+CASE "漢堡"
+	RETURNF "洋食/野趣/生地/音量感/"
+CASE "司康餅"
+	RETURNF "洋食/上品/生地/"
+CASE "焼麥"
+	RETURNF "中華/肉料理/"
+CASE "肉包"
+	RETURNF "中華/生地/肉料理/濃厚/年糕/"
+CASE "炸魚＆薯條"
+	RETURNF "魚料理/油炸食品/油/"
+CASE "墨西哥巻餅"
+	RETURNF "洋食/野趣/生地/濃厚/"
+CASE "章魚焼"
+	RETURNF "和食/生地/"
+
+;禁断
+CASE "油炸跳蛋"
+	RETURNF "油炸食品/油/"
+CASE "电动按摩棒風跳蛋水煮"
+	RETURNF "清爽/"
+CASE "陰蒂夾用跳蛋握饭团"
+	RETURNF "和食/清爽/"
+CASE "飛機杯手制跳蛋炖"
+	RETURNF "和食/汁物/音量感/濃厚/"
+
+;カエル料理
+CASE "青蛙の炸串"
+	RETURNF "肉料理/油炸食品/油/松脆/"
+CASE "青蛙咖喱"
+	RETURNF "洋食/米/肉料理/音量感/香料/濃厚/"
+CASE "青蛙の嫩煎"
+	RETURNF "洋食/肉料理/油/"
+CASE "青蛙の盐烤"
+	RETURNF "肉料理/简约/"
+
+;魚料理
+CASE "寿司"
+	RETURNF "和食/上品/清爽/新鲜的/"
+CASE "焼鱼"
+	RETURNF "和食/简约/"
+CASE "煮魚"
+	RETURNF "和食/水気/"
+CASE "烤鳗"
+	RETURNF "和食/濃厚/"
+CASE "生制"
+	RETURNF "和食/上品/清爽/简约/新鲜的/"
+CASE "醋浸"
+	RETURNF "洋食/清爽/新鲜的/"
+CASE "ムニエル"
+	RETURNF "洋食/松脆/"
+CASE "刺身"
+	RETURNF "和食/上品/清爽/简约/"
+CASE "照烧"
+	RETURNF "和食/濃厚/"
+CASE "竜田油炸"
+	RETURNF "和食/油炸食品/油/松脆/"
+CASE "フィッシュ咖喱"
+	RETURNF "洋食/米/音量感/香料/濃厚/"
+CASE "斯塔ゲイジー餡餅"
+	RETURNF "謎料理/洋食/生地/松脆/"
+
+;ごちそう
+CASE "年节菜"
+	RETURNF "和食/上品/音量感/新鲜的/"
+CASE "恵方巻"
+	RETURNF "和食/米/音量感/"
+CASE "跨年荞麦面"
+	RETURNF "和食/麺類/光滑/"
+ENDSELECT
+
+
+
+;助手で付与される味覚
+@GET_TASTE_ASSIBONUS(C_ID)
+#FUNCTIONS
+#DIM          C_ID
+#DIMS DYNAMIC TEMP_TASTE
+IF C_ID == MASTER && FLAG:扮演
+	TEMP_TASTE '= GET_STR(, "キャラデータ", FLAG:扮演, "料理：助手効果")
+ELSE
+	TEMP_TASTE '= GET_STR(, "キャラデータ", C_ID, "料理：助手効果")
+ENDIF
+
+SELECTCASE GET_TALENTNAME(GETNUM(TALENT, "神霊"), TALENT:C_ID:神霊)
+CASE "死神", "閻魔"
+	TEMP_TASTE += "冥界風/"
+CASEELSE
+	SIF TALENT:C_ID:神霊
+		TEMP_TASTE += "霊験/"
+ENDSELECT
+
+SELECTCASE GET_TALENTNAME(GETNUM(TALENT, "人类"), TALENT:C_ID:人类)
+CASE "人类"
+CASE "魔法使"
+	TEMP_TASTE += "魔法/"
+CASE "巫女"
+	TEMP_TASTE += "霊験/"
+CASE "天人"
+	TEMP_TASTE += "天界風/"
+CASE "仙人"
+	TEMP_TASTE += "精妙/"
+CASE "月人"
+	TEMP_TASTE += "月都風/"
+ENDSELECT
+
+SIF GET_TALENTNAME(GETNUM(TALENT, "非生物"), TALENT:C_ID:非生物) == "霊体"
+	TEMP_TASTE += "不思議/"
+
+SIF TALENT:C_ID:妖精
+	TEMP_TASTE += "妖精風/"
+SIF TALENT:C_ID:鬼
+	TEMP_TASTE += "鬼隐藏的味道/"
+SIF TALENT:C_ID:天狗
+	TEMP_TASTE += "天狗流/"
+SIF TALENT:C_ID:氷精
+	TEMP_TASTE += "氷結/"
+
+SIF TALENT:C_ID:調合知識
+	TEMP_TASTE += "香草/"
+SIF GET_TALENTNAME(GETNUM(TALENT, "回復速度"), TALENT:C_ID:回復速度) == "回復快" || TALENT:C_ID:鼓舞
+	TEMP_TASTE += "弹力/"
+SIF GET_TALENTNAME(GETNUM(TALENT, "習得速度"), TALENT:C_ID:習得速度) == "学習快" || GET_TALENTNAME(GETNUM(TALENT, "回復速度"), TALENT:C_ID:回復速度) == "回復慢"
+	TEMP_TASTE += "繊細/"
+SIF TALENT:C_ID:音楽知識 >= 1 || TALENT:C_ID:音感 >= 1
+	TEMP_TASTE += "芸術的/"
+SIF TALENT:C_ID:炮友 || TALENT:C_ID:愛欲
+	TEMP_TASTE += "官能的/"
+SIF TALENT:C_ID:思慕 || TALENT:C_ID:恋慕
+	TEMP_TASTE += "愛情/"
+SIF TALENT:C_ID:献身的
+	TEMP_TASTE += "细心/"
+SIF GROUPMATCH(ALCOHOL_FACE(C_ID), "不省人事", "酔酒")
+	TEMP_TASTE += "酩酊大醉/"
+SIF TALENT:C_ID:応答 < 0
+	TEMP_TASTE += "舞ルド/"
+RETURNF TEMP_TASTE
+
+@COOKING_TAKARI(ARG, 確率)
+#DIM 確率
+
+SIF 確率 < RAND:100 && !AT_HOME(ARG)
+	RETURN
+IF BETWEENTIME(CFLAG:ARG:来訪時間, CFLAG:ARG:帰宅時間 - 60) && AT_HOME(MASTER) && CFLAG:MASTER:現在位置 != OMANEKIBEYA() && CFLAG:ARG:現在位置 != CFLAG:MASTER:現在位置
+	CFLAG:ARG:拠点来訪 = 1
+	CFLAG:ARG:現在位置 = CFLAG:MASTER:現在位置
+	TCVAR:ARG:なるべく動かない = 1
+	PRINTFORMW 料理の气息を嗅ぎつけて%CALLNAME:ARG%がやってきた……
+ENDIF

@@ -1,0 +1,954 @@
+﻿;
+;セクハラ系コマンド
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;310,尻を撫でる
+;TFLAG:193(1=不快(TALENT:臆病なら涙目) 2&&3=恥ずかしがる(TALENT:男嫌い兼MASTERが男なら、身をすくめる) 4=されるがまま)
+;CFLAG:うふふ==2&&TCVAR:20(パンツ無し顔面騎乗(70=クンニ強制 71=フェラチオ強制 72=アナル奉仕) 35=スカート内見せつけ 52=素股)
+;CFLAG:うふふ==2&&TEQUIP:シックスナイン(パンツありTCVAR:20(70～72)はこちら)
+;PREVCOM(305=膝枕
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_310
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_310_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_310_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+	ELSEIF CFLAG:睡眠
+	ELSE
+		IF TCVAR:発情
+			IF CFLAG:既成事実 & 合意_诶嘿嘿
+				SELECTCASE RAND:3
+					CASE 0
+						PRINTFORML 「啊恩、已经…」
+						PRINTFORMW 椛用被欲情濡湿的眼睛看着这边…
+					CASE 1
+						PRINTFORML 「哈啊、呼嗯、嗯嗯っ…」
+						PRINTFORMW 爱抚着小小的屁股、椛漏出灼热的吐息…
+					CASE 2
+						CALL HPH_PRINT,@"「咕、嗯…%CALLNAME:MASTER%桑…HPH」", "L"
+						PRINTFORMW 椛靠在%CALLNAME:MASTER%的身上、用身体慢慢摩擦着…
+				ENDSELECT
+			ELSE
+				SELECTCASE RAND:2
+					CASE 0
+						PRINTFORML 「现在不行，真的不行啦っ…」
+						PRINTFORMW 椛眼泪在眼睛里闪着光、只是忍耐着%CALLNAME:MASTER%的手指…
+					CASE 1
+						PRINTFORML 「呜啊啊っ…！」
+						PRINTFORMW 椛没能忍住这股后方传来的快感，发出了激烈的娇喘…
+				ENDSELECT
+			ENDIF
+		;膝枕直後
+		ELSEIF PREVCOM == 305
+			PRINTFORMW 「ひゃっ…！そういう悪戯するなら、もう膝枕してあげませんよ…？」
+		ELSEIF TALENT:恋慕 && RAND:4 > 0
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTFORML 「！！、突然要做什么啊っ」
+					PRINTFORML 「诶？…、也不是讨厌啦…哈、呜、嗯嗯っ…不行……」
+					PRINTFORMW %CALLNAME:MASTER%摸了个爽。
+				CASE 1
+					PRINTFORML 「哈啊、呼嗯、嗯嗯っ…」
+					PRINTFORMW 爱抚着小小的屁股、椛漏出灼热的吐息…
+				CASE 2
+					PRINTFORML 「请不要再做这种事了…」
+					PRINTFORML 椛羞耻的环顾着四周、
+					PRINTFORMW 但也没有拒绝%CALLNAME:MASTER%的爱抚…
+			ENDSELECT
+		ELSE
+			SELECTCASE TFLAG:193
+				;不快
+				CASE 1
+					PRINTFORML 「请不要这样了！」
+					PRINTFORMW 椛拍落了%CALLNAME:MASTER%的手。
+				;恥ずかしがる
+				CASE 2,3
+					SELECTCASE RAND:2
+						CASE 0
+							PRINTFORMW 「那个、这个…」
+						CASE 1
+							PRINTFORMW 「啊，好害羞…」
+					ENDSELECT
+				;されるがまま
+				CASE 4
+					PRINTFORML 「咕、呼呜…」
+					PRINTFORMW 椛扭过身子、像是请求放过我一样看着%CALLNAME:MASTER%…
+			ENDSELECT
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;311,抱き付く
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;CFLAG:うふふ==2&&TCVAR:20(32=前から抱きつく 60=ディープキス 73=ぱふぱふ 74=乳合わせ 77=乳を吸わせる ＶＡ性交(85=Ｖ挿入する 87=Ａ挿入する 88=腰振りＶ 89=腰振りＡ) 86=だいしゅきホールド)
+;
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_311
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_311_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_311_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+	ELSEIF CHK_DATENOW(CFLAG:LOCAL:约会中)
+	ELSEIF CFLAG:睡眠
+	ELSE
+		IF CFLAG:诶嘿嘿 == 2
+			SELECTCASE TCVAR:20
+				;ディープキス
+				CASE 60
+					PRINTFORML 抱着椛，两人舌头缠绕在一起、椛也开心得紧紧抱着你…
+					CALL HPH_PRINT,@"「恩姆、啾、啾噜、啾姆、啾啵、啵……那个、再来一次吧…、嗯、啾呜…HPH」", "W"
+				;だいしゅきホールド
+				CASE 86
+					CALL HPH_PRINT,@"「っHPHあっHPHもっとっHPHもっとぉっHPH」", "L"
+					PRINTFORMW 小小的身体承受着阴茎在狭窄的阴道来回抽插的快感、椛屈服于极致的快感发出无可抑制的娇喘，腰也自己动了起来...
+				CASEELSE
+					SELECTCASE RAND:2
+						CASE 0
+							PRINTFORMW 「哈啊っ…%CALLNAME:MASTER%桑的、好温暖…」
+						CASE 1
+							PRINTFORMW 「还可以更激烈一点哦、可以抱着我吗…」
+					ENDSELECT
+					
+			ENDSELECT
+		ELSEIF TALENT:恋人 && RAND:2
+			IF TCVAR:発情
+				SELECTCASE RAND:2
+					CASE 0
+						CALL HPH_PRINT,@"「%K65_AEGI("控えめ",3)%…あの、%CALLNAME:MASTER%さん…HPH」","L"
+						PRINTFORMW 一边抱着%CALLNAME:MASTER%、椛一边摩擦着大腿内侧…
+					CASE 1
+						CALL HPH_PRINT,@"「%K65_AEGI("控えめ")%…はぁっ…HPH」","L"
+						PRINTFORMW 椛从背后抱住%CALLNAME:MASTER%、用柔软的身体摩擦着…
+						SIF RAND:3 == 0
+							PRINTFORMW 因为热烈的拥抱身上留着她的气味、就像是狗狗做的标记一样…
+				ENDSELECT
+			ELSE
+				SELECTCASE RAND:2
+					CASE 0
+						CALL HPH_PRINT,@"「嗯…HPH」","L"
+						PRINTFORMW 「好想一直这样…」
+					CASE 1
+						PRINTFORML 「ぅん…♪」
+						CALL HPH_PRINT,@"「请就这样抱紧我吧好吗…HPH」","W"
+				ENDSELECT
+			ENDIF
+		ELSEIF TALENT:恋慕
+			IF TCVAR:発情
+				IF BASE:MASTER:勃起 > 999 && CFLAG:既成事実 > 0 && RAND:2 == 0
+					PRINTFORML 「哈啊、%CALLNAME:MASTER%桑的那个…变成这样了呢」
+					CALL HPH_PRINT,@"「呐、我们去没有人会看到的地方吧…HPH」", "W"
+				ELSE
+					PRINTFORML （就算只是拥抱着、肚子里面、好像就有什么东西要出来的感觉…）
+					PRINTFORMW （…好像要%CALLNAME:MASTER%桑、身体里面好难受…）
+				ENDIF
+			ELSE
+				IF BASE:MASTER:勃起 > 999 && CFLAG:既成事実 > 0 && RAND:2 == 0
+					PRINTFORMW 「あの、%CALLNAME:MASTER%さん…当たって、ます…」
+					SIF PALAM:欲情 >= PALAMLV:4
+						PRINTFORMW （呜呜…就算我也变得奇怪了吗…）
+				ELSE
+					SELECTCASE RAND:3
+						CASE 0
+							CALL HPH_PRINT,@"「嗯…HPH」", "L"
+							PRINTFORMW 「%CALLNAME:MASTER%桑、好棒的味道…」
+						CASE 1
+							PRINTFORMW 「诶嘿嘿、%CALLNAME:MASTER%桑、好温暖…」
+						CASE 2
+							PRINTFORML 「%CALLNAME:MASTER%桑…」
+							PRINTFORMW 椛把埋进%CALLNAME:MASTER%的胸口…
+					ENDSELECT
+				ENDIF
+
+			ENDIF
+		ELSEIF TALENT:思慕
+			IF TCVAR:発情
+				PRINTFORML 「啊、那个…」
+				PRINTFORMW 椛滋咕滋咕的摩擦着大腿内侧…
+			ELSE
+				SELECTCASE RAND:2
+					CASE 0
+						PRINTFORML 「呜呜…」
+						PRINTFORMW 椛染红了脸颊、就这样停留着。
+					CASE 1
+						PRINTFORMW 椛は怯生生地%CALLNAME:MASTER%の背中に腕を回し、抱きしめ返してきた…
+				ENDSELECT
+			ENDIF
+		;・非陥落時
+		;親密>5 突然の事に驚いたのかじたばたと身体を揺らしている…
+		ELSEIF ABL:親密 > 5
+			SELECTCASE RAND:2
+				CASE 0
+					PRINTFORML 「突、突然干些什么啊…？」
+					PRINTFORMW 因为突然被抱住，椛现在手足无措。
+				CASE 1
+					PRINTFORML 「呜呜…」
+					PRINTFORMW 椛好像很困扰的样子、但似乎没有要逃脱的意思。
+			ENDSELECT
+		;親密<=5 大声を上げて%CALLNAME:MASTER%を突き飛ばした
+		ELSE
+		SELECTCASE RAND:2
+			CASE 0
+				PRINTFORMW 「呀啊！？不，不要吓我嘛っ」
+			CASE 1
+				PRINTFORML 「呀啊！？」
+				PRINTFORML 被突然从背后抱住、被吓到的椛条件反射的向后用力得肘击，正中%CALLNAME:MASTER%的胸口，awsl…
+				PRINTFORMW 「没，没事吧！？」
+		ENDSELECT
+		ENDIF
+	ENDIF
+
+ENDIF
+RETURN 1
+;==================================================
+;312,キスする
+;TFLAG:193(99=拒絶(キス不可) 1=大成功 0=成功 -1=失敗)
+;CFLAG:うふふ==2&&TCVAR:20(32=前から抱きつく 50=手淫 60=キス 性交(85=Ｖ挿入する 87=Ａ挿入する 88=腰振りＶ 89=腰振りＡ) 86=だいしゅきホールド)
+;PREVCOM(305=膝枕
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_312
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_312_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_312_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70	
+	ELSEIF CFLAG:睡眠
+	ELSEIF CFLAG:TARGET:陪睡中
+		PRINTFORML 「んっ…」
+		CALL HPH_PRINT,@"「えへへ…HPH」", "W"
+	;拒絶
+	ELSEIF TFLAG:193 == 99
+		PRINTFORML 「太，太近了吧…？」
+		PRINTFORMW 椛拉开距离、用怀疑的目光打量着%CALLNAME:MASTER%…
+	ELSE
+		;初めて
+		IF FIRSTTIME(SELECTCOM)
+			;デートキスイベント済み
+			IF EXP:TARGET:接吻経験 > 1
+				PRINTFORML 「んっ…」
+				PRINTFORML 「…%CALLNAME:MASTER%さんから接吻してくれるのは、これが初めてですね」
+				PRINTFORMW 「えへへ、なんだか嬉しいです」
+			ELSE
+				PRINTFORML 「嗯っ…！？」
+				PRINTFORML 「咕、突然之间干什么啊…！？」
+				PRINTFORML （啊、岂不是、我的初吻就…？）
+				PRINTFORMW 椛一脸懵住的表情，手指轻轻靠着自己的嘴唇。
+			ENDIF
+		ELSEIF CFLAG:诶嘿嘿 == 2
+			SELECTCASE TCVAR:20
+				;だいしゅきホールド
+				CASE 86
+					CALL HPH_PRINT,@"「んっ！？んふぅっ…んちゅ、ちゅうううっHPH」","L"
+					PRINTFORML きゅっと抱き着く彼女に応えて%CALLNAME:MASTER%が接吻をすると、
+					PRINTFORMW 椛は感極まったように息を呑み、唇に吸い付いてきた…
+				;キス
+				CASE 60
+					CALL HPH_PRINT,@"「嗯嗯っ、姆、呼呼…啾、啾呜っHPHっ、rero…HPH」", "L"
+					PRINTFORMW 回应着%CALLNAME:MASTER%温柔的吻、椛紧紧得把彼此的舌头缠绕在一起…
+				CASEELSE
+					SELECTCASE RAND:2
+						CASE 0
+							PRINTFORML 「啾姆、啾、啾姆、呜阿ぅ…」
+							PRINTFORMW 椛沉醉于与%CALLNAME:MASTER%的接吻中。
+						CASE 1
+							CALL HPH_PRINT,@"「呜、啵阿…这么亲着、好舒服…HPH啾、啾啵、滋咕…」", "W"
+					ENDSELECT
+			ENDSELECT
+		ELSEIF TCVAR:発情
+			SELECTCASE RAND:2
+				CASE 0
+					CALL HPH_PRINT,@"「哈啊、%CALLNAME:MASTER%桑っ、啾、啾姆…HPH」", "L"
+					PRINTFORMW 椛积极得把舌头缠绕在一起、沉浸在接吻的愉悦中…
+				CASE 1
+					CALL HPH_PRINT,@"「啾噜、嗯咕、啾、滋ぅ…HPHぅ…HPH」", "L"
+					PRINTFORMW （%CALLNAME:MASTER%的舌头好熟练，好舒服…）
+					SIF CFLAG:既成事実 & 合意_诶嘿嘿
+						PRINTFORMW （阿、变得忍不住了…）
+			ENDSELECT
+		ELSEIF ABL:親密 >= 5
+			SELECTCASE RAND:2
+				CASE 0
+					PRINTFORML 「恩姆、啾…」
+					PRINTFORM 椛踮起脚尖
+					SIF TALENT:MASTER:体型 >= 0
+						PRINTFORM 手轻抚着你的胸口
+					PRINTFORMW 享受着与%CALLNAME:MASTER%接吻的快乐…
+				CASE 1
+					PRINTFORML 「啾…诶嘿嘿~…」
+					PRINTFORMW 椛微微泛红的脸上显出微笑。
+			ENDSELECT
+		ELSE
+			PRINTFORMW 「嗯呜…！？…啵阿っ」
+			PRINTFORMW 「嗯啊、那啥…」
+		ENDIF
+	ENDIF
+
+ENDIF
+RETURN 1
+;==================================================
+;313,胸愛撫
+;CFLAG:うふふ==2&&TCVAR:20(27=谷間を見せる 33=胸を揉ませる 53=パイズリ(小分岐は地の文EVENT_MESSAGE_COM_セクハラ.ERB参照) 73=ぱふぱふ 77=乳を吸わせる 性交(85=Ｖ挿入する 87=Ａ挿入する 88=腰振りＶ 89=腰振りＡ) 86=だいしゅきホールド)
+;ABL:Ｂ感覚(2未満=性的には感じてない 5未満=多少感じてる 5以上=カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;乳のサイズでも変わる場合があるので、地の文EVENT_MESSAGE_COM_セクハラ.ERB参照
+;台詞＋胸サイズごとのフレーバーテキストって形式が無難かしらね
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_313
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_313_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_313_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+	
+	ELSEIF CFLAG:睡眠
+	
+	ELSEIF CFLAG:诶嘿嘿 == 2
+		IF TCVAR:発情
+			SELECTCASE TCVAR:20
+				;胸を揉ませる
+				CASE 33
+				SELECTCASE RAND:3
+					CASE 0
+						CALL HPH_PRINT,@"「呜っ、嗯…哈阿っHPH」", "L"
+						PRINTFORMW 椛的眼神像是发光一样、把你的手更用力得压向那双乳肉。
+					CASE 1
+					;きょにゅー以上
+						IF TALENT:胸圍 > 0
+							PRINTFORML 「嘿嘿、我对胸部还是很自信的呢…」
+							PRINTFORML 椛引导着%CALLNAME:MASTER%的手揉弄着自己那对诱人的巨乳、
+							PRINTFORMW 椛脸上写满了愉悦…
+						;ひんにゅー以下
+						ELSEIF TALENT:胸圍 < 0
+							CALL HPH_PRINT,@"「哈啊…っHPH胸、胸部、好舒服…的说っHPH」", "L"
+							PRINTFORMW 为了满足因欲望而硬挺起来的乳头、椛引导着%CALLNAME:MASTER%的手揉弄自己的兔兔…
+						;ふにゅー
+						ELSE
+							CALL HPH_PRINT,@"「%CALLNAME:MASTER%桑、可以、再激烈一点…っHPHHPH」", "L"
+							PRINTFORMW 按照椛的要求，更激烈的玩弄乳房、椛性奋得浑身发抖。
+						ENDIF
+					CASE 3
+						CALL HPH_PRINT,@"「哈啊！HPH乳头っ、乳头要！っHPH」", "L"
+						PRINTFORMW 因为乳头被指尖玩弄得浑身酥麻、椛沉迷于极乐之中，发出了阵阵激烈撩人的娇喘…
+				ENDSELECT
+				;パイズリ
+				CASE 53
+					SELECTCASE RAND:3
+						CASE 0
+							CALL HPH_PRINT,@"「呀啊！っ哈啊、还要…っHPH」", "L"
+							PRINTFORMW 被%CALLNAME:MASTER%玩弄着乳房、椛的娇喘听起来虽然有点痛苦，但其实乐在其中。
+						CASE 1
+							CALL HPH_PRINT,@"「あはっ…HPH胸部に、%CALLNAME:MASTER%さんのにおい、つけてください…HPH」", "W"
+						CASE 2
+							PRINTFORML 「嗯、更多、我在被%CALLNAME:MASTER%桑玩弄着…」
+							CALL HPH_PRINT,@"「好厉害、呀啊っHPH不要这样使坏嘛…」", "W"
+					ENDSELECT
+				;乳を吸わせる
+				CASE 77
+					SELECTCASE RAND:2
+						CASE 0
+							CALL HPH_PRINT,@"「呼啊っHPH这样吸乳头、下面好难受，好像要…HPH」", "W"
+						CASE 1
+							CALL HPH_PRINT,@"「呀っHPH啊、呜嗯っHPH哈っHPH哈ーっHPH%CALLNAME:MASTER%桑…っ」", "L"
+							PRINTFORML 充血膨胀的乳头被舌头精细得研磨着、椛沉醉在极致的快感中，动情得环抱着%CALLNAME:MASTER%的头。
+							PRINTFORMW 被欲火点燃的身体不住得微微颤抖、椛眼中只容得下%CALLNAME:MASTER%一人了…
+					ENDSELECT
+				;だいしゅきホールド
+				CASE 86
+					SELECTCASE BASE:PLAYER:2
+						CASE 0 TO 2999
+							;PRINTFORML %CALLNAME:PLAYER%和%CALLNAME:TARGET%深深地连接在一起，紧紧地拥抱在一起，交换着彼此的唾液
+							;PRINTFORML %CALLNAME:TARGET%は結合の時間をより長くしたいのか、ゆったりとしたストロークを開始した……
+						CASE 3000 TO 9999
+							;PRINTFORML %CALLNAME:PLAYER%和%CALLNAME:TARGET%深深地连接在一起，紧紧地拥抱在一起，交换着彼此的唾液
+							;PRINTFORML %CALLNAME:TARGET%は我慢できない様子で激しく腰を振り始めた
+							;PRINTFORML 接合部からはとめどなく愛液が迸り、辺りにはグチュグチュと水音が響いている……
+						CASEELSE
+							SELECTCASE RAND:2
+							CASE 0
+								PRINTFORML 被强烈的射精感催促着、%CALLNAME:MASTER%抓住了椛的乳房。
+								CALL HPH_PRINT,@"「哈啊っHPH%CALLNAME:MASTER%桑…HPH%CALLNAME:MASTER%桑…ッHPH」", "L"
+								PRINTFORMW 椛发情的身体就算是痛苦也能感觉到快感、她越来越性奋了…
+							CASE 1
+								CALL HPH_PRINT,@"「来了っHPH来了啊啊っHPHHPH%CALLNAME:MASTER%桑请填满我的里面吧っHPH」", "L"
+								PRINTFORMW 椛不断被来自乳头的快感冲击着、为了得到%CALLNAME:MASTER%的种子而把性器紧紧贴在一起…
+						ENDSELECT
+					ENDSELECT
+				;その他
+				CASEELSE
+					SELECTCASE RAND:3
+						CASE 0
+							CALL HPH_PRINT,@"「呀、哈…HPH%CALLNAME:MASTER%桑的手指、好H…HPH」", "L"
+							PRINTFORMW 椛因为%CALLNAME:MASTER%的触摸，灼热的吐息令人难以拒绝。
+						CASE 1
+						;そういえばこの子[痛みに強い]ついてるのよね
+							CALL HPH_PRINT,@"「诶嘿…可以再用力点哦、就算是玩坏我的淫乱乳头也没关系哦…HPH」", "L"
+							CALL HPH_PRINT,@"「好舒服，阿，还想要更多，继续玩弄我的乳头吧……HPH」", "W"
+						CASE 2
+							CALL HPH_PRINT,@"「ふぁんっHPHそんなふうに乳頭こりこりされたら、お腹の奥がきゅんってしちゃいます…HPH」", "W"
+					ENDSELECT
+			ENDSELECT
+		;うふふ(not発情)
+		ELSE
+			SELECTCASE TCVAR:20
+				;胸を揉ませる
+				CASE 33
+					SELECTCASE RAND:2
+						CASE 0
+							CALL HPH_PRINT,@"「呀……乳头！…呀啊っHPH」", "W"
+						CASE 1
+						;きょにゅー以上
+							IF TALENT:胸圍 > 0
+								CALL HPH_PRINT,@"「呼呼…喜欢这样的吗？请摸摸看吧…HPH」", "W"
+							;ひんにゅー以下
+							ELSEIF TALENT:胸圍 < 0
+								PRINTFORML 「嗯…就算是这样的欧派、也可以兴奋起来吗…？」
+								PRINTFORMW %CALLNAME:MASTER%点了点头、椛像开玩笑一样抱住了%CALLNAME:MASTER%。
+							;ふにゅー
+							ELSE
+								CALL HPH_PRINT,@"「呼呼…喜欢这样的吗？请摸摸看吧…HPH」", "W"
+							ENDIF
+					ENDSELECT
+				;パイズリ
+				CASE 53
+					SELECTCASE RAND:2
+						CASE 0
+							CALL HPH_PRINT,@"「诶！？…真是的、真是喜欢恶作剧的孩子呢…HPH」", "W"
+						CASE 1
+							PRINTFORML 「嗯嗯…！！」
+							PRINTFORML 「…可以哦…%CALLNAME:MASTER%桑喜欢的话就好、请开始吧…」
+							PRINTFORMW 「稍微有点痛呢，不过没关系的…」
+					ENDSELECT
+				;だいしゅきホールド
+				CASE 86
+					SELECTCASE BASE:PLAYER:2
+						CASE 0 TO 2999
+							;PRINTFORML %CALLNAME:PLAYER%和%CALLNAME:TARGET%深深地连接在一起，紧紧地拥抱在一起，交换着彼此的唾液
+							;PRINTFORML %CALLNAME:TARGET%は結合の時間をより長くしたいのか、ゆったりとしたストロークを開始した……
+						CASE 3000 TO 9999
+							;PRINTFORML %CALLNAME:PLAYER%和%CALLNAME:TARGET%深深地连接在一起，紧紧地拥抱在一起，交换着彼此的唾液
+							;PRINTFORML %CALLNAME:TARGET%は我慢できない様子で激しく腰を振り始めた
+							;PRINTFORML 接合部からはとめどなく愛液が迸り、辺りにはグチュグチュと水音が響いている……
+						CASEELSE
+							SELECTCASE RAND:2
+							CASE 0
+								CALL HPH_PRINT,@"「…！！不行、在欧派里面这么蹭来蹭去的话っ…HPH」"
+								IF NOWEX:TARGET:Ｖ絶頂 || NOWEX:TARGET:Ｂ絶頂
+									PRINTFORML
+									CALL HPH_PRINT,@"「我要！去了！っ…HPH」", "W"
+								ELSE
+									PRINTFORMW
+								ENDIF
+							CASE 1
+									CALL HPH_PRINT,@"「～～～～っ！！%CALLNAME:MASTER%桑っHPH%CALLNAME:MASTER%桑っ…HPH」", "L"
+									PRINTFORML 被强烈的射精感催促着%CALLNAME:MASTER%握住了椛的乳房、
+									PRINTFORMW 椛因为被给予强烈的快感，两人性器紧密相连…
+						ENDSELECT
+					ENDSELECT
+				;その他
+				CASEELSE
+					SELECTCASE RAND:3
+						CASE 0
+							CALL HPH_PRINT,@"「哈っ、啊…HPH」", "L"
+							PRINTFORMW 椛因为%CALLNAME:MASTER%的触摸，灼热的吐息令人难以拒绝。
+						CASE 1
+							CALL HPH_PRINT,@"「诶嘿、不欺负一下其他地方嘛…HPH」", "W"
+						CASE 2
+							CALL HPH_PRINT,@"「乳头、也可以…っHPH」", "W"
+					ENDSELECT
+			ENDSELECT
+		ENDIF
+	;うふふ中でない
+	ELSE
+		;ABL:Ｂ感覚(2未満=性的には感じてない 5未満=多少感じてる 5以上=カイカン)
+		IF TCVAR:発情
+			;「%CALLNAME:TARGET%はくすぐったそうにしている…」
+			IF ABL:Ｂ感覚 < 2
+				;きょにゅー以上
+				IF TALENT:胸圍 > 0
+					PRINTFORML 椛的巨乳像是把%CALLNAME:MASTER%的手给吃掉一样把手包裹了进去…
+					PRINTFORMW 「嗯嗯…有点痒痒的……」
+				;ひんにゅー以下
+				ELSEIF TALENT:胸圍 < 0
+					PRINTFORMW 「…呼呜、嗯…呀啊、痒痒的……」
+				;ふにゅー
+				ELSE
+					PRINTFORMW 「呜呜、感觉痒痒的…」
+				ENDIF
+			;「%CALLNAME:TARGET%は愛撫に熱い吐息を漏らし始めている…」
+			ELSEIF ABL:Ｂ感覚 < 5
+				;台詞部分　後にフレーバーテキストが続く
+				SELECTCASE RAND:2
+					CASE 0
+						CALL HPH_PRINT,@"「哈啊っ…手指好下流……HPH」"
+					CASE 1
+						CALL HPH_PRINT,@"「嗯っ…HPH」", "L"
+						PRINTFORML 「最近、欧派被碰到就感觉好舒服哦…」
+						CALL HPH_PRINT,@"「都是%CALLNAME:MASTER%的错才让我变成这样…HPH」"
+				ENDSELECT
+				;1/2で胸サイズに合わせたフレーバーテキスト
+				;だってロリ巨乳用のOPPAI_DESCRIPTIONがないっぽいんだもの！
+				IF RAND:2 == 0
+					PRINTFORML
+					;きょにゅー以上
+					IF TALENT:胸圍 > 0
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW 和椛小小的身体不相称的巨乳、跟着%CALLNAME:MASTER%的手指不断得变形…
+							CASE 1
+								PRINTFORMW 椛本能得扭动着身体适应着快感、用强烈的视线注视着%CALLNAME:MASTER%玩弄着巨乳。
+						ENDSELECT
+					;ひんにゅー以下
+					ELSEIF TALENT:胸圍 < 0
+						PRINTFORMW 如果用手指欺负可爱的膨胀着的乳头、椛的呼吸就会慌乱起来…
+					;ふにゅー
+					ELSE
+						PRINTFORMW 玩弄着有着完美胸型的乳房、椛身体一阵一阵得颤抖着。
+					ENDIF
+				ELSE
+					PRINTFORMW
+				ENDIF
+			;「%CALLNAME:TARGET%はトロンとした表情になってされるがままになっている…」
+			ELSE
+				;台詞部分　後にフレーバーテキストが続く
+				SELECTCASE RAND:4
+					CASE 0
+						PRINTFORML 「啊嗯っ…不行、不行了、乳头要去了…っ！」
+						CALL HPH_PRINT,@"「要变得奇怪了，要去了っ…哈啊、呼啊っ、咕呜っHPH」"
+					CASE 1
+						CALL HPH_PRINT,@"「呀、哈…啊嗯っHPH哈啊、手法好H…HPH」"
+					CASE 2
+						;袖なし上着って字面を見た瞬間から隙間に手を突っ込んでもみもみしてえって思い続けてたんだよォ！
+						IF EQUIP:上半身外衣１ == 1
+							PRINTFORML %CALLNAME:MASTER%从无袖外衣的侧面入手、玩弄着椛的%OPPAI_DESCRIPTION(65)%。
+							PRINTFORML 「哇…从那里进攻吗、%CALLNAME:MASTER%桑好H♪」
+							CALL HPH_PRINT,@"「啊、嗯っ、这么摸的话HPH嗯、啊…HPH」"
+						ELSE
+							CALL HPH_PRINT,@"「呜啊…欧派、好舒服…HPH」"
+						ENDIF
+					CASE 3
+						IF CFLAG:既成事実 & 合意_诶嘿嘿
+							PRINTFORML 「嗯っ…一直被%CALLNAME:MASTER%欺负、变得超级敏感了…」
+							CALL HPH_PRINT,@"「必须要负起责任哦…HPH」"
+						ELSE
+							CALL HPH_PRINT,@"「嗯っ…再用点力也没关系哦…HPH」"
+						ENDIF
+				ENDSELECT
+				;1/2で胸サイズに合わせたフレーバーテキスト
+				IF RAND:2 == 0
+					PRINTFORML
+					;きょにゅー以上
+					IF TALENT:胸圍 > 0
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW 椛把小小的身体托付给%CALLNAME:MASTER%、沉浸在被爱抚的快乐之中…
+							CASE 1
+								PRINTFORMW 玩弄着这对敏感的乳肉、椛用小小的身体磨蹭着%CALLNAME:MASTER%…
+							CASE 2
+								PRINTFORMW 玩弄着开发完成的巨乳、椛陷入了恍惚…
+						ENDSELECT
+					;ひんにゅー以下
+					ELSEIF TALENT:胸圍 < 0
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW 被%CALLNAME:MASTER%爱抚着小巧的胴体、椛沉浸在被愛撫的快楽中…
+							CASE 1
+								PRINTFORMW 玩弄着可爱的乳头、椛的身体颤抖着口中漏出愉悦的吐息…
+						ENDSELECT
+					;ふにゅー
+					ELSE
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW 被%CALLNAME:MASTER%爱抚着小巧的胴体、椛沉浸在被愛撫的快楽中…
+							CASE 1
+								PRINTFORMW 玩弄着开发完成的胸部、椛漏出了愉悦的吐息…
+						ENDSELECT
+					ENDIF
+				ELSE
+					PRINTFORMW
+				ENDIF
+			ENDIF
+		;非うふふ中かつ非発情
+		ELSE
+			;「%CALLNAME:TARGET%はくすぐったそうにしている…」
+			IF ABL:Ｂ感覚 < 2
+				;きょにゅー以上
+				IF TALENT:胸圍 > 0
+					PRINTFORML 椛的巨乳像是把%CALLNAME:MASTER%的手给吃掉一样把手包裹了进去…
+					PRINTFORMW 「啊、这么用力的话会有点痛，请温柔一点…」
+				;ひんにゅー以下
+				ELSEIF TALENT:胸圍 < 0
+					PRINTFORMW 「…呜，这样揉胸真的会感觉到舒服吗…」
+				;ふにゅー
+				ELSE
+					PRINTFORMW 「呜呜、感觉痒痒的…」
+				ENDIF
+			;「%CALLNAME:TARGET%は愛撫に熱い吐息を漏らし始めている…」
+			ELSEIF ABL:Ｂ感覚 < 5
+				;台詞部分　後にフレーバーテキストが続く
+				SELECTCASE RAND:2
+					CASE 0
+						PRINTFORM 「呼呜、嗯…在被下流的手法玩弄着……」
+					CASE 1
+						PRINTFORML 「啊嗯！…」
+						PRINTFORM 「诶！是不是发出了奇怪的声音…」
+				ENDSELECT
+				;1/2で胸サイズに合わせたフレーバーテキスト
+				IF RAND:2 == 0
+					PRINTFORML
+					;きょにゅー以上
+					IF TALENT:胸圍 > 0
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW 和椛小小的身体不相称的巨乳、跟着%CALLNAME:MASTER%的手指不断得变形…
+							CASE 1
+								PRINTFORMW 椛偶尔扭动着腰肢、配合忍耐着从被%CALLNAME:MASTER%玩弄着的巨乳上传来的快感。
+						ENDSELECT
+					;ひんにゅー以下
+					ELSEIF TALENT:胸圍 < 0
+						PRINTFORMW 如果用手指欺负可爱的膨胀着的乳头、椛的呼吸就会慌乱起来…
+					;ふにゅー
+					ELSE
+						PRINTFORMW 玩弄着有着完美胸型的乳房、椛身体一阵一阵得颤抖着。
+					ENDIF
+				ELSE
+					PRINTFORMW
+				ENDIF
+			;「%CALLNAME:TARGET%はトロンとした表情になってされるがままになっている…」
+			ELSE
+				;台詞部分　後にフレーバーテキストが続く
+				SELECTCASE RAND:4
+					CASE 0
+						PRINTFORML 「啊嗯っ…不行、不行了、乳头要去了…っ！」
+						PRINTFORM 「太，太舒服了，要变奇怪了…诶呀、嗯、呜呜…！」
+					CASE 1
+						PRINTFORM 「唔嘿嘿、请再更多得疼爱我吧…」
+					CASE 2
+						;袖なし上着ってのを見た瞬間から隙間に手を突っ込んでもみもみしてえって思い続けてたんだよォ！
+						IF EQUIP:上半身外衣１ == 1
+							PRINTFORML %CALLNAME:MASTER%从无袖外衣的侧面入手、玩弄着椛的%OPPAI_DESCRIPTION(65)%。
+							PRINTFORM 「哇啊！不要从缝隙把手伸进去啊…！呜啊啊…！」
+						ELSE
+							PRINTFORM 「呜..…胸部、好舒服…」
+						ENDIF
+					CASE 3
+						IF CFLAG:既成事実 & 合意_诶嘿嘿
+							PRINTFORML 「嗯…被%CALLNAME:MASTER%桑抚摸着、变得超级敏感了…」
+							CALL HPH_PRINT,@"「必须要负起责任哦…HPH」"
+						ELSE
+							PRINTFORM 「嗯！…再激烈一点也没关系的哦？」
+						ENDIF
+				ENDSELECT
+				;1/2で胸サイズに合わせたフレーバーテキスト
+				IF RAND:2 == 0
+					PRINTFORML
+					;きょにゅー以上
+					IF TALENT:胸圍 > 0
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW %CALLNAME:MASTER%爱抚着小柄的身体、椛委身于爱抚的快乐…
+							CASE 1
+								PRINTFORMW 玩弄着这对敏感的乳肉、椛用小小的身体磨蹭着%CALLNAME:MASTER%…
+							CASE 2
+								PRINTFORMW 玩弄着开发完成的巨乳、椛陷入了恍惚…
+						ENDSELECT
+					;ひんにゅー以下
+					ELSEIF TALENT:胸圍 < 0
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW 小小的身体を%CALLNAME:MASTER%に預け、椛は愛撫の快楽に身を任せている…
+							CASE 1
+								PRINTFORMW 玩弄着可爱的乳头、椛的身体颤抖着口中漏出愉悦的吐息…
+						ENDSELECT
+					;ふにゅー
+					ELSE
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORMW 小小的身体を%CALLNAME:MASTER%に預け、椛は愛撫の快楽に身を任せている…
+							CASE 1
+								PRINTFORMW 玩弄着开发完成的胸部、椛漏出了愉悦的吐息…
+						ENDSELECT
+					ENDIF
+				ELSE
+					PRINTFORMW
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;314,アナル愛撫
+;CFLAG:うふふ==2&&TCVAR:20(72=アナル奉仕
+;CFLAG:うふふ==2&&TEQUIP:シックスナイン(パンツありTCVAR:20(70～72)はこちら)
+;ABL:Ａ感覚(2未満=受け入れられない 4未満=異物感に翻弄 4以上=カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_314
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_314_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_314_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;315,クリ愛撫
+;CFLAG:うふふ==2&&TCVAR:20(35=スカートの中を見せる 70=クンニ強制 85=Ｖ挿入する 86=だいしゅきホールド 87=Ａ挿入する 88=腰振りＶ 89=腰振り
+;ABL:Ｃ感覚(4未満=くすぐったい 6未満=ちょっといいかも 6以上=カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;椛はＣ敏感！感覚が低くてもすぐイッちゃうんだ！
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_315
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_315_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_315_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+	ELSEIF CFLAG:睡眠
+	ELSE
+		IF CFLAG:诶嘿嘿 == 2
+			;うふふ中かつ発情
+			IF TCVAR:発情
+				SELECTCASE TCVAR:20
+					;70=クンニ強制
+					CASE 70
+						CALL HPH_PRINT,@"「啊呜、哈！…HPH%CALLNAME:MASTER%桑的舌头、让我好舒服……HPH」", "L"
+						PRINTFORMW 一舔到敏感的地方、椛为了攫取更激烈的快感，下意识得把%CALLNAME:MASTER%的脸轻轻压向那片花园…
+					CASEELSE
+						SELECTCASE RAND:2
+							CASE 0
+								CALL HPH_PRINT,@"「呀啊、嗯！呀！HPH%CALLNAME:MASTER%桑！HPH好舒服！HPH」", "L"
+								PRINTFORMW 挑逗着作为强力性感点的阴核、椛浮出愉悦的表情…
+							CASE 1
+								CALL HPH_PRINT,@"「～～～HPH那里！HPH好喜欢！HPH」", "W"
+						ENDSELECT
+				ENDSELECT
+			;うふふ中かつ非発情
+			ELSE
+				SELECTCASE TCVAR:20
+					;70=クンニ強制
+					CASE 70
+						PRINTFORML 「呜！、嗯嗯！%CALLNAME:MASTER%桑的、舌头好....！」
+						PRINTFORMW 舔到敏感的地方、椛愉悦得摇着尾巴…
+					CASEELSE
+						SELECTCASE RAND:2
+							CASE 0
+								PRINTFORML 「呜嗯！那里、很敏感…」
+								CALL HPH_PRINT,@"「嗯！呜呜！嗯阿！哈！不行、不行、怎么这样欺负人、啊！HPH」", "W"
+							CASE 1
+								PRINTFORMW 「～～～！呀啊…！太欺负人了、我...…！」
+						ENDSELECT
+				ENDSELECT
+			ENDIF
+		;うふふ中でない
+		ELSE
+			;非うふふ・発情
+			IF TCVAR:発情
+				;ABL:Ｃ感覚(4未満=くすぐったい 6未満=ちょっといいかも 6以上=カイカン)
+				IF ABL:Ｃ感覚 < 4
+					SELECTCASE RAND:2
+						CASE 0
+							PRINTFORMW 「啊！恩！...那里很敏感…请温柔一点」
+						CASE 1
+							CALL HPH_PRINT,@"「呀阿、好厉害…HPH」", "W"
+					ENDSELECT
+				ELSEIF ABL:Ｃ感覚 < 6
+					SELECTCASE RAND:2
+						CASE 0
+							CALL HPH_PRINT,@"「呀啊啊…！那里、好舒服！…HPH」", "W"
+						CASE 1
+							CALL HPH_PRINT,@"「哈嗯！呜…这样玩弄的话、糟糕，停不下来…HPH」", "W"
+					ENDSELECT
+				ELSE
+					SELECTCASE RAND:2
+						CASE 0
+							CALL HPH_PRINT,@"「呀啊啊…！那里、好舒服！…HPH还想更多，还想要~HPH」", "W"
+						CASE 1
+							CALL HPH_PRINT,@"「呜呜…！这是、太过舒服了…HPH到底、为什么…HPH」", "L"
+							PRINTFORMW 发情的椛扭动着腰、忍耐着%CALLNAME:MASTER%的手指玩弄着淫荡敏感的阴核…
+					ENDSELECT
+				ENDIF
+			ELSE
+				;非うふふ・非発情
+				;ABL:Ｃ感覚(4未満=くすぐったい 6未満=ちょっといいかも 6以上=カイカン)
+				IF ABL:Ｃ感覚 < 4
+					SELECTCASE RAND:2
+						CASE 0
+							PRINTFORMW 「不行，的哦？…呜啊、嗯嗯…！」
+						CASE 1
+							PRINTFORMW 「那里、不要碰…！呀、哈、啊嗯」
+					ENDSELECT
+				ELSEIF ABL:Ｃ感覚 < 6
+					SELECTCASE RAND:2
+						CASE 0
+							CALL HPH_PRINT,@"「不行、的哦？…这种事、我…HPH」", "W"
+						CASE 1
+							CALL HPH_PRINT,@"「那里、很敏感的…！啊、咕呜、嗯咕、呜嗯嗯…HPH」", "W"
+					ENDSELECT
+				ELSE
+					SELECTCASE RAND:2
+						CASE 0
+							CALL HPH_PRINT,@"「都说了，不行的…HPH啊嗯、哈呜、咕呜呜HPH」", "L"
+							PRINTFORMW %CALLNAME:MASTER%的手指抚摸着阴蒂、椛的身体因为强烈的快感而颤抖了起来…
+						CASE 1
+							CALL HPH_PRINT,@"「那里、被玩弄的话…！啊、嗯呜…会变得想要的…HPH」", "W"
+					ENDSELECT
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;316,指挿入れ
+;CFLAG:うふふ==2&&TCVAR:20(35=スカートの中を見せる 70=クンニ強制 87=Ａ挿入する 89=腰振りＡ
+;TALENT:処女(指挿入れ連続時喪失注意、基本拒否ぎみ)
+;ABL:Ｖ感覚(1未満=違和感に戸惑う 5未満=ちょっと気持ちいい 5以上＝カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_316
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_316_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_316_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	IF TCVAR:破瓜
+		PRINTFORML 「う゛、あっ…」
+		PRINTFORML 椛がくぐもった声を上げ、一筋の血が彼女の脚を流れる。
+		PRINTFORML 「………酷いです、%CALLNAME:MASTER%さん」
+		PRINTFORMW 目尻に涙をにじませ的同时、椛が震えるような声を漏らした。
+		SIF TALENT:恋慕
+			PRINTFORMW （初めては、%CALLNAME:MASTER%さんにきちんとあげたかったな…）
+	ELSEIF TALENT:処女
+		PRINTFORML 「嫌っ…ダメです！！」
+		PRINTFORML %CALLNAME:MASTER%の指先がつぷりと入り口を捉えた瞬間、椛が声を上げた。
+		IF TALENT:恋慕
+			PRINTFORML 「その…私、初めてなんです…だから…」
+			PRINTFORMW 椛は頬を赤く染め、すがるように%CALLNAME:MASTER%を看了过来…
+		ENDIF
+	ELSEIF TCVAR:発情
+		;こなれてない
+		IF ABL:Ｖ感覚 < 2
+			
+		;ちょっと気持ちいい
+		ELSEIF ABL:Ｖ感覚 < 5
+		;カイカン
+		ELSE
+			SELECTCASE RAND:2
+			ENDSELECT
+		ENDIF
+	ELSE
+		;こなれてない
+		IF ABL:Ｖ感覚 < 2
+		;ちょっと気持ちいい
+		ELSEIF ABL:Ｖ感覚 < 5
+		;カイカン
+		ELSE
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;317,Ｖ腰を振る
+;ABL:Ｖ感覚(2未満=まだ気持ち良くない 5未満=ちょっと気持ちいい 5以上=カイカン
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_317
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_317_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_317_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;318,Ａ腰を振る（現状存在せず
+;==================================================
+;@M_KOJO_MESSAGE_COM_K65_318
+;CALL TRAIN_MESSAGE
+;CALL M_KOJO_MESSAGE_COM_K65_318_1
+;RETURN RESULT
+
+;@M_KOJO_MESSAGE_COM_K65_318_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+;LOCAL = 0
+;-------------------------------------------------
+;IF LOCAL
+
+;ENDIF
+;RETURN 1
+;==================================================
+;330,スカートめくり
+;TFLAG:193(-5=拒絶（ビンタ） -3=拒絶（つねり） -1=いやがる 0=いやがる（嬉しげ） 1=受け入れ)
+;TFLAG:193=1&&ABL:露出癖(5以上=人目のある場所で、自らスカートをまくり上げる 4以下=人目のある場所でめくられるさいに弱い抵抗 3以上=人目のない場所で自らスカートをまくり上げる 3未満=弱い抵抗)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;後ろからピラリ、ではなく、前からペラって感じ（そうじゃなかったら、めくり上げようとするのを止めて即座にビンタとか無理、めくり上げられた後にしかならないしその状況ならビンタ食らうより普通に弾幕で一発ＫＯにならないほうがおかしい
+;==================================================
+@M_KOJO_MESSAGE_COM_K65_330
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K65_330_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K65_330_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1

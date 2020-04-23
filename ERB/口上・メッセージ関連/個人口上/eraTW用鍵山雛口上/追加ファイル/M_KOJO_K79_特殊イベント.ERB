@@ -1,0 +1,209 @@
+﻿;==================================================
+;@M_KOJO_MESSAGE_EVENT_K79_EX_TALK
+;祭日限定特殊会話イベント([恋人]要)
+;==================================================
+@M_KOJO_MESSAGE_EVENT_K79_EX_TALK
+;元旦(春1日) プレイ初日は発生しない
+IF DAY:2 == 1 && DAY:3 == 1 && DAY:0 != 1
+		PRINTFORML 「%CALLNAME:MASTER%、新年あけまして祝贺您！。
+		PRINTFORML 　旧年中は大変お世話成为了。本年もどうぞよろしくお願い致します」
+		PRINTFORMW 雛と新年の挨拶を交わし了。
+		PRINTFORML 「……素敵な1年間になるといいわね、%CALLNAME:MASTER%？」
+		PRINTFORMW 挨拶を終えると雛は表情を崩し、%CALLNAME:MASTER%に微笑みかけた……。
+		TCVAR:79:350 = 2
+;雛祭り(春3日)
+ELSEIF DAY:2 == 1 && DAY:3 == 3
+		PRINTFORML 「さて、今日は待ちに待った女儿节！」
+		PRINTFORMW 何時になく、雛がやる気に満ち溢れている気がする。
+		PRINTFORML 「川に流される大量の流し雛。これを全て回収するのが今日の仕事よ」
+		PRINTFORMW ……思った以上に大変そうだ。
+		TCVAR:79:350 = 2
+;白色情人節(春14日)
+ELSEIF DAY:2 == 1 && DAY:3 == 14
+		PRINTFORML 「白色情人節か……」
+		PRINTFORMW ぼんやりとした様子で雛はそう呟い了。
+		PRINTFORML 「ふふっ…、よろしく頼むわよ、%CALLNAME:MASTER%？」
+		PRINTFORMW 雛は%CALLNAME:MASTER%のお返しを楽しみにしているようだ……。
+		TCVAR:79:350 = 2
+;例大祭(春25日)
+ELSEIF DAY:2 == 1 && DAY:3 == 25
+		PRINTFORML 「博麗神社例大祭って今日だったのね、すっかり忘れてたわ」
+		PRINTFORMW ……どうやら例大祭の認知度はまだまだ低いようだ。
+		PRINTFORML 「後で稍微だけ様子を見に行こうかしら？ もちろん%CALLNAME:MASTER%と一緒に、ね？」
+		PRINTFORMW 時間に余裕があったら约会に誘ってあげても良いかもしれない……。
+		TCVAR:79:350 = 2
+;七夕(夏7日)
+ELSEIF DAY:2 == 2 && DAY:3 == 7
+	PRINTFORML 「今日は七夕ね。
+	;時間帯で分岐
+	;夜
+	IF TIME:2 == 6
+		;天気で分岐
+		IF TIME:5 == 0 || TIME:5 == 1
+			PRINTFORML 　天気もバッチリで、無事に見れて良かったわ」
+			PRINTFORMW 夜空には牽牛星と織女星が光り輝い……。
+		ELSEIF TIME:5 == 2 || TIME:5 == 3
+			PRINTFORML 　雲の間から、稍微は見えているんだけど……」
+			PRINTFORMW 眩い光を放つ牽牛星と織女星が、時折雲間から見え隠れしている。
+		ELSEIF TIME:5 == 4 || TIME:5 == 5
+			PRINTFORML 　残念だけど、今年は見れそうにないわね」
+			PRINTFORMW 雨は一向に止む气息をみせない。どうやら諦めるしかなさそうだ……。
+		ELSE
+			PRINTFORMW 　願いは届かず、って感じかしら……？」
+			PRINTFORMW どうやらそのようだ……。
+		ENDIF
+		TCVAR:79:350 = 2
+	;朝 or 昼
+	ELSE
+		;天気で分岐
+		IF TIME:5 == 0 || TIME:5 == 1
+			PRINTFORML 　このまま天気が崩れなければ見れそうね」
+			PRINTFORMW 初夏の日差しが照りつけている。これなら無事に見られそうだ。
+		ELSEIF TIME:5 == 2 || TIME:5 == 3
+			PRINTFORML 　うーん、夜までに雲がなくなるといいけれど……」
+			PRINTFORMW 空は厚い雲で覆われている。運良く雲間から見えるよう、祈るしかなさそうだ。
+		ELSEIF TIME:5 == 4 || TIME:5 == 5
+			PRINTFORML 　でも、この雨じゃ見るのは難しいかも……」
+			PRINTFORMW 雨は今も降り続いている。なぜこういう日に限って天気が悪くなるのだろうか……。
+		ELSE
+			PRINTFORMW 　……果たして、ちゃんと見れるのかしら？」
+			PRINTFORMW 『天の川が見られますように』と、祈るべきなのかもしれない。
+		ENDIF
+		TCVAR:79:350 = 2
+	ENDIF
+;収穫祭(秋27日)
+ELSEIF DAY:2 == 3 && DAY:3 == 27
+		PRINTFORML 「今年も収穫祭が始まったわね。静葉と穣子が忙しそうにしていたわ」
+		PRINTFORMW 山に住む神同士ということで、その辺りの事情はしっかり把握しているようだ。
+		TCVAR:79:350 = 2
+;ハロウィン(秋30日)
+ELSEIF DAY:2 == 3 && DAY:3 == 30
+		PRINTFORML 「はろうぃん……？ 西洋のお祭り？
+		PRINTFORML 　兒童たちが仮装して妖怪や幽霊になってお菓子を貰う、なるほど、不思議なお祭りね……」
+		PRINTFORMW どうやら、万圣节の概念をイ舞チ飲み込めていないようだ。
+		TCVAR:79:350 = 2
+;情人節(冬14日)
+ELSEIF DAY:2 == 4 && DAY:3 == 14
+		PRINTFORML 「%CALLNAME:MASTER%のために頑張って作ったんだから、味わって食べてね」
+		PRINTFORMW 紛うことなき雛の本命巧克力だ。味わって食べるとしよう。
+		PRINTFORML 「それと……、お返しも楽しみにしてるからねっ？」
+		PRINTFORMW そういう所はちゃっかりしている。
+		TCVAR:79:350 = 2
+;クリスマス(冬25日)
+ELSEIF DAY:2 == 4 && DAY:3 == 25
+		PRINTFORML 「梅莉厄リスマス。……なーんてね」
+		PRINTFORMW %CALLNAME:MASTER%と雛は圣诞节を祝った……。
+		TCVAR:79:350 = 2
+;大晦日(冬31日)
+ELSEIF DAY:2 == 4 && DAY:3 == 31
+		PRINTFORML 「今年もあっという間に終わってしまったわね……」
+		PRINTFORMW そう語る雛は感慨深そうにし……。
+		PRINTFORMW 「何はともあれ、来年もよろしくね。%CALLNAME:MASTER%？」
+		TCVAR:79:350 = 2
+ELSE
+	TCVAR:79:350 = 1
+ENDIF
+RETURN 1
+
+;==================================================
+;@M_KOJO_MESSAGE_EVENT_K79_EX_350
+;祭日限定特殊押し倒しイベント([恋慕]要)
+;
+;★祭日押し倒し&祭日押し倒されのフラグ(TCVAR:79:359)は競合する
+;　いずれか片方がその日既に実行済みの場合、もう一方は発生しない
+;==================================================
+@M_KOJO_MESSAGE_EVENT_K79_EX_350
+
+;元旦(春1日) プレイ初日は発生しない
+IF DAY:2 == 1 && DAY:3 == 1 && DAY:0 != 1
+	PRINTFORML 「『一年の計は元旦にあり』とは云うけれど……。
+	PRINTFORML 　新年早々えっちしたら、今年はずっとえっちすることになるのかしら？ ふふっ」
+	PRINTFORMW %CALLNAME:MASTER%の推倒を雛は温柔的受け入れ、年明け最初のえっちを了……。
+	TCVAR:79:359 = 2
+;雛祭り(春3日)
+ELSEIF DAY:2 == 1 && DAY:3 == 3
+	PRINTFORML 「女儿节は女の子をお祝いする日よ。だから、その……、今日は温柔的してね……？」
+	PRINTFORMW 雛は甜声でささやき的同时、%CALLNAME:MASTER%を看了过来……。
+	TCVAR:79:359 = 2
+;白色情人節(春14日)
+ELSEIF DAY:2 == 1 && DAY:3 == 14
+	PRINTFORML 「ふふっ、バレンタインのお返しに推倒なんて……。まあ、私は嬉しいからいいけれど。
+	PRINTFORML 　それじゃあ、今日是的つもより%CALLNAME:MASTER%に甘えちゃおうかな……」
+	PRINTFORMW そう言うと、雛は%CALLNAME:MASTER%抱住了……。
+	TCVAR:79:359 = 2
+;ハロウィン(秋30日)
+ELSEIF DAY:2 == 3 && DAY:3 == 30
+	PRINTFORML 「万圣节でも%CALLNAME:MASTER%はお菓子より恶作剧をご所望なのね。
+	PRINTFORML 　だったら、私に沢山恶作剧しても……、いいよっ……？」
+	PRINTFORMW 雛は有点害臊的頬を赤く染め的同时、%CALLNAME:MASTER%を受け入れた……。
+	TCVAR:79:359 = 2
+;情人節(冬14日)
+ELSEIF DAY:2 == 4 && DAY:3 == 14
+	PRINTFORML 「せっかくの情人節なんだから。今日は甘々なえっち……、しましょ？」
+	PRINTFORMW 雛は%CALLNAME:MASTER%抱住、%CALLNAME:MASTER%の愛撫をねだった……。
+	TCVAR:79:359 = 2
+;クリスマス(冬25日)
+ELSEIF DAY:2 == 4 && DAY:3 == 25
+	PRINTFORML 「圣诞节に大好きな人とこうしていられるなんて……。私は幸せ者ね……」
+	PRINTFORMW 雛は笑顔を浮かべ的同时、幸せそうに%CALLNAME:MASTER%に微笑みかけた……。
+	TCVAR:79:359 = 2
+;大晦日(冬31日)
+ELSEIF DAY:2 == 4 && DAY:3 == 31
+	PRINTFORML 「今年最後の年納めえっち……、というところかしら。诶嘿嘿っ」
+	PRINTFORMW 雛は表情を緩め、優しい眼差しを%CALLNAME:MASTER%に向け……。
+	TCVAR:79:359 = 2
+ELSE
+	TCVAR:79:359 = 1
+ENDIF
+RETURN 1
+
+;==================================================
+;@M_KOJO_MESSAGE_EVENT_K79_EX_10
+;祭日限定特殊押し倒されイベント([恋慕]要)
+;
+;★祭日押し倒し&祭日押し倒されのフラグ(TCVAR:79:359)は競合する
+;　いずれか片方がその日既に実行済みの場合、もう一方は発生しない
+;==================================================
+@M_KOJO_MESSAGE_EVENT_K79_EX_10
+
+;元旦(春1日) プレイ初日は発生しない
+IF DAY:2 == 1 && DAY:3 == 1 && DAY:0 != 1
+	PRINTFORML 「元旦は年神様を祝う日だから、本当なら『姫始め』は明日なんだけど……。
+	PRINTFORML 　私、もう明日までガマンできないのっ……！ だから、このえっちを『姫始め』にしましょ？」
+	PRINTFORMW 雛の提案に%CALLNAME:MASTER%は頷き、雛に身体を預けることにした……。
+	TCVAR:79:359 = 2
+;雛祭り(春3日)
+ELSEIF DAY:2 == 1 && DAY:3 == 3
+	PRINTFORML 「今日は楽しい女儿节～、えぇ～いっ！」
+	PRINTFORMW %CALLNAME:MASTER%を推倒た雛は、楽しそうに%CALLNAME:MASTER%の身体を弄り始めた……。
+	TCVAR:79:359 = 2
+;白色情人節(春14日)
+ELSEIF DAY:2 == 1 && DAY:3 == 14
+	PRINTFORML 「それじゃあ私からの礼物……、受け取ってね？」
+	PRINTFORMW 雛は%CALLNAME:MASTER%の手のひらに悄悄的接吻をし、直接住下指で%CALLNAME:MASTER%の服をなぞり始めた……。
+	TCVAR:79:359 = 2
+;ハロウィン(秋30日)
+ELSEIF DAY:2 == 3 && DAY:3 == 30
+	PRINTFORML 「%CALLNAME:MASTER%？ 今日は万圣节だから……、猥褻わね？」
+	PRINTFORMW 口上の前段階をすっ飛ばし、雛は%CALLNAME:MASTER%に悪戯を始めた……。
+	TCVAR:79:359 = 2
+;情人節(冬14日)
+ELSEIF DAY:2 == 4 && DAY:3 == 14
+	PRINTFORML 「んっ…、%CALLNAME:MASTER%。んん、しっかり味わってね？」
+	PRINTFORMW 雛は巧克力を口に含み、口伝いで%CALLNAME:MASTER%の口内に巧克力を流し込んだ……。
+	TCVAR:79:359 = 2
+;クリスマス(冬25日)
+ELSEIF DAY:2 == 4 && DAY:3 == 25
+	PRINTFORML 「ふふっ、私から%CALLNAME:MASTER%への聖誕禮物よ」
+	PRINTFORMW 雛は微笑むと%CALLNAME:MASTER%と悄悄的接吻を交わした……。
+	TCVAR:79:359 = 2
+;大晦日(冬31日)
+ELSEIF DAY:2 == 4 && DAY:3 == 31
+	PRINTFORML 「今年も今日で終わり。だから、今年の最後まで%CALLNAME:MASTER%と愛し合いたいの……」
+	PRINTFORMW 雛は%CALLNAME:MASTER%に身体を密着させてきた……。
+	TCVAR:79:359 = 2
+ELSE
+	TCVAR:79:359 = 1
+ENDIF
+RETURN 1
+

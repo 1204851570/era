@@ -1,0 +1,50 @@
+﻿;--------------------------------------------------
+;	マップ内移動処理拡張パッチ付属
+;	命蓮寺MAP用関数
+;--------------------------------------------------
+@MAP_PLACENAME_8(ARG)
+#FUNCTIONS
+
+IF GET_MAPID(ARG) == MAIN_MAP
+	SELECTCASE ARG
+		CASE 1 TO (MAXROOM - 1)
+			RETURNF STR:(ARG + 8000)
+		CASE 898
+			RETURNF OMANEKI_PLACE()
+		CASE 899
+			RETURNF "隙間空間"
+		CASE MAXROOM
+			RETURNF "道路正前方"
+		CASEELSE
+			RETURNF "不明"
+	ENDSELECT
+ELSE
+	RETURNF "不明"
+ENDIF
+
+@MAP_VIEWING_8(AA)
+#DIMS REF AA, 0
+IF !TFLAG:地圖切換
+	SELECTCASE CFLAG:MASTER:現在位置
+		CASE 830, 832, 833
+			TFLAG:地圖切換 = 3
+		CASE 811 TO 826
+			TFLAG:地圖切換 = 2
+		CASE 831, 834 TO 842
+			TFLAG:地圖切換 = 4
+		CASEELSE
+			TFLAG:地圖切換 = 1
+	ENDSELECT
+ENDIF
+CALL DRAW_INFORMATIONLINE(@"%MAPNAME:(TFLAG:地圖切換)%")
+PRINTFORML 
+TRYCALLFORM MAP_SUMMIT_{TFLAG:地圖切換}(AA)
+
+@MAP_CAN_MOVE_8(ARG, ARG:1)
+#FUNCTION
+RETURNF 1
+
+
+@MAP_CANNOT_WORD_8(ARG)
+SELECTCASE TFLAG:移動不能メッセージ
+ENDSELECT

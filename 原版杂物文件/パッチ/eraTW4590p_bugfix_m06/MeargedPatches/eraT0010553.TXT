@@ -1,0 +1,326 @@
+﻿eraTW4.590proto用COMF修正＋α
+
+注意！
+このパッチを導入する場合、\ERB\指令関連COMF\COMF123 足交.ERBを必ず削除してください！
+
+
+
+
+
+
+ ERB┬イベント関連─EVENTCOMEND2.ERB
+	├指令関連┬COMABLE─COMABLE_300.ERB
+	│			　└COMF┬COMF0 愛撫.ERB
+	│					├COMF1 舐陰.ERB
+	│					├COMF2 舐陰莖.ERB
+	│					├COMF3 手指挿入.ERB
+	│					├COMF4 舐肛.ERB
+	│					├COMF5 肛門愛撫.ERB
+	│					├COMF6 胸愛撫.ERB
+	│					├COMF7 玩弄乳頭.ERB
+	│					├COMF8 張開陰唇.ERB
+	│					├COMF9 自慰.ERB
+	│					├COMF11 吸乳头.ERB
+	│					├COMF12 揉胸.ERB
+	│					├COMF13 張開肛門.ERB
+	│					├COMF19 接吻（継続）.ERB
+	│					├COMF20 接吻.ERB
+	│					├COMF22 承受誘惑.ERB
+	│					├COMF23 枕邊話.ERB
+	│					├COMF40 跳蛋.ERB
+	│					├COMF41 電動按摩棒.ERB
+	│					├COMF42 陰蒂夾.ERB
+	│					├COMF43 飛機杯.ERB(一応したけど意味無し
+	│					├COMF44 振動棒.ERB
+	│					├COMF45 肛用振動棒.ERB
+	│					├COMF46 後庭拉珠.ERB(一応したけど意味無し
+	│					├COMF47 乳頭夾.ERB
+	│					├COMF48 搾乳器.ERB
+	│					├COMF49 乳頭跳蛋.ERB
+	│					├COMF50 戴上套套.ERB
+	│					├COMF60 正常位.ERB
+	│					├COMF61 後背位.ERB
+	│					├COMF62 正常位肛交.ERB
+	│					├COMF63 後背位肛交.ERB
+	│					├COMF64 逆強姦.ERB
+	│					├COMF65 騎乗位.ERB
+	│					├COMF66 騎乗位肛交.ERB
+	│					├COMF71 二穴挿入.ERB
+	│					├COMF79 小人飛機杯.ERB
+	│					├COMF80 手淫.ERB
+	│					├COMF81 口交.ERB
+	│					├COMF82 乳交.ERB
+	│					├COMF83 素股.ERB
+	│					├COMF84 泡泡浴.ERB
+	│					├COMF85 足交.ERB
+	│					├COMF88 真空口交.ERB
+	│					├COMF90 被愛撫肛門.ERB
+	│					├COMF91 被舐肛門.ERB
+	│					├COMF92 被Ａ正常位.ERB
+	│					├COMF93 被Ａ後背位.ERB
+	│					├COMF94 Ａ騎乗位.ERB
+	│					├COMF100 打屁股.ERB
+	│					├COMF101 鞭.ERB(一応したけど意味無し
+	│					├COMF102 蝋燭.ERB(一応したけど意味無し
+	│					├COMF103 針.ERB(一応したけど意味無し
+	│					├COMF104 眼罩.ERB
+	│					├COMF105 縄.ERB
+	│					├COMF106 口球.ERB
+	│					├COMF107 拘束PLAY.ERB
+	│					├COMF108 打胸部.ERB
+	│					├COMF120 強制舐陰.ERB
+	│					├COMF121 貝あわせ.ERB
+	│					├COMF123 足交.ERB
+	│					├COMF124 手淫.ERB
+	│					├COMF125 被愛撫.ERB
+	│					├COMF126 互揉胸部.ERB
+	│					├COMF130 被正常位.ERB
+	│					├COMF131 被後背位.ERB
+	│					├COMF132 被対面座位.ERB
+	│					├COMF133 被背面座位.ERB
+	│					├COMF140 強制口交.ERB
+	│					├COMF141 拳交.ERB(一応したけど意味無し
+	│					├COMF142 肛門拳交.ERB(一応したけど意味無し
+	│					├COMF143 両穴フィスト.ERB(一応したけど意味無し
+	│					├COMF144 放尿.ERB(一応したけど意味無し
+	│					├COMF145 肛門奉仕.ERB(一応したけど意味無し
+	│					├COMF147 拡張氣球.ERB(一応したけど意味無し
+	│					├COMF148 肛門電極.ERB(一応したけど意味無し
+	│					├COMF150 雙乳間抽插.ERB
+	│					├COMF180 潤滑液.ERB
+	│					├COMF181 媚薬.ERB
+	│					├COMF182 利尿剤.ERB
+	│					├COMF187 浴室PLAY.ERB
+	│					├COMF320 正常位（相手主導）.ERB
+	│					├COMF322 相手主導後背位.ERB
+	│					├COMF323 相手主導後背位Ａ.ERB
+	│					└日常系┬COMF300 会話.ERB
+	│							├COMF301 泡茶.ERB
+	│							├COMF302 身体接觸.ERB
+	│							├COMF303 道歉.ERB
+	│							├COMF304 幫忙干活.ERB
+	│							├COMF305 索求膝枕.ERB
+	│							├COMF306 撫摸肚子.ERB
+	│							├COMF307 捏臉蛋.ERB
+	│							├COMF308 捅臉頰.ERB
+	│							├COMF309 摸頭.ERB
+	│							├COMF310 摸屁股.ERB
+	│							├COMF311 擁抱.ERB
+	│							├COMF312 接吻.ERB
+	│							├COMF313 胸愛撫.ERB
+	│							├COMF314 肛門愛撫.ERB
+	│							├COMF315 陰蒂愛撫.ERB
+	│							├COMF316 手指挿入.ERB
+	│							├COMF317 動起腰身.ERB
+	│							├COMF318 動起腰身（Ａ）.ERB
+	│							├COMF330 掀起裙子.ERB
+	│							├COMF331 泡茶（下薬）.ERB
+	│							├COMF332 勸酒.ERB
+	│							├COMF333 聽牢騷.ERB
+	│							├COMF334 碰杯.ERB
+	│							├COMF335 照料.ERB
+	│							├COMF336 膝枕.ERB
+	│							├COMF350 推倒.ERB
+	│							├COMF351 帯出去.ERB
+	│							├COMF352 告白.ERB
+	│							├COMF354 陪睡.ERB
+	│							├COMF355 時間停止.ERB
+	│							├COMF360 任憑擺佈.ERB
+	│							├COMF361 抵抗.ERB
+	│							├COMF363 朗読.ERB
+	│							├COMF364 撒豆子.ERB
+	│							├COMF400 移動.ERB
+	│							├COMF401 收藏.ERB
+	│							├COMF402 就寝.ERB
+	│							├COMF403 休憩.ERB
+	│							├COMF405 外出.ERB
+	│							├COMF410 掃除.ERB
+	│							├COMF411 戦闘訓練.ERB
+	│							├COMF412 勉強.ERB
+	│							├COMF413 製作料理.ERB
+	│							├COMF414 吃飯.ERB
+	│							├COMF415 招待吃飯.ERB
+	│							├COMF416 演奏.ERB
+	│							├COMF417 午睡.ERB
+	│							├COMF418 家庭菜園.ERB
+	│							├COMF419 打水.ERB
+	│							├COMF420 和留琴対話.ERB
+	│							├COMF421 祈願.ERB
+	│							├COMF422 聆聽天之聲.ERB
+	│							├COMF425 下薬.ERB
+	│							├COMF428 使用万宝槌.ERB
+	│							├COMF429 換装.ERB
+	│							├COMF430 更衣.ERB
+	│							├COMF431 在浴室里放鬆.ERB
+	│							├COMF432 銭湯.ERB
+	│							├COMF434 神簽.ERB
+	│							├COMF435 守矢神簽.ERB
+	│							├COMF436 読書.ERB
+	│							├COMF440 等待.ERB
+	│							├COMF441 聽課.ERB
+	│							├COMF443 固有指令.ERB
+	│							├COMF444 物色路人女子.ERB
+	│							├COMF450 察看酒虫的情况.ERB
+	│							├COMF464 特殊地域間移動.ERB
+	│							├COMF470 做農活.ERB
+	│							└COMF490 道具.ERB
+	├ステータス計算関連┬TRACHECK_LOST_VIRGIN.ERB
+	│					├TRACHECK_好感度上昇処理.ERB
+	│					└SOURCE─SOURCE.ERB
+	├ステータス表示関連─Look.ERB
+	└口上・メッセージ関連┬EVENT_MESSAGE_COM.ERB
+						　├EVENT_MESSAGE_COM_道具系.ERB
+						　├KOJO_MESSAGE.ERB
+						　└EVENT_MESSAGE_挿入系COM─EVENT_MESSAGE_その他挿入系.ERB
+
+
+COMF系全般の共通修正（個別に書いてない場合はこれのみ
+	インデントを整頓
+	行為者の修正
+	奉仕快楽フラグ位置、射精関連フラグ位置の共通化
+	MASTERはごく一部を除いてPLAYERに
+	日常指令内部の基本コメントフォーマットを統一してみた
+		日常指令の表示レベル　１＞初期状態で表示
+								　２＞亲热等の条件で表示
+								　３＞２＋αの条件で表示
+
+
+诶嘿嘿系COMF
+
+愛撫修正（COMF0 愛撫.ERB
+	TARGETが扶她なら射精するように
+	!FLAG:70時の接吻フラグが立ってる場合、MASTERにも快Ｍが入るように
+
+舐陰修正(COMF1 舐陰.ERB
+	TARGETが扶她なら射精するように
+	SOURCE:与快ＭをSOURCE:PLAYER:快Ｍに
+
+舐陰莖修正(COMF2 舐陰莖.ERB
+	MASTERにも快Ｍが入るように
+
+張開陰唇＆張開肛門(COMF8 張開陰唇.ERB,COMF13 張開肛門.ERB
+	処女分岐処理修正
+
+接吻修正(COMF19 接吻（継続）.ERB,COMF20 接吻.ERB
+	SOURCE:与快ＭをSOURCE:PLAYER:快Ｍに
+	COMF20の時姦中SOURCE:PLAYER:快Ｍはコメントアウト(TARGETの技術が絡む以上は増えない方が道理
+	体位分岐修正（COMF19、した覚えないけど、されてる……恐い
+
+跳蛋（COMF40 跳蛋.ERB
+	TARGETが扶她なら射精するように
+
+電動按摩棒（COMF41 電動按摩棒.ERB
+	TARGETが扶她なら射精するように
+
+MASTER挿入系＆被奉仕系（COMF60 正常位.ERB,COMF61 後背位.ERB,COMF62 正常位肛交.ERB,COMF63 後背位肛交.ERB,COMF65 騎乗位.ERB,COMF66 騎乗位肛交.ERB,COMF71 二穴挿入.ERB,COMF79 小人飛機杯.ERB,COMF80 手淫.ERB,COMF81 口交.ERB,COMF82 乳交.ERB,COMF83 素股.ERB,COMF84 泡泡浴.ERB,COMF85 足交.ERB,COMF88 真空口交.ERB,COMF320 正常位（相手主導）.ERB,COMF322 相手主導後背位.ERB
+	PLAYERに快Ｃを追加
+	性別による可否を追加（COMF83 素股.ERB
+	性別によるPLAYERSOURCEの追加（COMF84 泡泡浴.ERB
+
+MASTER被挿入系（COMF64 逆強姦.ERB,COMF130 被正常位.ERB,COMF131 被後背位.ERB,COMF132 被対面座位.ERB,COMF133 被背面座位.ERB
+	PLAYERに快Ｖ追加
+	PLAYERに快Ｃ追加（COMF132 被対面座位.ERB
+	PLAYERに快Ｂ追加（COMF133 被背面座位.ERB
+	
+	MASTER処女喪失処理スキップ
+	COMF内Ｖ経験追加処理の削除
+
+MASTERＡ被挿入系（COMF92 被Ａ正常位.ERB,COMF93 被Ａ後背位.ERB,COMF94 Ａ騎乗位.ERB
+	PLAYERに快Ａ追加
+	PLAYERの射精強度の計算に使っているＡ感覚にリミットをかけてみる
+	SOURCE追加によって経験も自動追加されるので、Ａ経験追加処理を削除
+
+強制舐陰（COMF120 強制舐陰.ERB
+	PLAYERに快Ｃ、TARGETに快Ｍ追加
+	TARGETの性技補正によって、PLAYERに液体と快Ｃ増加
+
+貝あわせ（COMF121 貝あわせ.ERB
+	PLAYERに快Ｃ追加
+
+足交（COMF123 足交.ERB
+	実際の指令とファイル名が違っていたので修正
+
+手淫（COMF124 手淫.ERB
+	時姦中のみTARGETに快Ｃが入ってたので、非時間中にも快Ｃが入るように
+	PLAYERの手淫経験追加
+
+被愛撫（COMF125 被愛撫.ERB
+	PLAYERに快Ｃ追加
+	PLAYERに性別（女性器）がある場合快Ｂ追加
+	手淫経験増加
+
+互揉胸部（COMF126 互揉胸部.ERB
+	コメント変更だけ（する意味あったのか？
+
+強制口交（COMF140 強制口交.ERB
+	PLAYERに快Ｃ追加
+	TARGETの舌技能によるSOURCE追加を試みてみる
+
+雙乳間抽插（COMF150 雙乳間抽插.ERB
+	PLAYERに快Ｃ追加
+	TARGETの胸技能によるSOURCE追加を試みてみる
+
+
+日常系COMF
+
+摸屁股（COMF310 摸屁股.ERB
+	以前指摘したバグを修正するために、いろいろ頭をひねってみた
+	具体的には、親密５以下なら通常の日常指令の成否判定と同等
+	６以上だと、基本的に成功で、通常の成否判定より大成功しやすい方式に暫定的にしてみた
+	口上側から成否判定に手を出す改造するときのためには、全部同じ成否判定使い回したい
+
+手指挿入（COMF316 手指挿入.ERB
+	時間停止しててもTIMEが＋10されてたので修正
+	てか、さすがにこれ報告されんわなぁ
+
+動起腰身（COMF317 動起腰身.ERB
+	PLAYERに快Ｃ追加
+
+動起腰身（Ａ）（COMF318 動起腰身（Ａ）.ERB
+	動起腰身をコピーして、膣関連をアナル関連に置き換えただけ
+
+帯出去（COMF351 帯出去.ERB
+	複数TARGETがいる中で、同行可能キャラが一人だけの場合、選択肢を呼ばないようにしてみた
+
+
+＋αその１（TRACHECK_LOST_VIRGIN.ERB
+	诶嘿嘿系COMFの変更によって、MASTERの処女喪失も@LOST_VIRGINで表示されるようになったので、地の文に手をくわえてみた
+
+＋α之２（TRACHECK_好感度上昇処理.ERB
+	インデント修正、それだけ
+
+＋αその３（SOURCE.ERB,KOJO_MESSAGE.ERB
+	前回のバグ修正が間違ってたので、再修正
+
+＋αその４（Look.ERB
+	SIF直後のコメントアウトは処理すっ飛ばされるので、必要無い;DRAWLINEを削除
+
+＋αその５（EVENT_MESSAGE_COM.ERB
+	舐陰の地の文に扶她だった場合の描写を追加
+	張開肛門の地の文稍微変化
+
+＋αその６（EVENT_MESSAGE_COM_道具系.ERB
+	電動按摩棒ーの地の文に扶她だった場合の描写を追加
+
+＋αその７（EVENT_MESSAGE_その他挿入系.ERB
+	逆強姦地の文が、どう見てもTARGET主導の騎乗位させられている体になってたので、ちゃんとMASTERがしている文に書き直してみるテスト
+
+＋αその８（EVENTCOMEND2.ERB
+	MASTERの時間停止処女喪失時、MASTERには無自覚非処女がつかないように
+	あと、CFLAG無自覚非処女に喪失キャラの番号が指定されてないので一応追加
+
+
+めっちゃ無意味な大改造になってしまった気がする
+というか、そもそもeraの設計思想として、MASTERの身体的経験は増減しない、ってのが元来だったんじゃないかと思う
+MASTERを女性にしたり扶她にしたり出来るようになった時点で、色々根本の処理に変更加えるべきだったのを上辺の処理変更で済ませてきたから、現在的状態に合わなくなってるっぽい
+とりあえず、counter周りも手をつけないといけないっぽい
+こっちはまた今度、てか、表向きには効果の無い処理変更と追加って疲れる
+
+個人的に、扶她or男の場合、Ｃ絶頂は射精と同期させるべきだとは思うけど、これはこれで色々と面倒くさそうなので放置
+
+なんか、妙に気が向いたし、咲夜さん口上書いてみようかなぁ
+
+
+
+
+byさもま

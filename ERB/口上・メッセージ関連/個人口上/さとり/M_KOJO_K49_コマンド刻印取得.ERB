@@ -1,0 +1,73 @@
+﻿;-------------------------------------------
+;刻印取得
+;-------------------------------------------
+@M_KOJO_MESSAGE_MARKCNG_K49
+CALL MARK_MESSAGE
+IF !FLAG:70
+	;苦痛刻印
+	IF TFLAG:22 == 1
+		PRINTFORMW 「……『很痛苦吧』？　這樣、玩弄我很開心嗎」
+	ELSEIF TFLAG:22 == 2
+		PRINTFORMW 「嗚……、這個、……好痛……」
+	ELSEIF TFLAG:22 == 3
+		PRINTFORMW 「咿咕！　不要、已經不要了」
+	ENDIF
+	;快楽刻印
+	IF TFLAG:23 == 1
+		IF 陥落状態() == 3 || 陥落状態() == 1
+			PRINTFORMW 「不、這樣的、好害羞……唔咕……」
+		ELSE
+			PRINTFORMW 「呼啊！　咕、這、這樣的、一點也不舒服」
+		ENDIF
+	ELSEIF TFLAG:23 == 2
+		IF 陥落状態() == 3 || 陥落状態() == 1
+			PRINTFORMW 「呼啊！？　這、這個、那個、好、好舒服」
+		ELSE
+			PRINTFORMW 「啊呼、嗯嗚……、『看起來真舒服』？　誰、誰知道、呢」
+		ENDIF
+	ELSEIF TFLAG:23 == 3
+		PRINTFORMW 「咿！　啊咿！　不錯、好舒服！！」
+	ENDIF
+
+	;不埒刻印
+	;快楽による刻印
+	;LV1
+	IF TFLAG:24 == 11
+		PRINTFORMW 「呀……、『真是可愛的聲音』……給我閉嘴」
+	;LV2
+	ELSEIF TFLAG:24 == 12
+		PRINTFORMW 「呀、……『想要更多嗎』？　怎、怎麼、會」
+	;LV3
+	ELSEIF TFLAG:24 == 13
+		PRINTFORMW 「嗯……、好、好想要、好想要更多」
+	;屈服、恭順による刻印
+	;LV1
+	ELSEIF TFLAG:24 == 31
+		PRINTFORMW 「……這只是、一時迷惘、迷惘而已」
+	;LV2
+	ELSEIF TFLAG:24 == 32
+		PRINTFORMW 「……我才不會擁抱、這種、肉慾的化身」
+	;LV3
+	ELSEIF TFLAG:24 == 33
+		PRINTFORMW 「……哼哼、已經不行、了。已經有這種感覺了」
+	ENDIF
+
+	;反発刻印
+	IF TFLAG:21 == 1
+		PRINTFORMDW 覺冰冷的眼神、令%CALLNAME:MASTER%額頭冒出冷汗
+	ELSEIF TFLAG:21 == 2
+		PRINTFORMDW 覺釋放出強烈恐怖的壓迫感、令%CALLNAME:MASTER%後背已經滿滿冷汗了
+	ELSEIF TFLAG:21 == 3
+		PRINTFORMDW 覺冰冷的表情、令%CALLNAME:MASTER%感受到毛骨悚然程度般的恐怖
+	ENDIF
+ENDIF
+[SKIPSTART]
+;時姦刻印
+IF TFLAG:時姦刻印取得 == 1
+	PRINTFORMW %CALLNAME:MASTER%の刺激に覚の体の各部が震える様子に、笑みがこぼれた
+ELSEIF TFLAG:時姦刻印取得 == 2
+	PRINTFORMW 時止めから解放している覚の性感帯が痙攣する様子に満足感を覚えた
+ELSEIF TFLAG:時姦刻印取得 == 3
+	PRINTFORMW 少しの刺激で覚の恥部が悦楽に震え、%CALLNAME:MASTER%を望むように動いている
+ENDIF
+[SKIPEND]

@@ -1,0 +1,580 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;性騷擾系指令
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;310,摸屁股
+;TFLAG:193(1=不快(TALENT:膽怯なら涙目) 2&&3=恥ずかしがる(TALENT:討厭男人兼MASTERが男なら、身をすくめる) 4=されるがまま)
+;CFLAG:うふふ==2&&TCVAR:20(胖次無し顔面騎乗(70=強制舐陰 71=口交強制 72=肛門奉仕) 35=裙子内見せつけ 52=素股)
+;CFLAG:うふふ==2&&TEQUIP:六九式(胖次ありTCVAR:20(70～72)はこちら)
+;PREVCOM(305=膝枕
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_310
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_310_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_310_1
+
+	
+	;口上启动开关
+	LOCAL = 1
+	
+	IF LOCAL
+	
+		IF TALENT:恋人
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「想，想摸么？」
+				PRINTFORML 「……随你喜欢好了」
+				PRINTFORMW 菫子像是期待着什么一样的眼神看了过来……
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORMW 虽然比较小，但是玩弄起来还是有肉肉的感觉……
+				PRINTFORML 「呜……摸就摸好了，不要摸得这样恶心……」
+				PRINTFORMW 菫子气喘吁吁的……
+			
+			ELSE
+			
+				PRINTFORMW  %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「就算是恋人，也要有基本的礼仪才对」
+				PRINTFORMW 但是言行不一的是，堇子并没有反抗，任凭被%MASTERNAME:106%欺负着
+				PRINTFORMW %MASTERNAME:106%尽情的揉捏了堇子的屁股……
+			
+			ENDIF
+		
+		ELSEIF TALENT:恋慕
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「果然姿势很像」
+				PRINTFORML 「很像今天早上被抓走的那个痴汉一样……」
+				PRINTFORML 「……就是这种程度哦」
+				PRINTFORMW 菫子调皮的戏弄着%MASTERNAME:106%……
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「噫，噫呀……」
+				PRINTFORML 「突然变成了奇怪的犯人！」
+				PRINTFORMW 虽然看上去脸上一副气呼呼的堇子，但是怎么看都不像是在生气……
+			
+			ELSE
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「呜！快停下啦，变态！」
+				PRINTFORMW 嘴上这样说着，但是身体却没有反抗呢……
+			
+			ENDIF
+		
+		ELSEIF TALENT:思慕
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「……哈」
+				PRINTFORMW 被迅速的拉开了距离……
+				PRINTFORML 「突然，做什么啦……」
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「呀！？」
+				PRINTFORMW 听到突如其来的触感，堇子突然发出可爱的叫声
+				PRINTFORML 「呜……最差劲了」
+			
+			ELSE
+			
+				PRINTFORMW %MASTERNAME:106%把手放在堇子的屁股上
+				PRINTFORML 「呜、呜……！」
+				PRINTFORMW 突然脚被踩了！
+				PRINTFORML 「什么嘛，突然好过分」
+			
+			ENDIF
+		
+		ELSE
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手伸向堇子的屁股
+				PRINTFORMW ……触摸前用看不到的力量扭住了手腕
+				PRINTFORML 「你在想什么呢……？」
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%把手伸向堇子的屁股
+				PRINTFORML 「想死么？」
+				PRINTFORMW 被堇子发现了
+				PRINTFORMW 感觉到了杀意，只能老老实实的缩回手……
+			
+			ELSE
+			
+				PRINTFORMW %MASTERNAME:106%把手伸向堇子的屁股
+				PRINTFORML 「……噫！！」
+				PRINTFORMW 被狠狠地打了一耳光！
+				PRINTFORML 「最差劲了……！」
+				PRINTFORMW 菫子怒气冲冲的盯着%MASTERNAME:106%……
+			
+			ENDIF
+		
+		ENDIF
+	
+	ENDIF
+
+RETURN 1
+
+
+;==================================================
+;311,擁抱
+;TFLAG:193(1=大成功 0=成功 -1=失敗)
+;CFLAG:うふふ==2&&TCVAR:20(32=前から抱きつく 60=ディープキス 73=ぱふぱふ 74=乳合わせ 77=乳を吸わせる ＶＡ性交(85=Ｖ挿入する 87=Ａ挿入する 88=腰振りＶ 89=腰振りＡ) 86=だいしゅきホールド)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_311
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_311_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_311_1
+
+	
+	;口上启动开关
+	LOCAL = 1
+	
+	IF LOCAL
+	
+		IF TALENT:恋人
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%试着从后面抱住堇子，在耳边厮磨着……
+				PRINTFORML 「呜，说这种话什么的……！」
+				PRINTFORML 「呜嗯……」
+				PRINTFORML 「我，我也喜欢你的说……」
+				PRINTFORMW 菫子的脸一直红到了耳根处……
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%试着从后面抱住堇子
+				PRINTFORML 「这种姿势，逃不掉了呢……」
+				PRINTFORML 「……你喜欢就好了啦」
+				PRINTFORMW 菫子安心地依偎在%MASTERNAME:106%的怀抱里，把自己交给了%MASTERNAME:106%……
+			
+			ELSE
+			
+				PRINTFORMW %MASTERNAME:106%在正面大胆的抱住了菫子
+				PRINTFORML 「呜……%MASTERNAME:106%突然撒起娇来了呢」
+				PRINTFORMW 菫子缓缓的抚摸着脑袋……
+			
+			ENDIF
+		
+		ELSEIF TALENT:恋慕
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%在正面大胆的抱住了菫子
+				PRINTFORML 「%MASTERNAME:106%的怀抱，好温暖……」
+				PRINTFORML 「……但是，差不多该分开了」
+				PRINTFORMW 被挣脱开了
+				PRINTFORMW 菫子一脸娇羞的捂着脸……
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%试着从后面抱住堇子
+				PRINTFORML 「呜嗯……」
+				PRINTFORMW 菫子默默地抓住了%MASTERNAME:106%环住自己身体的手臂……
+			
+			ELSE
+			
+				PRINTFORMW %MASTERNAME:106%在正面大胆的抱住了菫子
+				PRINTFORML 「呜！突然之间，要做什么啦」
+				PRINTFORMW 菫子的脸颊上涌现一抹绯红……
+			
+			ENDIF
+		
+		ELSEIF TALENT:思慕
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%试着从后面抱住堇子
+				PRINTFORML 「呜！放开我啦！」
+				PRINTFORMW 抵抗中的堇子的胳膊不小心打中了%MASTERNAME:106%的小腹
+				PRINTFORML 「对不起！没有事吧？」
+				PRINTFORMW 菫子小心翼翼的询问着%MASTERNAME:106%，满脸担心的样子……
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%试图在正面抱住菫子
+				PRINTFORMW ……被无形的力量阻挡住了
+				PRINTFORML 「变态，离我远一点」
+				PRINTFORMW 菫子看上去有点生气……
+			
+			ELSE
+			
+				PRINTFORMW %MASTERNAME:106%试着从后面抱住堇子
+				PRINTFORML 「喂，突然干什么呢」
+				PRINTFORMW 堇子从%MASTERNAME:106%的胳膊里溜了出来……
+			
+			ENDIF
+		
+		ELSE
+		
+			IF RAND:3 == 0
+			
+				PRINTFORMW %MASTERNAME:106%试着从后面抱住堇子
+				PRINTFORML 「很恶心的！赶快离开啦！！」
+				PRINTFORMW 被愤怒的堇子教训了一顿……
+				PRINTFORML 「呼，感觉好多了」
+			
+			ELSEIF RAND:2 == 0
+			
+				PRINTFORMW %MASTERNAME:106%试着从后面抱住堇子
+				PRINTFORML 「这么着急送死么」
+				PRINTFORMW 菫子小声的嘟囔着
+				PRINTFORMW %MASTERNAME:106%感觉到了生命的危险，连忙松开了手……
+			
+			ELSE
+			
+				PRINTFORMW %MASTERNAME:106%试图在正面抱住菫子
+				PRINTFORMW ……被堇子瞬间移动躲开了！
+				PRINTFORML 「你到底在想什么……？」
+			
+			ENDIF
+		
+		ENDIF
+	
+	ENDIF
+
+RETURN 1
+
+
+;==================================================
+;312,接吻
+;TFLAG:193(99=拒絶(キス不可) 1=大成功 0=成功 -1=失敗)
+;CFLAG:うふふ==2&&TCVAR:20(32=前から抱きつく 50=手淫 60=キス 性交(85=Ｖ挿入する 87=Ａ挿入する 88=腰振りＶ 89=腰振りＡ) 86=だいしゅきホールド)
+;PREVCOM(305=膝枕
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_312
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_312_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_312_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%亲吻了堇子
+			PRINTFORML 「呜……嗯……」
+			PRINTFORML 「在这种地方突然恩爱什么的……」
+			PRINTFORMW 菫子一脸娇羞的扑进%MASTERNAME:106%怀里……
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%亲吻了堇子
+			PRINTFORML 「呜……呜嗯……呜……」
+			PRINTFORMW 双唇分开之时，慢慢的拉长了细细的一条银丝
+			PRINTFORMW 菫子眼神陷入了恍惚之中……
+		ELSE
+			PRINTFORMW %MASTERNAME:106%亲吻了堇子
+			PRINTFORML 「呜……舌头……哈呜……嗯……」
+			PRINTFORML 「更多的……更多的疼爱我……%UNICODE(0x2764)%」
+			PRINTFORMW 菫子热情的献上了自己的嘴唇……
+		ENDIF
+	ELSEIF TALENT:恋慕
+		PRINTFORMW %MASTERNAME:106%亲吻了堇子
+		PRINTFORML 「嗯……呜嗯……！」
+		PRINTFORML 「明明在做这种事情之前，要先说好的……」
+		PRINTFORMW 菫子用着复杂的表情看着你……
+	ELSEIF TALENT:思慕
+		PRINTFORMW %MASTERNAME:106%亲吻了堇子
+		PRINTFORML 「呜……！？」
+		PRINTFORML 「噫，笨蛋，变态！！」
+		PRINTFORMW 菫子慌忙擦拭着嘴唇……
+	ELSE
+		PRINTFORMW %MASTERNAME:106%亲吻了堇子
+		PRINTFORML 「……呜！？」
+		PRINTFORMW 被堇子用力撞飞了
+		PRINTFORML 「……绝对不会饶恕的！」
+		PRINTFORMW 菫子愤怒的盯着你，气得直打哆嗦……
+	ENDIF
+ENDIF
+RETURN 1
+
+
+;==================================================
+;313,胸愛撫
+;CFLAG:うふふ==2&&TCVAR:20(27=谷間を見せる 33=胸を揉ませる 53=乳交(小分岐は地の文EVENT_MESSAGE_COM_性騷擾.ERB参照) 73=ぱふぱふ 77=乳を吸わせる 性交(85=Ｖ挿入する 87=Ａ挿入する 88=腰振りＶ 89=腰振りＡ) 86=だいしゅきホールド)
+;ABL:Ｂ感覚(2未満=性的には感じてない 5未満=多少感じてる 5以上=カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;乳のサイズでも変わる場合があるので、地の文EVENT_MESSAGE_COM_性騷擾.ERB参照
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_313
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_313_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_313_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%玩弄着堇子的娇乳
+			PRINTFORML 「……你肯定对除了我以外的人做过这些事吧？」
+			PRINTFORMW 怎么可能嘛
+			PRINTFORML 「唔，那好吧，那就先饶过你」
+			PRINTFORMW 菫子一脸满足的贴在%MASTERNAME:106%的怀抱里……
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%玩弄着堇子的娇乳
+			PRINTFORMW 明明隔着布料，手指上传来了柔软的触感……
+			PRINTFORML 「呜，变态，变态……！」
+			PRINTFORMW 菫子发出可爱的娇喘……
+		ELSE
+			PRINTFORMW %MASTERNAME:106%玩弄着堇子的娇乳
+			PRINTFORML 「在这种地方，不可以……」
+			PRINTFORML 「不，不行……%UNICODE(0x2764)%」
+			PRINTFORMW 菫子的声音越发的甜腻了……
+		ENDIF
+	ELSEIF TALENT:恋慕
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%玩弄着堇子的娇乳
+			PRINTFORML 「呜……突然做什么嘛……」
+			PRINTFORMW 菫子微弱的抵抗着
+			PRINTFORMW %MASTERNAME:106%坏笑着尽情享受了好久……
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%玩弄着堇子的娇乳
+			PRINTFORML 「停下来……！求求你放开我！」
+			PRINTFORML 「呜……呜嗯……」
+			PRINTFORMW 虽然话是这么说，但是堇子几乎没有反抗%MASTERNAME:106%的爱抚……
+		ELSE
+			PRINTFORMW %MASTERNAME:106%玩弄着堇子的娇乳
+			PRINTFORML 「……你肯定对除了我以外的人做过这些事吧？」
+			PRINTFORMW 怎么可能嘛
+			PRINTFORML 「唔，那好吧……」
+			PRINTFORMW 菫子露出难以言喻的表情……
+		ENDIF
+	ELSEIF TALENT:思慕
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%把手伸向堇子的胸部
+			PRINTFORML 「啊，请不要这样色色的」
+			PRINTFORMW 菫子温柔的推开了%MASTERNAME:106%
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%摸到了堇子的胸部
+			PRINTFORML 「噫，咿呀！！」
+			PRINTFORMW ……被看不见的力量推开了
+			PRINTFORML 「如果是其他的人的话，你已经是尸体了哦！」
+		ELSE
+			PRINTFORMW %MASTERNAME:106%摸到了堇子的胸部
+			PRINTFORML 「噫，咿呀！！」
+			PRINTFORMW 堇子甩开手，迅速与%MASTERNAME:106%拉开了距离
+			PRINTFORML 「再有下次，我就要生气了……」
+		ENDIF
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%把手伸向堇子的胸部
+			PRINTFORMW ……被看不见的力量推开了
+			PRINTFORML 「你到底想干什么呢……！？」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%摸到了堇子的胸部
+			PRINTFORML 「……呀！！」
+			PRINTFORMW 被狠狠地扇了一耳光！
+			PRINTFORML 「……绝不饶恕！」
+		ELSE
+			PRINTFORMW %MASTERNAME:106%把手伸向堇子的胸部
+			PRINTFORML 「……咿呀！！」
+			PRINTFORMW 手腕被看不见的力量扭住了
+			PRINTFORML 「垃圾，变态！」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+
+;==================================================
+;314,肛門愛撫
+;CFLAG:うふふ==2&&TCVAR:20(72=肛門奉仕
+;CFLAG:うふふ==2&&TEQUIP:六九式(胖次ありTCVAR:20(70～72)はこちら)
+;ABL:Ａ感覚(2未満=受け入れられない 4未満=異物感に翻弄 4以上=カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_314
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_314_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_314_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+
+;==================================================
+;315,陰蒂愛撫
+;CFLAG:うふふ==2&&TCVAR:20(35=裙子の中を見せる 70=強制舐陰 85=Ｖ挿入する 86=だいしゅきホールド 87=Ａ挿入する 88=腰振りＶ 89=腰振り
+;ABL:Ｃ感覚(4未満=くすぐったい 6未満=ちょっといいかも 6以上=カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_315
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_315_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_315_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+
+;==================================================
+;316,指挿入れ
+;CFLAG:うふふ==2&&TCVAR:20(35=裙子の中を見せる 70=強制舐陰 87=Ａ挿入する 89=腰振りＡ
+;TALENT:処女(指挿入れ連続時喪失注意、基本拒否ぎみ)
+;ABL:Ｖ感覚(1未満=違和感に戸惑う 5未満=ちょっと気持ちいい 5以上＝カイカン)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_316
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_316_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_316_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+
+;==================================================
+;317,Ｖ腰を振る
+;ABL:Ｖ感覚(2未満=まだ気持ち良くない 5未満=ちょっと気持ちいい 5以上=カイカン
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_317
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_317_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_317_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+
+;==================================================
+;318,Ａ腰を振る（現状存在せず
+;==================================================
+;@M_KOJO_MESSAGE_COM_K106_318
+;CALL TRAIN_MESSAGE
+;CALL M_KOJO_MESSAGE_COM_K106_318_1
+;RETURN RESULT
+
+;@M_KOJO_MESSAGE_COM_K106_318_1
+
+;口上启动开关
+;LOCAL = 0
+
+;IF LOCAL
+
+;ENDIF
+;RETURN 1
+
+
+;==================================================
+;330,掀裙子
+;TFLAG:193(-5=拒絶（ビンタ） -3=拒絶（つねり） -1=いやがる 0=いやがる（嬉しげ） 1=受け入れ)
+;TFLAG:193=1&&ABL:露出癖(5以上=人目のある場所で、自ら裙子をまくり上げる 4以下=人目のある場所でめくられるさいに弱い抵抗 3以上=人目のない場所で自ら裙子をまくり上げる 3未満=弱い抵抗)
+;TFLAG:400(1=デート先or地底のモブが反応する)
+;後ろからピラリ、ではなく、前からペラって感じ（そうじゃなかったら、めくり上げようとするのを止めて即座にビンタとか無理、めくり上げられた後にしかならないしその状況ならビンタ食らうより普通に弾幕で一発ＫＯにならないほうがおかしい
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_330
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_330_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_330_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	IF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORMW %MASTERNAME:106%掀起了堇子的裙子
+			PRINTFORML 「呜……不要这样子啦」
+			PRINTFORML 「……会被大家发现的」
+			PRINTFORMW 清楚的看到了裙子下的胖次
+			PRINTFORML 「变、变态！！」
+			PRINTFORMW 堇子含泪羞怒着
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %MASTERNAME:106%掀起了堇子的裙子
+			PRINTFORML 「不要被其他人看到呜」
+			PRINTFORML 「被%MASTERNAME:106%以外的人看到胖次的话，要没脸做人了……」
+			PRINTFORMW 堇子的脸颊羞得通红
+		ELSE
+			PRINTFORMW %MASTERNAME:106%掀起了堇子的裙子
+			PRINTFORML 「……满足了？」
+			PRINTFORMW 菫子用略带冰冷的眼神看过来
+			PRINTFORMW %MASTERNAME:106%的手连忙松开了裙子
+			PRINTFORML 「再这样的话，就算是恋人也……」
+		ENDIF
+	ELSEIF TALENT:恋慕
+		PRINTFORMW %MASTERNAME:106%掀起了堇子的裙子
+		PRINTFORML 「咿呀！！」
+		PRINTFORMW 看到了可爱的胖次呢
+		PRINTFORML 「敢说什么的话，就打飞你！」
+		PRINTFORMW 菫子羞怒的盯着……
+	ELSEIF TALENT:思慕
+		PRINTFORMW %MASTERNAME:106%掀起了堇子的裙子
+		PRINTFORML 「竟然对朋友做出这种事情……！」
+		PRINTFORMW 我们竟然是朋友么？
+		PRINTFORML 「这不是问题的关键吧！！」
+		PRINTFORMW 菫子发怒了……
+	ELSE
+		PRINTFORMW %MASTERNAME:106%掀起了堇子的裙子
+		PRINTFORML 「咿呀！！！————变态！！！！」
+		PRINTFORMW 脸上遭到了重重的一拳
+		PRINTFORMW ……什么都没看见
+	ENDIF
+ENDIF
+RETURN 1

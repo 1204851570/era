@@ -1,0 +1,89 @@
+﻿
+;-------------------------------------------------
+;バイブなど付けっぱなしアイテムのチェック
+;-------------------------------------------------
+@EQUIP_CHECK(ARG)
+;クリキャップ装着中
+SIF TEQUIP:ARG:陰蒂夾
+	CALLFORM EQUIP_COM{COM陰蒂夾}(ARG)
+
+;オナホール装着中
+SIF TEQUIP:ARG:飛機杯
+	CALLFORM EQUIP_COM{COM飛機杯}(ARG)
+
+;バイブ装着中
+SIF TEQUIP:ARG:振動棒
+	CALLFORM EQUIP_COM{COM振動棒}(ARG)
+
+;アナルバイブ装着中
+SIF TEQUIP:ARG:肛用振動棒
+	CALLFORM EQUIP_COM{COM肛用振動棒}(ARG)
+
+;アナルビーズ使用中
+SIF TEQUIP:ARG:後庭拉珠
+	CALLFORM EQUIP_COM{COM後庭拉珠}(ARG)
+
+;ニプルキャップ装着中
+SIF TEQUIP:ARG:乳頭夾
+	CALLFORM EQUIP_COM{COM乳頭夾}(ARG)
+
+;搾乳器装着中
+SIF TEQUIP:ARG:搾乳機
+	CALLFORM EQUIP_COM{COM搾乳機}(ARG)
+
+;アイマスク装着中
+SIF TEQUIP:ARG:眼罩
+	CALLFORM EQUIP_COM{COM眼罩}(ARG)
+
+;縄で緊縛中
+SIF TEQUIP:ARG:縄
+	CALLFORM EQUIP_COM{COM縄}(ARG)
+
+;ボールギャグ装着中
+SIF TEQUIP:ARG:口球
+	CALLFORM EQUIP_COM{COM口球}(ARG)
+
+;浣腸＋アナルプラグ装着中
+SIF TEQUIP:ARG:浣腸
+	CALLFORM EQUIP_COM{COM浣腸}(ARG)
+
+;拡張バルーン装着中
+SIF TEQUIP:ARG:拡張氣球
+	CALLFORM EQUIP_COM{COM拡張氣球}(ARG)
+
+;アナル電極装着中
+SIF TEQUIP:ARG:肛門電極
+	CALLFORM EQUIP_COM{COM肛門電極}(ARG)
+
+;ビデオ撮影中
+SIF ARG > 0 && TEQUIP:MASTER:视频拍摄
+	CALLFORM EQUIP_COM{COM视频拍摄}(ARG)
+
+;羞恥プレイ中
+;SIF TEQUIP:ARG:30
+;	CALL EQUIP_COM186(ARG)
+
+;お風呂場プレイ中
+SIF TEQUIP:ARG:浴室PLAY
+	CALLFORM EQUIP_COM{COM浴室PLAY}(ARG)
+
+;シャワー使用中
+SIF TEQUIP:ARG:淋浴
+	CALLFORM EQUIP_COM{COM淋浴}(ARG)
+
+;新妻プレイ中
+SIF TEQUIP:ARG:新妻PLAY
+	CALLFORM EQUIP_COM{COM新妻PLAY}(ARG)
+
+;Ｖ挿入中
+SIF TEQUIP:ARG:50 >= 0 && !SOURCE:ARG:快Ｖ
+	CALL EQUIP_INCERT_V(ARG)
+
+;Ａ挿入中
+SIF TEQUIP:ARG:51 >= 0 && !SOURCE:ARG:快Ａ
+	CALL EQUIP_INCERT_A(ARG)
+
+;相合い傘中
+SIF TEQUIP:ARG:共用雨伞 && OUTROOF(CFLAG:ARG:現在位置) && ARG == TARGET
+	CALLFORM EQUIP_COM{COM共用雨伞}(ARG)
+RETURN 1

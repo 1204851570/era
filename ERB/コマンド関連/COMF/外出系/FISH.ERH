@@ -1,0 +1,7 @@
+﻿
+;釣った魚サイズの記録変数
+#DIM SAVEDATA FISHSIZE_RECORD, 60
+
+;釣った魚の数の記録変数
+#DIM SAVEDATA FISH_EXP, 60
+

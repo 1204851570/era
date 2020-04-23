@@ -1,0 +1,61 @@
+﻿{
+#DIMS CONST FOOD_MAINDISH = 
+"雑燴粥","蛋澆飯","炒蔬菜","味噌汤","涼拌菜","烏冬面","素麺","荞麦面","煎蛋巻","燉菜",
+"漢堡肉","奶汁燴菜","咖喱飯","涮涮鍋","拉麵","姜汁焼肉","牛排","油淋鶏","奶酪番茄沙拉","興奮劑高湯",
+"澳洲鴕鳥肉","金吉獣料理","天婦羅","盛的滿滿的飯","泡菜飯"
+}
+
+#DIM CONST MENUS_MAINDISH = 24
+
+{
+#DIMS CONST FOOD_DESSERT = 
+"布丁","蛋糕","果凍","蛋撻","曲奇","餡餅","羊羹","大福","蜂蜜蛋糕","団子",
+"水果拼盘","奶油蛋糕", "あんみつ", "マカロン", "タピオカミルクティー","やしょうま"
+}
+
+#DIM CONST MENUS_DESSERT = 16
+
+{
+#DIMS CONST FOOD_SNACK = "","三明治","飯団","漢堡","司康餅","焼麥","肉包","炸魚＆薯條","墨西哥巻餅","章魚焼"
+}
+
+#DIM CONST MENUS_SNACK = 9
+
+{
+#DIMS CONST FOOD_FORBIDDEN = "","油炸跳蛋","电动按摩棒風跳蛋水煮","陰蒂夾用跳蛋握饭团","飛機杯手制跳蛋炖"
+}
+
+{
+#DIMS CONST FOOD_FROG = "青蛙の炸串","青蛙咖喱","青蛙の嫩煎","青蛙の盐烤"
+}
+
+#DIM CONST MENUS_FROG = 4
+
+{
+#DIMS CONST FOOD_FISH = 
+"寿司","焼鱼","煮魚","烤鳗","生制","醋浸","ムニエル","刺身","照烧","竜田油炸",
+"フィッシュ咖喱","斯塔ゲイジー餡餅"
+}
+
+#DIM CONST MENUS_FISH = 12
+
+#DIMS DISHNAME
+#DIM DISHTYPE
+;(1=軽食　2=主食　3=デザート　4=禁断　5=祝日)
+#DIM DISHQUALITY
+#DIM DISHSPOIL
+#DIM DISHTIME
+#DIM  DISHVEGE  ;料理に追加した野菜素材、ITEM番号をそのまま渡します
+#DIM  DISHASSI  ;料理を手伝ったキャラ
+#DIMS DISHTASTE ;料理の味
+
+;イタズラ用の味BITのCONST定義
+#DIM CONST DISH_RADICAL_超辣 = 3
+#DIM CONST DISH_RADICAL_超甜 = 4
+#DIM CONST DISH_RADICAL_芥末 = 5
+#DIM CONST DISH_RADICAL_柠檬 = 6
+
+#DIM CONST DISH_DRAG_媚薬 = 21
+#DIM CONST DISH_DRAG_利尿剤 = 22
+#DIM CONST DISH_DRAG_催情薬 = 23
+#DIM CONST DISH_DRAG_睡眠薬 = 24

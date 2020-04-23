@@ -1,0 +1,170 @@
+﻿@SKIP_MOVE_2(ARG:0,ARG:1)
+#DIM CONST 人間之里的門 = 201
+#DIM CONST 中央広場 = 202
+#DIM CONST 南大街 = 203
+#DIM CONST 東大街 = 204
+#DIM CONST 北大街 = 205
+#DIM CONST 西大街 = 206
+#DIM CONST 龍神像 = 207
+
+#DIM CONST 酒屋 = 211
+#DIM CONST 咖啡館 = 212
+#DIM CONST 鈴奈庵 = 213
+#DIM CONST 長屋前 = 214
+#DIM CONST 花屋 = 215
+#DIM CONST 食料品店 = 216
+#DIM CONST 甜品店 = 217
+#DIM CONST 小料理屋 = 218
+#DIM CONST 集会所 = 219
+#DIM CONST 瞭望樓 = 220
+#DIM CONST 阿求的住宅 = 221
+#DIM CONST SPT寺子屋 = 222
+#DIM CONST 銭湯 = 223
+#DIM CONST 慧音宅 = 224
+#DIM CONST SPT情人用宿屋 = 225
+#DIM CONST 小鈴私室 = 226
+#DIM CONST 八百屋 = 227
+#DIM CONST 貸切浴場 = 228
+
+#DIM CONST 主人公的房間 = 230
+#DIM CONST 蛮奇的房間 = 231
+#DIM CONST 蓮子的房間 = 232
+#DIM CONST 梅莉的房間 = 233
+#DIM CONST 雪的房間 = 234
+#DIM CONST 舞的房間 = 235
+#DIM CONST 公用廁所 = 236
+#DIM CONST 公用水井 = 237
+#DIM CONST 堇子的房間 = 238
+
+;LOCAL一覧
+;0	現在の位置
+
+;現在位置取得
+LOCAL = CFLAG:MASTER:現在位置
+SIF ARG:1
+	LOCAL = ARG:1
+
+;暫定目的地に直接移動できる場合
+IF CAN_MOVE(LOCAL, ARG) & 1
+	;そこに移動
+	RETURN ARG
+ENDIF
+
+;袋小路から行ける場所は固定なので、そこを目指す
+SELECTCASE LOCAL
+CASE 人間之里的門
+	RETURN 南大街
+CASE 酒屋, 咖啡館, 小料理屋
+	RETURN 南大街
+CASE 甜品店
+	RETURN 東大街
+CASE SPT情人用宿屋
+	RETURN 西大街
+CASE 小鈴私室
+	RETURN 鈴奈庵
+CASE 貸切浴場
+	RETURN 銭湯
+CASE 主人公的房間 TO 堇子的房間
+	RETURN 長屋前
+ENDSELECT
+
+;PRINTFORML LOCALは{LOCAL}
+
+;直接移動できない場合、1つ近い位置を暫定目的地に設定し直してループ
+;地点追加時要フォロー（全ケース修正すること）
+SELECTCASE ARG
+	CASE 人間之里的門, 酒屋, 咖啡館, 小料理屋
+		RETURN 南大街
+	CASE 中央広場
+		SELECTCASE LOCAL
+		CASE 鈴奈庵, 甜品店, 銭湯
+			RETURN 東大街
+		CASE 集会所, SPT寺子屋, 慧音宅
+			RETURN 北大街
+		CASE 長屋前, 阿求的住宅, SPT情人用宿屋
+			RETURN 西大街
+		CASEELSE
+			RETURN 南大街
+		ENDSELECT
+	CASE 南大街
+		SELECTCASE LOCAL
+		CASE 集会所, SPT寺子屋, 慧音宅
+			RETURN 東大街
+		CASEELSE
+			RETURN 中央広場
+		ENDSELECT
+	CASE 東大街
+		SELECTCASE LOCAL
+		CASE 長屋前
+			RETURN 南大街
+		CASE 阿求的住宅
+			RETURN 北大街
+		CASEELSE
+			RETURN 中央広場
+		ENDSELECT
+	CASE 北大街
+		RETURN 中央広場
+	CASE 西大街
+		SELECTCASE LOCAL
+		CASE 集会所, SPT寺子屋, 慧音宅
+			RETURN 北大街
+		CASEELSE
+			RETURN 中央広場
+		ENDSELECT
+	CASE 龍神像
+		SELECTCASE LOCAL
+		CASE 集会所, 阿求的住宅, SPT寺子屋, 慧音宅
+			RETURN 北大街
+		CASEELSE
+			RETURN 中央広場
+		ENDSELECT
+	CASE 鈴奈庵, 甜品店, 銭湯
+		RETURN 東大街
+	CASE 長屋前
+		SELECTCASE LOCAL
+		CASE 東大街
+			RETURN 南大街
+		CASEELSE
+			RETURN 西大街
+		ENDSELECT
+	CASE 花屋, 食料品店, 瞭望樓
+		RETURN 中央広場
+	CASE 集会所, SPT寺子屋, 慧音宅
+		SELECTCASE LOCAL
+		CASE 西大街, 龍神像, 阿求的住宅
+			RETURN 北大街
+		CASEELSE
+			RETURN 東大街
+		ENDSELECT
+	CASE 阿求的住宅
+		SELECTCASE LOCAL
+		CASE 龍神像, 集会所, SPT寺子屋, 慧音宅
+			RETURN 北大街
+		CASEELSE
+			RETURN 西大街
+		ENDSELECT
+	CASE SPT寺子屋, 慧音宅
+		SELECTCASE LOCAL
+		CASE 阿求的住宅, 龍神像
+			RETURN 北大街
+		CASEELSE
+			RETURN 東大街
+		ENDSELECT
+	CASE SPT情人用宿屋
+		RETURN 西大街
+	CASE 小鈴私室
+		RETURN 鈴奈庵
+	CASE 八百屋
+		SELECTCASE LOCAL
+		CASE 集会所, SPT寺子屋, 慧音宅
+			RETURN 東大街
+		CASEELSE
+			RETURN 中央広場
+		ENDSELECT
+	CASE 貸切浴場
+		RETURN 銭湯
+	CASE 主人公的房間 TO 堇子的房間
+		RETURN 長屋前
+	CASEELSE
+		RETURN 人間之里的門
+ENDSELECT

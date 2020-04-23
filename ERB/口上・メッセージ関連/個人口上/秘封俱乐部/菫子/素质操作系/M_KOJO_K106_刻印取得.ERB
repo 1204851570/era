@@ -1,0 +1,190 @@
+﻿;eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;==================================================
+;刻印取得
+;==================================================
+@M_KOJO_MESSAGE_MARKCNG_K106
+
+CALL MARK_MESSAGE
+
+IF !FLAG:時間停止
+
+	;苦痛刻印
+	IF TFLAG:苦痛刻印取得 == 1
+		PRINTFORML 「什么……唔……别这样！很痛的！！作为秘术师，我可不要被这样折磨……」
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_痛覚, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 1)
+	ELSEIF TFLAG:苦痛刻印取得 == 2
+		PRINTFORML 「噫呀！别这样！我……才不要忍受这样的痛苦」
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_痛覚, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 0)
+	ELSEIF TFLAG:苦痛刻印取得 == 3
+		PRINTFORML 「呜……要坏掉了……明明是秘术师……但是却开始变得习惯了……」
+		;变化素质
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_痛覚, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+	ENDIF
+	
+	;時姦刻印
+	IF TFLAG:時姦刻印取得 == 1
+		PRINTFORMW 
+	ELSEIF TFLAG:時姦刻印取得 == 2
+		PRINTFORMW 
+	ELSEIF TFLAG:時姦刻印取得 == 3
+		PRINTFORMW 
+	ENDIF
+	
+	;快楽刻印
+	IF TFLAG:快楽刻印取得 == 1
+		PRINTL
+		PRINTL 「哈哈……这种快感……没体验过的事情」
+		PRINTL
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+		PRINTW
+	ELSEIF TFLAG:快楽刻印取得 == 2
+		PRINTL
+		PRINTL 「……稍微再让我舒服一些？」
+		PRINTL 「稍微……也是可以的吧？」
+		PRINTL
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+		PRINTW
+	ELSEIF TFLAG:快楽刻印取得 == 3
+		PRINTL
+		PRINTL 「哈哈……已经不行了」
+		PRINTL 「这样做……满脑子都是这种感觉了……好糟糕」
+		PRINTL
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+		PRINTW
+	ENDIF
+	
+	;不埒刻印
+	;快楽による刻印
+	;LV1
+	IF TFLAG:屈服刻印取得 == 11
+		PRINTL
+		PRINTL 「呜呀！」
+		PRINTL 「啊……！」
+		PRINTL 堇子被自己发出的声音吓得捂着嘴
+		PRINTW
+	;LV2
+	ELSEIF TFLAG:屈服刻印取得 == 12
+		PRINTL
+		PRINTL 「嗯……呜……呐，呐……那个……」
+		PRINTL 「没，没什么……」
+		PRINTL 「啊！？　可爱？　嗯、不要再说了」
+		PRINTW
+	;LV3
+	ELSEIF TFLAG:屈服刻印取得 == 13
+		PRINTL
+		PRINTL 「哈哈……呐，呐？」
+		PRINTL 「把我变成这样的身体，你应该会承担责任吧？」
+		PRINTL
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+		PRINTW
+	;屈服、恭順による刻印
+	;LV1
+	ELSEIF TFLAG:屈服刻印取得 == 31
+		PRINTL
+		PRINTL 「……呵呵」
+		PRINTL 「那个……欸……嗯……果然没什么」
+		PRINTL 堇子歪着小脑袋沉默了一会儿，露出可爱的笑容
+		PRINTW
+	;LV2
+	ELSEIF TFLAG:屈服刻印取得 == 32
+		PRINTL
+		PRINTL 「没事吧？不累吗？给你按摩肩膀吧？」
+		PRINTL 突然怎么了？
+		PRINTW
+	;LV3
+	ELSEIF TFLAG:屈服刻印取得 == 33
+		PRINTL
+		PRINTFORML 「没事吧？不累吗？要揉胸部吗？」
+		PRINTFORML 又突然怎么了？
+		PRINTW
+		PRINTFORML 刚才在最后有说什么奇怪的话吗？
+		;素質も変えちゃう
+		PRINTL
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+		PRINTW
+	ENDIF
+	
+	;反発刻印
+	IF TFLAG:反発刻印取得 == 1
+		PRINTL
+		PRINTFORML 「%MASTERNAME:106%做的事情……不管怎么说，都是最最不可取的」
+		PRINTFORML 「这样做，只会让人更加讨厌你」
+		PRINTFORML 「%MASTERNAME:106%知道错了么？」
+		PRINTFORML 「还是有改过的机会的，如果打算好好的改正的话」
+		;素質も変えちゃう
+		PRINTL
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 1)
+		PRINTW
+	ELSEIF TFLAG:反発刻印取得 == 2
+		PRINTL
+		PRINTFORML 「……在你的眼里，我可以被这样随心所欲地戏耍么？」
+		PRINTFORML 「像我这样的秘术师，只要稍微动用一点力量，你这种人，立马就会被放逐到另外的世界」
+		PRINTFORMDL 一边说着，一边用冷漠的目光直视着%MASTERNAME:106%的双眼，连空气都在身边凝固了一样
+		PRINTFORML 「再给你最后一次改过的机会」
+		PRINTFORML 「再有下次，绝不原谅！」
+		PRINTW
+		;素質も変えちゃう
+		CALL K106_TALENT_UPDOWN(K_106_CFLAG_好感度, 0)
+		CALL K106_TALENT_UPDOWN(K_106_CFLAG_信頼度, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 1)
+		CALL K106_TALENT_UPDOWN(K_106_ABL_親密, 0)
+		CALL K106_TALENT_UPDOWN(K_106_ABL_従順, 0)
+
+	ELSEIF TFLAG:反発刻印取得 == 3
+		PRINTL
+		PRINTFORML 「…………」
+		PRINTFORML 堇子凝视着%MASTERNAME:106%
+		IF ABL:106:42 > ABL:MASTER:42
+			PRINTFORML %MASTERNAME:106%的身躯在堇子狂暴的气势下颤抖着
+			PRINTFORML 堇子的怒火宛如实质化一般，袭击了%MASTERNAME:106%
+			PRINTFORML %MASTERNAME:106%受到了重重的伤害
+			MAXBASE:MASTER:気力 -= 1000
+			MAXBASE:MASTER:体力 -= 1000
+
+		ELSE
+			PRINTFORML %MASTERNAME:106%在堇子狂暴的气势下稳住了身躯
+			PRINTFORML 「哦，竟然这么强么……」
+			PRINTFORML 「为了惩戒像%MASTERNAME:106%这样的垃圾，而被灵梦逐出幻想乡的话，就舍本逐末了……」
+			PRINTFORML 堇子默默的收回了气势，一言不发的走到了一边
+			PRINTFORMW 已经连冷淡的视线都望不到了
+		ENDIF
+		PRINTW
+
+		CALL K106_TALENT_UPDOWN(K_106_CFLAG_好感度, 0)
+		CALL K106_TALENT_UPDOWN(K_106_CFLAG_信頼度, 0)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_自尊心, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_抵抗, 1)
+		CALL K106_TALENT_UPDOWN(K_106_TELENT_難以越過的底線, 1)
+		CALL K106_TALENT_UPDOWN(K_106_ABL_親密, 0)
+		CALL K106_TALENT_UPDOWN(K_106_ABL_従順, 0)
+
+		IF TALENT:106:K_106_TELENT_恋人
+			CALL K106_TALENT_UPDOWN(K_106_CFLAG_前女友, 1)
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_恋人, 0)
+			CLEARBIT CFLAG:106:既成事実, 2
+
+		ELSEIF TALENT:106:K_106_TELENT_恋慕
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_恋慕, 0)
+		
+		ELSEIF TALENT:106:K_106_TELENT_思慕
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_思慕, 0)
+		ENDIF
+	ENDIF
+ENDIF
+

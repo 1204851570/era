@@ -1,0 +1,8434 @@
+﻿@EXIST_キャラデータ_ID
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+;呼び名から
+;要素名→ID変換用関数
+;必要なら各オブジェクトで同様に作成のこと
+@キャラデータ_ID(ARG:0, ARGS:0, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS V_NAME                  ;作成する変数名
+#DIMS C_NAME, OBJ_ID_LAST + 1 ;データ保持
+#DIM  O_ID                    ;参照用
+IF ARGS:0 == "RESET"
+	VARSET C_NAME
+	FOR O_ID, 1, OBJ_ID_LAST + 1
+		C_NAME:O_ID = %GET_STR(, "キャラデータ", O_ID, "呼び名")%
+	NEXT
+ELSE
+	O_ID = FINDELEMENT(C_NAME, ESCAPE(ARGS:0), , , 1)
+	CALLF MAKE_INT(V_NAME, O_ID)
+ENDIF
+
+
+
+;存否関数
+;F関数はTRYCALL系が使えないので通常関数で存否配列を作っちゃう
+@EXIST_キャラデータ1
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+;オブジェクト本体
+@キャラデータ1(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "霊夢")
+
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "袖"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "博麗的巫女服"))
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "神簽契約")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, !FLAG:神簽契約)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/質素/上品/和食/洋食/肉料理/米/野菜/果物/豆沙/甜/清爽/可爱/淘气/")
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/禁断/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "霊験/幸運/")
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "前面有一个小小的蝴蝶结")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "有蝴蝶結的三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "蝴蝶結胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"東方妖恋談"
+	 + "/" + "Witching Dream"
+	 + "/" + "少女綺想曲　～ Capriccio"
+	 + "/" + "永夜の報い　～ Imperishable Night."
+	 + "/" + "少女綺想曲　～ Dream Battle"
+	 + "/" + "春色小径　～ Colorful Path"
+	 )
+}
+
+;農民関連
+;神社は土地持ってそう、神田
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "米農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "米")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "水田")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "博麗神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 0)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 22)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 5)
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 103)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼1(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ2
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ2(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "留琴")
+
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "白色女僕髮箍"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "围裙洋装"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "如同新品一様的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "純白三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "纯白胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/質素/上品/和食/" + "生地/可爱/精密/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/油炸食品/貧相/不穏/可疑/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "女仆流/精密/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"東方の青い空"
+	 + "/" + "霊人の休日"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ3
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ3(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "喀娜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "围裙洋装"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "描绘了猫的动作")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "印花裤(猫)")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "半首位胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/上品/洋食/野菜/" + "可爱/新鲜的/不思議/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/" * 2 + "音量感/貧相/" * 3)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "メイド流/精密/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"夢消失　～ Lost Dream"
+	 + "/" + "永遠の満月"
+	 )
+}
+
+ENDSELECT
+
+
+
+@EXIST_キャラデータ4
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ4(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "魅魔")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "映照出白色的皮肤")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "薔薇刺繍三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "蔷薇刺绣胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[魅魔]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/和食/洋食/淘气/发声/" + "肉料理/汁物/麺類/野菜/魔法/不思議/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "油/濃厚/音量感/慈悲/精妙/魔界風/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "魔法/" * 2)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"東方封魔録　～ 幽幻乱舞"
+	 + "/" + "Complete Darkness"
+	 + "/" + "Reincarnation"
+	 + "/" + "永遠の満月"
+	 )
+}
+
+ENDSELECT
+
+
+
+@EXIST_キャラデータ5
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ5(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "桑尼")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "白色女僕髮箍"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有太阳的様子的刺绣")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "斑点三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "半首位胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[桑尼]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;農民関連
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "生菜農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "生菜")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "生菜田地")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "博麗神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 0)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 25)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 200)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 3)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/中華/洋食/" + "音量感/油炸食品/香料/" * 2 + "肉料理/甜点/甜/可爱/闪耀/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "質素/禁断/" * 2 + "野菜/貧相/" * 4)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "淘气/闪耀/予想外/")
+
+ENDSELECT
+
+
+
+@EXIST_キャラデータ6
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ6(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "露娜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有月亮的様子的刺绣")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "斑点三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "半首位胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[露娜]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;農民関連
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "栗子農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "栗")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "栗林")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "博麗神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 0)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 25)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 200)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 3)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/洋食/" + "汁物/生地/清爽/" * 2 + "質素/甜点/甜/可爱/闪耀/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/" * 2 + "油/香料/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "淘气/闪耀/")
+
+ENDSELECT
+
+
+
+@EXIST_キャラデータ7
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ7(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "斯塔")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有星星的様子的刺绣")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "斑点三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "半首位胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[斯塔]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "探访迹象")
+CASE "固有指令実行可能"
+	SIF CFLAG:7:好感度 >= 200 && GET_MAPID(CFLAG:7:現在位置) == MAIN_MAP
+		CALLF MAKE_INT(V_NAME, 1)
+
+;農民関連
+;むりやりなスターフルーツからオクラ（星形断面）に変更
+;オクラって英語だったのか・・・
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "秋葵農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "秋葵")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "秋葵畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "博麗神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 0)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 25)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 200)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 3)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/和食/洋食/" + "汁物/麺類/简约/" * 2 + "魚料理/甜点/甜/可爱/闪耀/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "淘气/闪耀/")
+ENDSELECT
+
+
+
+@EXIST_キャラデータ8
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ8(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "千百合")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子+头巾）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "短裤"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "水手服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有蓝色的线")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "水手风三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "水手风胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/甜点/" + "米/香料/濃厚/音量感/精密/実験的/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野菜/简约/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "実験的/精密/水兵風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"非統一魔法世界論"
+	 + "/" + "Sailor of Time"
+	 )
+}
+
+ENDSELECT
+
+
+
+@EXIST_キャラデータ9
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ9(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "夢美")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：外衣"
+	SELECTCASE DAY:2
+	CASE 1
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩"))
+	CASE 3
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "斗篷"))
+	CASE 4
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩斗篷"))
+	ENDSELECT
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "破了也会再生")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "纳米技术三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "纳米技术胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[夢美]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;農民関連
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "草莓農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "草莓")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "草莓畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "夢幻遺跡")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 0)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 36)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 5)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/野菜/生地/濃厚/" + "甜点/果物/" * 2 + "草莓/魔法/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "油炸食品/简约/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "実験的/精密/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"魔法鐘愛"
+	 + "/" + "Strawberry Crisis!!"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ10
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ10(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "萃香")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "无袖襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "拘束具"))
+
+;どう見ても原作がノーブラ
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "非常结实")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "鬼のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[萃香]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;農民関連
+;この娘の場合はそこら辺の林をえいやっと畑にしてくれたんだろな
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "西瓜農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "西瓜")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "西瓜畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "博麗神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 0)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 22)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 300)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 4)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/肉料理/魚料理/天狗流/" + "音量感/光滑/简约/西瓜/米/佳肴/豆沙/酩酊大醉/鬼隐藏的味道/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "小人族秘伝的味道/" + "謎料理/禁断/実験的/精密/貧相/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "酩酊大醉/")
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼10(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ11
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ11(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "魔理沙")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "吊帯襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "少女情调")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "荷叶边襯褲")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "衬裙")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;農民関連
+;農家というかキノコスポットを教えてくれたのかな
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "蘑菇農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "蘑菇")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "蘑菇農園")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "魔法之森")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 507)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 450)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 6)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "帮助别人")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/和食/" + "肉料理/魚料理/麺類/松脆/光滑/甜/淘气/弹力/" * 2 + "可爱/新鲜的/大火力/" * 4)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "水気/禁断/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "弹力/大火力/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ひもろぎ、むらさきにもえ"
+	 + "/" + "恋色マジック"
+	 + "/" + "Dim.Dream"
+	 + "/" + "Selene's light"
+	 + "/" + "星の器　～ Casket of Star"
+	 + "/" + "永夜の報い　～ Imperishable Night."
+	 + "/" + "恋色マ斯塔スパーク"
+	 + "/" + "オリエンタルダークフライト"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ12
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ12(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "露米亜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "仿佛有黑暗固定在上面")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "漆黒的三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "漆黒の吊帯衫")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[露米亜]])))
+		CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "軽食/主食/甜点/謎料理/予想外/" + "肉料理/魚料理/青蛙料理/佳肴/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "清爽/霊験/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "弹力/不穏/予想外/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"妖魔夜行"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ13
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ13(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "大妖精")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "自己做的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "毛织胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "毛织胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[大妖精]])))
+		CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "魚料理/汁物/麺類/野菜/生地/" * 2 + "果物/甜点/新鲜的/清爽/淘气/闪耀/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/虫肉/音量感/香料/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "发声/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ルーネイトエルフ"
+	 )
+}
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼13(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ14
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ14(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "琪露諾")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "凉凉的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "氷精のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "氷精の吊帯衫")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[琪露諾]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "买冰淇淋")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/肉料理/濃厚/油/" * 2 + "甜点/甜/氷結/闪耀/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野菜/禁断/香料/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "淘气/弹力/")
+
+;農民関連
+;最強とか天才とかそういう言葉が好きそう
+;寒冷地の作物って感じがするしこの子に任せるっきゃない
+;収穫したテンサイは紅魔館に出荷され砂糖に加工されるのであった
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "甜菜農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "糖萝卜")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "甜菜畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "霧之湖")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 343)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 250)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 9)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"おてんば恋娘"
+	 + "/" + "無何有の郷　～ Deep Mountain"
+	 + "/" + "おてんば恋娘の冒険"
+	 + "/" + "ミストレイク"
+	 )
+}
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼14(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ15
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ15(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "咲夜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "白色女僕髮箍"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "吊帯襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+	ENDIF
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "围裙洋装"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "蝴蝶結"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "吊袜带内衣")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "高级丝绸胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "高级丝绸胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[咲夜]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "红魔馆出差服务")
+CASE "固有指令実行可能"
+	IF TFLAG:上门清扫 && (FLAG:澆水代行 || !ITEM:150)
+	ELSEIF GET_MAPNAME(MAIN_MAP) == "紅魔館"
+	ELSE
+		CALLF MAKE_INT(V_NAME, 1)
+	ENDIF
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/" + "米/生地/野菜/香料/新鲜的/" * 2 + "肉料理/魚料理/甜/華人小娘/" * 3 + "筹码/" * 10)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/" * 2 + "謎料理/虫肉/貧相/不穏/" * 4)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "女仆流/瀟洒/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"メイドと血の懐中時計"
+	 + "/" + "月時計　～ 露娜・ダイアル"
+	 + "/" + "ツェペシュの幼き末裔"
+	 + "/" + "フラワリングナイト"
+	 )
+}
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼15(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ16
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ16(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "蕾米莉亜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "傘"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "非常高级")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "全蕾丝短裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "吊帯衫")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[蕾米莉亜]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/軽食/甜点/" + "光滑/鶏卵/可爱/上品/扑鼻/" * 2 + "红的/絢爛/" * 3 + "筹码/瀟洒/" * 10)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/虫肉/" * 2 + "音量感/野趣/貧相/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "筹码/絢爛/")
+
+;農民関連
+;西洋っぽいので小麦の供給元に
+;霧の湖近辺は冷害が怖い
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "小麦農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "小麦")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "小麦畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "紅魔館")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 301)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 600)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 16)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"亡き王女の為のセプテット"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ17
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+;年越し
+;とりあえずこれひとまず封印して他所でやりましょう
+;なんか晴れ着でも設定すりゃええの？
+;「年越し」でいいか？
+;IF (DAY:2 == 1 && DAY:3 == 1) || (DAY:2 == 4 && DAY:3 == 31) 
+;ELSE
+;ENDIF
+@キャラデータ17(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "愛麗絲")
+CASE "便服"
+	SIF (DAY:2 == 1 && DAY:3 == 1) || (DAY:2 == 4 && DAY:3 == 31)
+		CALLF MAKE_STR(V_NAME, "年越し")
+CASE "明日の衣装"
+	SIF DAY:2 == 4 && (DAY:3 == 30 || DAY:3 == 31)
+		CALLF MAKE_STR(V_NAME, "年越し")
+CASE "今天的睡衣"
+	IF (DAY:2 == 1 && DAY:3 == 1) || (DAY:2 == 4 && DAY:3 == 31)
+		CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+	ELSEIF CFLAG:ARG:初始位置 == CFLAG:MASTER:初始位置
+		CALLF MAKE_STR(V_NAME, "睡衣（情趣内衣）套")
+	ELSE
+		CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+	ENDIF
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髮箍"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "長靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "半透明連裤襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+	ENDIF
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "年越し：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "年越し：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髮箍"))
+CASE "年越し：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "長靴"))
+CASE "年越し：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "半透明連裤襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+	ENDIF
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "爱丽丝手制")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "手织的蕾丝")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "衬裙")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[愛麗絲]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/軽食/甜点/" + "光滑/可爱/上品/华丽/芸術的/闪耀/" * 2 + "生地/新鲜的/魔界風/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/虫肉/油/野趣/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "华丽/魔界風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"プラスチック舞ンド"
+	 + "/" + "不思議の国の愛麗絲"
+	 + "/" + "the Grimoire of Alice"
+	 + "/" + "Peaceful Romancer"
+	 + "/" + "ブクレシュティの人形師"
+	 + "/" + "人形裁判　～ 人の形弄びし少女"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ18
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ18(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "莉莉Ｗ")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "很暖和")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "春告精のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "春告精の吊帯衫")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/甜点/野菜/" + "简约/" * 2 + "魚料理/甜/新鲜的/春風/闪耀/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "音量感/質素/水気/貧相/氷結/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "春風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"天空の花の都"
+	 + "/" + "花の映る塚"
+	 + "/" + "此岸の塚"
+	 + "/" + "桜色の海を泳いで"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ19
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ19(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "莉莉Ｂ")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "很暖和")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "黒春告精のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "黒春告精の吊帯衫")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/甜点/果物/" + "濃厚/" * 2 + "肉料理/香料/新鲜的/春風/闪耀/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "音量感/質素/水気/貧相/氷結/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "春風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"花の映る塚"
+	 + "/" + "此岸の塚"
+	 )
+}
+ENDSELECT
+
+
+
+;虹川姉妹について
+;どうも分岐条件ARG == 23がARG == 22（ルナサ）の誤りでないのかという気配がしたのでそのように
+;（根拠：リリカ＆ルナサがスポブラ装備になる）
+;ただし、帽子についてはリボンではないだろうということで帽子で統一
+;てか三女→次女→長女のならびなのね君たち
+@EXIST_キャラデータ20
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ20(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "莉莉喀")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "星空模様の")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "棉内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "運動文胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[莉莉喀]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/和食/生地/可疑/" + "香料/" * 2 + "肉料理/香料/松脆/不思議/芸術的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野菜/質素/貧相/不穏/" * 2)
+;思いつかないので保留
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"幽霊楽団　～ Phantom Ensemble"
+	 + "/" + "幽霊楽団　～ Phantom Ensemble (花映塚 Version)"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ21
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ21(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "梅露蘭")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "太阳模様的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "襟翼内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "全剪子")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[梅露蘭]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/和食/生地/可疑/" + "音量感/" * 2 + "肉料理/甜/可爱/豆沙/不思議/芸術的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "香料/質素/貧相/不穏/" * 2)
+;思いつかないので保留
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"幽霊楽団　～ Phantom Ensemble"
+	 + "/" + "幽霊楽団　～ Phantom Ensemble (花映塚 Version)"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ22
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ22(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "露娜薩")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "三日月模様の")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "迷你短裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "策略胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[露娜薩]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/和食/生地/可疑/" + "清爽/简约/" * 2 + "魚料理/新鲜的/光滑/不思議/芸術的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/野趣/油/貧相/不穏/" * 2)
+;思いつかないので保留
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"幽霊楽団　～ Phantom Ensemble"
+	 + "/" + "幽霊楽団　～ Phantom Ensemble (花映塚 Version)"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ23
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ23(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "妖夢")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髮箍"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "重视运动的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "内衣紧身裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "運動文胸")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "肉料理/魚料理/麺類/米/" + "简约/" * 2 + "可爱/葡萄/年糕/風流/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/野趣/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "发声/名刀/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"東方妖々夢　～ Ancient Temple"
+	 + "/" + "広有射怪鳥事　～ Till When?"
+	 + "/" + "アルティメットトゥルース"
+	 + "/" + "東方妖々夢　～ Ancient Temple (花映塚 Version)"
+	 )
+}
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼23(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ24
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ24(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "橙")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：上半身下着１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身下着１", "運動文胸"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "耳环"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "黒猫柄の")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "手工缝制的")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[橙]])))
+		CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "中華/和食/" + "麺類/米/濃厚/油/松脆/" * 2 + "肉料理/魚料理/可爱/家庭的/" * 4)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "番茄/葱/水気/不穏/" * 3 + "香料/貧相/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "发声/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"遠野幻想物語"
+	 + "/" + "ティアオイエツォン (withered leaf)"
+	 + "/" + "妖々跋扈"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ25
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ25(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "藍")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "道士服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "尾部开了个大洞的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "Ｏ洞内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "全剪子")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[藍]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/中華/和食/新鲜的/可疑/" + "肉料理/魚料理/麺類/" * 2 + "发声/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/野趣/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "家庭的/精密/")
+
+;農民関連
+;おあげ
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "大豆農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "大豆")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "大豆畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "人里")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 205)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 600)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 5)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"少女幻葬　～ Necro-Fantasy"
+	 + "/" + "妖々跋扈　～ Who done it!"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ26
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ26(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "紫")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "傘"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "吊帯襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：連衣裙"
+	IF DAY:2 == 1
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "道士服"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "晚禮服"))
+	ENDIF
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "放出奇怪的光泽")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "丝绸内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "丝绸内衣")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[紫]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/軽食/甜点/可疑/" + "肉料理/魚料理/清爽/发声/" * 2 + "和食/家庭的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/油/音量感/貧相/天界風/月都風/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ネクロファンタジア"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ27
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ27(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "莉格露")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "斗篷"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "短裤"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "妖力笼罩的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "野蚕糸製三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "野蚕糸製胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[莉格露]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;農民関連
+;虫つながりで蚕
+;本人は金もって無さそうだけど儲けがかなり大きいということで500
+;本来ならもっと手間かかるだろうがこまけーこたーいいんだよっ！
+;小屋は誰が建てたんだろうね
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "養蚕農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "蚕丝")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "養蚕小屋")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "魔法之森")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 540)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 500)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 4)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "肉料理/魚料理/米/野菜/" + "清爽/可爱/家庭的/华丽/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/貧相/不穏/" * 3 + "虫肉/" * 20)
+;思いつかないので保留
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "怪しい/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"蠢々秋月　～ Mooned Insect"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ28
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ28(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "米斯蒂亜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "路边摊吃饭")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, CFLAG:28:行動 == 5 && BASE:28:工作量 < 3000)
+
+;ソング＝Ｔバック
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "嵌着翅膀")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "音符内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "半圆形胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[米斯蒂亜]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "肉料理/魚料理/米/" + "濃厚/新鲜的/可爱/家庭的/芸術的/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "貧相/不穏/" * 3 + "鶏卵/" * 10 + "鶏肉/" * 20)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "家庭的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"もう歌しか聞こえない"
+	 + "/" + "もう歌しか聞こえない　～ Flower Mix"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ29
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ29(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "文")
+
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裙子）套")
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "兜巾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "领帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "花哨的颜色")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "Ｖ型开叉内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "三角胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[文]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;特殊衣装設定
+CASE "おうち约会衣装"
+	SIF MAIN_MAP == 2
+		CALLF MAKE_INT(V_NAME, OBJNAME_TO_ID(ARG, "GET", "衣装セット", "鴨舌帽文套"))
+CASE "人里约会衣装"
+	CALLF MAKE_INT(V_NAME, OBJNAME_TO_ID(ARG, "GET", "衣装セット", "鴨舌帽文套"))
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "新聞購読")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, !FLAG:新聞購読)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/麺類/肉料理/魚料理/鬼隐藏的味道/" + "濃厚/米/新鲜的/可爱/淘气/发声/闪耀/" * 2 + "霊験/天狗流/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/鶏肉/鶏卵/" * 3)
+;思いつかないので保留
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "家庭的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"風神少女　 (Short Version)"
+	 + "/" + "妖怪之山　～ Mysterious Mountain"
+	 )
+}
+
+;農民関連
+;天狗も水田持ってそう
+;山っぽさをだすならワサビなども可
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "米農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "米")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "水田")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "妖怪之山・山麓")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 7)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 732)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 450)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 12)
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 102)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼29(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ30
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ30(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "映姫")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "穿旧了的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "棉裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "木棉胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[映姫]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/麺類/米/野菜/果物/" + "清爽/简约/淘气/发声/" * 2 + "質素/慈悲/冥界風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "虫肉/不穏/" * 3 + "禁断/謎料理/可疑/精妙/魔法/" * 10)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "慈悲/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"六十年目の東方裁判　～ Fate of Sixty Years"
+	 )
+}
+
+;農民関連
+;白黒で思い浮かんだのがこれ
+;報酬は多めにくれる
+;立地が人里なのは三途の川をうろつくのはやめなさいという心遣い
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "胡麻農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "芝麻")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "胡麻畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "人里")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 204)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 450)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 2)
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼30(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ31
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ31(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "早苗")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+CASE "特殊衣装着用"
+	;春か夏に1/7でセーラー服着用
+	SIF (DAY:2 == 1 || DAY:2 == 2) && !RAND:7
+		CALLF MAKE_STR(V_NAME, 74)
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "袖"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "守矢的巫女服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "早苗珍藏的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "旁边有蝴蝶结的三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "前扣胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[早苗]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/甜点/野菜/" + "米/肉料理/魚料理/可爱/霊験/奇跡/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "青蛙料理/虫肉/不穏/" * 3 + "禁断/謎料理/貧相/" * 4)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "奇跡/")
+
+;農民関連
+;神社は土地持ってそう、神田
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "米農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "米")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "水田")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "守谷神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 8)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 814)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 500)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 5)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"少女が見た日本の原風景"
+	 + "/" + "信仰は儚き人类の為に"
+	 + "/" + "ラストリモート"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ32
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ32(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "神奈子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "注連縄"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "贡献给神的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "奇妙内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "裹胸")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/魚料理/青蛙料理/" + "鶏肉/新鲜的/松脆/年糕/霊験/发声/" * 2 + "奇跡/" * 10)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/貧相/不穏/可疑/" * 5 + "虫肉/" * 7)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "奇跡/")
+
+;農民関連
+;神奈子さま高付加価値農業とか好きそう
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "香瓜農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "甜瓜")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "温室")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "守谷神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 8)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 814)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 700)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 18)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"御柱の墓場　～ Grave of Being"
+	 + "/" + "神さびた古戦場　～ Suwa Foughten Field"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ33
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ33(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "諏訪子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子+头巾）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：上半身下着１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身下着１", "裹胸"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有少女的香气的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "番茄胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[諏訪子]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/豆沙/" + "魚料理/麺類/汁物/水気/霊験/发声/" * 2 + "奇跡/" * 10)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "貧相/" * 5 + "青蛙料理/" * 10)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "奇跡/")
+
+;農民関連
+;沼っぽい場所に生えるっぽいので
+;ケロケロな諏訪子様に協力してもらおう
+;財力もありそうだけどそもそもの単価が安いという脳内設定
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "菱農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "菱")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "蓄水池")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "妖怪之山・山麓")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 7)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 708)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 12)
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"明日ハレの日、ケの昨日"
+	 + "/" + "ネイティブフェイス"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ34
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ34(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "天子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "桃"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "没有任何针线")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "桃色內褲")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "乳罩")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "天候操作")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/和食/魚料理/肉料理/" + "油/濃厚/音量感/生地/香料/風流/" * 2 + "絢爛/天界風/" * 10)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野菜/" * 2 + "慈悲/精妙/" * 5 + "野趣/質素/" * 10)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "淘气/絢爛/")
+
+;農民関連
+;もも
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "桃農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "桃")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "桃農園")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "天界")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 8)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 833)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 600)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 7)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ35
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ35(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "衣玖")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "褶边襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "羽衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "羽衣般轻盈的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "薄纱的三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "薄纱的胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[衣玖]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/和食/" + "麺類/汁物/水気/可爱/清爽/風流/" * 2 + "天界風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/禁断/謎料理/" * 2 + "魚料理/" * 4)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/天界風/")
+
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ36
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ36(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "阿燐")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "不妨碍尾巴的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "前卫内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "褶边胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/米/" + "濃厚/音量感/" * 2 + "肉料理/魚料理/" * 3 + "家庭的/地底風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "香料/简约/水気/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地獄風/地底風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ハートフェルトファンシー"
+	 + "/" + "廃獄ララバイ"
+	 + "/" + "死体旅行　～ Be of good cheer!"
+	 + "/" + "業火斗篷ル"
+	 )
+}
+
+;農民関連
+;キウイはマタタビの仲間でネコをメロメロにする
+;果実にその効果はないみたいだが
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "獼猴桃農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "猕猴桃")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "獼猴桃農園")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "地底")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 9)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 926)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 8)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ37
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ37(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "阿空")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子+头巾）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "斗篷"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "描绘了【CAUTION！】")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "印花内裤(核)")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "印花胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[阿空]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/米/香料/" + "濃厚/油/" * 2 + "肉料理/音量感/" * 3 + "家庭的/地底風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "鶏肉/鶏卵/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地獄風/地底風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"業火斗篷ル"
+	 + "/" + "霊知の太陽信仰　～ Nuclear Fusion"
+	 )
+}
+
+;農民関連
+;アホの子キャラから「ウドの大木」という言葉を連想
+;さらに地底在住という立地は白ウドの栽培に適している
+;貶す意図はありませんしお空ちゃんがキライなわけでもありません
+;地獄跡へ続く穴に横穴でも掘って栽培？
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "番薯農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "白薯")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "番薯畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "地底")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 9)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 927)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 3)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ38
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ38(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "恋")
+;こっから衣装設定
+CASE "今天的睡衣"
+	IF !RAND:2
+		IF RAND:1000 == 514
+			CALLF MAKE_STR(V_NAME, "全裸")
+		ELSE
+			CALLF MAKE_STR(V_NAME, "针织衫")
+		ENDIF
+	ELSE
+		CALLF MAKE_STR(V_NAME, "睡衣（裤子+头巾）套")
+	ENDIF
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "大概不是恋恋的东西")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "性感内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "性感胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[恋]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/謎料理/野趣/" + "濃厚/油炸食品/可爱/新鲜的/" * 2 + "家庭的/地底風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "質素/野菜/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "淘气/地底風/予想外/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ハルトマンの妖怪少女"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ39
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ39(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "納茲琳")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子+头巾）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "尾部有洞的灰色")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "编织物短裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "编织物胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "灵摆查找")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;味覚嗜好121
+;0b1111001　濃い味、激辛、激甘、ワサビ、レモン
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/肉料理/米/生地/" + "音量感/濃厚/油/松脆/香料/繊細/" * 2 + "乳酪/慈悲/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/貧相/絢爛/精妙/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "慈悲/繊細/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"小小的小小的賢将"
+	 + "/" + "魔界地方都市エソテリア"
+	 )
+}
+
+;農民関連
+;泣きついたら小言を言いながら何とかしてくれそう
+;特に寺の連中が見てたら断りきれない
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "茄子農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "茄子")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "茄子畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "命蓮寺")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 106)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 8)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ40
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ40(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "小傘")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "针织衫")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "傘"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "傘の修理")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, FLAG:傘耐久度 > 5000 || ITEM:壊掉的傘)
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "吓人用的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "目玉柄三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "目玉柄胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[小傘]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+;味覚嗜好1
+;0b0000001　濃い味
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/麺類/魚料理/" * 2 + "濃厚/予想外/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/清爽/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "予想外/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"万年置き傘にご注意を"
+	 + "/" + "夜空のユーフォーロマンス"
+	 + "/" + "素敵な墓場で暮しましょ"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ41
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ41(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "鵺")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "马赛克模糊的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "正体不明パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "正体不明胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+;味覚嗜好1
+;0b0000001　濃い味
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/麺類/不穏/可疑/" + "肉料理/濃厚/油炸食品/予想外/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野菜/清爽/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/可疑/予想外/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"平安のエイリアン"
+	 + "/" + "妖怪裏参道"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ42
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ42(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "極")
+
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "兜巾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "领帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "像是时今少女的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "褶边胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "褶边胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "麺類/肉料理/魚料理/" + "濃厚/音量感/新鲜的/可爱/" * 2 + "天狗流/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/" + "番茄/鶏肉/鶏卵/貧相/不穏/可疑/" * 3)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "不穏/怪しい/予想外/")
+ENDSELECT
+
+
+;茨木華扇
+@EXIST_キャラデータ43
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ43(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "華扇")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "束髪簪"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "旗袍"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "绷帯"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "拘束具"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "淡粉色的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "喇叭短裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "弹性胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/上品/" + "米/麺類/肉料理/魚料理/汁物/生地/新鲜的/可爱/" * 2 + "甜/音量感/佳肴/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/貧相/冥界風/" * 10)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "/")
+
+;特殊衣装設定、おうちデートで稀にみこかせん
+CASE "おうち约会衣装"
+	SIF MAIN_MAP == 0 && !RAND:15
+		CALLF MAKE_INT(V_NAME, 101)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ44
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ44(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "艾倫")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "围裙洋装"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "非常蓬松的様子的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "丝带褶边内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "吊帯衫")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/米/麺類/" * 2 + "生地/新鲜的/可爱/魔法/芸術的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/油/濃厚/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "发声/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"Tabula rasa　～ 空白少女"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ45
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ45(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "理香子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "眼鏡"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "白衣"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "安価で简约な")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "白內褲")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "白文胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[理香子]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/清爽/光滑/" + "米/生地/新鲜的/可爱/精密/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/青蛙料理/虫肉/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "精密/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"夢幻遊戯　～ Dream War"
+	 )
+}
+ENDSELECT
+
+
+;いろいろ不自然
+;靴：雪駄、靴下：足袋、ズボン：袴　あたりが妥当か？
+@EXIST_キャラデータ46
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ46(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "明羅")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "雪駄"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "短布襪"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "袴"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "古代宽松的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "畚兜裆布")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "裹胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[明羅]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/魚料理/" + "清爽/光滑/简约/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/禁断/貧相/不穏/" * 2 + "甜/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "名刀/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"やみのちから"
+	 )
+}
+ENDSELECT
+
+
+@EXIST_キャラデータ47
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ47(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "里香")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "短裤"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "平时就很睡意的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "朴素的内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "運動文胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[里香]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/生地/肉料理/可爱/" * 2 + "甜/濃厚/音量感/精密/実験的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/青蛙料理/虫肉/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "精密/実験的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"She's in a temper!!"
+	 + "/" + "エ接吻トララブ"
+	 + "/" + "戦車むすめのみるゆめ"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ48
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ48(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "露易茲")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "水手服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "旅行用的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "休闲内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "休闲胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/生地/" + "肉料理/可爱/甜/音量感/魔界風/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/青蛙料理/虫肉/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "魔界風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"霊天　～ Spiritual Heaven"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ49
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ49(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "覚")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髮箍"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有非常美丽的薔薇刺绣的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "高级时尚内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "高级时尚胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[覚]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/果物/米/生地/肉料理/魚料理/清爽/" + "可爱/新鲜的/地底風/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/音量感/貧相/不穏/予想外/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地底風/细心/家庭的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ハートフェルトファンシー"
+	 + "/" + "少女覚　～ 3rd eye"
+	 )
+}
+
+;農民関連
+;農家というか庭師？？？
+;出荷用ではなくさとりさまの趣味の範疇ということで報酬はすくなめに
+;きっと部屋に活けたり妹の飾った死体にデコレーションしてる
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "蔷薇農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "蔷薇花")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "薔薇園")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "地底")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 9)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 925)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 350)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 6)
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 103)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼49(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ50
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ50(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "芙兰")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子+头巾）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "稍微背伸びした")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "花边内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "吊帯衫")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[芙兰]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/生地/" + "光滑/可爱/上品/扑鼻/" * 2 + "肉料理/红的/甜/魔法/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/野菜/" * 2 + "野趣/貧相/" * 4)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/魔法/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"U.N.オーエンは彼女なのか？"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ51
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ51(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "荷取")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "風鏡"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "鴨舌帽"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "帆布背包"))
+CASE "便装：上半身外衣２"
+	;IF DAY:2 == 2
+	;	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身上着２", "タンクトップ"))
+	;ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+	;ENDIF
+;CASE "普段着：ズボン"
+;	SIF DAY:2 == 2
+;		CALLF MAKE_INT(V_NAME, CLOTHES_ID("ズボン", "作業ズボン"))
+CASE "便装：裙子"
+	;SIF DAY:2 != 2
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "防水规格")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "比基尼三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "管式胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "購買道具")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/魚料理/麺類/水気/光滑/実験的/" * 2 + "黄瓜/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/香料/简约/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "実験的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"芥川龍之介の河童　～ Candid Friend"
+	 )
+}
+
+;農民関連
+;薄給
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "黄瓜農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "黄瓜")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "黄瓜畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "妖怪之山・山麓")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 7)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 703)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 300)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 4)
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 102)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼51(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ52
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ52(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "鈴仙")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+;夏はブレザーを脱ぐ
+	SIF DAY:2 != 2
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "西装上衣"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "领帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "用丝带绑起了兔尾的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "条纹内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "条纹胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/米/生地/" + "野菜/松脆/年糕/" * 2 + "胡蘿卜/月都風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/油/香料/貧相/不穏/" * 3 + "禁断/謎料理/虫肉/予想外/" * 5)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "実験的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"狂気の瞳　～ Invisible Full_Moon"
+	 + "/" + "狂気の瞳　～ Invisible Full_Moon (花映塚 Version)"
+	 )
+}
+
+;特殊衣装
+CASE "おうち约会衣装"
+	SIF MAIN_MAP == 2
+		CALLF MAKE_INT(V_NAME, OBJNAME_TO_ID(ARG, "GET", "衣装セット", "卖药套"))
+CASE "人里约会衣装"
+	CALLF MAKE_INT(V_NAME, OBJNAME_TO_ID(ARG, "GET", "衣装セット", "卖药套"))
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "買薬")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ53
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ53(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "帝")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "项链"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "買薬")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "风水上有金钱运的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "缎带内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "缎带胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/米/和食/" + "野菜/松脆/年糕/" * 2 + "胡蘿卜/幸運/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/香料/" * 2 + "禁断/謎料理/虫肉/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "予想外/幸運/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"シンデレラケージ　～ Kagome-Kagome"
+	 + "/" + "お宇佐さまの素い幡"
+	 )
+}
+;農民関連
+;金もってそう
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "胡蘿卜農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "胡蘿卜")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "胡蘿卜畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "迷途竹林")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 4)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 433)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 450)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 15)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ54
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ54(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "帕秋莉")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "柔软的布料的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "雪纺内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "雪纺胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "軽食/甜点/上品/果物/" + "光滑/" * 2 + "生地/新鲜的/実験的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "音量感/油/濃厚/野趣/貧相/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "精密/実験的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ラクトガール　～ 少女密室"
+	 + "/" + "魔法少女達の百年祭"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ55
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ55(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "白蓮")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "斗篷"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "長靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "吊帯襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "哥特蘿莉服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有多次修补痕迹的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "漂白布内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "漂白布胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[白蓮]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+;0b1100010　薄味、ワサビ、レモン
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/野菜/果物/" + "質素/野趣/魔界風/" * 2 + "清爽/慈悲/淘气/发声/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "濃厚/上品/絢爛/" * 2 + "肉料理/魚料理/冥界風/精妙/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "慈悲/魔界風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"法界の火"
+	 + "/" + "感情の摩天楼　～ Cosmic Mind"
+	 )
+}
+
+;農民関連
+;精進料理用
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "大豆農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "大豆")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "大豆畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "命蓮寺")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 106)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 2)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ56
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ56(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "神子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "水手服"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "手镯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "定制的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "真丝蕾丝内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "真丝蕾丝胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[神子]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/野菜/果物/新鲜的/清爽/" + "肉料理/魚料理/天界風/月都風/发声/" * 2 + "上品/風流/絢爛/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/油/濃厚/慈悲/冥界風/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/絢爛/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"小小的欲望の星空"
+	 + "/" + "聖徳伝説　～ True Administrator"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ57
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ57(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "心")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子+头巾）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "面"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+;けしてオープンショーツではない
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "各种面具笑脸的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "穿孔短裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[心]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/米/果物/新鲜的/可爱/" + "肉料理/魚料理/風流/霊験/" * 2 + "上品/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "濃厚/謎料理/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/")
+ENDSELECT
+
+
+
+@EXIST_キャラデータ58
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ58(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "美鈴")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+CASE "特殊衣装着用"
+	SIF (TALENT:58:恋慕 || TALENT:58:炮友) && CFLAG:58:积攒度 >= 700
+		CALLF MAKE_INT(V_NAME, 73)
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "裤子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "旗袍"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "不会发出声音的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "高级T恤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "運動文胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[美鈴]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/中華/可爱/生地/濃厚/红的/" + "肉料理/魚料理/淘气/" * 2 + "音量感/新鲜的/瀟洒/女仆流/筹码/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/清爽/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "大火力/華人小娘/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"明治十七年の上海愛麗絲"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ59
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ59(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "小悪魔")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "领帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "挑衅的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "蕾丝T恤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "透明胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[小悪魔]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/可爱/生地/甜/新鲜的/" + "洋食/魔界風/魔法/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/油/貧相/慈悲/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "魔界風/魔法/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ヴワル魔法図書館"
+	 )
+}
+
+;農民関連
+;まさかの室内栽培
+;主人をからかうのが目的だが気づかれていない様子
+;ぜんぜん儲からない
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "豆芽農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "豆芽")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "豆芽部屋")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "紅魔館")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 310)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 150)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 10)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ60
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ60(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "琶露西")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+CASE "便装：腕部装束"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("腕部装束", "臂套"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "围巾"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "轻率过激的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "弦内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "环形胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[琶露西]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/野菜/果物/" + "魚料理/麺類/生地/新鲜的/不穏/嫉妬/地底風/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "甜/濃厚/音量感/" * 3 + "愛情/" * 10)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/嫉妬/地底風/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"緑眼のジェラシー"
+	 )
+}
+
+;農民関連
+;はじかみ
+;鮮やかな緑やら食べた時のヒリヒリ感もなんとなくイメージに合うかな
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "山椒農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "花椒")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "山椒畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "地底")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 9)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 945)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 8)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ61
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ61(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "妹紅")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "指貫袴"))
+CASE "便装：上半身外衣２"
+	IF DAY:2 == 2
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "短袖襯衫"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+	ENDIF
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "背帯"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "護符"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "无自觉的打扮好的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "護符パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+;味覚嗜好120
+;0b1111001　普通、激辛、激甘、ワサビ、レモン
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/野菜/肉料理/魚料理/" + "可爱/新鲜的/简约/清爽/大火力/淘气/发声/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "甜/濃厚/音量感/" * 3 + "月都風/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "大火力/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"月まで届け、不死の煙"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ62
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ62(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "輝夜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+
+;神様が織った布のパンツとか月じゃ普通だと思う
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "星星的光辉交织在一起的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "文布の三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "文布の胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[輝夜]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/米/光滑/年糕/可爱/新鲜的/月都風/風流/淘气/发声/")
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/" * 5 + "質素/" * 10 + "野趣/虫肉/貧相/" * 20)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "月都風/風流/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ヴォヤージュ1969"
+	 + "/" + "竹取飛翔　～ Lunatic Princess"
+	 + "/" + "ヴォヤージュ1970"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ63
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ63(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "影狼")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "胸针"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有“菊花杯”装饰图案")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "麻布のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "麻布の胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/米/可爱/新鲜的/音量感/魚料理/油/" + "肉料理/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/香料/貧相/不穏/" * 2)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "家庭的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"孤独なウェアウルフ"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ64
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ64(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "勇儀")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "拘束具"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "超强")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "虎皮の鬼パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "裹胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[勇儀]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/濃厚/音量感/天狗流/" + "香料/" * 2 + "肉料理/地底風/鬼隐藏的味道/弹力/酩酊大醉/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/甜/貧相/" * 2 + "小人族秘伝的味道/反逆/精密/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地底風/大火力/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"華のさかづき大江山"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ65
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ65(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "椛")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "兜巾"))
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "袖"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "実用性第一の")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "零碎的兜裆布")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "裹胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[椛]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+CASE "固有指令"
+	CALLF MAKE_STR(V_NAME, "千里眼")
+CASE "固有指令実行可能"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/濃厚/音量感/甜/" + "魚料理/肉料理/天狗流/秋風/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/貧相/不穏/" * 4)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "名刀/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"フォールオブフォール　～ 秋めく滝"
+	 )
+}
+
+;農民関連
+;山っぽい作物を
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "蕎麥農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "蓼")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "蕎麥畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "妖怪之山・山頂")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 8)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 801)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 7)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ66
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ66(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "幽幽子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "鲜艳的樱花花色")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "和装三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "和装胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[幽幽子]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/和食/洋食/中華/肉料理/魚料理/米/鶏肉/新鲜的/可疑/風流/春風/芸術的/"  + "音量感/发声/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/清爽/貧相/不穏/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"幽雅に咲かせ、墨染の桜　～ Border of Life"
+	 + "/" + "ボーダーオブライフ"
+	 + "/" + "ゴーストリード"
+	 )
+}
+
+;農民関連
+;ザクロに設定したのは独断
+;冥界（死）＆女性に縁のある果物としてチョイス
+;最初は米農家にしたけど彼岸で米栽培してるのはとても違和感が
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "柘榴農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "石榴")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "柘榴畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "冥界")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 6)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 630)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 500)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 13)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ67
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ67(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "慧音")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：上半身外衣２"
+	;IF DAY:2 == 2
+	;	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身上着２", "半袖ブラウス"))
+	;ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+	;ENDIF
+;CASE "普段着：ズボン"
+;	SIF DAY:2 == 2
+;		CALLF MAKE_INT(V_NAME, CLOTHES_ID("ズボン", "ズボン"))
+;CASE "普段着：その他１"
+;	SIF DAY:2 == 2
+;		CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "ネクタイ"))
+;CASE "普段着：その他２"
+;	SIF DAY:2 == 2
+;		CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "ベルト"))
+CASE "便装：帽子"
+;	SIF DAY:2 != 2
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：連衣裙"
+;	SIF DAY:2 != 2
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "预先打开了尾巴")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "蓝染的内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "蓝染的胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[慧音]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "質素/和食/米/年糕/" + "松脆/清爽/淘气/发声/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/虫肉/貧相/不穏/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "家庭的/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"プレインエイジア"
+	 + "/" + "Extendアッシュ　～ 蓬莱人"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ68
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ68(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "幽香")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "傘"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	IF FLAG:2 > 0
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "吊帯襪"))
+	ELSE
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+	ENDIF
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "領巾"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "色气与可爱并存")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "花纹褶子内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "花纹胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[幽香]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+	
+;CASE "固有コマンド"
+;	CALLF MAKE_STR(V_NAME, "弾幕勝負")
+;CASE "固有コマンド実行可能"
+;	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/和食/生地/野菜/" + "松脆/清爽/华丽/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/禁断/謎料理/虫肉/貧相/" * 7)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "华丽/大火力/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"眠れる恐怖　～ Sleeping Terror"
+	 + "/" + "Dream Land"
+	 + "/" + "幽夢　～ Inanimate Dream"
+	 + "/" + "今昔幻想郷　～ Flower Land"
+	 )
+}
+
+;農民関連
+;「かき」と読みます
+;園芸用の草花のこと
+;仕事の手伝いと被ってるがどうしよう
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "花卉農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "花苗")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "花圃")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "迷途竹林")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 4)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 438)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 15)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ69
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ69(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "猯藏")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "眼鏡"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "叶子描绘的风流的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "复式内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "复式内胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;特殊衣装
+CASE "おうち约会衣装"
+	SIF MAIN_MAP == 2
+		CALLF MAKE_INT(V_NAME, OBJNAME_TO_ID(ARG, "GET", "衣装セット", "猯藏和装"))
+CASE "人里约会衣装"
+	CALLF MAKE_INT(V_NAME, OBJNAME_TO_ID(ARG, "GET", "衣装セット", "猯藏和装"))
+
+;料理関連
+;0b0101000　普通、激辛、ワサビ
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上質/肉料理/魚料理/香料/" + "和食/清爽/油炸食品/可疑/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/虫肉/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"佐渡の二岩"
+	 )
+}
+
+;農民関連
+;地主に違和感がない
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "米農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "米")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "水田")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "命蓮寺")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 101)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 500)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 20)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ70
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ70(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "小鈴")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "行灯袴"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "英文报纸的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "单调内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "单调胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[小鈴]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/佳肴/和食/米/年糕/" + "光滑/清爽/風流/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "香料/青蛙料理/" + "野趣/質素/貧相/不穏/" * 2 + "虫肉/" * 5)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "家庭的/")
+ENDSELECT
+
+
+
+@EXIST_キャラデータ71
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ71(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "針妙丸")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "小碗"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "大和小都合适的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "小人のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "小人の吊帯衫")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[針妙丸]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/和食/麺類/汁物/果物/" + "可爱/甜/新鲜的/小人族秘伝的味道/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/禁断/謎料理/虫肉/貧相/不穏/" * 2 + "鬼隐藏的味道/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "小人族秘伝的味道/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"輝く針の小人族　～ Little Princess"
+	 )
+}
+
+;農民関連
+;ころぽっくる
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "蕗農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "款冬")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "蕗畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "博麗神社")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 0)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 22)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 350)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 3)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ72
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ72(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "永琳")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "蝴蝶結"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "浓浓的神秘气息")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "倭文布の三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "倭文布の胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/米/生地/年糕/发声/風流/実験的/香草/" * 2 + "月都風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "油/音量感/野趣/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "月都風/風流/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ヴォヤージュ1969"
+	 + "/" + "千年幻想郷　～ History of the Moon"
+	 + "/" + "ヴォヤージュ1970"
+	 )
+}
+;農民関連
+;ホントに薬？
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "薬草農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "薬草")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "薬草畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "迷途竹林")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 4)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 436)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 600)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 14)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ73
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ73(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "蛮奇")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩斗篷"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+;とりあえず冬限定にしてみる
+	SIF DAY:2 == 4
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "围巾"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "渐变美")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "薄紅色の三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "薄紅色のブラ")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[蛮奇]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/香料/可疑/")
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "音量感/野趣/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"柳の下のデュラハン"
+	 )
+}
+
+;農民関連
+;首が落ちる＋赤色
+;あんま人付き合いなさそうだけど一応
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "椿農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "椿油")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "椿農園")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "人里")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 206)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 350)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 6)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ74
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ74(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "蕾蒂")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "头巾帽"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "围巾"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "胸针"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "霜一様苍白冰冷")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "雪女のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "雪女の胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/音量感/简约/秋風/" + "魚料理/氷結/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/野趣/貧相/不穏/" * 2 + "春風/" * 10)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "怪しい/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"クリスタライズシルバー"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ75
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ75(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "梅蒂欣")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "可能有毒的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "紫色的胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "紫色的胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[梅蒂欣]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/生地/甜/不穏/反逆/" )
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "香料/音量感/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"ポイズンボディ　～ Forsaken Doll"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ76
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ76(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "小町")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "短布襪"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "大人的魅力溢出")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "坦加(巴西两截式女游泳衣)")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "人造胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[小町]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/和食/米/音量感/" + "肉料理/魚料理/冥界風/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/清爽/虫肉/精妙/魔法/精密/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "慈悲/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"彼岸帰航　～ Riverside View"
+	 )
+}
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼76(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ77
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ77(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "静葉")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "体现秋天的终结")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "紅葉のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "紅葉の胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/米/" + "生地/麺類/清爽/秋風/华丽/芸術的/豊穣/霊験/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/虫肉/貧相/不穏/" * 2 + "氷結/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "秋風/华丽/芸術的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"人恋し神様　～ Romantic Fall"
+	 )
+}
+
+;農民関連
+;葡萄がついてるのは妹のほうだが
+;葡萄ならオサレ感あるし紅葉もするし果実も色づくし
+;変えるなら穣子を葡萄にして静葉は漆（非食用の有用植物、かつ紅葉する）とか？？？
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "山葡萄農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "山葡萄")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "山葡萄畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "妖怪之山・山麓")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 7)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 715)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 4)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ78
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ78(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "穣子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "围裙洋装"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "有点甜的香味")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "烤白薯的内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "烤番薯色的胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[穣子]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "紅薯/甜/" + "米/生地/濃厚/秋風/豊穣/霊験/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/虫肉/貧相/不穏/" * 2 + "氷結/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "秋風/豊穣/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"稲田姫様に叱られるから"
+	 )
+}
+
+;農民関連
+;米でもいいが天狗と被るのだよ
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "芋農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "白薯")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "紅薯田")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "妖怪之山・山麓")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 7)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 715)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 4)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ79
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ79(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "雛")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "黑色和绿色被厚重地装饰了")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "哥特内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "哥特胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[雛]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "野菜/米/生地/清爽/" * 2 + "貧相/不穏/可疑/霊験/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "上品/濃厚/音量感/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/发声/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"運命のダークサイド"
+	 )
+}
+
+;農民関連
+;服の模様に似ている＆山で生えてそう
+;あまり裕福なイメージはない
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "山菜農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "薇菜")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "薇菜畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "妖怪之山・山麓")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 7)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 705)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 350)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 3)
+
+;ここは依頼IDが関連しない情報
+;依頼発生率スカ2/一般3/固有5
+CASE "没有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "一般依頼発生率"
+	CALLF MAKE_INT(V_NAME, 3)
+CASE "固有依頼発生率"
+	CALLF MAKE_INT(V_NAME, 5)
+CASE "固有依頼最終要素"
+	CALLF MAKE_INT(V_NAME, 101)
+CASEELSE
+	;固有依頼関連のデータにバトンタッチ
+	SIF STRCOUNT(O_DATA, "依頼")
+		CALLF 固有依頼79(ARG, O_DATA, V_NAME)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ80
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ80(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "阿求")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "行灯袴"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "100％皮肤触感好的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "无缝内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/野菜/米/" + "清爽/風流/冥界風/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/濃厚/音量感/貧相/" * 2 + "妖精風/闪耀/" * 10)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/")
+
+;農民関連
+;人里のとっぷに君臨する
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "米農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "米")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "水田")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "人里")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 206)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 550)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 9)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ81
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ81(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "蓮子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：外衣"
+	SIF DAY:2 == 1
+		CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "披肩"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "下半身看起来紧绷")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "斑点内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "胸垫")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/肉料理/魚料理/" + "麺類/清爽/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/虫肉/貧相/不穏/" * 4)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "風流/")
+ENDSELECT
+
+
+
+@EXIST_キャラデータ82
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ82(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "梅莉")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "冷静的印象")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "条纹内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "条纹胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/米/肉料理/魚料理/" + "生地/清爽/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/虫肉/貧相/不穏/" * 4)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "風流/")
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ83
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ83(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "琪斯美")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "小得很可爱")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "桃色兜襠布")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[琪斯美]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/" + "清爽/可爱/甜/新鲜的/予想外/地底風/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/肉/音量感/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地底風/予想外/")
+
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"暗闇の風穴"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ84
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ84(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "山女")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "无袖連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "刺绣了黑色蜘蛛的巢")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "蜘蛛图案内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "蜘蛛图案胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[山女]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/濃厚/可疑/" + "可爱/新鲜的/" * 2 + "麺類/不穏/地底風/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地底風/不穏/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"封じられた妖怪　～ Lost Place"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ85
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ85(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "一輪")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "頭巾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "法衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "闻着香香的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "半旧的棉布内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "半旧的棉布胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[一輪]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;0b0100000　普通、ワサビ
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "質素/和食/米/" + "麺類/清爽/弹力/" * 2 + "慈悲/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "上品/野趣/虫肉/肉料理/絢爛/風流/精妙/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "慈悲/弹力/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"時代親父とハイカラ少女"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ86
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ86(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "水蜜")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "短裤"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "水手服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "代替名字写了锚的标志")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "男孩子气内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "吊帯背心胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[村紗]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+;0b0001000　普通、激辛
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/水気/肉料理/魚料理/" + "红的/濃厚/香料/" * 2 + "慈悲/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/虫肉/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/水兵風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"幽霊客船の時空を越えた旅"
+	 + "/" + "キャプテン・村紗"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ87
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ87(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "星")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "法衣"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "羽衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "和她一様")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "虎皮胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "寅柄的胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[星]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+;0b0001001　濃い味、激辛
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/麺類/音量感/甜/" + "濃厚/肉料理/繊細/" * 3 + "慈悲/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/野趣/虫肉/香料/貧相/精妙/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "慈悲/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"虎柄の毘沙門天"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ88
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ88(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "響子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "描绘着一脸苦涩的妖怪")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "印花内裤(山彦)")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[響子]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+;0b1010010　薄味、激甘、レモン
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/生地/甜/可爱/豆沙/" + "甜/清爽/慈悲/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/野趣/虫肉/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "发声/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"門前の妖怪小娘"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ89
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ89(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "芳香")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "御札"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "和青娥穿的类似")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "三层褶边短裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "褶边胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜/濃厚/肉料理/魚料理/精妙/" * 3 + "音量感/" * 10)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "暖和/清爽/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"リジッドパラB"
+	 + "/" + "古きユアンシェン"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ90
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ90(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "青娥")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（情趣内衣）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "背心"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "羽衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "表现出肉感的身体")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "高腰短裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "胸前编织的胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[青娥]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "中華/米/果物/" + "新鲜的/上品/風流/芸術的/精妙/" * 2 + "不穏/可疑/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/貧相/冥界風/慈悲/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/可疑/風流/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"デザイアドライブ"
+	 + "/" + "古きユアンシェン"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ91
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ91(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "屠自古")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "烏帽子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "護符"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "没有重量的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "霊体三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "霊体胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/野菜/果物/新鲜的/清爽/魚料理/" + "上品/家庭的/風流/精妙/絢爛/发声/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/油/濃厚/虫肉/貧相/不穏/可疑/慈悲/冥界風/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/家庭的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"夢殿大祀廟"
+	 + "/" + "聖徳伝説　～ True Administrator"
+	 )
+}
+
+;農民関連
+;豪族組で相談したら土地も用意できそうだけどそこまでしてくれるか？
+CASE "農民：説明"
+	CALLF MAKE_STR(V_NAME, "大根農家")
+CASE "農民：作物"
+	CALLF MAKE_STR(V_NAME, "大根")
+CASE "農民：田的种类"
+	CALLF MAKE_STR(V_NAME, "大根畑")
+CASE "農民：畑の所在地"
+	CALLF MAKE_STR(V_NAME, "人里")
+
+CASE "農民：MapID"
+	CALLF MAKE_INT(V_NAME, 2)
+CASE "農民：場所ID"
+	CALLF MAKE_INT(V_NAME, 205)
+CASE "農民：報酬"
+	CALLF MAKE_INT(V_NAME, 400)
+CASE "農民：金利"
+	CALLF MAKE_INT(V_NAME, 12)
+ENDSELECT
+
+
+
+@EXIST_キャラデータ92
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ92(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "布都")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "烏帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "水干"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "迷你裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "好像是被谁骗着穿的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "女婴内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "裹胸")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/肉料理/魚料理/音量感/" + "甜点/上品/甜/風流/精妙/絢爛/家庭的/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/香料/油/濃厚/虫肉/貧相/慈悲/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/发声/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"大神神話伝"
+	 + "/" + "聖徳伝説　～ True Administrator"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ93
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ93(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "若鷺姫")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "人魚の王道")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "貝殻比基尼")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "貝殻胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[若鷺姫]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/生地/麺類/汁物/水気/家庭的/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/貧相/不穏/" * 2 + "魚料理/" * 10)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "家庭的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"秘境のマーメイド"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ94
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ94(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "弁弁")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髪飾"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+;古い物捨てたりしないよねってだけの発想
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "旧衣服重置")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "不对称的内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "不对称的胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[弁弁]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/麺類/魚料理/" * 2 + "新鲜的/家庭的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/油/濃厚/貧相/不穏/" * 2)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "家庭的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"マジカルストーム"
+	 + "/" + "幻想浄瑠璃"
+	 + "/" + "魔力の雷雲"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ95
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ95(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "八橋")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "髮箍"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "旧衣服重置")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "松开的绳子内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "素朴的绳子胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[八橋]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/麺類/肉料理/" * 2 + "新鲜的/家庭的/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/清爽/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "家庭的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"マジカルストーム"
+	 + "/" + "幻想浄瑠璃"
+	 + "/" + "魔力の雷雲"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ96
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ96(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "雷鼓")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "领帯"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "吊帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "锁定进攻的设计")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "镂空内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "黑色胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[雷鼓]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/油/濃厚/新鲜的/光滑/" + "肉料理/音量感/弹力/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/清爽/貧相/不穏/" * 2)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "家庭的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"始原のビート　～ Pristine Beat"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ97
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ97(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "正邪")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "手镯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "同甘共苦")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "磨得起球内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "肮脏的裹胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[正邪]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "米/肉料理/魚料理/" + "野趣/謎料理/禁断/" * 2 + "不穏/反逆/小人族秘伝的味道/妖精風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野菜/洋食/和食/中華/濃厚/清爽/貧相/風流/霊験/幸運/女仆流/家庭的/豊穣/天狗流/鬼隐藏的味道/")
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "不穏/反逆/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"空中に沈む輝針城"
+	 + "/" + "リバースイデオロギー"
+	 + "/" + "針小棒大の天守閣"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ98
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ98(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "依姫")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "連体裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "短袖襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "手镯"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "网格吊帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "毫无污秽的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "無邪の下衣")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "清浄の肌衣")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/質素/野菜/米/光滑/清爽/年糕/可爱/新鲜的/霊験/風流/月都風/发声/")
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/貧相/不穏/可疑/" * 5 + "野趣/虫肉/" * 20)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/霊験/")
+ENDSELECT
+
+
+
+@EXIST_キャラデータ99
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ99(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "豊姫")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "連体裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "褶边襯衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "网格吊帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "永遠不壊の")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "F纤维内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "F纤维胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/上品/質素/米/" + "甜/年糕/可爱/新鲜的/風流/霊験/月都風/芸術的/发声/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/虫肉/貧相/不穏/可疑/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "風流/")
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ100
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ100(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "鈴仙二號")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "西装上衣"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "领帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "除了朴素毫无特点的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "玉兎支給パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "玉兎支給胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[鈴仙二號]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/質素/野菜/米/" + "清爽/年糕/可爱/" * 2 + "胡蘿卜/月都風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/貧相/不穏/" * 2 + "野趣/虫肉/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "月都風/发声/")
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ101
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ101(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "朱鷺子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "白色渐染上了红色")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "朱鷺色パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "朱鷺色胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/質素/生地/米/" + "松脆/可爱/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/禁断/貧相/不穏/" * 2)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "月都風/けなげ/")
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ102
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ102(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "神綺")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "晚禮服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "无法创造出来的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "魔界神様のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "魔界神様の胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/上品/生地/米/" + "甜/可爱/魔法/魔界風/女仆流/华丽/淘气/发声/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/油/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "魔界風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"世界の果て　～ World's End"
+	 + "/" + "神話幻想　～ Infinite Being"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ103
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ103(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "夢子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "白色女僕髮箍"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "围裙洋装"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "神秘的重量和寒冷")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "夢子のパンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "夢子の胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/上品/生地/果物/" + "甜/可爱/魔界風/魔法/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/濃厚/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "魔界風/女仆流/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"the Last Judgement"
+	 + "/" + "悲しき人形　～ Doll of Misery"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ104
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ104(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "雪")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "魔界流行の")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "喇叭内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "乳罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/麺類/生地/濃厚/" + "甜/可爱/魔界風/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/禁断/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "魔界風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"禁断の魔法　～ Forbidden Magic"
+	 + "/" + "真紅の少女　～ Crimson Dead!!"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ105
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ105(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "舞")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "魔界也新奇的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "魔法陣柄パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "裹胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[舞]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/肉料理/生地/濃厚/" + "甜/可爱/魔界風/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/禁断/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "魔界風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"禁断の魔法　～ Forbidden Magic"
+	 + "/" + "裏切りの少女　～ Judas Kiss"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ106
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ106(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "菫子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "眼鏡"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "水手服"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "对女高中生来说非常土的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "标准裤衩")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "素色的文胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[菫子]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/肉料理/濃厚/松脆/可疑/" + "甜/可爱/魔法/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/貧相/不穏/" * 3 + "虫肉/" * 5)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "サイキック/")
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ107
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ107(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "清蘭")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "下摆比较透明")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "能看见肤色的透明内衣")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "　")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/米/麺類/" + "野菜/年糕/清爽/" * 2 + "胡蘿卜/月都風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/油/香料/貧相/不穏/可疑/" * 3 + "禁断/謎料理/虫肉/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "月都風/发声/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"兎は舞い降りた"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ108
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ108(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "鈴瑚")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "鴨舌帽"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "Ｔ恤"))
+CASE "便装：裤子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裤子", "南瓜裤"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "画上【鈴瑚屋】的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "宣伝用パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "非钢丝胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[鈴瑚]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/中華/米/麺類/" + "年糕/濃厚/" * 2 + "音量感/胡蘿卜/月都風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/貧相/不穏/" * 2 + "禁断/謎料理/虫肉/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "月都風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"九月のパンプキン"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ109
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ109(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "多来米")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "聖誕帽"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "可塑性高的柔软")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "夢魂パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "夢魂胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/米/野菜/麺類/生地/年糕/清爽/予想外/芸術的/可疑/")
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "濃厚/貧相/不穏/" * 2 + "野趣/質素/虫肉/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "予想外/芸術的/可疑/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"永遠の春夢"
+	 + "/" + "見たこともない悪夢之世界"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ110
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ110(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "探女")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "外衣"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "衣服和裙子一起的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "矢印柄三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "矢印柄胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/米/麺類/光滑/清爽/予想外/月都風/")
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "濃厚/貧相/不穏/" * 2 + "野趣/質素/虫肉/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "予想外/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"凍り付いた永遠の都"
+	 + "/" + "逆転するホイールオブフォーチュン"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ111
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ111(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "克勞恩皮絲")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "小丑帽"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "裤襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "裤襪に不会发出声音的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "串丁字裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "迷你吊带")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[克勞恩皮絲]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/禁断/甜/洋食/不穏/闪耀/魔法/地獄風/" + "果物/生地/香料/新鲜的/乳酪/" * 2 + "可爱/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "和食/简约/清爽/" * 2 + "野菜/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地獄風/不穏/淘气/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"遥か38万キロのボヤージュ"
+	 + "/" + "星条旗のピエロ"
+	 )
+}
+ENDSELECT
+
+
+
+
+@EXIST_キャラデータ112
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ112(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "純狐")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（襦袢）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "冕冠"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "帯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "突出臀部线条的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "紧身裤内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "人造胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[純狐]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "中華/野菜/肉料理/油/不穏/風流/" + "新鲜的/淘气/发声/地獄風/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/虫肉/貧相/" * 3 + "月都風/" * 20)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "家庭的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"故郷の星が映る海"
+	 + "/" + "ピュアヒューリーズ　～ 心の在処"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ113
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ113(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "赫喀提亞")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "鎖"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "Ｔ恤"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "项圈"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "吊帯"))
+CASE "便装：その他３"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他３", "惑星"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "光看就可能掉进地狱")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "『GoToHell』パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "管式胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/肉料理/生地/濃厚/魔法/" + "香料/发声/" * 2 + "淘气/地獄風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/貧相/" * 3)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "地獄風/魔法/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"パンデモニックプラネット"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ114
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ114(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "胡桃")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "少女趣味の爱好")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "心形丝带内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "丝带文胸")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/肉料理/光滑/香料/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/謎料理/貧相/" * 2)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "地獄風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"紅響曲　～ Scarlet Phoneme"
+	 )
+}
+ENDSELECT
+
+
+
+@EXIST_キャラデータ115
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ115(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "艾麗")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "优雅的花边图案的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "雅致内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "雅致胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(3 - (2 * 勝負下着判定([[艾麗]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/生地/麺類/清爽/")
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/禁断/謎料理/香料/貧相/" * 2)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "地獄風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"霊戦　～ Perdition Crisis"
+	 )
+}
+ENDSELECT
+
+@EXIST_キャラデータ116
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ116(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "夢月")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（睡袍）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "白色女僕髮箍"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "围裙洋装"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "像女仆的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "花纹白蕾丝内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "花纹白蕾丝胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/生地/鶏卵/" + "松脆/清爽/女仆流/华丽/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/禁断/謎料理/香料/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "女仆流/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"禁じざるをえない遊戯"
+	 + "/" + "メイド幻想　～ Icemilk Magic"
+	 )
+}
+ENDSELECT
+
+
+@EXIST_キャラデータ117
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ117(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "幻月")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "長裙"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "女式襯衫"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "花纹渐变的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "夢幻パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "夢幻胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "洋食/肉料理/鶏肉/" + "松脆/香料/女仆流/华丽/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/禁断/謎料理/貧相/" * 2)
+;CASE "料理：助手効果"
+;	CALLF MAKE_STR(V_NAME, "地獄風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"禁じざるをえない遊戯"
+	 + "/" + "可爱悪魔　～ Innocence"
+	 )
+}
+ENDSELECT
+
+
+@EXIST_キャラデータ118
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ118(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "拉瓦爾")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "碧色闪耀")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "染满鱗粉的内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "吊帯衫")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "甜点/甜/可爱/新鲜的/" + "野菜/闪耀/" * 4)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/質素/肉料理/魚料理/乳酪/貧相/不穏/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "淘气/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"真夏の妖精の夢"
+	 )
+}
+ENDSELECT
+
+
+@EXIST_キャラデータ119
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ119(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "合歡乃")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+;あえて色は決めない
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "颜色变化有趣的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "手染兜襠布")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "さらし")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[合歡乃]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "質素/和食/米/魚料理/音量感/油/" + "肉料理/濃厚/" * 2)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/甜/乳酪/貧相/" * 2)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "家庭的/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"山奥のエンcounter"
+	 )
+}
+ENDSELECT
+
+@EXIST_キャラデータ120
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ120(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "阿吽")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：上半身外衣１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣１", "无袖上衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "两种颜色的布组合成的")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "紅白パンツ")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "紅白胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/米/魚料理/可爱/新鲜的/" + "肉料理/濃厚/油/" * 3 + "霊験/琉球風/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/" * 2 + "貧相/不穏/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "发声/琉球風/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"一対の神獣"
+	 )
+}
+ENDSELECT
+
+@EXIST_キャラデータ121
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ121(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "成美")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "笠"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "雪駄"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "短布襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "法衣"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "写着一句令人感激的话")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "朱布兜襠布")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "さらし")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[成美]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "質素/和食/新鲜的/" + "米/清爽/" * 2 + "淘气/发声/慈悲/魔法/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/謎料理/" * 2 + "貧相/不穏/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "发声/慈悲/魔法/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"魔法の笠地蔵"
+	 )
+}
+ENDSELECT
+
+@EXIST_キャラデータ122
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ122(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "舞")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "烏帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "看起来很容易跳舞")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "男孩内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "運動文胸")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[舞]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/和食/可疑/" + "可爱/肉料理/麺類/弹力/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/清爽/" * 2 + "貧相/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"幻想のホワイトトラベラー"
+	 + "/" + "クレイジーバックダンサーズ"
+	 + "/" + "もうドアには入れない"
+	 )
+}
+ENDSELECT
+
+@EXIST_キャラデータ123
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ123(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "里乃")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "烏帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "長筒襪"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "看起来很容易跳舞")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "内衣紧身裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "吊帯背心胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[里乃]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/和食/可疑/" + "新鲜的/魚料理/生地/弹力/" * 3)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/清爽/" * 2 + "貧相/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"禁断の扉の向こうは、この世かあの世か"
+	 + "/" + "クレイジーバックダンサーズ"
+	 + "/" + "もうドアには入れない"
+	 )
+}
+ENDSELECT
+
+@EXIST_キャラデータ124
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ124(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "隠岐奈")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "烏帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "長靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "道士服"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "投影了夜空")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "星辰の三角胖次")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "星辰の胸罩")
+CASE "固有下着着用条件"
+	SIF !RAND:3
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "上品/軽食/和食/生地/麺類/新鲜的/可疑/絢爛/" + "光滑/清爽/弹力/" * 3 + "芸術的/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "野趣/謎料理/" * 2 + "音量感/" * 3 + "貧相/" * 5)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "可疑/絢爛/")
+CASE "所持楽曲"
+{
+	CALLF MAKE_STR(V_NAME, 
+	"イントゥ・バックドア"
+	 + "/" + "秘匿されたフォーシーズンズ"
+	 + "/" + "秘神マターラ　～ Hidden Star in All Seasons."
+	 )
+}
+ENDSELECT
+
+@EXIST_キャラデータ125
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ125(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "女苑")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：飾品"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("飾品", "墨鏡"))
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "帽子"))
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "長靴"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：連衣裙"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("連衣裙", "連衣裙"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "夹克衫"))
+CASE "便装：その他１"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "手镯"))
+CASE "便装：その他２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他２", "耳环"))
+CASE "便装：その他３"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他３", "单肩包"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "总之很华丽")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "闪亮的内裤")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "闪亮的胸罩")
+CASE "固有下着着用条件"
+	CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "肉料理/濃厚/油/油炸食品/絢爛/" + "上品/質素/慈悲/家庭的/" * 5)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "謎料理/禁断/" * 2 + "野趣/貧相/" * 10)
+CASE "料理：助手効果"
+	CALLF MAKE_STR(V_NAME, "絢爛/")
+ENDSELECT
+
+@EXIST_キャラデータ126
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ126(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "紫苑")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("帽子", "蝴蝶結"))
+CASE "便装：上半身外衣２"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("上半身外衣２", "Ｔ恤"))
+CASE "便装：外衣"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("外衣", "連帽風衣"))
+CASE "便装：裙子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("裙子", "裙子"))
+CASE "便装：その他３"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("その他１", "手镯"))
+
+CASE "固有下着形容詞"
+	CALLF MAKE_STR(V_NAME, "已经不是内衣了")
+CASE "固有下半身下着名"
+	CALLF MAKE_STR(V_NAME, "写着『抵押品』的纸牌")
+CASE "固有上半身下着名"
+	CALLF MAKE_STR(V_NAME, "写着『大减价』的纸牌")
+CASE "固有下着着用条件"
+	SIF !RAND:(1 + (2 * 勝負下着判定([[紫苑]])))
+		CALLF MAKE_INT(V_NAME, 1)
+CASE "固有下着透ける"
+	CALLF MAKE_INT(V_NAME, 1)
+
+;料理関連
+CASE "料理：喜欢的味道"
+	CALLF MAKE_STR(V_NAME, "和食/洋食/中華/野菜/果物/麺類/汁物/生地/新鲜的/絢爛/" + "米/" * 5 + "音量感/" * 10)
+CASE "料理：讨厌的味道"
+	CALLF MAKE_STR(V_NAME, "禁断/" * 2 + "油/" * 5)
+CASE "料理：助手効果"
+	IF TALENT:[[紫苑]]:思慕 || TALENT:[[紫苑]]:恋慕
+		CALLF MAKE_STR(V_NAME, "家庭的/")
+	ELSE
+		CALLF MAKE_STR(V_NAME, "貧相/")
+	ENDIF
+ENDSELECT
+
+@EXIST_キャラデータ127
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ127(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+CASE "呼び名"
+	CALLF MAKE_STR(V_NAME, "路人子")
+;こっから衣装設定
+CASE "今天的睡衣"
+	CALLF MAKE_STR(V_NAME, "睡衣（裤子）套")
+
+CASE "便装：帽子"
+
+CASE "便装：靴"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("靴", "木屐"))
+CASE "便装：襪子"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("襪子", "襪子"))
+CASE "便装：和服"
+	CALLF MAKE_INT(V_NAME, CLOTHES_ID("和服", "和服"))
+
+;料理関連、とりあえず未設定で
+CASE "料理：喜欢的味道"
+CASE "料理：讨厌的味道"
+ENDSELECT

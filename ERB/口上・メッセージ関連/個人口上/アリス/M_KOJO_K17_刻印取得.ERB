@@ -1,0 +1,142 @@
+﻿;-------------------------------------------
+;刻印取得
+;-------------------------------------------
+@M_KOJO_MESSAGE_MARKCNG_K17
+;このままだと地の文が表示されません
+;地の文を表示したい方は、下記のコメントアウトを削除して下さい
+CALL MARK_MESSAGE
+IF !FLAG:時間停止
+
+	;苦痛刻印
+	IF TFLAG:苦痛刻印取得 == 1
+		PRINTFORMW 「什么……唔……别这样！我可不是%K17_CNAME()%的人偶哦！」
+	ELSEIF TFLAG:苦痛刻印取得 == 2
+		PRINTFORMW 「哎呀哎呀！别这样！我……不是人偶……」
+	ELSEIF TFLAG:苦痛刻印取得 == 3
+		PRINTFORMW 「……已经……别这样……因为会成为……%K17_CNAME()%的人偶……」
+		;素質も変えちゃう
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_自尊心,-2)
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_態度,2)
+	ENDIF
+	
+	;時姦刻印
+	IF TFLAG:時姦刻印取得 == 1
+		PRINTFORMW 
+	ELSEIF TFLAG:時姦刻印取得 == 2
+		PRINTFORMW 
+	ELSEIF TFLAG:時姦刻印取得 == 3
+		PRINTFORMW 
+	ENDIF
+	
+	;快楽刻印
+	IF TFLAG:快楽刻印取得 == 1
+		PRINTL
+		PRINTFORML 「哈哈……这样的……唔……很不好意思」
+		PRINTW
+	ELSEIF TFLAG:快楽刻印取得 == 2
+		PRINTL
+		PRINTFORML 「……哈……更加……那个……再来一点？」
+		PRINTFORML 「稍微？ 呐？ 可以吧？」
+		PRINTW
+	ELSEIF TFLAG:快楽刻印取得 == 3
+		PRINTL
+		PRINTFORML 「哈哈……已经、没有%K17_CNAME()%的话……不行了」
+		PRINTFORML 「这样做……已经、已经！我不会原谅你的ぁ%K17_HEART()%」
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_自尊心,-2)
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_態度,-2)
+		CALL K17_RELATION_EV(K17C_RTF_恋人)
+		SIF !RESULT
+			PRINTW
+	ENDIF
+	
+	;不埒刻印
+	;快楽による刻印
+	;LV1
+	IF TFLAG:屈服刻印取得 == 11
+		PRINTL
+		PRINTFORML 「呜呀！」
+		PRINTFORML 「啊……！%K17_BLUSH()%」
+		PRINTFORMDL %CALLNAME:TARGET%被自己发出的声音吓得捂着嘴
+		PRINTW
+	;LV2
+	ELSEIF TFLAG:屈服刻印取得 == 12
+		PRINTL
+		PRINTFORML 「嗯……呜……呐，呐……那个……」
+		PRINTFORML 「没，没什么……」
+		PRINTFORML 「啊！？　可爱？　嗯、不要再说了」
+		PRINTW
+	;LV3
+	ELSEIF TFLAG:屈服刻印取得 == 13
+		PRINTL
+		PRINTFORML 「哈哈……呐，呐？」
+		PRINTFORML 「把我变成这样的身体，你应该会承担责任吧？」
+		;素質も変えちゃう
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_自尊心,-1)
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_態度,-1)
+		PRINTW
+	;屈服、恭順による刻印
+	;LV1
+	ELSEIF TFLAG:屈服刻印取得 == 31
+		PRINTL
+		PRINTFORML 「%K17_CNAME()%……呵呵」
+		PRINTFORML 「那个……欸……嗯……果然没什么」
+		PRINTFORMDL %CALLNAME:TARGET%歪着小脑袋沉默了一会儿，露出可爱的笑容
+		PRINTW
+	;LV2
+	ELSEIF TFLAG:屈服刻印取得 == 32
+		PRINTL
+		PRINTFORML 「%K17_CNAME()%，没事吧？不累吗？给你按摩肩膀吧？」」
+		PRINTFORMDL 突然怎么了？
+		PRINTW
+	;LV3
+	ELSEIF TFLAG:屈服刻印取得 == 33
+		PRINTL
+		PRINTFORML 「%K17_CNAME()%，没事吧？不累吗？要揉胸部吗？」」
+		PRINTFORMDL 又突然怎么了？
+		PRINTW
+		PRINTFORMDL 刚才在最后有说什么奇怪的话吗？
+		;素質も変えちゃう
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_自尊心,-1)
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_態度,-1)
+		PRINTW
+	ENDIF
+	
+	;反発刻印
+	IF TFLAG:反発刻印取得 == 1
+		PRINTL
+		PRINTFORML 「%K17_CNAME()%做的事，保守点说最差劲了」
+		PRINTFORML 「你是想做别人讨厌的事，然后吸引别人吗？」
+		PRINTFORML 「这样的话，%K17_CNAME()%做的事就错了。」
+		PRINTFORML 「可以吗？ 注意到了吗？」
+		PRINTFORML 「应该以此为契机改变态度」
+		;素質も変えちゃう
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_自尊心,1)
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_態度,1)
+		PRINTW
+	ELSEIF TFLAG:反発刻印取得 == 2
+		PRINTL
+		PRINTFORML 「……莫非，我是像那边的小姑娘被侮辱了呢？」
+		PRINTFORML 「像我这样使用人偶的人，仅靠握力就可以把头盖骨捏碎。」
+		PRINTFORMDL 一边说着，一边用冷漠的目光看着%CALLNAME:MASTER%，捏紧拳头
+		PRINTFORML 「趁着这个机会改变态度。」
+		PRINTFORML 「最后的通知哦」
+		PRINTW
+		;素質も変えちゃう
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_自尊心,2)
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_態度,2)
+		
+	ELSEIF TFLAG:反発刻印取得 == 3
+		PRINTL
+		PRINTFORML 「…………」
+		PRINTFORMDL %CALLNAME:TARGET%凝视着虚空
+		PRINTFORMDL %CALLNAME:MASTER%的身影在%CALLNAME:TARGET%的眼中完全没有映现出来
+		PRINTFORMDL 已经连冷淡的视线都望不到了
+		PRINTW
+		;素質も変えちゃう
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_自尊心,2)
+		CALL K17_TALENT_UPDOWN(TARGET,K17C_TALENT_態度,2)
+		
+	ENDIF
+	
+ENDIF
+

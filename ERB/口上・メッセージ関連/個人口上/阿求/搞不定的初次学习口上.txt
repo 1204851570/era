@@ -1,0 +1,11 @@
+﻿    IF EXP:ﾑｧﾁ平U == 1
+	    PRINTFORML ｡ｸﾔﾚﾑｧﾏｰﾃｴ｣ｿ%CALLNAME:MASTER%｡ｹ
+	    PRINTFORMW ｰ｢ﾇｴﾗﾅﾗﾚﾗﾀﾇｰｵﾄ%CALLNAME:MASTER%ﾎﾊｵﾀ｡｣
+	    PRINTFORMW ｡ｸﾃｻﾏ・ｽ%CALLNAME:MASTER%ﾏﾈﾉ昮ｲﾓﾐﾕ篥ｴﾕｾｭｵﾄﾊｱｺﾘ｡ｭ｡ｭ｡ｹ
+	    PRINTFORMW ﾎﾒﾔﾚﾄ耜ﾛﾀ・ｽｵﾗﾊﾇﾒｻﾖﾖﾊｲﾃｴﾑﾓｰ｡｣ｿ
+	    PRINTFORMW %CALLNAME:MASTER%ﾆ､ﾐｦﾈ箚ｻﾐｦｵﾄﾎﾊｵﾀ｡｣
+	    PRINTFORML ｡ｸｰ･ｺﾙｺﾙ~｡ｹ
+	    PRINTFORMW ｰ｢ﾇｻﾐｦｴ｡｣
+	    PRINTFORML ｡ｸﾎﾒﾀｴｰ・羃ﾉ｡ｭ｡ｭﾄ耡ｲﾊﾇﾖｪｵﾀｵﾄﾅｶ｡ｭ｡ｭ｡ｹ
+	    PRINTFORMW ｰ｢ﾇﾉｫｵﾀ｣ｺ
+	    PRINTFORMW ｡ｸﾎﾒﾕ簫ｻﾉ奛ｭ｡ｭﾒｲｾﾍﾖｻｶﾔﾕ篩ﾅﾄﾔｴ・ﾈｽﾏﾗﾔﾐﾅ｡ｭ｡ｭ｡ｹ

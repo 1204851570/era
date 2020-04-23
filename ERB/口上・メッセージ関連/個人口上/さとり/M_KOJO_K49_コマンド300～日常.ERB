@@ -1,0 +1,5290 @@
+﻿;※※※※※※※※※※※※※※※※※※※※※※※※※
+;日常系コマンド
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;300,会話
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_300
+;コマンド共通メッセージ(TRAIN_MESSAGE) 
+;削除すると「～話をした。」とかが消えます
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF 陥落状態() < 3 && !TCVAR:302 && (BASE:酒気 < (MAXBASE:酒気 / 10) * 4)
+	CALL TRAIN_MESSAGE
+;口上メイン呼出
+CALL M_KOJO_MESSAGE_COM_K49_300_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_300_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		DRAWLINE
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		CALL DRUNKER49()
+	ELSEIF TCVAR:302
+		DRAWLINE
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「主様聲音感覺真不錯、偶然都來隨便聊天吧？」
+				PRINTFORML 「『很無聊吧』？　只要在主様身邊我都覺得很開心」
+				PRINTFORML 「『你這傢伙真可愛』……、因為主様實在太棒了」
+			ELSE
+				PRINTFORML 「主様、不用勉強自己開口也可以哦」
+				PRINTFORML 「哼哼、這樣、試圖尋找話題這一點、真是非常棒」
+				PRINTFORML 「而且、能讓我看見你的心我也很開心」
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「我很喜歡%CALLNAME:MASTER%的聲音、也很喜歡看你的心」
+			PRINTFORML 「毋須強行跟我說話也可以的」
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「沒有話要說的話請你閉嘴」
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「不打算開口的話、毋須強行跟我說話也可以哦」
+		ELSE
+			PRINTFORML 「明明沒有話想說、卻強行讓自己開口嗎？」
+		ENDIF
+		PRINTL
+		RESETCOLOR
+	ELSEIF 陥落状態() >= 4
+		IF 陥落状態() == 5
+			DRAWLINE
+			PRINTFORM 覺一邊聽著%CALLNAME:MASTER%的話語、
+			IF CFLAG:TARGET:陪睡中
+				PRINTFORML 一邊帶著神魂傾倒的表情、緊緊地抱著%CALLNAME:MASTER%
+			ELSEIF CHK_DATENOW(CFLAG:TARGET:约会中)
+				PRINTFORML 一邊和%CALLNAME:MASTER%彼此十指相扣、面露燦爛如鮮花一般的笑容
+			ELSE
+				PRINTFORML 一邊滿臉笑容緊緊地抱著%CALLNAME:MASTER%
+			ENDIF
+			PRINTL
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			SELECTCASE RAND:2
+				CASE 1
+					PRINTFORML 「然後到底怎樣了？」
+					PRINTFORMDL 覺兩眼放光地催促著%CALLNAME:MASTER%繼續剛才的話題
+					PRINTFORML 「『不會厭倦嗎』？　不會哦ー、因為主様的聲音和心的”聲音”不一樣」
+					PRINTFORMDL 覺臉上帶著爽朗的笑容
+					PRINTFORML 「主様真是非常棒」
+					PRINTFORMDL 如此直接充滿好意的奉承、令%CALLNAME:MASTER%感到有點害羞
+				CASE 0
+					PRINTFORML 「主様真是知道不少新奇的事呢」
+					PRINTFORMDL 貼近著%CALLNAME:MASTER%的覺看起來像感到不可思議一樣
+					PRINTFORML 「『你早就知道了吧』？　即是我早就擁有這些知識、但從經驗的人說出來是兩回事」
+					PRINTFORMDL 覺臉上帶著歡喜的笑容
+					PRINTFORML 「而且、能夠聽到我最喜歡的主様的聲音我也很開心」
+					PRINTFORMDL 見到覺的笑容後、決定不再鑽牛角尖了
+			ENDSELECT
+		ELSE
+			DRAWLINE
+			PRINTFORM 覺一邊聽著%CALLNAME:MASTER%的話語、
+			IF CFLAG:TARGET:陪睡中
+				PRINTFORML 一邊帶著神魂傾倒的表情、緊貼著%CALLNAME:MASTER%
+			ELSEIF CHK_DATENOW(CFLAG:TARGET:约会中)
+				PRINTFORML 一邊和%CALLNAME:MASTER%彼此十指相扣、面露神魂飄蕩的笑容
+			ELSE
+				PRINTFORML 一邊滿臉笑容、一邊捉住%CALLNAME:MASTER%的胳膊緊貼著這邊
+			ENDIF
+			PRINTL
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			SELECTCASE RAND:3
+				CASE 2
+					PRINTFORML 「主様的聲音、真的很棒呢」
+					PRINTFORMDL 看見現在的覺沒有初次見面的冷淡痕跡後、自然的笑出來了
+					PRINTFORMW 「……因為那時、我還不信任家人以外的人」
+					PRINTFORMDL 現在背叛的話或許會很有趣呀、這樣想著同時、覺害羞地呵呵笑著
+					PRINTFORML 「時停所得不到的、被人奉仕帶來的悦楽都捨棄掉也沒有所謂嗎？」
+					PRINTFORMDW 現在好想被覺奉仕、%CALLNAME:MASTER%開始這樣想著、目光濕潤的覺只是笑著看著這邊
+				CASE 1
+					PRINTFORML 「主様真的很喜歡說話呢」
+					PRINTFORMDL 覺笑著說道、%CALLNAME:MASTER%自然地苦笑了
+					PRINTFORMW 「『這可不一定』？　哼哼、我可是知道的哦、主様你在說謊了」
+					PRINTFORMDL 要是我說謊就被雷劈、%CALLNAME:MASTER%這樣回答了
+					PRINTFORML 「主様心裏所想的和心聲不一樣。任何謊言都騙不過我的哦」
+					PRINTFORMDW 覺語畢、微紅的面带害羞的神情、什麼也不說抱住%CALLNAME:MASTER%
+				CASE 0
+					PRINTFORML 「主様和我說話時、真的很開心呢」
+					PRINTFORMDL 沒有理由會感到開心吧、這樣想著同時、覺笑容變得更深
+					PRINTFORMW 「哼哼、那為什麼還要跟我說話呢？」
+					PRINTFORMDL 純粹只是一時興起而已、%CALLNAME:MASTER%在內心答道
+					PRINTFORML 「哼哼哼、你說是就是啦」
+					PRINTFORMDW 覺愉快地說著、%CALLNAME:MASTER%不知怎麼也開始感覺很開心
+			ENDSELECT
+		ENDIF
+		RESETCOLOR
+	ELSEIF 陥落状態() == 3
+		DRAWLINE
+		IF CFLAG:TARGET:陪睡中
+			PRINTFORML 才能夠感受到對方體溫的距離下、與歡笑著的覺說話
+		ELSEIF CHK_DATENOW(CFLAG:TARGET:约会中)
+			PRINTFORML 與歡喜地笑著依偎着%CALLNAME:MASTER%的覺說話了
+		ELSE
+			PRINTFORML 向看起來很開心地笑著的覺說話了
+		ENDIF
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		SELECTCASE RAND:3
+			CASE 2
+				PRINTFORML 「……哼哼、%CALLNAME:MASTER%的聲音聽起來真是美妙」
+				PRINTFORMDL 我說的話到底有什麼好、這樣問之前覺已經回答了
+				PRINTFORML 「我想是因為所思和所說的一樣吧、感覺很暢快」
+				PRINTFORMDW 覺說道後笑著、%CALLNAME:MASTER%沒有再追問下去了
+			CASE 1
+				PRINTFORML 「%CALLNAME:MASTER%這樣說的話那應該就是這樣吧」
+				PRINTFORMDL 看見覺愉快地笑著後、%CALLNAME:MASTER%内心自問道實際上覺又是怎麼想的呢
+				PRINTFORML 「哼哼、我所想的包含了你剛才說的一部分、我是這樣想的哦」
+				PRINTFORMDW 發現自己被戲弄後、%CALLNAME:MASTER%只能報以苦笑
+			CASE 0
+				PRINTFORML 「原來如此、真是充滿%CALLNAME:MASTER%風格的話語呢」
+				PRINTFORMDL 覺欽佩地點頭、%CALLNAME:MASTER%內心想道那麼簡單就被我騙了
+				PRINTFORML 「……雖然戀愛是盲目的、但我的”眼”沒有盲、看穿謊言這種程度還是能做到的」
+				PRINTFORMDW 覺竊笑地說道、%CALLNAME:MASTER%見到後嘆氣了
+		ENDSELECT
+		RESETCOLOR
+	ELSEIF 陥落状態() == 2
+		PRINTFORML 「……給我滾開混蛋」
+		PRINTFORMDL 一開口、覺就這樣說著、%CALLNAME:MASTER%只能收聲嘿嘿地笑著
+		PRINTFORML 「『家人真的那麼重要嗎』？　……看來你這個下劣卑賤汚穢之輩根本不懂義理啊」
+		PRINTFORMDW 看見眼神冷淡壓抑著憤怒生氣露出咬牙切齒的表情的覺、讓%CALLNAME:MASTER%沒憋住笑意
+	ELSEIF 陥落状態() == 1
+		SELECTCASE RAND:3
+			CASE 2
+				PRINTFORML 「原來如此、也有這種事呀」
+				PRINTFORMDW 看見覺溫柔的表情、%CALLNAME:MASTER%臉上自然地浮現笑容了
+			CASE 1
+				PRINTFORML 「嘛、就算是%CALLNAME:MASTER%以外的人也試過失敗呢」
+				PRINTFORMDW 對著看上去有點開心的覺、%CALLNAME:MASTER%報以苦笑
+			CASE 0
+				PRINTFORML 「這可真是、值得去見識一下呢」
+				PRINTFORMDW 這樣說著的覺、罕見地嘴角上揚地笑著
+		ENDSELECT
+	ELSE
+		SELECTCASE RAND:3
+			CASE 2
+				PRINTFORML 「……沒有必要說出來吧？」
+				PRINTFORMDW 只是一時興起而已、內心這樣想著時、覺冷淡地看過來
+			CASE 1
+				PRINTFORML 「嗯、已經聽到了哦。我的”眼”早就已經看見了」
+				PRINTFORMDW 覺這樣說著、即使如此還是感覺到覺沒有無視%CALLNAME:MASTER%
+			CASE 0
+				PRINTFORML 「真是無聊的話題、只有這樣嗎？」
+				PRINTFORMDW 周圍蔓延著完全無法繼續話題的氣氛
+		ENDSELECT
+	ENDIF
+	PRINTFORMW 
+ENDIF
+RETURN 1
+;==================================================
+;301,お茶を淹れる
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_301
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_301_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_301_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		CALL DRUNKER49()
+	ELSEIF 陥落状態() >= 4
+		IF GETBIT (CFLAG:1490,3)
+			IF TALENT:恋慕
+				IF 陥落状態() == 5
+					PRINTFORML 「主様、今日沒有下藥嗎？　真可惜」
+					PRINTFORMDL 聽到覺希望下藥後感到意外的%CALLNAME:MASTER%對覺苦笑
+					PRINTFORMW 「因為、主様下藥後就會和我Ｈ了」
+					PRINTFORMDL 覺滿臉笑容低聲嘟嚷
+					PRINTFORML 「雖然沒有下藥的茶也很好喝」
+					PRINTFORMDW 覺語畢開始喝茶了
+				ELSE
+					PRINTFORML 「主様、茶沒有下藥嗎？」
+					PRINTFORMDL 你想我下藥嗎？　、%CALLNAME:MASTER%這樣問道後、覺開始苦笑
+					PRINTFORMW 「如果可以的話我敬謝不敬、但如果主様想這樣做的話我沒所謂哦」
+					PRINTFORMDL 我覺得現在不是說這種話題的時候
+					PRINTFORML 「哼哼、如此任性的主様我也不討厭哦」
+					PRINTFORMDW 覺低聲嘟嚷然後開始喝茶了
+				ENDIF
+			;恋慕も持たずに恋人とな？
+			ELSE
+				PRINTFORML 「太好了、沒有下藥呢」
+				PRINTFORMDL 下了藥你就不會喝了呀、%CALLNAME:MASTER%這樣想著同時、覺微笑開始說道
+				PRINTFORMW 「当然。就算我們是戀人關係、也有分可以做的事和不能做的事」
+				PRINTFORML 「非常親密的話姑且不論、希望能不要做這種會被人發現的事」
+				PRINTFORMDL %CALLNAME:MASTER%沒有回答、悄悄地將自己秘藏的茶點拿出來
+				PRINTFORMDW 覺開心地收下了
+			ENDIF
+		ELSE
+			IF 陥落状態() == 5
+				PRINTFORML 「嗯哼哼、主様的茶、好好喝好喜歡」
+				PRINTFORMDL 覺滿面笑容地說著、%CALLNAME:MASTER%感覺不到任何惡意
+				PRINTFORML 「我明明是真的覺得開心、你到底在想什麼呀？」
+				PRINTFORMDL 我無法讀覺的心、所以我就只能靠觀察才能知道你是在說真心話還是在奉承我了、%CALLNAME:MASTER%這樣回答
+				PRINTFORML 「我討厭這樣的主様」
+				PRINTFORMDL %CALLNAME:MASTER%苦笑地撫摸著嘟起嘴的覺的頭
+			ELSE
+				PRINTFORML 「主様、謝謝你。我很開心」
+				PRINTFORMDL 覺收下茶和茶點、愉快地望過來
+				PRINTFORMW 「『純粹只是一時興起』？　哼哼、就算只是一時興起我也很開心」
+				PRINTFORMDL 覺一邊竊笑一邊拿起茶和茶點
+				PRINTFORML 「你泡的茶和那群孩子泡的茶味道不同、能喝到你泡的茶我很開心哦」
+				PRINTFORMDW 聽到覺的話後、不打算再說反話了
+			ENDIF
+		ENDIF
+	ELSEIF 陥落状態() == 3 || TALENT:184 || TALENT:185
+		IF GETBIT (CFLAG:1490,3)
+			PRINTFORML 「啊啦、今天沒有泡藥嗎？」
+			PRINTFORMDL 覺竊笑地嘟嚷
+			PRINTFORML 「『現在就不要了』？　哼哼、哼哼哼哼、%CALLNAME:MASTER%真是任性呢」
+			PRINTFORMDW 覺不知怎麼很開心、一邊竊笑、一邊接過茶開始喝了
+		ELSE
+			PRINTFORML 「真好喝呢。是%CALLNAME:MASTER%你幫我泡對吧」
+			PRINTFORMDL 誰來泡茶也一樣吧、%CALLNAME:MASTER%這樣嘟嚷瞬間、覺笑容變成苦笑了
+			PRINTFORML 「不、就算是我家的孩子們、阿燐的話很擅長泡茶、阿空就有待改善了」
+			PRINTFORMDW 那兩人的話的確很可能是這樣呢、%CALLNAME:MASTER%内心這樣想著同時、覺苦笑地點頭了
+		ENDIF
+	ELSEIF 陥落状態() == 2
+		IF GETBIT (CFLAG:1490,3)
+			PRINTFORML 「『我沒有下藥』……、這不是理所當然嗎」
+			PRINTFORMDL 覺冷淡地瞪著這邊
+			PRINTFORML 「『今次沒有』？　真是可惜、沒用的哦」
+			PRINTFORMDW 覺深深地嘆息、表情呆然
+		ELSE
+			PRINTFORML 「你不會覺得斟茶遞水這種程度就能籠絡我吧」
+			PRINTFORMDL 覺一邊不快地嘟嚷、一邊伸出手接過茶和茶點
+			PRINTFORML 「……什麼？」
+			PRINTFORMDW 看見接過茶的覺帶有一絲快樂後、%CALLNAME:MASTER%嘿嘿地奸笑著
+		ENDIF
+	ELSEIF 陥落状態() == 1
+		IF GETBIT (CFLAG:1490,3)
+			PRINTFORML 「太好了、今日的茶沒有下藥啊」
+			PRINTFORMDW 覺微笑含糊不清地說道
+		ELSEIF TFLAG:193 == 1
+			PRINTFORML 「%CALLNAME:MASTER%很擅長泡茶呢」
+			PRINTFORMDW 覺開心地笑著、%CALLNAME:MASTER%也以笑容作為回應了
+		ELSEIF TFLAG:193 == -1
+			PRINTFORML 「……那個、雖然謝謝你、但這個有點」
+			PRINTFORMDW 見到覺困惑後、低頭嚐一嚐茶味道的%CALLNAME:MASTER%因感到難喝如僵住了
+		ELSE
+			PRINTFORML 「哼哼、謝謝你」
+			PRINTFORMDW 覺微笑地接過茶後開始喝茶了
+		ENDIF
+	ELSE
+		IF GETBIT (CFLAG:1490,3)
+			PRINTFORML 「以後、也請你不要再下藥了」
+			PRINTFORMDW 覺一邊接過茶一邊不愉快地低聲嘟嚷
+		ELSEIF TFLAG:193 == 1
+			PRINTFORML 「謝謝你……、很好喝」
+			PRINTFORMDW 覺少見地稍微有點開心地微笑著
+		ELSEIF TFLAG:193 == -1
+			PRINTFORML 「……謝了」
+			PRINTFORMDW 覺喝了一口茶的瞬間、露出難以形容的表情
+		ELSE
+			PRINTFORML 「謝謝你」
+			PRINTFORMDW 覺表情毫無變化、接過茶並開始喝
+		ENDIF
+	ENDIF
+	CLEARBIT CFLAG:1490,3
+ENDIF
+RETURN 1
+;==================================================
+;302,スキンシップ
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_302
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF (BATHCHECK(CFLAG:MASTER:現在位置) && IN_HOME(CFLAG:MASTER:現在位置) && 陥落状態() < 4) || !BATHCHECK(CFLAG:MASTER:現在位置) || (BATHCHECK(CFLAG:MASTER:現在位置) && (CFLAG:MASTER:現在位置 == 大衆浴場 || CFLAG:MASTER:現在位置 == 旧地獄温泉))
+	CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_302_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_302_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		CALL DRUNKER49()
+	ELSEIF BATHCHECK(CFLAG:MASTER:現在位置) && IN_HOME(CFLAG:MASTER:現在位置)
+		IF 陥落状態() >= 4
+			DRAWLINE
+			IF !RAND:2
+				PRINTFORML %CALLNAME:PLAYER%被覺擦背中
+				PRINTL
+				SIF FLAG:口上色
+					CALLFORM M_KOJO_COLOR_K49
+				IF 陥落状態() == 5
+					PRINTFORML 「主様的後背真美」
+					PRINTFORMDL 覺陶醉地說著、%CALLNAME:MASTER%回頭一看就注意到覺含情脈脈地看著這邊
+					PRINTFORML 「『已經想要了嗎』？　是、沒ー錯哦。見到主様を見小穴裏面就覺得好熱」
+					PRINTFORMDL 聽到那麼赤裸裸的發言%CALLNAME:MASTER%只能苦笑了
+					PRINTFORML 「那麼、我來幫你擦背吧。嗯、呼、哈呼……」
+					PRINTFORMDL 身上充滿泡泡的覺摩擦著身體、好像在用%CALLNAME:MASTER%的身體自慰但由於背對著覺完全看不見
+				ELSE
+					PRINTFORML 「那麼、失禮了」
+					PRINTFORMDL 覺禮貌地低語說著、用自己肌膚上充滿泡泡的身體壓過來
+					PRINTFORMW 「哼哼、嘴上雖然這麼說、但其實覺得很棒吧主様？」
+					PRINTFORMDL 背後感覺到柔軟的觸感、中間又有不一樣的硬硬感覺、令你自然地感到洋洋自喜
+					PRINTFORML 「能令你高興我很開心。哈啊、主様的身體感覺真不錯」
+					PRINTFORMDW 覺露出陶醉的表情、欲情地仰望著你
+				ENDIF
+			ELSE
+				PRINTFORML %CALLNAME:PLAYER%幫覺刷背了
+				PRINTL
+				SIF FLAG:口上色
+					CALLFORM M_KOJO_COLOR_K49
+				IF 陥落状態() == 5
+					PRINTFORML 「主様、要好好地用手將每個角落洗乾淨哦？」
+					PRINTFORMDL 覺滿面笑容地這樣要求、%CALLNAME:MASTER%滿面苦笑地遵從
+					PRINTFORMW 「『幾乎還是沒變一樣那麼光滑呢』？　哼哼、因為我為了主様一直好好保養啊」
+					PRINTFORMDL %CALLNAME:MASTER%聽著覺說話時、這邊的手突然被捉住、然後被放到覺的乳房和私處上
+					PRINTFORML 「所以、這邊也要、好好清潔、吶？」
+					PRINTFORMDW 用手指將柔軟的乳房、以及流著愛蜜的私處仔細地洗乾淨了
+				ELSE
+					PRINTFORML 「呼啊……、真是的、真是太Ｈ了」
+					PRINTFORMDL 輕輕地用手指畫過覺的後背同時、覺目不轉睛地望著這邊
+					PRINTFORMW 「『就這樣推倒感覺也不錯』？　哼哼、主様如果想這樣做的話就隨便做吧」
+					PRINTFORMDL 覺迅速地轉身面向這邊、大大地張開雙腿
+					PRINTFORML 「主様、這邊也、清洗乾淨吧」
+					PRINTFORMDW %CALLNAME:PLAYER%在受到指示後、仔細地將覺的私處洗得一乾二淨了
+				ENDIF
+			ENDIF
+			RESETCOLOR
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「嗯、只有後背、就好了嗎」
+			PRINTFORMDW 無視覺的話語、手繼續向前進
+			PRINTFORML 「呼啊、唔……『光著手的感覺不錯』？　真是巧呢、我也一樣」
+			PRINTFORMDW 語畢、覺突然搶去你的浴巾、笑著望向這邊
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「……請吧、請隨便」
+			PRINTFORMDW 表情毫無變化的覺背向了你
+			PRINTFORML 「『那麼老實真是少見』？　單純只是、對著你就覺得很累而已」
+			PRINTFORMDW 覺瞅了這邊一眼、輕輕地嘆了一口氣
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「哼哼、那麼就拜託你了。啊啊、請不要做Ｈ的事」
+			PRINTFORMDW 被事先提醒的%CALLNAME:MASTER%在內心不愉快地咂嘴、並仔細地擦乾淨覺的肌膚
+		ENDIF
+	ELSE
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「嗯哼哼、主様、我好開心」
+				PRINTFORMDL 覺靠近過來像貓一樣撒嬌
+				PRINTFORMW 「『這邊想做了』？　主様想做的話我可以配合你哦」
+				PRINTFORMDL 覺這樣說著同時、用頭壓住你的胸襟
+				PRINTFORML 「吶、主様、我想要更多痛愛啊」
+				PRINTFORMDW 覺仰望著你這樣請求、你苦笑著撫摸覺的頭和後背
+			ELSE
+				PRINTFORML 「真是的、請不要黏得那麼緊」
+				PRINTFORMDL 覺這樣說著、身體卻主動靠過來了
+				PRINTFORMW 「『由你做就感覺很好嗎』？　由我來做就感覺很不錯呀」
+				PRINTFORMDL 覺一邊讀心、一邊竊笑
+				PRINTFORML 「因為、我不是想讓主様來做、而是想要主様主動來做」
+				PRINTFORMDW 看見覺開心地笑著後、你面露苦笑
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「嗯……、哼哼、只是這樣撫摸就滿足了嗎？」
+			PRINTFORMDW 輕輕地撫摸覺的喉嚨與膊頭
+			PRINTFORML 「『現在不是Ｈ的時候』？　哼哼、我無論什麼時候也可以呢」
+			PRINTFORMDW 覺一邊竊笑、一邊全身放鬆任你撫摸
+		ELSEIF 陥落状態() == 2
+			IF TFLAG:193 == 1
+				PRINTFORML 「……誰都、沒說過被人碰會感覺不錯吧」
+				PRINTFORMDW 無視著表情冷淡的覺、揼著覺的膊頭
+				PRINTFORML 「『膊頭真是僵硬呢』？　嗯、多得某個人一直在煩擾我」
+				PRINTFORMDW 覺嘴上雖然很討厭、但並沒有逃開你
+			ELSEIF TFLAG:193 == -1
+				PRINTFORML 「請不要碰我」
+				PRINTFORMDW 覺敏捷地避開你、以锐利的眼神怒目而視
+				PRINTFORML 「一想到要被%CALLNAME:MASTER%碰到時、就非常害怕了」
+				PRINTFORMDW 那麼就對你的【家人】、這樣思考的瞬間、覺眼帶淚光瞪著這邊
+			ELSE
+				PRINTFORML 「……哈啊、做這種事到底有什麼樂趣？」
+				PRINTFORMDW 覺呆然地說道、%CALLNAME:MASTER%回答'偶然做這種事也不錯'了
+				PRINTFORML 「明明是個性慾的化身、卻做這種奇妙的事呢」
+				PRINTFORMDW 一邊看著覺冷淡的表情、一邊享受身體接觸了
+			ENDIF
+		ELSEIF 陥落状態() == 1
+			IF TFLAG:193 == 1
+				PRINTFORML 「哼哼、這樣很有趣嗎？」
+				PRINTFORMDW 點頭回答看起來很開心的覺了
+			ELSEIF TFLAG:193 == -1
+				PRINTFORML 「……請你不要接觸得我太多」
+				PRINTFORMDW 覺臉上帶著討厭的表情、勉勉強強地離開了
+			ELSE
+				PRINTFORML 「很有趣嗎？　嘛、雖然也沒有說很討厭」
+				PRINTFORMDW 覺這樣說著、嘴角微微笑著
+			ENDIF
+		ELSE
+			PRINTFORML 「……嗯、隨便你」
+			PRINTFORMDW 你輕輕地撫摸覺的肌膚、覺面露冷淡的表情
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;303,謝る
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_303
+DRAWLINE
+PRINTFORM %CALLNAME:PLAYER%
+IF GETBIT(CFLAG:1490,11)
+	PRINTFORML 低頭安慰著生氣的覺
+ELSE
+	IF TFLAG:193 == -2 || TFLAG:193 == 2
+		PRINTFORML 並為自己非禮行為道歉而送上了點心盒
+	ELSE
+		PRINTFORML 並為自己非禮行為道歉
+	ENDIF
+ENDIF
+IF TFLAG:193 == 1
+	PRINTFORM 覺
+	IF GETBIT(CFLAG:1490,11)
+		PRINTFORM 說是自已不對並
+	ELSEIF 陥落状態() >= 4 || 陥落状態() == 3
+		PRINTFORM 笑著
+	ELSEIF 陥落状態() == 2
+		PRINTFORM 嘆氣並
+	ELSEIF 陥落状態() == 1
+		PRINTFORM 露出苦笑
+	ELSE
+		PRINTFORM 板着臉
+	ENDIF
+	PRINTFORML 原諒你了…
+ELSEIF TFLAG:193 == 2
+	PRINTFORML 覺不再計較過去的往事了…
+	PRINTFORMW 覺失去了反発刻印LV1
+ELSEIF TFLAG:193 == 0
+	IF GETBIT(CFLAG:1490,11)
+		PRINTFORML 覺一邊說怎麼可能會生%CALLNAME:PLAYER%的氣呢一邊原諒你
+	ELSE
+		PRINTFORML 覺無可奈何地原諒了%CALLNAME:PLAYER%…
+	ENDIF
+ELSEIF TFLAG:193 == -2
+	PRINTFORML 覺沒有收下點心盒…
+	PRINTFORML 覺看起來好像還沒原諒你…
+ELSE
+	PRINTFORML 但是覺還在生氣…
+ENDIF
+PRINTL 
+SIF FLAG:口上色
+	CALLFORM M_KOJO_COLOR_K49
+CALL M_KOJO_MESSAGE_COM_K49_303_1
+RESETCOLOR
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_303_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TFLAG:193 == 1
+		IF 陥落状態() >= 4
+			IF GETBIT(CFLAG:1490,11)
+[SKIPSTART]
+「……主様が悪いわけじゃありませんよね」
+ぽつりと呟いた覚が、深々とため息をついた
+「申し訳ありません、どうしても憤怒が抑えきれなかったんです」
+誰にでもそういうときはあると答えつつ、内心ほっとする%CALLNAME:MASTER%
+[SKIPEND]
+				CLEARBIT CFLAG:1490,11
+			ELSEIF 陥落状態() == 5
+				PRINTFORML 「……主様你這個笨蛋」
+				PRINTFORMDL 覺將身體挨過來、頭貼着你並仰視著這邊
+				PRINTFORMW 「色狼變態蠢貨、壞心眼、欺負人」
+				PRINTFORMDL 覺用甜美的聲音、責備著你、然後突然沉默起來
+				PRINTFORML 「『我知錯了』……、那麼、希望你以後別再這樣做了」
+				PRINTFORMDW 面對著眼帶淚光的覺、%CALLNAME:PLAYER%低頭謝罪了
+			ELSE
+				PRINTFORML 「……真是的、主様請你少做一點那麼過分的事了」
+				PRINTFORMDL 覺帶著笑容看著這邊
+				PRINTFORMW 「『能原諒我真是得救了』？　我已經知道你是真心道歉的了」
+				PRINTFORMDL 覺凑近過嚟、輕輕地親吻你的臉蛋
+				PRINTFORML 「但是、請你盡量別在令我生氣吧？　生氣的一方也很難受的」
+				PRINTFORMDW 我會好好對待的、語畢沒有再說下去了
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			IF GETBIT(CFLAG:1490,11)
+				CLEARBIT CFLAG:1490,11
+			ELSE
+				PRINTFORML 「哈啊、真是的、真是個無藥可救的人」
+				PRINTFORMDW 覺一邊竊笑、一邊看著這邊
+				PRINTFORML 「『我覺得很抱歉』？　欸~、會承認自己的錯真是少見」
+				PRINTFORMDW 覺毫無掩飾地說著、%CALLNAME:PLAYER%聽到後面露苦笑了
+			ENDIF
+		ELSEIF 陥落状態() == 2
+			IF GETBIT(CFLAG:1490,11)
+				CLEARBIT CFLAG:1490,11
+			ELSE
+				PRINTFORML 「………………就算繼續生氣下去、都會疲累的」
+				PRINTFORMDW 說著原諒你的覺、少見地沒有將對方的心聲說出來
+				PRINTFORML 「……你也一樣、少見地會真心道歉啊……」
+				PRINTFORMDW 覺低聲地說着、背向了你
+			ENDIF
+		ELSEIF 陥落状態() == 1
+			IF GETBIT(CFLAG:1490,11)
+				CLEARBIT CFLAG:1490,11
+			ELSE
+				PRINTFORML 「呵呵、真沒辦法。但是、下不為例」
+				PRINTFORMDW 覺語畢苦笑着、%CALLNAME:MASTER%點頭回應了
+			ENDIF
+		ELSE
+			IF GETBIT(CFLAG:1490,11)
+				CLEARBIT CFLAG:1490,11
+			ELSE
+				PRINTFORML 「…………只限今次下不為例」
+				PRINTFORMDW 覺只告知了這句、不知為何臉帶苦笑
+			ENDIF
+		ENDIF
+	ELSEIF TFLAG:193 == 2
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「……啊、你還記得我喜歡哪一種點心的嗎？」
+				PRINTFORMDL 覺在一瞬間滿面笑容、然後慌慌忙忙地嘟起嘴唇
+				PRINTFORMW 「就、就算你帶了這種東西、都騙不了我的」
+				PRINTFORMDL 既然這樣的話、就將點心送給戀他們吧、這樣想時覺狠狠地瞪著你
+				PRINTFORML 「主様壞心眼…………、我知道了、況且再生氣下去也很累、我原諒你吧」
+				PRINTFORMDW 語畢、覺緊緊地抱著並用頭摩擦著你
+			ELSE
+				PRINTFORML 「哼哼、看來你還記得我喜歡的點心呢」
+				PRINTFORMDL 覺開心地笑著收下點心盒
+				PRINTFORMW 「『碰巧啦』？　哼哼、由主様這樣說真是毫無違和感呢」
+				PRINTFORMDL 覺掩嘴笑着
+				PRINTFORML 「但是、我不會像平時一樣那麼簡單原諒你的」
+				PRINTFORMDW 注意到覺是皮笑肉不笑後%CALLNAME:MASTER%額頭開始冒出冷汗
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「呼、帶了金黃色的點心呀？」
+			PRINTFORMDW 見到覺一邊笑著一邊低聲說 開玩笑的 後、%CALLNAME:MASTER%內心就想着 果然這樣有點勉強呀
+			PRINTFORML 「嘛、雖然看在你的面子份上我可以原諒你、但是別再那麼激怒我了」
+			PRINTFORMDW 覺妥善地回答你了
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「……用點心引誘我什麼的、看來真的將我當成笨蛋了」
+			PRINTFORMDW 覺雖然嘴上這麼說、但還是收下了點心盒
+			PRINTFORML 「將這東西收下送畀大家開心、更好、嗎」
+			PRINTFORMDW 少女們都很喜歡這個、在內心這樣想瞬間、覺用銳利的眼神對你怒目而視
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「看上去真是好吃的點心呢。可以的話我們一起吃吧？」
+			PRINTFORMDW 確定自己被原諒後、%CALLNAME:MASTER%一邊鬆了一口氣一邊點頭覺接受的提案
+		ELSE
+			PRINTFORML 「…………哈啊、真是個無藥可救的人」
+			PRINTFORMDW 覺表情冷淡地低聲說著、但還是收下點心盒了
+		ENDIF
+	ELSEIF TFLAG:193 == 0
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORMDL 覺一言不發地抱過來、就這樣視線向上望著這邊
+				PRINTFORMDL 覺的手慢慢向下、在屁股來回撫摸
+				PRINTFORMDW %CALLNAME:MASTER%一邊冒著冷汗、一邊看著覺
+				PRINTFORML 「……主様真的、很壞心眼」
+				PRINTFORML 「我明明如此真誠對你、你卻做那麼過份的事」
+				PRINTFORMW 「別以為、下次我也會、原諒你」
+			ELSE
+				PRINTFORML 「真是的、主様真是個過份的人」
+				PRINTFORMDL 慢慢地嘟囔的覺緊緊地抱過來
+				PRINTFORMW 「我最喜歡主様了。但是卻這樣激怒我真的很難受」
+				PRINTFORMDL %CALLNAME:MASTER%不經意地說了句抱歉後、覺用感到很有趣的表情望著這邊
+				PRINTFORML 「真是稀奇、主様居然會認錯」
+				PRINTFORMDW 只是一時興起而已、這樣回答後不知不覺間撫摸著覺的頭
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「對%CALLNAME:MASTER%生氣真的很累」
+			PRINTFORMDW 覺一邊嘟囔一邊深深地嘆氣
+			PRINTFORML 「真是的、真是個無藥可救的人」
+			PRINTFORMDW 覺說完這句後、就什麼都沒有說緊緊地依偎你
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「…………哈、對著%CALLNAME:MASTER%這種人生氣也是沒用啊」
+			PRINTFORMDW 難得我願意低頭道歉卻說得那麼過分、%CALLNAME:MASTER%在內心說道
+			PRINTFORML 「……你這樣、嘴上道歉心底卻頂嘴、對方根本不可能原諒你這點你不知道嗎」
+			PRINTFORMDW 看見覺不愉快地這樣說道後、不知不覺間笑了
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「比起道歉、請你一開始就不要激怒我」
+			PRINTFORMDW 覺愕然地說道、%CALLNAME:MASTER%做不出任何回答
+		ELSE
+			PRINTFORML 「……哈……真是無藥可救的人」
+			PRINTFORMDW 覺說完這句後、轉移視線了
+		ENDIF
+	ELSEIF TFLAG:193 == -2
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「……ぬしさまぁ、それ私が唯一嫌いなお菓子なんですけどぉ？」
+				PRINTFORMDL 唇をへの字に曲げて呟く覚に、冷や汗が浮かぶ
+				PRINTFORMW 「『気づかなかった』？　……前に言ったはずですけど」
+				PRINTFORMDL そういった覚の目から涙が零れる
+				PRINTFORML 「そーですか、ぬしさまは、わたしのこのみもおぼえてくれないんですか」
+				PRINTFORMDW ぽろぽろと涙をこぼす覚に、もう一度頭を下げた
+			ELSE
+				PRINTFORML 「……いくら主様の気持ちの表れだと言われても、受け取る気にはなれません」
+				PRINTFORMDL 差し出した菓子折を押し返されてしまう
+				PRINTFORMW 「道歉なら、『この程度で良いだろう』、ではなく、心から謝ってください」
+				PRINTFORMDL そのつもりだが、と内心でつぶやく%CALLNAME:MASTER%に、覚が目尻に涙を浮かべる
+				PRINTFORML 「私にわからないと本気で思っているんですか？」
+				PRINTFORMDW その言葉に、もう一度、すまないと良いながら差し出した菓子折は無視された
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「はぁ、%CALLNAME:MASTER%はバカですね」
+			PRINTFORMDW 差し出した菓子折を無視されての罵声に、返す言葉が出てこない
+			PRINTFORML 「これだけ怒ってるのに、そんなモノでごまかそうなんて、不愉快にもほどがあります」
+			PRINTFORMDW 唇をとがらせる覚に、渋々菓子折を引っ込める%CALLNAME:MASTER%だった
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「……粪、そんなものでごまかされるモノですか」
+			PRINTFORMDW じろりとにらみつけてき的同时、覚がぽつりとつぶやく
+			PRINTFORML 「『せっかく用意してやったのに』？　そんな安物、誰が喜ぶモノですか」
+			PRINTFORMDW 菓子折を引っ込めつつ、時止めで憂さ晴らしをと思った瞬間、にらみつけられた
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「はぁ、もうしわけありませんが、受け取るつもりはありませんね」
+			PRINTFORMDW 目だけが笑着ない笑顔に、冷や汗を浮かべつつ菓子折をしまい込んだ
+		ELSE
+			PRINTFORML 「……結構です」
+			PRINTFORMDW けんもほろろな覚の対応に、内心でため息をつき睨まれた
+		ENDIF
+	ELSE
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「主様のバカ、そんな心のこもらない謝り方されて許せるわけ無いです」
+				PRINTFORMDL 唇をとがらせて頬を膨らませる覚を片刻后見つめる
+				PRINTFORMW 「『怒ってる姿も可愛い』？　……そんな風に思われても、許しませんから」
+				PRINTFORMDL 一瞬頬を緩ませた覚が、慌てて顔を引き締める
+				PRINTFORML 「……主様のばか」
+				PRINTFORMDW 寂しげな声音に、なぜか胸の奥に痛みを覚えた
+			ELSE
+				PRINTFORML 「主様、道歉なら、そんなおざなりな謝り方はどうかと思います」
+				PRINTFORMDL 覚が、不快感をあらわにして見つめてくる
+				PRINTFORMW 「私の第三の目をごまかせると本気で思っているんですか？」
+				PRINTFORMDL そんなつもりはないと答えるより早く、覚が目尻に涙を浮かべて見つめてくる
+				PRINTFORML 「道歉なら、心底から謝ってください。憤怒続けるのもつらいんですからね」
+				PRINTFORMDW 本心からの言葉に、頭を下げることしかできなかった
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「それで謝ってるつもりですか？」
+			PRINTFORMDW あきれた様子で覚がこちらを見つめてくる
+			PRINTFORML 「道歉なら本気で謝ってください。そうでないのに許すわけはありません」
+			PRINTFORMDW あまりにもつれない覚の言葉に、内心で頭を抱えた
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「…………誠意のかけらもない謝罪に意味などありませんが」
+			PRINTFORMDW じろりと睨みながらつぶやく覚
+			PRINTFORML 「まあ、%CALLNAME:MASTER%にはその程度のことしかできないのでしょうが」
+			PRINTFORMDW 時止めで嬲ろうか、そう思った瞬間、殺意さえこもる視線を向けられた
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「……申し訳ありませんけど、そんな適当な謝罪で許すつもりはありません」
+			PRINTFORMDW 覚の冷たい言葉に、返事ができない
+		ELSE
+			PRINTFORML 「……知りません」
+			PRINTFORMDW けんもほろろな覚の対応に、内心でため息をつき睨まれた
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;304,仕事を手伝う
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_304
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_304_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_304_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+ENDIF
+RETURN 1
+;==================================================
+;305,膝枕してもらう
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_305
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF 陥落状態() != 2 || (BASE:酒気 < (MAXBASE:酒気 / 10) * 4)
+	CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_305_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_305_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		DRAWLINE
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		CALL DRUNKER49()
+	ELSEIF 陥落状態() >= 4
+		IF 陥落状態() == 5
+			PRINTFORML 「主様、可愛いです、ふふ、いいこいいこ」
+			PRINTFORMDL そう言いながら頭を撫でられる感触に、心地よさと居心地の悪さが同時に襲ってくる
+			PRINTFORMW 「『恥ずかしい』？　ふふ、今はそんな事気にしないで良いんですよ」
+			PRINTFORMDL 破顔一笑して、覚がこちらを見つめてくる
+			PRINTFORML 「ゆっくりしましょう、ね」
+			PRINTFORMDW その後でご褒美が欲しい、そんな視線のおねだりに苦笑が浮かんだ
+		ELSE
+			PRINTFORML 「主様、私も心地良いです」
+			PRINTFORMDL 膝枕をしながらつぶやく覚に、自然と笑みがこぼれる
+			PRINTFORMW 「『別に心地よくはない』？　ふふ、そうやって意地悪して楽しいですか？」
+			PRINTFORMDL 覚の困った様な笑顔を見るのは楽しい、そう内心でつぶやく%CALLNAME:MASTER%
+			PRINTFORML 「ふふ、でも、普段の笑顔を、上り詰めたときの蕩け顔を見る方が楽しいくせに」
+			PRINTFORMDW くすくすわらう覚の言葉に、返答せずに目を閉じた
+		ENDIF
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「……ふふ、これがいいんですか？」
+		PRINTFORMDW 後頭部に感じる太ももの柔らかさと、頭をなでられる感触に、心地よさが広がってくる
+		PRINTFORML 「『たまにはこういうのも良い』？　そうですね、私も同じ気持ちです」
+		PRINTFORMDW どこか楽しげな覚に、そのまま身を預けた
+	ELSEIF 陥落状態() == 2
+		DRAWLINE
+		IF ABL:TARGET:親密 > 5
+			PRINTFORML 覚はあきれたようにため息をついて、%CALLNAME:MASTER%ののどに手を伸ばしてくる
+		ELSEIF ABL:TARGET:親密 > 2
+			PRINTFORML 覚は%CALLNAME:MASTER%を見つめて、深いため息をついている
+		ELSE
+			PRINTFORML 覚は不愉快そうな表情のままじっとしている…
+		ENDIF
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		IF ABL:TARGET:親密 > 5
+			PRINTFORML 「…………バカですね、%CALLNAME:MASTER%は」
+			PRINTFORMDW 伸ばした手で、のどをつかみわずかに力を込めてくる
+			PRINTFORML 「……なぜ逃げないんです？　『太ももが気持ちいい』？　……本当にバカですね」
+			PRINTFORMDW 呆れたように言い的同时、なぜか覚はそれ以上文句を口にしないでいる
+		ELSEIF ABL:TARGET:親密 > 2
+			PRINTFORML 「本当に、バカな人。こんな無防備な状態をさらすなんて。このまま殺してあげましょうか？」
+			PRINTFORMDW そう言い的同时、%CALLNAME:MASTER%ののど元を両手でつかんでくる覚
+			PRINTFORML 「『できないくせに』………………、できないのではなく、しないだけ、ですよ」
+			PRINTFORMDW 強がりを口にした覚が、それでものど元から手を離した
+		ENDIF
+		RESETCOLOR
+	ELSEIF 陥落状態() == 1
+		IF ABL:TARGET:親密 > 5
+			PRINTFORML 「ふふ、こんなのが良いなんて、変わっていますね」
+			PRINTFORMDW 可笑しそうにしながら動く覚の手に、安堵感が湧いてくる
+		ELSEIF ABL:TARGET:親密 > 2
+			PRINTFORML 「……何が楽しいんですか、こんなこと」
+			PRINTFORMDW 呆れた表情でつぶやきつつ手は止めない覚に、自然と笑みが浮かんでしまう
+		ENDIF
+	ELSE
+		PRINTFORML 「…………こんなのが嬉しいですか？　理解できません」
+		IF ABL:TARGET:親密 > 2
+			PRINTFORMDW つぶやき的同时、%CALLNAME:MASTER%の頭をなでる手は止めない
+		ELSE
+			PRINTFORMDW つぶやいて、%CALLNAME:MASTER%をじっと見つめてくる
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;306,お腹を撫でる
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_306
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF 陥落状態() != 2 || FLAG:70 || CFLAG:TARGET:睡眠 || (BASE:酒気 < (MAXBASE:酒気 / 10) * 4)
+	CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_306_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_306_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		CALL STOP49
+	ELSEIF CFLAG:TARGET:睡眠
+		CALL SLEEP49
+	ELSEIF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		DRAWLINE
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		CALL DRUNKER49()
+	ELSEIF 陥落状態() >= 4
+		IF 陥落状態() == 5
+			IF TFLAG:193 == 1
+				PRINTFORML 「ふにゃぁ、きもちいーですー」
+				PRINTFORMDL うっとりとした表情で、心持ち腰を突き出してくる覚
+				PRINTFORMW 「『スケベ』？　ん、すけべでいーです、愛する主様にされてるんですからー」
+				PRINTFORMDL ごろごろと喉を鳴らしそうなほど、ご心情な表情の覚
+				PRINTFORML 「心も体もきもちいーです。主様は本当に素敵ですー」
+				PRINTFORMDW 体をすり寄せてくる覚のおねだりに、思う存分なで回した
+			ELSE
+				PRINTFORML 「んー、主様は楽しいですか？」
+				PRINTFORMDL 覚の言葉に、内心で楽しいと応えつつ、なだらかな下腹部までなで回す
+				PRINTFORMW 「どうせだったら、このままＨしたいです」
+				PRINTFORMDL 上目遣いのおねだりに、それは気分次第と答える%CALLNAME:MASTER%
+				PRINTFORML 「主様の気まぐれにもこまったものです」
+				PRINTFORMDW くすくすと开心地笑着的同时、覚が体をすり寄せてきた
+			ENDIF
+		ELSE
+			IF TFLAG:193 == 1
+				PRINTFORML 「ん、ふぁ……主様、いくらなんでも、ん、そこを触るのは」
+				PRINTFORMDL ほおを上気させた覚が、目元を潤ませながら見つめてくる
+				PRINTFORMW 「『いやだったか』？　いえ、その……気持ちよかったので」
+				PRINTFORMDL その言葉に、にやりと笑いながらさらになで回す
+				PRINTFORML 「んくっ、あふっ……、だから、やめてほしいと」
+				PRINTFORMDW 口では文句を言い的同时、掴んでいるこちらの手を振り払おうとはしない
+			ELSE
+				PRINTFORML 「もう、なにがしたいんですか、主様」
+				PRINTFORMDL 呆れた様な表情で、覚がこちらを見つめてくる
+				PRINTFORMW 「睦み合いの最中でもないのに、女性のそこをなでるのは、んっ」
+				PRINTFORMDL そんな小言を聞き流し、より深い場所に手を動かそうとして、身体が動かせなくなった
+				PRINTFORML 「主様、いい加減に無いと憤怒ますよ？」
+				PRINTFORMDW そう言ってから口の端をあげる覚が、こちらの身体に絡みつかせたサードアイの触手を外した
+			ENDIF
+		ENDIF
+	ELSEIF 陥落状態() == 3
+		IF TFLAG:193 == 1
+			PRINTFORML 「んくっ……、はぁ、これ、恥ずかしいです」
+			PRINTFORMDW そう言いながらも、どこか神情愉悦こちらの手の上に自己的ソレを重ねてくる覚
+			PRINTFORML 「『恥ずかしいだけか』？　ふふ、そう、ですね。多少は気持ちよくもあります」
+			PRINTFORMDW クスクスと笑う覚が、こちらの手を使って、自分の腹をなで始めた
+		ELSE
+			PRINTFORML 「んっ、もう、こんなことの何が楽しいんですか」
+			PRINTFORMDW 戸惑いを浮かべつつ、覚がこちらを見つめてくる
+			PRINTFORML 「『ボルチオはどうか』？　…………ヘンタイですねぇ」
+			PRINTFORMDW 呆れた様な視線を向けてきながらも、口元を緩める覚だった
+		ENDIF
+	ELSEIF 陥落状態() == 2
+		DRAWLINE
+		IF TFLAG:193 == 1
+			PRINTFORML 覚は%CALLNAME:MASTER%の手の動きに身を震わせている
+		ELSEIF TFLAG:193 == -1
+			PRINTFORML 覚は%CALLNAME:MASTER%の手を思い切りはたき落とした
+		ELSE
+			PRINTFORML 覚は%CALLNAME:MASTER%の手の動きに唇を噛んでいる
+		ENDIF
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		IF TFLAG:193 == 1
+			PRINTFORML 「ふっ、くっ……。こんなことの、何がたのしいんですか」
+			PRINTFORMDW なだらかさを堪能できる、覚が快感に反応している、どちらも楽しいとつぶやく%CALLNAME:MASTER%
+			PRINTFORML 「この変態、くっ、ぅ…………だから、さわらないで、ください」
+			PRINTFORMDW 口では文句を言いながらも、覚は逃げだそうとはしなかった
+		ELSEIF TFLAG:193 == -1
+			PRINTFORML 「やめてくださいっ！」
+			PRINTFORMDW 轻轻地なでた瞬間、手を支付のけられ、訝りつつ覚に視線を向ける
+			PRINTFORML 「『この程度で止めるのか』？　不愉快なだけですっ！！」
+			PRINTFORMDW そう言い的同时、なぜかほおを赤くした覚が睨んできた
+		ELSE
+			PRINTFORML 「『抵抗しないのか』？　するだけ無駄な事は、しても無駄ですから」
+			PRINTFORMDW 深々とため息をつく覚に、にやりと笑いながら娑啦娑啦地なで回す
+			PRINTFORML 「……んっ…………まだ、するつもり、ですか」
+			PRINTFORMDW 少し呼吸を早める覚に答えを返さず、思う存分なで回した
+		ENDIF
+		RESETCOLOR
+	ELSEIF 陥落状態() == 1
+		IF TFLAG:193 == 1
+			PRINTFORML 「『滑らかだ』？　……まあ、余分な肉がつかない程度には節制してますから」
+			PRINTFORMDW そう呟き的同时、看上去似乎很开心地覚がほほえむ
+		ELSEIF TFLAG:193 == -1
+			PRINTFORML 「……女性の下腹をなでるのは、どうかと思いますが」
+			PRINTFORMDW わずかに顔をしかめた覚に手の甲をつねられた
+		ELSE
+			PRINTFORML 「あの、出来ればそこは触らないで欲しいんですが」
+			PRINTFORMDW そう言い的同时、覚がこちらの手を悄悄的押しのけた
+		ENDIF
+	ELSE
+		IF TFLAG:193 == 1
+			PRINTFORML 「どこを触っているんですか、非常識ですね」
+			PRINTFORMDW 呆れた様に呟いた覚だが、重ねてきた手で止めようとはしない
+		ELSEIF TFLAG:193 == -1
+			PRINTFORML 「……いい加減に、してください」
+			PRINTFORMDW 不愉快そうににらみつけられ、渋々手を離した
+		ELSE
+			PRINTFORML 「何が楽しいんですか？　馬鹿馬鹿しい」
+			PRINTFORMDW 冷たい視線を向けてくる覚に、渋々てを引っ込めた
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;307,頬をつまむ
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_307
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF 陥落状態() != 2 || FLAG:70 || CFLAG:TARGET:睡眠 || (BASE:酒気 < (MAXBASE:酒気 / 10) * 4)
+	CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_307_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_307_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		CALL STOP49
+	ELSEIF CFLAG:TARGET:睡眠
+		SIF 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL SLEEP49
+	ELSE
+		IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+			DRAWLINE
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			CALL DRUNKER49()
+		ELSEIF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「诶嘿嘿、主様のほっぺ触るの楽しいです」
+				PRINTFORMDL 覚が浮かべる満面の笑みに、苦笑しながらその滑らかな頬をなで回す
+				PRINTFORMW 「でも、どうせだったら、ほっぺにちゅーシテほしいですけど」
+				PRINTFORMDL そう言い的同时、不意に顔を寄せてきた覚が、そのままほおずりしてくる
+				PRINTFORML 「これも、楽しいです」
+				PRINTFORMDW そんな言葉に苦笑が浮かび、しばらく覚のやりたいようにさせる%CALLNAME:MASTER%だった
+			ELSE
+				PRINTFORML 「主様、こんなことして楽しいんですか？」
+				PRINTFORMDL くすくすわらいながら覚がこちらの頬をなで回してくる
+				PRINTFORMW 「『覚の頬はすべすべぷにぷにで気持ちいい』……って、そう思うなら口で言って欲しいです」
+				PRINTFORMDL 顔を真っ赤にする覚に、読むだけで口にしなければ良いだろうにと思う%CALLNAME:MASTER%
+				PRINTFORML 「主様の思いを言葉にするのは、もう癖みたいなものですから」
+				PRINTFORMDW そう言って、覚が神情愉悦笑みを浮かべた
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「『楽しい』？　それは結構ですが、恥ずかしいですね」
+			PRINTFORMDW 唇をとがらせながら文句を口にして、覚がこちらの頬に手を伸ばしてくる
+			PRINTFORML 「%CALLNAME:MASTER%の頬も触らせてもらいますね」
+			PRINTFORMDW クスクス笑う覚の行動に、なんとなく抵抗気にはなれなかった
+		ELSEIF 陥落状態() == 2
+			DRAWLINE
+			IF ABL:親密 > 5 || ABL:従順 >= 5
+				PRINTFORML 悔しげに唇を噛んだ覚が、それでも%CALLNAME:MASTER%のなすがままになっている
+			ELSE
+				PRINTFORML 不愉快そうな表情を浮かべた覚に、伸ばした手を払われてしまった
+			ENDIF
+			PRINTL
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			IF ABL:親密 > 5 || ABL:従順 >= 5
+				PRINTFORML 「こんなことの何が楽しいのですか」
+				PRINTFORMDL 不快そうな覚に、柔らかいほおの感触が堪能できると答える%CALLNAME:MASTER%
+				PRINTFORMW 「なら時止めの最中にでも勝手にすればいかがです」
+				PRINTFORMDL 時止めだとそのいやそうな顔が楽しめない、そう内心で答え、眦をつり上げる覚を笑った
+			ELSE
+				PRINTFORML 「触らないでください、不愉快です」
+				PRINTFORMDW その前に手を払っておきながらそんなことを言う覚に苦笑が浮かぶ
+				PRINTFORML 「『せめて触らせろ』？　御免被ります」
+				PRINTFORMDW 覚が冷め切った表情で呟いた
+			ENDIF
+			RESETCOLOR
+		ELSEIF ABL:親密 > 5
+			IF 陥落状態() == 1
+				PRINTFORML 「もう、いきなり何をするんですか。やり替えされてもいいんですよね」
+				PRINTFORMDW どことなく楽しげな雰囲気の覚が、こちらに手を伸ばしてきた
+			ELSE
+				PRINTFORML 「……はぁ、こんなことの何が楽しいんだか」
+				PRINTFORMDW 口では文句を言い的同时、覚がこちらの頬をなで回している
+			ENDIF
+		ELSE
+			IF 陥落状態() == 1
+				PRINTFORML 「しかたない人ですね。でも、こういうのはあまり好きじゃないです」
+				PRINTFORMDW どこか柔らかい表情を浮かべる覚に、伸ばした手は振り払われてしまった
+			ELSE
+				PRINTFORML 「こういうのは、感心しませんね。女性の肌に気軽に触れるモノではありませんよ」
+				PRINTFORMDW 払われた手を振り的同时、時止めをしようかと考えて、睨まれてしまった
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;308,頬をつつく
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_308
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_308_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_308_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF CFLAG:TARGET:睡眠
+		CALL SLEEP49
+	ELSE
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「主様ー、なにがしたいんですか？」
+				PRINTFORMDL つんつんと捅臉頰%CALLNAME:MASTER%に覚が小首をかしげる
+				PRINTFORMW 「『覚のほっぺたが柔らかいから悪い』？　むー、だからってこういう真似は……」
+				IF TFLAG:193 == 1
+					PRINTFORMDL 頬を膨らませた覚が、こちらの頬をつつき始めた
+					PRINTFORML 「主様のほっぺたがすべすべなのが悪いんですよー」
+					PRINTFORMDW 満面に笑みを浮かべる覚の言葉に、苦笑しながらもしばらく互相用頬をつつき合った
+				ELSE
+					PRINTFORMDL 僅かに身をそらして、こちらの指を躱す覚
+					PRINTFORML 「もう、ほっぺたはつつくものじゃ無いんですよ」
+					PRINTFORMDW そう言ったかと思うと、不意に顔を寄せてきてちゅっと頬に接吻してきた
+				ENDIF
+			ELSE
+				PRINTFORML 「……主様、こんなことが楽しいんですか？」
+				PRINTFORMDL すぐそこにある覚の顔をみつめつつ、またその頬を指でつつく
+				PRINTFORMW 「『覚の頬がすべすべだから悪い』？　……そう言われると困るのですが」
+				IF TFLAG:193 == 1
+					PRINTFORMDL そう言いながら覚がこちらの頬をつつき始める
+					PRINTFORML 「やられたらやり替えされる、世の習いですよ」
+					PRINTFORMDW くすりと笑う覚と、互相用頬をつつき合った
+				ELSE
+					PRINTFORMDL そう呟いた覚が、ふいっと背中を向けた
+					PRINTFORML 「『このままＨでも』？　……そういう気分じゃありません」
+					PRINTFORMDW どこか开心的呟く覚に、なんとなく返す言葉が見つからない
+				ENDIF
+			ENDIF
+		ELSE
+			PRINTFORML 「ふふ、相変わらず、ヘンなことをしたがるモノですね」
+			PRINTFORMDW そ的柔软的捅臉頰たび、覚が口元に淡い笑みを浮かべる
+			IF TFLAG:193 == 1
+				PRINTFORML 「でも、されてばかりというのも癪ですし」
+				PRINTFORMDW そう言ったかと思うと、覚もこちらの頬をつつき始めた
+			ELSE
+				PRINTFORML 「『覚の頬が柔らかだから悪い』？　……そう言われても、これは自然のものですから」
+				PRINTFORMDW 苦笑を浮かべる覚にかまわず、また頬をつついた
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;309,頭を撫でる
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_309
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF 陥落状態() != 2 || FLAG:70 || CFLAG:TARGET:睡眠 || (BASE:酒気 < (MAXBASE:酒気 / 10) * 4)
+	CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_309_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_309_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		CALL STOP49
+	ELSEIF CFLAG:TARGET:睡眠
+		SIF 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL SLEEP49
+	ELSE
+		IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+			DRAWLINE
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			CALL DRUNKER49()
+		ELSEIF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				IF TFLAG:193 == 1
+					PRINTFORML 「んー、ぬしさま、ぬしさまぁ……」
+					PRINTFORMDL 頭を撫でた途端、ぎゅっと抱きついてくる覚
+					PRINTFORMW 「やめちゃやです、もっとしてください」
+					PRINTFORMDL 少し手を休めた途端に投げられたおねだりに、自然と手が動く
+					PRINTFORML 「はぁ……、これ、すてき……、んにゅぅ」
+					PRINTFORMDW ごろごろと喉が鳴っているのでは、と錯覚するほど、覚がご心情な様子で笑着いる
+				ELSE
+					PRINTFORML 「主様、これ素敵です」
+					PRINTFORMDL ご満悦の覚に苦笑し的同时、柔らかな髪の感触を楽しむ
+					PRINTFORMW 「『どうしてこんなに艶やかなんだか』？　诶嘿嘿、主様のために磨いてますから」
+					PRINTFORMDL 带着得意洋洋表情的覚が、轻轻地背伸びして主动頭を押しつけてくる
+					PRINTFORML 「ねえ主様、もっとしてください、お願いします」
+					PRINTFORMDW 臆面も無くおねだりしてくる様子に、苦笑しながら%CALLNAME:MASTER%は覚の頭を撫でた
+				ENDIF
+			ELSE
+				IF TFLAG:193 == 1
+					PRINTFORML 「主様ぁ、もっとしてほしいですぅ」
+					PRINTFORMDL トロンとした目つきで、口元をだらしなく緩ませた覚が催促してくる
+					PRINTFORMW 「『恥ずかしい顔だ』？　ふふ、主様がそうさせてるんですよ、诶嘿嘿ふふふ」
+					PRINTFORMDL そう言って身をすり寄せて催促してくる覚に。苦笑しながら続けて手を動かす
+					PRINTFORML 「ふふ、これ、すごく幸せな気分になれて嬉しいです」
+					PRINTFORMDW その嬉しげな笑顔に、なぜか妙な心持ちになってしまった
+				ELSE
+					PRINTFORML 「ふふ、主様の手になでられると、心が温かくなりますね」
+					PRINTFORMDL ただの気まぐれにそう言われて、視線をそらす
+					PRINTFORMW 「あら、主様が照れるなんて珍しい。ふふ、なでられるのも良い物です」
+					PRINTFORMDL そう言い的同时、わずかに頬に紅色を乗せている覚に、苦笑が浮かぶ
+					PRINTFORML 「『そっちも照れてるくせに』？　ふふ、確かに照れくさいですけど、嬉しいですから」
+					PRINTFORMDW 恥ずかしげに笑う覚に、何も言わずに頭をなで続けた
+				ENDIF
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			IF TFLAG:193 == 1
+				PRINTFORML 「……あ」
+				PRINTFORMDW 覚の髪の感触を堪能し、引こうとした腕を捕まれて、%CALLNAME:MASTER%は動けなくなってしまう
+				PRINTFORML 「あの、その……えと、……もうすこし、つづけて、ほしいです」
+				PRINTFORMDW 顔を真っ赤にして、視線だけをそらす覚の頭を、思う存分なで回した
+			ELSE
+				PRINTFORML 「ふふ、こういうのは少し苦手です」
+				PRINTFORMDW どことなく开心地笑着的同时、なでられる覚
+				PRINTFORML 「でも、%CALLNAME:MASTER%らしくはないですね。やはり時止めでは面白くないですか？」
+				PRINTFORMDW すべて見て取っている、そうにおわせる覚に、あくまで気まぐれだと%CALLNAME:MASTER%は答えた
+			ENDIF
+		ELSEIF 陥落状態() == 2
+			DRAWLINE
+			PRINTFORML %CALLNAME:PLAYER%はかるく覚の頭を撫でた
+			SELECTCASE TFLAG:193
+				CASE 1
+					PRINTFORML 覚は何か言いたげな表情を浮かべて見つめてくる…
+				CASE 0
+					IF ABL:親密 > 5
+						PRINTFORML 覚は不快げな表情を浮かべながらも、じっと%CALLNAME:PLAYER%に撫でられている…
+					ELSE
+						PRINTFORML 覚はいやそうな顔で甩开了%CALLNAME:PLAYER%的手…
+					ENDIF
+				CASE -1
+					PRINTFORML …思い切り手を振り払われてしまった
+			ENDSELECT
+			PRINTL
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			IF TFLAG:193 == 1
+				PRINTFORML 「…………はぁ、なんですか？」
+				PRINTFORMDW 深々とため息をついた覚が、抵抗しないのを良いことにさらにわしわしと頭をなでる
+				PRINTFORML 「んっ……、いつまで、するつもりです……」
+				PRINTFORMDW ほんのわずか、口元と目元を緩める覚に、ただ笑いかけた
+			ELSEIF TFLAG:193 == -1
+				PRINTFORML 「『痛い』？　残念、折れませんでしたか」
+				PRINTFORMDW 冷たい目で呟く覚に、冷や汗が浮かぶ
+				PRINTFORML 「それを肝に銘じて、触らないでください」
+				PRINTFORMDW やめるわけがないだろうと、内心で舌を出し、ジロリと睨まれてしまった
+			ELSE
+				IF ABL:親密 > 5
+					PRINTFORML 「……不愉快です、さっさと手を離してください」
+					PRINTFORMDW 文句を言うくせに、振り払おうとも逃れようとしない覚に苦笑が浮かぶ
+					PRINTFORML 「『やめるなんて勿体ない』……、はぁ、本当に、本当にほんっっとうにバカですね」
+					PRINTFORMDW イヤそうな口調とは裏腹に、覚の口元が緩んでいる
+				ELSE
+					PRINTFORML 「%CALLNAME:MASTER%にはふれられたくありませんね」
+					PRINTFORMDW 払われた手の痛みに神情扭曲%CALLNAME:MASTER%を、覚がにらみつけてくる
+					PRINTFORML 「『時止めでやろうか』？　…………バカですか？」
+					PRINTFORMDW 呆れきった表情を浮かべる覚に、ただにやりと笑着見せた
+				ENDIF
+			ENDIF
+			RESETCOLOR
+		ELSEIF 陥落状態() == 1
+			IF TFLAG:193 == 1
+				PRINTFORML 「もう、しかたないひとですね、%CALLNAME:MASTER%は」
+				PRINTFORMDW 文句を言い的同时、开心地笑う覚に、手の動きは止めなかった
+			ELSEIF TFLAG:193 == -1
+				PRINTFORML 「……そろそろやめてもらわないと、本気で憤怒ますよ？」
+				PRINTFORMDW 笑顔のまま、妙な迫力を見せる覚に、渋々手を離した
+			ELSE
+				IF ABL:親密 > 5
+					PRINTFORML 「ん……、イヤ、ではありませんが、少し恥ずかしいですね」
+					PRINTFORMDW 頬をわずかに赤くした覚が、それでもおとなしく頭をなでられている
+				ELSE
+					PRINTFORML 「親しき仲にも礼儀あり、ですよ」
+					PRINTFORMDW 柔らかな笑みを浮かべる覚にのけられた手を、所在なげにぶらぶらさせる%CALLNAME:MASTER%だった
+				ENDIF
+			ENDIF
+		ELSE
+			IF TFLAG:193 == 1
+				PRINTFORML 「……こんなことして何が楽しいんですか」
+				PRINTFORMDW 不思議そうに問いかけてくる覚だが、珍しく楽しげな露出笑容いる
+			ELSEIF TFLAG:193 == -1
+				PRINTFORML 「親しくもない相手の頭に、勝手に触れるのはどうかと思いますが」
+				PRINTFORMDW ぱしんと手をはたかれて、%CALLNAME:MASTER%は覚から渋々出口た
+			ELSE
+				IF ABL:親密 > 5
+					PRINTFORML 「女性の頭を軽々しくなでないで欲しいですね」
+					PRINTFORMDW 口ではそう言いながらも、もっとしてほしいと言う様に少し身を乗り出してきた
+				ELSE
+					PRINTFORML 「そんな軽々にさわらないでください」
+					PRINTFORMDW 頬を朱に染めつつ手を払う覚に、しかたがないと諦める%CALLNAME:MASTER%だった
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;310,尻を撫でる
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_310
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+IF 陥落状態() < 4 && 陥落状態() != 2 && (FLAG:70 || CFLAG:TARGET:睡眠 || CFLAG:诶嘿嘿 == 2 || (BASE:酒気 < (MAXBASE:酒気 / 10) * 4))
+	CALL TRAIN_MESSAGE
+ELSE
+	DRAWLINE
+ENDIF
+
+CALL M_KOJO_MESSAGE_COM_K49_310_1
+RESETCOLOR
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_310_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		CALL STOP49
+	ELSEIF CFLAG:睡眠
+		SIF 陥落状態() >= 4 || TALENT:接吻魔 || 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL SLEEP49
+	ELSEIF CFLAG:诶嘿嘿 == 2
+		SIF 陥落状態() >= 4 || TALENT:接吻魔 || 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL UFUFUTO49()
+	ELSEIF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		CALL DRUNKER49()
+	ELSEIF 陥落状態() >= 4
+		IF PREVCOM == 305
+			PRINTFORML %CALLNAME:PLAYER%躺在膝盖上的同时把手伸向%CALLNAME:TARGET%的%HIP(TARGET)%
+		ELSE
+			PRINTFORML %CALLNAME:PLAYER%从背後向%CALLNAME:TARGET%的%HIP(TARGET)%伸出了手
+		ENDIF
+		PRINTFORML 覚はうっとりとした表情で、主动尻を突き出しておねだりしてきた
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		IF 陥落状態() == 5
+			PRINTFORML 「はぁはぁ、んっ、はふ……、きもちいー。もっと、主様もっとぉ」
+			PRINTFORMDL 蕩けきった笑顔を浮かべながらお尻を振って催促する覚
+			PRINTFORML 「もっとぎゅむぎゅむしてください……、愛してる人にさわられるの、うれしいです」
+			PRINTFORMDL 尻を振って懸命におねだりをする覚に、奇妙な心持ちになり的同时、しっかりと揉み込んでいく
+			PRINTFORML 「はふ、んくっ、お尻揉まれてるだけ、なのに、おまんこ熱くなってきちゃいました」
+			PRINTFORMDL 甜声音の囁きは、劣情を催させるには十分だった
+		ELSE
+			PRINTFORML 「ふふ、诶嘿嘿ふ、気持ちいいです。主様ぁ、もっとお尻もみもみしてください」
+			PRINTFORMDL そんなに気持ちいいんだろうか、と内心で思うと同時、覚が恥ずかしげに笑みを浮かべた
+			PRINTFORMW 「その、身体も気持ちいいですけど、あふ……、ん、してくれてるとわかるのがいいんです」
+			PRINTFORMDL その言葉に、小首をかしげつつ、やわやわと尻をなで回す
+			PRINTFORML 「んっ、時止めなしで、かわいがってくれているのが、嬉しいんです」
+			PRINTFORMDW 可愛的言葉を愛くるしい笑みで告げられて、さらにしっかりと揉捏起来
+		ENDIF
+		RESETCOLOR
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「はぁ……ん、きもち、良い……、って、こういうのはその睦み合いの時に」
+		PRINTFORMDW 今も睦み合ってるだろうに、そう考えた瞬間、红了脸的覚にぺしんと額を叩かれた
+		PRINTFORML 「睦むの意味を、わざと取り違えないでください、あんっっ！」
+		PRINTFORMDW 悪かったと謝りつつ、さらにぎゅむぎゅむと揉捏起来
+	ELSEIF 陥落状態() == 2
+		DRAWLINE
+		IF PREVCOM == 305
+			PRINTFORML %CALLNAME:PLAYER%躺在膝盖上的同时把手伸向%CALLNAME:TARGET%的%HIP(TARGET)%
+		ELSE
+			PRINTFORML %CALLNAME:PLAYER%从背後向%CALLNAME:TARGET%的%HIP(TARGET)%伸出了手
+		ENDIF
+		PRINT 覚は
+		SELECTCASE TFLAG:193
+			CASE 1
+				PRINTFORML いらだたしげに、%CALLNAME:MASTER%の手の甲をつねりあげてきた
+			CASE 2,3
+				PRINTFORML 不快そうに顔をしかめ、%CALLNAME:MASTER%の手を強く支付のけた
+			CASE 4
+				PRINTFORML イヤそうな表情を浮かべながらも%CALLNAME:MASTER%の任凭摆布…
+		ENDSELECT
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		IF ABL:親密 >= 10
+			PRINTFORML 「……だから……はぁ……、バカには何を言っても無駄ですね」
+			PRINTFORMDW お許しが出たところで、思う存分覚の尻たぶの柔らかさを堪能する
+			PRINTFORML 「んっ、ふぅ……あふ……『エロい声』？　……気のせいです」
+			PRINTFORMDW 唇をとがらせる覚だが、わずかに尻を突き出してくる
+		ELSEIF ABL:親密 > 5
+			PRINTFORML 「だから、さわらないでくださいと言っています」
+			PRINTFORMDW 強く払われた手の痛みに、なぜか苦笑が浮かんでくる
+			PRINTFORML 「……痛い目に遭って楽しむ、ヘンタイにもほどがありますね」
+			PRINTFORMDW そう呟く覚の頬が、なぜか少し赤くなっている
+		ELSE
+			PRINTFORML 「このヘンタイ、さっさとこの手を離しなさい」
+			PRINTFORMDW 痛烈な痛みに、渋々覚の尻から手を離す%CALLNAME:MASTER%
+			PRINTFORML 「コレに懲りたら、二度としないことです」
+			PRINTFORMDW 今度は時止めでしようと思ったのを読み取ったのだろう、憤怒を目に浮かべて覚が睨んできた
+		ENDIF
+		RESETCOLOR
+	ELSEIF 陥落状態() == 1
+		IF ABL:親密 >= 10
+			PRINTFORML 「ふふ、Ｈなんですから。んっ、こんなことが良いだなんて、诶嘿嘿ふ」
+			PRINTFORMDW どことなく嬉しげな笑顔を浮かべて、覚が腰を後ろに突き出してくる
+		ELSEIF ABL:親密 > 5
+			IF !(TALENT:PLAYER:2 & 1)
+				PRINTFORML 「やめてください、こういうのはどうかと思います」
+				PRINTFORMDW わずかにおびえた様な表情で見つめてくる覚に、返す言葉が見つからない
+			ELSE
+				PRINTFORML 「もう、こういうのはどうかと思いますよ」
+				PRINTFORMDW 困り顔の覚が、悄悄的こちらの手を押しのけた
+			ENDIF
+		ELSE
+			PRINTFORML 「いくらそういう関係でも、して良いことと悪いことがあります！」
+			PRINTFORMDW 唇をとがらせた覚に、強めに手を振り払われてしまった
+		ENDIF
+	ELSE
+		IF ABL:親密 > 5
+			IF !(TALENT:PLAYER:2 & 1)
+				PRINTFORML 「きゃっ！　どどどどこを触っているんですかっ！」
+				PRINTFORMDW 珍しくかわいらしい悲鳴を上げて、覚が睨んでくる
+			ELSE
+				PRINTFORML 「そんなところ、触らないでください」
+				PRINTFORMDW 唇をとがらせた覚に、轻轻地手を振り払われてしまった
+			ENDIF
+		ELSE
+			PRINTFORML 「どこを触っているんですか！」
+			PRINTFORMDW 叱声と共に手を強く払われてしまった
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;311,抱き付く
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_311
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF 陥落状態() < 4 && 陥落状態() != 2 && (FLAG:70 || CFLAG:TARGET:睡眠 || CFLAG:诶嘿嘿 == 2 || (BASE:酒気 < (MAXBASE:酒気 / 10) * 4))
+	CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_311_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_311_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		CALL STOP49
+	ELSEIF CFLAG:TARGET:睡眠
+		SIF 陥落状態() >= 4 || TALENT:接吻魔 || 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL SLEEP49
+	ELSEIF CFLAG:诶嘿嘿 == 2
+		SIF 陥落状態() >= 4 || TALENT:接吻魔 || 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL UFUFUTO49()
+	ELSEIF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		DRAWLINE
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		CALL DRUNKER49()
+	ELSEIF 陥落状態() >= 4
+		DRAWLINE
+		PRINTFORML %CALLNAME:PLAYER%は\@ CFLAG:TARGET:陪睡中 ? 陪睡 # \@覚にギュッと抱きついた
+		PRINTFORML 覚はうっとりとした表情を浮かべて、自らも手を伸ばしてしっかりと抱きしめてきた
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		IF 陥落状態() == 5
+			PRINTFORML 「主様に抱きしめられると、心が熱くなります」
+			PRINTFORMDL こちらの胸元に頭を押しつけ的同时、覚が甜声で囁く
+			PRINTFORML 「『体ではないのか』？　诶嘿嘿、無論、体もですけどね」
+			PRINTFORMDL そう言いながら胸をこすりつけてくる覚
+			PRINTFORML 「このままします？　私は大歓迎ですよ」
+			PRINTFORMDL 蕩けるような笑顔で呟く覚に、曖昧な答えを返しつつ、抱きしめる腕に力を込めた
+		ELSE
+			PRINTFORML 「はぁ、主様に抱きしめられていると思うと、胸が熱くなります」
+			PRINTFORMDL きゅっと抱きついてくる覚の心音に、穏やかな心持ちになってくる
+			PRINTFORMW 「ふふ、主様も私にこうされて嬉しいんですよね」
+			PRINTFORMDL 別に嬉しいとは言っていない、そう返してから覚のうっとりとした笑顔にしまったと呟く
+			PRINTFORML 「あら主様が嘘をつくなんて珍しい。ふふ、照れくさいんですね」
+			PRINTFORMDW 勝ち誇った覚に、ため息をついてさらに強く抱きしめた
+		ENDIF
+		RESETCOLOR
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「ふふ、こうされたいなんて、可愛いところもあるんですね」
+		PRINTFORMDW 単なる気まぐれだと答えつつ、それでも抱きしめた覚を解放しない%CALLNAME:MASTER%
+		PRINTFORML 「まあ、私も嬉しいからかまいませんが。ふふ、本当に良い気持ちです」
+		PRINTFORMDW そう言い的同时、さらに強く抱きしめてくる覚に、返す言葉が見つからない
+	ELSEIF 陥落状態() == 2
+		PRINTFORML %CALLNAME:MASTER%は背後から覚にギュッと抱きついた
+		PRINTFORML 覚は%CALLNAME:MASTER%の脇腹に肘打ちを叩き込んできた
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		PRINTFORML 「痛い？　ならさっさと離してください」
+		PRINTFORMDW 一度出口た次の瞬間、今度は両腕を動かせない様、がっしりと抱きしめた
+		PRINTFORML 「だから離せと言ってるんですっ！　このスケベヘンタイ色情魔！」
+		PRINTFORMDW %CALLNAME:MASTER%は覚の身体の柔らかさと香りを堪能した
+		RESETCOLOR
+	ELSEIF 陥落状態() == 1
+		PRINTFORML 「他人にほいほい抱きつくのはどうかと思いますが」
+		PRINTFORMDW 口元に柔らかい笑みを浮かべる覚に、嬉しいくせにと内心で呟き、ジトッと見つめられた
+	ELSE
+		PRINTFORML 「……何をするんですか、いきなり」
+		PRINTFORMDW 顔を赤くしながら唇をとがらせる覚を、片刻后抱きしめた
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;312,キスする
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_312
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+SIF 陥落状態() < 4 && !TALENT:接吻魔 && 陥落状態() != 2 && (TALENT:恋慕 || TALENT:184 || TALENT:185  || FLAG:70 || CFLAG:TARGET:睡眠 || CFLAG:诶嘿嘿 == 2 || (BASE:酒気 < (MAXBASE:酒気 / 10) * 4) || EXP:TARGET:接吻経験 > 1)
+	CALL TRAIN_MESSAGE
+SIF 陥落状態() >= 4 || TALENT:接吻魔 || 陥落状態() == 2
+	DRAWLINE
+IF EXP:TARGET:接吻経験 == 1
+	PRINTFORML 顔を寄せた%CALLNAME:MASTER%に、覚は一瞬身を強張らせる
+	PRINTFORML が、逃げようとはせずに目をつむって、わずかに唇を突き出してきた
+	PRINTFORML 一拍間を置いて、覚に取って初めての接吻を交わした
+	PRINTL
+	SIF FLAG:口上色
+		CALLFORM M_KOJO_COLOR_K49
+ENDIF
+CALL M_KOJO_MESSAGE_COM_K49_312_1
+RESETCOLOR
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_312_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		CALL STOP49
+	ELSEIF CFLAG:TARGET:睡眠
+		SIF 陥落状態() >= 4 || TALENT:接吻魔 || 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL SLEEP49
+	ELSEIF CFLAG:诶嘿嘿 == 2
+		SIF 陥落状態() >= 4 || TALENT:接吻魔 || 陥落状態() == 2
+			CALL TRAIN_MESSAGE
+		CALL UFUFUTO49()
+	ELSEIF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		CALL DRUNKER49()
+	ELSEIF TFLAG:193 == 99
+		IF 陥落状態() == 2
+			PRINTFORML %CALLNAME:PLAYER%が接吻をしようとすると、覚はのけぞりながら思い切り頬を叩いてきた
+			PRINTL
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			PRINTFORML 「%CALLNAME:MASTER%みたいな人に、唇を許すほど甘くも轻轻地もありません！」
+			PRINTFORMDW 平手の形に赤くなっていく頬をさすり的同时、覚を見つめる
+			PRINTFORML 「『時止めですればいい』？　……この、このっ」
+			PRINTFORMDW もう一度手を振り上げて、逆の頬を叩いてくる覚に、ただにやけた笑みを見せつけた
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「……もうしわけありませんが、まだ、%CALLNAME:MASTER%に唇を許す気はありません」
+			PRINTFORMDW まだ早かったかと内心で呟く%CALLNAME:MASTER%に、覚が苦笑しながらうなずいた
+		ELSE
+			PRINTFORML 「…………バカですか？　誰も許すなどとは言っていませんが」
+			PRINTFORMDW そう言いながら身を引く覚に、残念な気持ちが湧いてきた
+		ENDIF
+	;ぶっちゃけ趣味です、てか、見る人いるのか？　というか自分が見れる様になるのか？　って点でかなり書く意味あるのか疑問だったり
+	ELSEIF TALENT:接吻魔
+		;前回膝枕
+		IF PREVCOM == 305
+			PRINTFORML %CALLNAME:MASTER%は膝元から身体を起こし覚の唇に悄悄的接吻した…
+		ELSE
+			PRINTFORML %CALLNAME:MASTER%は覚の口を、自分の口で堵住…
+		ENDIF
+		PRINTFORM 覺
+		IF ABL:親密 >= 5 && !RAND:6
+			PRINTDATAL
+				DATAFORM %CALLNAME:MASTER%の顔中に、接吻の雨を降らしてくる
+				DATAFORM 小鳥がついばむ様な接吻を、いくども繰り返してくる
+				DATAFORM 頬を赤く染め、それでもうっとりとした表情を浮かべている
+			ENDDATA
+			LOCAL:1 = 1
+		ELSEIF ABL:欲望 >= 5 && !RAND:6
+			PRINTDATAL
+				DATAFORM %CALLNAME:MASTER%の唇を甘噛みしながら甜息をもらしている
+				DATAFORM ぺろぺろと唇やその周りを懸命になめ回してくる
+				DATAFORM %CALLNAME:PLAYER%の口唇をこじ開けて舌を絡めてきた…
+			ENDDATA
+			LOCAL:1 = 2
+		ELSEIF ABL:欲望 >= 5 && ABL:親密 >= 5 && !RAND:6
+			PRINTDATAL
+				DATAFORM %CALLNAME:MASTER%の首に腕を回し、抱きつく様に唇と舌を捧げてきた
+				DATAFORM こちらの後頭部に手を添えて、ふやけそうなくらい口吸いをしてきた
+				DATAFORM 自ら差し入れてきた舌で、口蓋や歯や歯茎、頬裏を精心地舐めしゃぶってくる
+				DATAFORM 幾度か舌先をつつき合わせて、自己的口中へ%CALLNAME:MASTER%の舌を誘い込んだ
+			ENDDATA
+			LOCAL:1 = 3
+		ELSEIF ABL:親密 >= 10 && !RAND:3
+			PRINTDATAL
+				DATAFORM ぎゅっとしがみついたかと思うと、まるで吐息を吸い取ろうとする様に開いた唇で甘噛みしてくる
+				DATAFORM 蕩けきった瞳でこちらを見つめ、唇を重ねては離すのを幾度も繰り返している
+				DATAFORM 幾度も唇を重ねては、%CALLNAME:MASTER%が逃れようとするのを許さない
+			ENDDATA
+			LOCAL:1 = 4
+		ELSEIF ABL:欲望 >= 10 && !RAND:2
+			PRINTDATAL
+				DATAFORM じゅるちゅぷと激しい音を立て、よだれがこぼれるのも気にせず舌を絡めてくる
+				DATAFORM %CALLNAME:MASTER%の頭をしっかりと両手で挟み、送り込んできた舌で口中を蹂躙してくる
+				DATAFORM 激烈地舌を絡めてきては、%CALLNAME:MASTER%の唾液をすすり飲み込んでいる
+			ENDDATA
+			LOCAL:1 = 5
+		ELSEIF ABL:欲望 >= 10 && ABL:親密 >= 10
+			PRINTDATAL
+				DATAFORM %CALLNAME:MASTER%にしがみついて、懸命に舌を絡めては甜吐息を漏らしている
+				DATAFORM 接吻の合間に甘く呼びかけてきては片刻后こちらを見つめた後、また接吻を再開する
+				DATAFORM もっとしてとせがみ的同时、激烈地深い接吻を続ける
+				DATAFORM びくびくと全身を震わせ的同时、口吸いの悦楽に身も心も蕩けきっている
+			ENDDATA
+			LOCAL:1 = 6
+		;キス魔がつく時点で、欲望も親密も最低で10は越えてると思うけど、一応
+		ELSE
+			PRINTDATAL
+				DATAFORM %CALLNAME:MASTER%の顔中に、接吻の雨を降らしてくる
+				DATAFORM 小鳥がついばむ様な接吻を、いくども繰り返してくる
+				DATAFORM 頬を赤く染め、それでもうっとりとした表情を浮かべている
+			ENDDATA
+			LOCAL:1 = 1
+		ENDIF
+		PRINTL
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		SELECTCASE LOCAL:1
+			CASE 6
+				PRINTFORML 「\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@も気持ちいいですか？　よかった」
+				PRINTFORMDL 答えるよりも早く独り合点でうなずく覚を胡乱げに見つめる
+				PRINTFORMW 「ふふ、接吻の快感に蕩けてるのがみえてますよ……、诶嘿嘿、蕩けてるのは私もですが」
+				PRINTFORMDL 蕩けきった瞳と赤く染まった頬に、それは簡単に透けて見えて
+				PRINTFORML 「ですから、もっと、もっとしましょう、ちゅっ……れろ」
+				PRINTFORMDW 懸命に悦楽の接吻を求める覚に、内心で苦笑しながら受け止めた
+			CASE 5
+				PRINTFORML 「ふぁ、んく……ちゅっちゅぅっ、もっと、れろちゅる、もっとぉ」
+				PRINTFORMDL まるで溺れかけた者が空気を求める様に、%CALLNAME:MASTER%の唇を貪る覚
+				PRINTFORMW 「\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@の唇も舌も涎もおいしいです、だからもっとぉ」
+				PRINTFORMDL 呼吸のために、少し間を開けてはまた唇を重ねてくる覚
+				PRINTFORML 「はふ、ん、『スケベだな』？　ふふ、そうしたのは\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@でしょう、ちゅっじゅるちゅぱ」
+				PRINTFORMDW こちらの内心に、笑顔で答えて、覚がさらに深く口吸いをしてきた
+			CASE 4
+				PRINTFORML 「んっ、ちゅっ、ちゅぅっ……、はぁ、頭おかしくなりそう、です」
+				PRINTFORMDL うっとりとした表情で、唇を重ねてくる覚に苦笑が浮かぶ
+				PRINTFORMW 「『これが接吻魔か』？　ふふ、\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@だってこうされたいくせに、こうなる様にさせたくせに」
+				PRINTFORMDL 非難がましい言葉とは裏腹に、露出开心的表情覚がまた顔を寄せてくる
+				PRINTFORML 「ちゅっちゅっちゅぅっ……、ふふ、それに、主様も、気持ちいいでしょう？」
+				PRINTFORMDW どことなく余裕を見せる覚に、ため息をついてその唇を受け入れた
+			CASE 3
+				PRINTFORML 「\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@ぁ、じゅるれろちゅぱ……すき\@ 陥落状態() >= 4 ? です、主様 # よ、%CALLNAME:MASTER% \@ぁ」
+				PRINTFORMDL 快楽と喜悦に蕩けきった瞳で、覚が何度も唇を重ねては舌を送り込んでくる
+				PRINTFORMW 「どうです\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@ぁ、きもちいいですか？　わたしはいいですよ」
+				PRINTFORMDL 酒に酔った時の様などことなく幼さを感じさせる言葉遣いに、大丈夫かと問いかける
+				PRINTFORML 「诶嘿嘿、\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@との接吻に酔ってるんです、だからもっとぉ」
+				PRINTFORMDW 言うが早いか、覚がまた顔を寄せてきた
+			CASE 2
+				PRINTFORML 「じゅる、れろ、おいひぃ、れお、んっ…………って、なんでとめるんですか」
+				PRINTFORMDL なんとか覚を引きはがし、酸欠気味の肺に空気をため込む
+				PRINTFORMW 「……この程度で息が詰まりそうになるなんて、不便ですね」
+				PRINTFORMDL くすりと笑った覚が、不意に抱きついてきて
+				PRINTFORML 「でも、\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@の舌と唇は、まだ堪能しきっていませんから、ちゅっ、れろ」
+				PRINTFORMDW 再開されたディープ接吻に、なんとか鼻で息を吸い的同时、%CALLNAME:MASTER%は喜悦に浸った
+			CASE 1
+				PRINTFORML 「……ちゅ、はぁ……、接吻って素敵ですね」
+				PRINTFORMDL 夢見心地の覚に、そんなに接吻が好きかと問いかけてみる
+				PRINTFORMW 「ええ、私”から”\@ 陥落状態() >= 4 ? 主様 # %CALLNAME:MASTER% \@に捧げられているのが、とても心地良いですから」
+				PRINTFORMDL そこまで言って、媚びた視線を向けてくる覚
+				PRINTFORML 「ですから、もっとしてもいいですよね」
+				PRINTFORMDW 良いとは言ってない、そんな思考を無視して、覚がまた唇を重ねてきた
+		ENDSELECT
+	ELSEIF 陥落状態() >= 4
+		IF EXP:TARGET:接吻経験 == 1
+			IF 陥落状態() == 5
+				PRINTFORML 「うれしい」
+				PRINTFORMDL ぽつりと呟いた覚が、笑顔になりながらもほろりと涙をこぼす
+				PRINTFORMW 「恋人になったのにしてくれないから、ずっと心苦しかったんですよ」
+				PRINTFORML 「强行こっちから奪おうともしましたけど、いつもいなされてましたし」
+				PRINTFORML 「嬉しいです、嬉しいのに、涙、止めら、れない」
+				PRINTFORMDW ぐすひくと、泣き始める覚を悄悄的抱きしめる
+				PRINTFORMDL 片刻后そのまま、どちらからも動かず時間を過ごす
+				PRINTFORML 「……んっ、ありがとう、ございます」
+				PRINTFORMDW まだ頬に涙の後を残し的同时、それでも笑顔の覚がこちらを見つめてくる
+				PRINTFORML 「愛しています、私の、主様」
+				PRINTFORMDW 悄悄的囁き的同时、今度は覚の方から唇を重ねてきた
+			ELSE
+				PRINTFORML 「……はぁ、やっとしてくれました」
+				PRINTFORMDL 笑顔を浮かべた覚が自己的唇を悄悄的なでる
+				PRINTFORMW 「主様と相慕う仲になって、はやくしてほしいと思っていました」
+				PRINTFORML 「逢い引きの帰りに奪うつもりでしたけど、主様は帰宅時間までかわいがってくれましたしね」
+				PRINTFORMDL そう言ってくすりと笑う
+				PRINTFORMW 「ふふ、でも、本当に接吻というのは素敵なものですね」
+				PRINTFORML 「他人に触れさせる筈のない場所を触れさせ合うのは、心を預け合ってる様で心地良いです」
+				PRINTFORMDL そんな覚に、単なる快楽を得るための手段だと答える%CALLNAME:MASTER%
+				PRINTFORML 「主様らしい考え方ですね。では、もうすこし快楽を求めてもいいのでは？」
+				PRINTFORMDW 覚の遠回しのおねだりに、苦笑しながら顔を寄せた
+			ENDIF
+		ELSE
+			;前回膝枕
+			IF PREVCOM == 305
+				PRINTFORML %CALLNAME:PLAYER%は膝元から身体を起こし覚の唇に悄悄的接吻した…
+			ELSE
+				PRINTFORML %CALLNAME:PLAYER%は覚の口を、自分の口で堵住…
+			ENDIF
+			PRINTFORM 覺
+			IF ABL:欲望 >= 5 && ABL:親密 >= 5 && !RAND:3
+				PRINTDATAL
+					DATAFORM %CALLNAME:MASTER%の首に腕を回し、抱きつく様に唇と舌を捧げてきた
+					DATAFORM こちらの後頭部に手を添えて、ふやけそうなくらい口吸いをしてきた
+					DATAFORM 自ら差し入れてきた舌で、口蓋や歯や歯茎、頬裏を精心地舐めしゃぶってくる
+					DATAFORM 幾度か舌先をつつき合わせて、自己的口中へ%CALLNAME:MASTER%の舌を誘い込んだ
+				ENDDATA
+				LOCAL:1 = 3
+			ELSEIF ABL:欲望 >= 5 && !RAND:2
+				PRINTDATAL
+					DATAFORM %CALLNAME:MASTER%の唇を甘噛みしながら甜息をもらしている
+					DATAFORM ぺろぺろと唇やその周りを懸命になめ回してくる
+					DATAFORM %CALLNAME:PLAYER%の口唇をこじ開けて舌を絡めてきた…
+				ENDDATA
+				LOCAL:1 = 2
+			ELSEIF ABL:親密 >= 5
+				PRINTDATAL
+					DATAFORM %CALLNAME:MASTER%の顔中に、接吻の雨を降らしてくる
+					DATAFORM 小鳥がついばむ様な接吻を、いくども繰り返してくる
+					DATAFORM 頬を赤く染め、それでもうっとりとした表情を浮かべている
+				ENDDATA
+				LOCAL:1 = 1
+			ENDIF
+			PRINTL
+			SIF FLAG:口上色
+				CALLFORM M_KOJO_COLOR_K49
+			SELECTCASE LOCAL:1
+				CASE 3
+					IF 陥落状態() == 5
+						PRINTFORML 「んー、じゅる、ちゅぱ、れろぴちゅ、おいひい……んっ、んっ、んぅ……」
+						PRINTFORMDL ぎゅっと抱きつく覚と見つめ合い的同时、互相用口内を味わい合う
+						PRINTFORMW 「ぬしさま、すき、れろ、ぴちゃ、わたひのぬひはま」
+						PRINTFORMDL 覚がよりつよく抱きつき、全身をこすり合わせて来る
+						PRINTFORML 「しゅき、らいしゅき、ぬひはま、ぬひはま…………」
+						PRINTFORMDW そのまま、覚の体の柔らかさと口中の甘さを心ゆくまで味わった
+					ELSE
+						PRINTFORML 「主様、ぬしさまぁ、じゅるれろちゅぱ……すきです、ぬしさまぁ」
+						PRINTFORMDL 快楽と喜悦に蕩けきった瞳で、覚が何度も唇を重ねては舌を送り込んでくる
+						PRINTFORMW 「どうですぬしさまぁ、きもちいーですか？　わたしはいいですよぉ」
+						PRINTFORMDL 酒に酔った時の様な、どことなく幼さを感じさせる言葉遣いに、大丈夫かと問いかける
+						PRINTFORML 「诶嘿嘿、ぬしさまとの接吻に酔ってるんです、だからもっとぉ」
+						PRINTFORMDW 言うが早いか、覚がまた顔を寄せてきた
+					ENDIF
+				CASE 2
+					IF 陥落状態() == 5
+						PRINTFORML 「れろ、じゅぱ……ちゅる、ちゅぱ……」
+						PRINTFORMDL 珍しく、抱きつかずに、唇を重ね舌を絡めてくる覚
+						PRINTFORMW 「おいひい、ぬひはま、もっほ……、ちゅるれろ」
+						PRINTFORMDL 息苦しさに、たまらず覚から顔を離す
+						PRINTFORML 「や、主様、逃げちゃだめ、れろ、れる……、んっ」
+						PRINTFORMDW 唇が届かないぎりぎりの間に、舌を伸ばして覚が顔中を舐め回してきた
+					ELSE
+						PRINTFORML 「じゅる、れろ、おいひぃ、れお、んっ…………って、なんでとめるんですか」
+						PRINTFORMDL なんとか覚を引きはがし、酸欠気味の肺に空気をため込む
+						PRINTFORMW 「……この程度で息が詰まりそうになるなんて、不便ですね」
+						PRINTFORMDL くすりと笑った覚が、不意に抱きついてきて
+						PRINTFORML 「でも、主様の舌と唇は、まだ堪能しきっていませんから、ちゅっ、れろ」
+						PRINTFORMDW 再開されたディープ接吻に、なんとか鼻で息を吸い的同时、%CALLNAME:MASTER%は喜悦に浸った
+					ENDIF
+				CASE 1
+					IF 陥落状態() == 5
+						PRINTFORML 「ちゅっちゅっ、主様、主様、ちゅぅ」
+						PRINTFORMDL 何度も何度も唇を顔中に押しつけてくる覚
+						PRINTFORMW 「『こそばい』？　诶嘿嘿、そんなことこっちには関係ありませんから」
+						PRINTFORMDL 額瞼鼻頬へと接吻を落としてくる覚に、なんとなく接吻の位置と意味の関係を思い出す
+						PRINTFORML 「主様も妙なこと知っていますね。でも、それら全ての感情でもまだ足りませんから」
+						PRINTFORMDW 言うが早いか、また接吻に専念する覚に、苦笑が湧いた
+					ELSE
+						PRINTFORML 「……ちゅ、はぁ……、接吻って素敵ですね」
+						PRINTFORMDL 夢見心地の覚に、そんなに接吻が好きかと問いかけてみる
+						PRINTFORMW 「ええ、私”から”主様に捧げられているのが、とても心地良いですから」
+						PRINTFORMDL こまで言って、媚びた視線を向けてくる覚
+						PRINTFORML 「ですから、もっとしてもいいですよね」
+						PRINTFORMDW 良いとは言ってない、そんな思考を無視して、覚がまた唇を重ねてきた
+					ENDIF
+			ENDSELECT
+		ENDIF
+	ELSEIF 陥落状態() == 3
+		IF EXP:TARGET:接吻経験 == 1
+			PRINTFORML 「……ちゅっ……、ふふ、初吻は柠檬味、とはよく言ったものですね」
+			PRINTFORMDL 別に柠檬の糖など舐めた覚えはないと、内心で答える%CALLNAME:MASTER%
+			PRINTFORMW 「ふふ、単にこうして初めてを奪われることが甘酸っぱいとおもっただけです」
+			PRINTFORML 「けど、そうやって相手を気遣っていたなんて、素敵な話だと思いません？」
+			PRINTFORMDL 微塵も思わないと呟き、糖を舐めながらディープ接吻のも良さそうだと内心で考える
+			PRINTFORMW 「……さすがに初吻の直後に、そんなことを思うのはどうかと思いますけど」
+			PRINTFORMDL どこか楽しげな表情で呟く覚に、なら今からでも、と呟いて、ぺちんと額を叩かれた
+			PRINTFORML 「そういうところが無ければ、%CALLNAME:MASTER%も多少は素敵な部類に入ると思いますけどね」
+			PRINTFORMDW そんな言葉を口にして、覚がどこからか取り出した、赤い糖を口に含む
+			PRINTFORML 「はいどうぞ、柠檬じゃなくて、ストロベリーキャンディーですけどね」
+			PRINTFORMDL そんなおねだりに応じて、ディープな接吻を始める%CALLNAME:MASTER%
+			PRINTFORMDW ……想像以上に甘ったるかった
+		ELSEIF ABL:欲望 >= 5
+			PRINTFORML 「れろ、ちゅぱ、んっ、もっと、じゅる、れろ、もっと」
+			PRINTFORMDW 余りにも懸命に唇を求める覚に、一度唇を離し深呼吸する%CALLNAME:MASTER%
+			PRINTFORML 「や、何逃げてるんですか、ちゅっ、れろちゅぱ、ん、よだれおいしい、じゅる」
+			PRINTFORMDW けれど即座に、再度唇を重ねて舌を差し込んでくる覚に、抵抗できなかった
+		ELSEIF ABL:親密 >= 5
+			PRINTFORML 「んっ……、ふふ…………これ、本当に良いですね」
+			PRINTFORMDW 恥ずかしげに、それでも开心地呟く覚
+			PRINTFORML 「%CALLNAME:MASTER%にされてると思うと、すごく気持ちいいです」
+			PRINTFORMDW 呟いて、もう一度とせがんでくる覚に、唇を落とした
+		ENDIF
+	ELSEIF 陥落状態() == 2
+		IF EXP:TARGET:接吻経験 != 1
+			PRINTFORM %CALLNAME:PLAYER%が接吻をしようとすると、覚は
+			IF ABL:欲望 >= 5
+				PRINTFORML 頬を赤らめて自ら舌を差し込んできた
+			ELSEIF ABL:親密 >= 5
+				PRINTFORML 开心的わずかに口の端を緩めている
+			ELSE
+				PRINTFORML 驚きながらもイヤそうに顔をしかめた
+			ENDIF
+		ENDIF
+		SIF FLAG:口上色
+			CALLFORM M_KOJO_COLOR_K49
+		IF EXP:TARGET:接吻経験 == 1
+			PRINTFORML 「…………はぁ、私もバカですね」
+			PRINTFORMDL 唇を離すと同時、不愉快そうに覚がぽつりと呟く
+			PRINTFORMW 「なんでこんなのに奪われて……」
+			PRINTFORMDL そう呟き的同时、自分の唇に触れる覚
+			PRINTFORMDL けれど、その仕草はどこか楽しそうで
+			PRINTFORMW 「そう見えるのは、%CALLNAME:MASTER%の頭がおかしいからですね」
+			PRINTFORMDL その言葉だけを投げつけて、ふいっと視線をそらす覚
+			PRINTFORMDW その頬が恥ずかしげに赤らんでいた
+		ELSEIF ABL:欲望 >= 5
+			PRINTFORML 「ん、じゅる、ちゅる……れろ……んっ……はぁ……、ただの気まぐれですから」
+			PRINTFORMDW 存分にこちらの口中を舐めしゃぶって、いちど出口た覚がそんな言葉を口にする
+			PRINTFORML 「もっと欲しい？　%CALLNAME:MASTER%のいう事を聞く気はありませんよ、……ちゅ、れろちゅる」
+			PRINTFORMDW 聞く気は無いと言っておき的同时、覚が唇を重ね懸命に舌を絡めてきた
+		ELSEIF ABL:親密 >= 5
+			PRINTFORML 「嬉しそう？　気のせいですね。頭だけで無く目までおかしくなったんですか」
+			PRINTFORMDW 辛辣な言葉を、いつもより柔らかな口調で投げかけてくる覚に苦笑が浮かんだ
+			PRINTFORML 「……言いたいことがあるなら、口で言ったらどうです？　周りに触れて回りましょうか？」
+			PRINTFORMDW そう言いながらも、覚の口元の緩みはそのまま変わってはいない
+		ELSE
+			PRINTFORML 「……はぁ、これで気が済みましたか？」
+			PRINTFORMDW 驚いた覚を見れた点では気が済んだ、そう内心で思うと同時、恨めしげに見つめてくる
+			PRINTFORML 「あまりにも突然すぎて、反応できなかっただけです、驚いた訳ではありません」
+			PRINTFORMDW そう言って唇をとがらせる覚が楽しくて、もう一度強引に唇を奪った
+		ENDIF
+	ELSEIF 陥落状態() == 1
+		IF EXP:TARGET:接吻経験 == 1
+			PRINTFORML 「…………私なんかと接吻をしたがるなんて、意味が理解できません」
+			PRINTFORMDW 戸惑いながら口を開く覚だが、それでも、どことなく开心地挂上笑容ている
+		ELSEIF ABL:欲望 >= 5
+			PRINTFORML 「れろ……はぁ、美味しい……、佳肴さまです」
+			PRINTFORMDW そんな覚の言葉に、自然と苦笑が浮かんだ
+		ELSEIF ABL:親密 >= 5
+			PRINTFORML 「んっ、……%CALLNAME:MASTER%も好きですね。ふふ、私も嫌いではないですが」
+			PRINTFORMDW 覚は开心地笑い、楽しげな表情で%CALLNAME:MASTER%を看了过来
+		ELSE
+			PRINTFORML 「……もう、少しは情緒というものを考えて欲しいですね」
+			PRINTFORMDW 文句を言い的同时、どこか神情愉悦自分の唇を悄悄的なでている
+		ENDIF
+	ELSE
+		IF EXP:TARGET:接吻経験 == 1
+			PRINTFORML 「ん……はぁ…………初めてがこんな相手……こんな相手なんて」
+			PRINTFORMDW こんな相手とは失礼なと思いつつ、覚の唇の感触にやに下がった笑みを浮かべ睨まれた
+		ELSEIF ABL:親密 >= 5
+			PRINTFORML 「……んっ、まったく、何を考えているんですか、私なんかにこんなことをして」
+			PRINTFORMDW 単にしたかっただけだと、内心で思うと同時、覚が呆れながらため息をついた
+		ELSE
+			PRINTFORML 「何をするんですか、こういうのは好き合った者同士がすべきことでしょう」
+			PRINTFORMDW 抗議する覚に、単なる悦楽でするのも多いと内心で返し、睨まれた
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;313,胸愛撫
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_313
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_313_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_313_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SIF !FLAG:70
+		CALL 渧泣()
+ENDIF
+RETURN 1
+;==================================================
+;314,アナル愛撫
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_314
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_314_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_314_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SIF !FLAG:70
+		CALL 渧泣()
+ENDIF
+RETURN 1
+;==================================================
+;315,クリ愛撫
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_315
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_315_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_315_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SIF !FLAG:70
+		CALL 渧泣()
+ENDIF
+RETURN 1
+;==================================================
+;316,指挿入れ
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_316
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_316_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_316_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SIF !FLAG:70
+		CALL 渧泣()
+ENDIF
+RETURN 1
+;==================================================
+;317,Ｖ腰を振る
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_317
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_317_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_317_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SIF !FLAG:70
+		CALL 渧泣()
+ENDIF
+RETURN 1
+[SKIPSTART]
+;==================================================
+;318,Ａ腰を振る
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_318
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_318_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_318_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SIF !FLAG:70
+		CALL 渧泣()
+ENDIF
+RETURN 1
+[SKIPEND]
+;==================================================
+;330,スカートめくり
+;==================================================
+;注意、全力全壊趣味に走って鬱陶しいことこの上ないです
+@M_KOJO_MESSAGE_COM_K49_330
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49(1)
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_330_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_330_1
+#DIMS DYNAMIC 勃起状態
+#DIMS DYNAMIC 秘処状態
+#DIMS DYNAMIC 覚ん呼称
+#DIMS DYNAMIC モブ
+#DIM DYNAMIC 好感度選択
+#DIM DYNAMIC 好感度一位
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	VARSET LOCAL
+	IF BASE:勃起 >= 1000
+		IF !CFLAG:291
+			勃起状態 += "胖次を突き破りそうなほど勃起的"
+		ELSE
+			勃起状態 += "昂然挺立的"
+		ENDIF
+	ELSE
+		IF !CFLAG:291
+			勃起状態 += "胖次の中になんとか収まっている"
+		ELSE
+			勃起状態 += "力なく垂れ下がる"
+		ENDIF
+	ENDIF
+	勃起状態 += TINKO(TARGET)
+	IF !CFLAG:291
+		IF PALAM:潤滑 > PALAMLV:4
+			秘処状態 += "秘処が濡れ透けの"
+		ELSEIF PALAM:潤滑 > PALAMLV:2
+			秘処状態 += "愛液の染みが浮いた"
+		ENDIF
+		秘処状態 += "胖次"
+	ELSE
+		IF PALAM:潤滑 > PALAMLV:4
+			秘処状態 += "恥蜜で充分湿润的"
+		ELSEIF PALAM:潤滑 > PALAMLV:2
+			秘処状態 += "愛液で潤った"
+		ENDIF
+		秘処状態 += "秘処"
+	ENDIF
+	FOR 好感度選択, 1, CHARANUM
+		SIF CFLAG:好感度選択:現在位置 != CFLAG:MASTER:現在位置 || 好感度選択 >= 49
+			CONTINUE
+		IF LOCAL:1 < CFLAG:好感度選択:好感度
+			LOCAL:1 = CFLAG:好感度選択:好感度
+			好感度一位 = 好感度選択
+		ENDIF
+	NEXT
+	IF (好感度一位 < 36) && (好感度一位 > 38)
+		LOCAL:1 = 1
+		覚ん呼称 += "覚"
+	ELSEIF (好感度一位 == 36) || (好感度一位 == 37) || (GET_TARGETNUM() == 1 && TFLAG:400 && CFLAG:1496 == 2)
+		LOCAL:1 = 2
+		覚ん呼称 += "覚様"
+	ELSEIF 好感度一位 == 38
+		LOCAL:1 = 3
+	ENDIF
+	モブ = %DATE_HITOGOMI_SYUBETU()%
+
+
+	IF FLAG:70
+		CALL STOP49
+	ELSEIF CFLAG:TARGET:睡眠
+		CALL SLEEP49
+	ELSEIF CFLAG:诶嘿嘿 == 2
+		CALL UFUFUTO49()
+	ELSEIF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		CALL DRUNKER49()
+	ELSEIF 陥落状態() >= 4
+		SELECTCASE CFLAG:2
+			;さすがに好感度1000以下で恋人にはならないだろう、たぶん
+			CASE 1001 TO 3000
+				PRINTFORML 「いくら恋人同士でも、こんなことを許すわけはありませんが」
+				PRINTFORMDW 唇をとがらせる覚に、見せてくれてもいいだろうに、と内心で考える
+				PRINTFORML 「まったく、困ったモノです」
+				PRINTFORMDW そんなこちらの内心を無視した、あきれかえった覚の声に答えることは出来なかった
+			CASE 3001 TO 5000
+				PRINTFORML 「……主様、いい加減しないと憤怒ますよ」
+				PRINTFORMDW 口元に柔らかい笑みを浮かべながら呟く覚に、少しくらいいいだろうにと答える
+				PRINTFORML 「ふふ、少しくらい、で済まないことはわかっていますから」
+				PRINTFORML そんな覚の言葉に、思い当たることがありすぎて、諦めざるを得なかった
+			CASE IS > 5000
+				IF 陥落状態() == 5
+					PRINTFORML 「そんなに見たいんですか？　主様もいやらしい人ですねぇ」
+					PRINTFORMDW そんな事を良いながらも、自ら足を開き%秘処状態%を露わにする覚
+					PRINTFORML 「『美味しそう』？　主様のための果実ですよ、美味しくないわけないです」
+					PRINTFORMDW 早くシテほしい、そんな言外のおねだりを今は無視した
+				ELSE
+					PRINTFORML 「主様のＨ、そんなに見たいなら、どうぞご随意に」
+					PRINTFORMDW くすりと笑う覚の%秘処状態%をじっと見つめる
+					PRINTFORML 「『美味しそう』？　ふふ、さんざん味わってるのにまだ足りないんですか？」
+					PRINTFORMDW 扇情的な表情を浮かべる覚に当然だと返した
+				ENDIF
+				IF GET_TARGETNUM() == 1 && !DATE_HITOGOMI()
+					$恋人モード対面
+					IF ABL:露出癖 > 3
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ENDIF
+					ELSE
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ELSE
+					IF ABL:露出癖 > 5
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							ENDIF
+						ENDIF
+					ELSE
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋人モード対面
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+		ENDSELECT
+	ELSEIF 陥落状態() == 3
+		SELECTCASE CFLAG:2
+			CASE 3001 TO 5000
+				PRINTFORML 「もう、ダメに決まっているでしょう。こんな恥ずかしいこと」
+				PRINTFORMDW 唇をとがらせ、裙子を押さえる覚
+				PRINTFORML 「まったく、%CALLNAME:MASTER%という人は」
+				PRINTFORMDW 唇をとがらせながらも、どこか开心的覚が頬を緩ませている
+			CASE IS > 5000
+				IF GET_TARGETNUM() == 1 && !DATE_HITOGOMI() && WITH_MOB() != 9
+					$恋慕モード対面
+					PRINTFORML 「……そんなに見たいなんて、本当にヘンタイですね」
+					PRINTFORMDW クスクスと笑いながらも抵抗しない覚の%秘処状態%をしっかりと見つめる
+					PRINTFORML 「ふふ、%CALLNAME:MASTER%は見るだけで満足なんですか」
+					PRINTFORMDW 覚の挑発に、今は見るのが先決だとだけ答えた
+					IF ABL:露出癖 > 3
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ENDIF
+					ELSE
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+								ELSE
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+								ELSE
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ELSE
+					IF ABL:露出癖 > 5
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							GOTO 恋慕モード対面
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								GOTO 恋慕モード対面
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+										ELSE
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+									ELSE
+										IF RAND:2
+										ELSE
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「まったく、本当に%CALLNAME:MASTER%と言う人は」
+											PRINTFORMDL 深々とため息をついた覚が、%ANIMALNAME()%の鼻先までちかよって裙子をめくり油炸た
+											PRINTFORMW 「『どんな夢を見ている』？　……私と%CALLNAME:MASTER%がまぐわっている夢を見ていますよ」
+											PRINTFORMDL そう言い的同时、裙子をサードアイの触手で押さえ、両手で%秘処状態%をさらす覚
+											PRINTFORML 「『相変わらずエロい』？　ふふ、%CALLNAME:MASTER%の去采购のせいですから」
+											PRINTFORMDW そんな覚の言葉と同時、不満げに%ANIMALNAME()%の不満げな鼻息が漏れた
+										ELSE
+											PRINTFORML 「ふふ、そんなにじっと見て興味があるかしら？」
+											PRINTFORMDL %ANIMALNAME()%がまくり上げた裙子の下の%秘処状態%を看了过来
+											PRINTFORMW 「『%NAME:MASTER%専用』？　ええ、そうよ」
+											PRINTFORMDL 覚の答えに、%ANIMALNAME()%が何か言いたげにこちらを見てくる
+											PRINTFORML 「『私もヒトガタになったらあいつに使われる』？　……それは、お前次第ね」
+											PRINTFORMDW 强行するつもりはない、そう答える%CALLNAME:MASTER%に%ANIMALNAME()%は首を傾げている
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+											PRINTFORML 「まったく、%CALLNAME:MASTER%はほんとうに困った人ですね」
+											PRINTFORMDL 呆れた様につぶやく覚が自ら裙子をたくし上げ、%DATE_HITOGOMI_SYUBETU()%がぎょっとした表情を浮かべるのが見えた
+											PRINTFORMW 「『こんなところで……』？　ふふ、私はさせられているだけですよ」
+											PRINTFORMDL 开心地笑着、自ら用陰唇指で割り開き、%秘処状態%を周囲にいる%DATE_HITOGOMI_SYUBETU()%にも見せつける
+											PRINTFORML 「ヘンタイと言われても『綺麗』なんでしょう？　ふふ、ヘンタイに欲情するそちらもヘンタイですね」
+											PRINTFORMDW くすくすとわらう覚に、%DATE_HITOGOMI_SYUBETU()%が顔を真っ赤にして逃げ出した
+										ELSE
+											PRINTFORML 「はいはい、これが良いんですね、ヘンタイさん」
+											PRINTFORMDL 嘻嘻笑着的自ら裙子をまくり上げる覚に、%DATE_HITOGOMI_SYUBETU()%が凍り付いた
+											PRINTFORMW 「『何を』？　ふふ、見ての街道裙子をめくられただけですが」
+											PRINTFORMDL %DATE_HITOGOMI_SYUBETU()%の視線が覚の%秘処状態%に集中する
+											PRINTFORML 「ヘンタイ？　『綺麗な秘処』をみて欲情してるそちらもヘンタイでしょう」
+											PRINTFORMDW 朗らかに笑う覚に、%DATE_HITOGOMI_SYUBETU()%が恥ずかしげに視線を逸らした
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORML 「『お姉ちゃんのオマンコ美味しそう』って、そう言うハズカシい事は言うんじゃ無いの」
+										PRINTFORMDL そういいながらも、恋の言葉に开心地頬を緩める覚
+										IF ABL:好感度一位:露出癖 > 5
+											PRINTFORMDL 同時に、覚の隣に把靠在一起的恋が、裙子をたくし上げ\@ !CFLAG:好感度一位:291 ? 胖次の股布をずらし #  \@秘処を晒す
+											PRINTFORMW 「『姉妹のスジ比べ最高』……って、%CALLNAME:MASTER%はほんとうにヘンタイですねぇ」
+										ELSE
+											PRINTFORMDL うっとりした表情の恋がこちらの隣にちょこんと座って、まじまじと覚の%秘処状態%を看了过来
+											PRINTFORMW 「『妹に視姦される気分はどう』？　……はぁ、ほんとうに、%CALLNAME:MASTER%と言う人は」
+										ENDIF
+										PRINTFORMDL 呆れた様につぶやく覚の%秘処状態%に、恋が手を伸ばしすっと、スジに添って指を動かす
+										PRINTFORML 「きゃんっ！　こら、恋何するのよ！　そう言う子にはお仕置きよ」
+										IF ABL:好感度一位:露出癖 > 5
+											PRINTFORMDL 言うが早いか、覚が恋の秘処を悄悄的なで上げる
+											PRINTFORMDW 姉妹で弄り合うその淫猥な光景に、%CALLNAME:MASTER%は欲情を覚えた
+										ELSE
+											PRINTFORMDL 恋の体に、覚のサードアイの触手が絡みつく
+											PRINTFORMDW 妙に淫猥のその縛り方に、ごくりと、%CALLNAME:MASTER%は生唾を飲み込んだ
+										ENDIF
+									ELSE
+										IF RAND:2
+											PRINTFORML 「ふふ、そんなにじっと見て、%CALLNAME:好感度一位%も変態\@ LOCAL:1 == 1 ? です #  \@ね」
+											PRINTFORMDL 覚の言葉に、こちらをちらちら見ていた%CALLNAME:好感度一位%が慌てて視線をそらす
+											PRINTFORMW 「ふふ、『綺麗』\@ LOCAL:1 == 1 ? でしょう #  \@？　%CALLNAME:好感度一位%の秘処も見たいけれど」
+											PRINTFORMDL 覚の言葉に、%CALLNAME:好感度一位%が顔を真っ赤にする
+											PRINTFORML 「%CALLNAME:MASTER%も、%CALLNAME:好感度一位%の秘処と私のおまんこを見比べたいでしょう？」
+											PRINTFORMDW そう言い的同时、用陰唇割開き膣口を晒す覚に、欲情を覚えた
+										ELSE
+											PRINTFORML 「まったく%CALLNAME:MASTER%には困ったものです」
+											PRINTFORMDL %CALLNAME:好感度一位%にも見せつけるように、足を開いて自ら裙子をまくり上げる覚
+											PRINTFORMW 「『%覚ん呼称%のヘンタイ』？　ええそう\@ LOCAL:1 == 1 ? です #  \@よ。この人に、そうさせられた\@ LOCAL:1 == 1 ? んです # の \@よ」
+											PRINTFORMDL クスクスと笑い的同时、右手を陰唇のスジに添わせぱっくりと開く覚に、%CALLNAME:MASTER%は生唾を飲み込んだ
+											PRINTFORML 「『相変わらずエロい』？　%CALLNAME:MASTER%がそうしたんでしょう」
+											PRINTFORMDW 産毛一本生えてないスジの内側、サーモンピンクの%秘処状態%があらわになり、%CALLNAME:好感度一位%が恥ずかしげに顔を背けた
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							ENDIF
+						ENDIF
+					ELSE
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「……ですから、この子達のまえで、こういうことをするのはやめて欲しいと」
+											PRINTFORMDL そんな覚の苦情を無視して、%勃起状態%を見つめる%CALLNAME:MASTER%
+											PRINTFORML 「『相変わらず美味しそう』？　……はぁ、なんでこんな人を」
+											PRINTFORMDL 手で額を押さえて俯く覚が、不意に小さく肩をすくめる
+											PRINTFORML 「…………なんて、夢を見てるのよ。……っ、%CALLNAME:MASTER%には関係ありません」
+											PRINTFORMDL 顔を赤くする覚に、%ANIMALNAME()%が見ている夢を想像し、微妙な気分になってしまった
+										ELSE
+											PRINTFORML 「『%覚ん呼称%の%勃起状態%から良い匂いがする』？　……気のせいよ」
+											PRINTFORMDL %ANIMALNAME()%に向けてそう呟き的同时、覚が何か言いたげにこちらを見つめてくる
+											PRINTFORML 「『良い匂いだけじゃなくて美味しい』って、%CALLNAME:MASTER%は何を言ってるんですか」
+											PRINTFORMDL 顔を真っ赤にする覚と、小首をかしげる%ANIMALNAME()%を見比べる
+											PRINTFORML 「『どんな風に美味しい』って、そんなこと聞いちゃ駄目よ！　余計な事を言わないでください」
+											PRINTFORMDL ぺしんと額を轻轻地叩かれて、渋々%CALLNAME:MASTER%は口をつぐんだ
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+											PRINTFORML 「……はぁ、何が楽しいんですか？」
+											PRINTFORMDL 覚の呆れ声に、こちらを見ていた%モブ%が慌てて視線をそらす
+											PRINTFORMW 「『もっとみればいいのに』……って、%CALLNAME:MASTER%は黙ってください」
+											PRINTFORMDL 呆れた表情の覚には堪えず、%勃起状態%を%モブ%に見えやすい様に体勢を変える
+											PRINTFORML 「『美味しそう』……はぁ、本当にヘンタイばかりで困りますね」
+											PRINTFORMDW そんな呟きとは裏腹に、覚の口元が开心的緩んでいる
+										ELSE
+											PRINTFORML 「見ないでいただけるとありがたいのですが」
+											PRINTFORMDL 覚の言葉に、ちらちらとこちらを窺っていた%モブ%が視線をそらす
+											PRINTFORMW 「『一緒に見よう』……って、どうして、%CALLNAME:MASTER%は」
+											PRINTFORMDL 深々とため息をつく覚を無視して、呼び寄せた%モブ%と共に%勃起状態%を見つめる
+											PRINTFORML 「『ぴくぴくしてる』？　……恥ずかしいからですよ」
+											PRINTFORMDW そう言いながらも、覚の目が欲情に潤んでいる
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORML 「……恋、見ないでちょうだい」
+										PRINTFORMDL 目を輝かせて見つめてくる恋に声を向ける覚
+										PRINTFORMD 不意にこちらに視線を向けてきた恋が、お姉ちゃんの%勃起状態%触って良い？　と問いかけてくる
+										PRINTFORMW 「だ、ダメよさわったりしたら怒るんぅっっ！！」
+										PRINTFORMDL しゅっと、%勃起状態%の先端をこする恋
+										PRINTFORML 「んっ、くぅっ……は、ふ、『近親相姦最高』？　やかましいです」
+										PRINTFORMDL 声を詰まらせて腰を引いた涙目の覚に笑みを向け、裏筋を轻轻地上下にこすりたてた
+										PRINTFORMW 「や、やんっ！　もう、っ！　ヘンタイばっかりっっ！！　あふっっ！！」
+									ELSE
+										IF RAND:2
+											PRINTFORML 「『%覚ん呼称%って男の子？』　……いいえ、違\@ LOCAL:1 == 1 ? います # うわよ \@。强行つけられた\@ LOCAL:1 == 1 ? んです # だけ \@」
+											PRINTFORMDL そう言い的同时、こちらを見つめてくる覚
+											PRINTFORMW 「『本当に强行？』　ええ、そう\@ LOCAL:1 == 1 ? です #  \@よ。全部この人のせいです」
+											PRINTFORMDL こちらを指さしてくる覚に、%CALLNAME:好感度一位%が親指を立てた
+											PRINTFORML 「……はぁ、こんなモノを見せつけられて喜ぶなんて」
+											PRINTFORMDW こめかみを押さえながら深々とため息をつく覚だが、口元にはうっすらと笑みが浮かんでいる
+										ELSE
+											PRINTFORML 「…………こんなモノをみて、何が楽しい\@ LOCAL:1 == 1 ? んです # のよ \@」
+											PRINTFORMDL %勃起状態%をガン見する%CALLNAME:好感度一位%に、覚が唇をとがらせる
+											PRINTFORMW 「『気持ち良さそう』？　……さあどうでしょうね」
+											PRINTFORMDL 実際どう？　と%CALLNAME:好感度一位%に問いかけられ、気持ちいいと笑顔を向ける%CALLNAME:MASTER%
+											PRINTFORML 「……そこで、余計なことを言わないでください」
+											PRINTFORMDW ペちんと、覚がこちらの額を掌で轻轻地叩いてきた
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「……どうしてこの子達の前でこんなことを」
+											PRINTFORMDL 唇をとがらせる覚を無視して、%勃起状態%をしっかりと見つめる
+											PRINTFORMW 「『覚のおちんちんが気持ちいいから悪い』？　……%CALLNAME:MASTER%がつけたんでしょう」
+											PRINTFORMDL 文句を言う覚が、沉眠著%ANIMALNAME()%に視線を向ける
+											PRINTFORML 「『ペットが気になる』？　当然です。本当に%CALLNAME:MASTER%はヒドい人です」
+											PRINTFORMDW 不機厌恶地目を細める覚だが、%勃起状態%がぴくんと震えている
+										ELSE
+											PRINTFORML 「『%覚ん呼称%の%勃起状態%、入れて欲しい』って、だめよそんなことは」
+											PRINTFORMDL 覚の言葉に、%ANIMALNAME()%が不思議そうに首をかしげる
+											PRINTFORMW 「『彼女とはしてるのに』？　あ、あの人は、その、一応人ですから」
+											PRINTFORMDL そんな言い訳に苦笑を向け、覚の%勃起状態%は美味しいと%ANIMALNAME()%に教える%CALLNAME:MASTER%
+											PRINTFORML 「って、そこで余計な事を言わないでください」
+											PRINTFORMDW 顔を真っ赤にした覚が、ぺちんとこちらの額を轻轻地叩いてきた
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+											PRINTFORML 「『おちんちん！？』　……見ないでくれます？」
+											PRINTFORMDL 困った様につぶやき、覚がこちらを睨んでくる
+											PRINTFORMW 「『触りたい』？　だめ、ですよ。見られるのさえいやなのに」
+											PRINTFORMDL 覚の言葉に、%モブ%が残念そうにため息を漏らす
+											PRINTFORML 「だから、こういうところではやめて欲しいのに」
+											PRINTFORMDW 覚の言葉は聞こえないふりをして、しっかり%勃起状態%を視姦した
+										ELSE
+											PRINTFORML 「『男だったの？』　いえ、私はれっきとした女ですよ」
+											PRINTFORMDL チラ見してくる%モブ%の戸惑いの声に、覚がため息をつきながら応えを返す
+											PRINTFORMW 「『ほんとだ、おまんこついてる』…………、って、そこまで観察して楽しいですか？」
+											PRINTFORMDL 覚の言葉に、全力で楽しいよねと%モブ%に同意を持ちかける%CALLNAME:MASTER%
+											PRINTFORMDL %モブ%がうなずくのを見て、覚の%勃起状態%は美味しいと力説する
+											PRINTFORMW 「…………本当に、困った人です」
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORML 「恋、見ないでくれる？」
+										PRINTFORMDL その言葉を無視して、恋がちょこんと覚の目の前に座る
+										PRINTFORML 「ひぁっ！　ちょ、さわっちゃだめっ！」
+										PRINTFORMDW %勃起状態%をつつき始める恋に、それはダメと横から手を出す
+										PRINTFORML 「『それは自分の』？　……%CALLNAME:MASTER%のものではありませんが、あんっっ！？」
+										PRINTFORMDL 唇をとがらせる覚の、%勃起状態%に轻轻地接吻をする%CALLNAME:MASTER%
+										PRINTFORML 「だめっ、見るだ、けっっ！　せめてみるだ、ふぁんっっ！　あんたもやめなさいっっ！」
+										PRINTFORMDW 覚の制止は無視して、恋と共にちゅっちゅっと%勃起状態%に接吻をした
+									ELSE
+										IF RAND:2
+											PRINTFORML 「そんなに、コレがみもの\@ LOCAL:1 == 1 ? ですか # かしら \@？」
+											PRINTFORMDL 覚の問いかけに%CALLNAME:好感度一位%が红着脸視線をそらす
+											PRINTFORMW 「そのまま、こちらを見ないで\@ LOCAL:1 == 1 ? いただけ # くれ \@ると助か\@ LOCAL:1 == 1 ? ります # るわ \@」
+											PRINTFORMDL そんな覚の言葉に、%勃起状態%素敵だし一緒に見ようと、%CALLNAME:好感度一位%に誘いをかける
+											PRINTFORML 「……本当に%CALLNAME:MASTER%と言う人は……」
+											PRINTFORMDW 唇をとがらせて睨んでくる覚だが、口元が开心的緩んでいる
+										ELSE
+											PRINTFORML 「……触らせませんよ？」
+											PRINTFORMDL 覚の言葉に、びくっと肩を震わせて、%CALLNAME:好感度一位%が慌忙背过脸去
+											PRINTFORMW 「『そんなこと思っていない』？　思ってないことが私に見えるとでも？」
+											PRINTFORMDL くすりと笑う覚に笑みを向けて、%CALLNAME:好感度一位%を手招きする
+											PRINTFORML 「『一緒に見よう』……って、%CALLNAME:MASTER%は、何を考えているんですか」
+											PRINTFORMDW 困った様につぶやく覚に、%勃起状態%が美味しそうだからと考え、睨まれてしまった
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「もう、いいかげんにしないと憤怒ますよ？」
+											PRINTFORMDL そう言いながらも、まくり上げた裙子をそのままにする覚
+											PRINTFORMW 「この子達に見せて良いものじゃないんですから」
+											PRINTFORMDL むしろ見せてやった方が、はやく人型になるんじゃないか、と呟く
+											PRINTFORML 「…………人型になってくれれば、楽にはなりますけど」
+											PRINTFORMDW 困ったような表情に、それ以上は何も言わずじっと%秘処状態%を見つめた
+										ELSE
+											PRINTFORML 「『%覚ん呼称%の%秘処状態%可愛い』？　ふふ、ありがとう、でもあまり見ないで」
+											PRINTFORMDL %ANIMALNAME()%が不思議そうに小首をかしげる
+											PRINTFORMW 「『どうして』？　って恥ずかしいからよ。それに、おまえ達にはまだ早いでしょ」
+											PRINTFORMDL 覚の言葉に、%ANIMALNAME()%がうなだれる
+											PRINTFORML 「ちゃんと人型になれたら、可愛いのを見繕ってあげるから、ね」
+											PRINTFORMDW そんなやりとりを聞きながら%秘処状態%を見つめる%CALLNAME:MASTER%を、覚が呆れた表情で見つめてきた
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+											PRINTFORML 「だから、人がいるからやめて欲しいと言っているのに」
+											PRINTFORMDL そんなことを呟く覚を無視して、%モブ%を呼び寄せる
+											PRINTFORMW 「『こんなところで何を』？　この人が悪いんですよ」
+											PRINTFORMDL 含羞の紅を頬にのせつつ、覚がこちらを指さして非難してくる
+											PRINTFORML 「まったく、本当に困った人です」
+											PRINTFORMDW %モブ%の楽しんでる様に見えると言う言葉に頷きを返し、覚に思い切り睨まれた
+										ELSE
+											PRINTFORML 「……チラ見するくらいなら、背中を向けて欲しいですね」
+											PRINTFORMDL 覚の言葉に、背中を向けそうになる%モブ%を制止して手招きする
+											PRINTFORMW 「『見たいならもっとよく見ろ』…………はぁ、%CALLNAME:MASTER%は本当に……」
+											PRINTFORMDL 恨めしげに上目遣いで見つめてくる覚を無視して、%モブ%に自慢する
+											PRINTFORML 「……なぜ、%CALLNAME:MASTER%が自信満々なんですか」
+											PRINTFORMDW 文句とは裏腹に、どこか神情愉悦覚が頬を緩めている
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORML 「……はぁ、恋、お願いだから見ないでくれる？」
+										PRINTFORMDL ため息をつきながら呟く覚の目の前に、恋がちょこんと座り込む
+										PRINTFORMDL まじまじと%秘処状態%を眺めて、ぷっくりして美味しそうと呟く恋
+										PRINTFORMW 「お、おいしそう！？　あああああ、あんたは何を言ってるの！」
+										PRINTFORMDL 素のままで叫ぶ覚に、にっこりと笑顔を浮かべた恋がつんっと%秘処状態%をつつく
+										PRINTFORML 「あんっ！　こ、こら、いい加減に、『エロ姉妹最高』ってあんたもうるさいっ！　あ」
+										PRINTFORMDL 珍しくため口をきいた覚が一瞬凍り付き、視線を交わした恋と同時に首をかしげる
+										PRINTFORML 「…………はぁ、本当にいい加減にしてください」
+										PRINTFORMDW 唇をとがらせてこちらを見つめてくる覚に、恋と共にソレはムリと答えを返した
+									ELSE
+										IF RAND:2
+											PRINTFORML 「……%CALLNAME:好感度一位%\@ LOCAL:1 == 1 ? さん #  \@、\@ LOCAL:1 == 1 ? 同性 # 飼い主 \@の胖次なんか見て、楽しい\@ LOCAL:1 == 1 ? ですか #  \@？」
+											PRINTFORMDL %CALLNAME:好感度一位%に向けた覚の問いかけに、頷きが返ってくる
+											PRINTFORMW 「はぁ、ヘンタイばっかり\@ LOCAL:1 == 1 ? です #  \@ね。まったく」
+											PRINTFORMDL 不快げにため息をつきつつ、それでも主动は遮ろうとしない覚
+											PRINTFORML 「『見られて嬉しそう？』　そんなことあるわけない\@ LOCAL:1 == 1 ? です # わ \@よ」
+											PRINTFORMDW %CALLNAME:好感度一位%の内心の呟きに、含羞の紅を頬にのせて覚が反論している
+										ELSE
+											PRINTFORML 「誰も見て良いとは言ってない\@ LOCAL:1 == 1 ? のですが # わよ \@」
+											PRINTFORMDL その言葉に%CALLNAME:好感度一位%が、%覚ん呼称%が見せたがってるのに？　と問いかける
+											PRINTFORMW 「……いえ、私はさせられているだけで、主动見せたりなんてし\@ LOCAL:1 == 1 ? ません # ないわ \@」
+											PRINTFORMDL 水润的瞳でこちらを見つめ的同时、言葉だけを%CALLNAME:好感度一位%に投げかける覚
+											PRINTFORML 「『見られてるのに隠さない時点で説得力が無い』？　……%CALLNAME:MASTER%という人は」
+											PRINTFORMDW 深々とため息をついた後、覚が移开了視線
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「もう、この子達の前ではこういうことはしないでください」
+											PRINTFORMDL 文句を言いながらも、覚は抵抗しようとしない
+											PRINTFORMW 「……まあ、まだ沉眠著から、多少はガマンできますが」
+											PRINTFORMDL そんな呟きと共に、つっと愛液がこぼれ落ち、%ANIMALNAME()%の前に落ちる
+											PRINTFORML 「『%秘処状態%を弄り回したい』？　今は見るだけ、ですよ」
+											PRINTFORMDW それは残念、と告げる%CALLNAME:MASTER%に、覚がくすりと笑った
+										ELSE
+											PRINTFORML 「『%覚ん呼称%の%秘処状態%、綺麗』？　そんなことはないわよ」
+											PRINTFORMDL そう言いながら恥ずかしげに頬を赤く染める覚
+											PRINTFORMW 「出来たら見ないで欲しいんだけど……、『そんなの無理』？」
+											PRINTFORMDL 覚の言葉に、どうしてだと%ANIMALNAME()%に問いかける%CALLNAME:MASTER%
+											PRINTFORML 「『人型になった時のため』？　……そういうのは阿燐や阿空に見せてもらいなさい」
+											PRINTFORMDW その二人も、覚のを見て人型になったんだろうかと、思うと同時、轻轻地掌をつねられた
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+											PRINTFORML 「『ヘンタイがいる』……いいえ、私がそうではなく、あちらがそうなんです」
+											PRINTFORMDL ちらちらとこちらを見る%モブ%の内心の声に答え的同时、覚がこちらを指さしてくる
+											PRINTFORMW 「『没穿内裤なのに』？　ええ、このためにわざわざ取られたんですよ」
+											PRINTFORMDL 深々とため息をつく覚に、けれど口元に浮かぶかすかな笑みに、苦笑が浮かぶ
+											PRINTFORMDL 興味津々の%モブ%を手招きし的同时、%秘処状態%を细心的視姦した
+											PRINTFORMW 「……本当に、Ｈなんですから…………はぁ」
+										ELSE
+											PRINTFORML 「できれば、こちらは見ないで欲しいんですが」
+											PRINTFORMDL 頬を赤らめた覚の言葉に、%モブ%が慌てて視線をそらす
+											PRINTFORMW 「……%CALLNAME:MASTER%も、人がいるところでこんなことはやめてください」
+											PRINTFORMDL 唇をとがらせて文句を言う覚だが、こちらの手を支付のけようとはしない
+											PRINTFORML 「『愛液が垂れてる』……って、しょうがないことなんです」
+											PRINTFORMDW 何がしょうがないのか問い詰めるより、覚の%秘処状態%を眺める方を優先させた
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORML 「や、だめ、恋見ないで」
+										PRINTFORMDL 顔を真っ赤にする覚の前にちょこんと座って恋が、顔を寄せていく
+										PRINTFORML 「『自分のだから出口ろ』って、私は別に%CALLNAME:MASTER%のものではありません」
+										PRINTFORMDW 总觉得很开心似的呟く覚に、恋が不機厌恶地唇をとがらせる
+										PRINTFORML 「『一緒に見よう』って、恋にヘンなことを教えないでください」
+										PRINTFORMDL そう言いながらも、こちらの手を押さえずに%秘処状態%を隠そうともしない覚
+										PRINTFORML 「…………%CALLNAME:MASTER%が、悪いんです」
+										PRINTFORMDW それだけを呟く覚の%秘処状態%を、恋共々细心的視姦した
+									ELSE
+										IF RAND:2
+											PRINTFORML 「ん……、出来れば、%CALLNAME:好感度一位%\@ LOCAL:1 == 1 ? さん #  \@には、見られたく\@ LOCAL:1 == 1 ? ありません # ないです \@が」
+											PRINTFORMDL その言葉とは裏腹にこちらの手を遮ろうとはしない覚の%秘処状態%を視姦する
+											PRINTFORMW 「『胖次沒穿なんて%覚ん呼称%ってヘンタイ』？　……この人のせい\@ LOCAL:1 == 1 ? です # だ \@から」
+											PRINTFORMDL %CALLNAME:好感度一位%が頬を赤らめながらこちらと覚を見くらべる
+											PRINTFORML 「『羨ましい』？　……他人に見せるのをそう思えるなんて、人のことは言え\@ LOCAL:1 == 1 ? ません # ないわ \@ね」
+											PRINTFORMDW どことなく寂しげな覚と、%CALLNAME:好感度一位%の何か言いたげな表情に首をかしげた
+										ELSE
+											PRINTFORML 「見ないで\@ LOCAL:1 == 1 ? ください # ちょうだい \@、と言っても無駄\@ LOCAL:1 == 1 ? でしょう # なのよ \@ね」
+											PRINTFORMDL 小さくため息をつきながら%CALLNAME:好感度一位%に声をかける覚
+											PRINTFORMW 「『没穿内裤』？　ええ、そう\@ LOCAL:1 == 1 ? です #  \@よ、この人に取られた\@ LOCAL:1 == 1 ? んです # の \@」
+											PRINTFORMDL そういいながらジト目で睨んでくる覚から、わざとらしく視線をそらす
+											PRINTFORML 「『%覚ん呼称%の%秘処状態%、美味しそう』……そう言われても、困\@ LOCAL:1 == 1 ? ります # るわ \@ね」
+											PRINTFORMDW 平静を装いつつ、红了脸的覚が移开了視線
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO 恋慕モード対面
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+		ENDSELECT
+	ELSEIF 陥落状態() == 2
+		SELECTCASE CFLAG:2
+			CASE IS < 100
+				PRINTFORML 「この変態スケベＨ色情魔っっっ！！」
+				PRINTFORMDW 頭がくらくらするほどの平手打ちに、片刻后意識がもうろうとする
+				PRINTFORML 「死んでください、今すぐっ！」
+				PRINTFORMDW 余りにも強烈な憤怒を見せる覚に、返す言葉が出てこない
+			CASE 100 TO 1000
+				PRINTFORML 「粪、この程度で済んだことに感謝してもらいたいですね」
+				PRINTFORMDW 余りの痛みに手を振る%CALLNAME:MASTER%を見据えて覚がそううそぶく
+				PRINTFORML 「『たかが掀裙子くらいで怒るな』？　……下衆」
+				PRINTFORMDW 冷め切った覚の瞳に、それ以上の悪態は思い浮かばなかった
+			CASE 1001 TO 3000
+				PRINTFORML 「馬鹿にするのはやめてもらえませんか？」
+				PRINTFORMDW 憤怒を目に浮かべて覚が睨んでくる
+				PRINTFORML 「%CALLNAME:MASTER%に見られるなんて不愉快にもほどがありますから」
+				PRINTFORMDW 死守する構えの覚に、わざとらしく舌打ちをした
+			CASE 3001 TO 5000
+				PRINTFORML 「……ふざけるのは大概にしたらどうですか」
+				PRINTFORMDW 冷め切った表情で覚がこちらを睨んでくる
+				PRINTFORML 「%CALLNAME:MASTER%なんかに見せるつもりはありません」
+				PRINTFORMDW そういいながらも、裙子を押さえる手の力は弱々しい
+			CASE IS > 5000
+				IF GET_TARGETNUM() == 1 && !DATE_HITOGOMI() && WITH_MOB() != 9
+					$キレモード対面
+					IF ABL:露出癖 > 3
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							IF RAND:2
+								PRINTFORML 「……ふーん、そんなにコレが欲しいんですか？」
+								PRINTFORMDL %勃起状態%を見せつけながら腰を揺らす覚に生唾を飲み込む
+								PRINTFORMW 「私的家族に手を出してる分際で浅ましい」
+								PRINTFORMDL そう言いながらも、欲情に目を潤ませる覚
+								PRINTFORML 「そんなに欲しいなら、浅ましくおねだりでもしたらどうですか？」
+								PRINTFORMDW 覚の言葉に、背中を向けながら尻を振って、膣腔をえぐる悦楽を想起させた
+							ELSE
+								PRINTFORML 「そんなに見つめて、本当にどうしょうもない色情魔ですね」
+								PRINTFORMDL そんなことを言い的同时、覚が%勃起状態%を見せつけてくる
+								PRINTFORMW 「『自分だって楽しんでるくせに』……、いいえ、有効活用させてもらっていますが、別に楽しんでません」
+								PRINTFORMDL そう言いながらも、こちらの股間を凝視する覚に、見せつける様に腰を突き出す
+								PRINTFORML 「『おまんこ随便いい』？　本当にどうしょうも無いヘンタイですね」
+								PRINTFORMDW そう言いながらも、欲情に頬を赤くしている
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+									PRINTFORML 「粪、こんなのが嬉しいなんて、理解できませんね」
+									PRINTFORMDL 冷めた瞳でこちらを見的同时、覚が%秘処状態%を見せつけてくる
+									PRINTFORMW 「『可愛い内衣』？　%CALLNAME:MASTER%に言われても嬉しくなんてありませんね」
+									PRINTFORMDL そう言い的同时、%秘処状態%がよく見える様に、覚がわずかに足を開く
+									PRINTFORML 「『エロい』？　本当に気持ち悪い人ですね」
+									PRINTFORMDW 言葉のきつさとは裏腹に、口元がほんのわずかにほころんでいる
+								ELSE
+									PRINTFORML 「こんなことが本当に楽しいモノですか」
+									PRINTFORMDL わかっているくせにわざわざ問いかけてくる覚に頷きを返す
+									PRINTFORMW 「これだから色情魔は」
+									PRINTFORMDL 深々とため息をついてはいるが、それでも裙子の裾から手をはずそうとはしない
+									PRINTFORML 「『見せて悦んでるだろう』？　ふふ、そんなわけありません」
+									PRINTFORMDW 珍しく口元に笑みを浮かべる覚の余裕が、なんとなく癪に障った
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+									PRINTFORML 「はぁ…………、最低のヘンタイですね」
+									PRINTFORMDL 冷たい視線を向けてくる覚が、それでも自ら裙子の裾を慢慢地引き上げていく
+									PRINTFORMW 「ほら、そんなに見たいなら見せてあげますよ、この色情魔」
+									PRINTFORMDL 慢慢地隠す布もない%秘処状態%を晒す覚
+									PRINTFORML 「『家族より綺麗』？　……そこで比べるのはやめてください」
+									PRINTFORMDW 不愉快そうな口調で呟く覚だが、わずかに喜色を浮かべている
+								ELSE
+									PRINTFORML 「…………わざわざ時止めで胖次を奪ったのはこんなことのためですか」
+									PRINTFORMDL あきれかえった表情の覚に、当然だとうなずきを返す
+									PRINTFORMW 「最低最悪のヘンタイですね、本当にしょうが無い人です」
+									PRINTFORMDL 唇をとがらせた覚が、それでも片手で裙子をめくり上げ、%秘処状態%を展示了出来
+									PRINTFORML 「『しゃぶりつきたい』？　触らせるつもりはありません」
+									PRINTFORMDW そう言い的同时、空いた手を秘処に伸ばし、用陰唇割り開いて膣口をあらわにした
+								ENDIF
+							ENDIF
+						ENDIF
+					ELSE
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							IF RAND:2
+								PRINTFORML 「こんなところを見たがるなんて、本当に鬼畜ですね」
+								PRINTFORMDL %勃起状態%をみ的同时、%CALLNAME:MASTER%は口元に笑みを浮かべる
+								PRINTFORMW 「『気持ちよくなれるから』…………、粪」
+								PRINTFORMDL 鼻哂してそっぽを向く覚の頬が、なぜか赤い
+								PRINTFORML 「『見られて興奮したか』？　そんなわけ無いでしょう、ふざけないでください」
+								PRINTFORMDW 呟く覚の%勃起状態%が、ぴくんと揺れた
+							ELSE
+								PRINTFORMDL %勃起状態%を入れて欲しいと、自己的膣口に指を含ませる%CALLNAME:MASTER%を覚が冷めた目で看了过来
+								PRINTFORML 「こんなところを見て欲情するなんて、本当にヘンタイですね」
+								PRINTFORMW 「『自分だって女に欲情するヘンタイ』？　……全部、%CALLNAME:MASTER%が悪いんです」
+								PRINTFORMDL わずかに頬を赤らめて視線をそらす覚が、少しだけ腰を突き出す
+								PRINTFORML 「こんなのをつけさせたヘンタイのくせに」
+								PRINTFORMDW 非難する口調だが、ほんのわずか覚の口元が緩んでいる
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								IF RAND:2
+									PRINTFORML 「最低ですね、いい加減にしてください」
+									PRINTFORMDL じろりとにらみつけてくる覚だが、まくり上げた裙子を下ろそうとはしない
+									PRINTFORMW 「%CALLNAME:MASTER%のようなゲス相手には、何を言ってもむだですからね」
+									PRINTFORMD そう言い切る覚の%秘処状態%をみ的同时、
+									IF PALAM:潤滑 > PALAMLV:4
+										PRINTFORMD 濡れ透けの秘処を晒して
+									ELSEIF PALAM:潤滑 > PALAMLV:2
+										PRINTFORMD 胖次を濡らして
+									ELSE
+										PRINTFORMD 胖次を晒して
+									ENDIF
+									PRINTFORMDL 言っても説得力は無いと返す
+									PRINTFORML 「……うるさいですね」
+									PRINTFORMDW 不愉快そうに唇をとがらせる覚の頬が、なぜか朱色を帯びている
+								ELSE
+									PRINTFORML 「こんなのが楽しいなんて、理解できませんね」
+									PRINTFORMDL %秘処状態%を存分に視姦する%CALLNAME:MASTER%に、覚が呆れ声を投げかけてくる
+									PRINTFORMW 「まあ、心より体を求める様な下賤な人类にはふさわしい行為ですが」
+									PRINTFORMDL そう言いながらも、緊張した様子もなくただ%秘処状態%を晒す覚の頬がわずかに赤い
+									PRINTFORML 「『嬉しいのか』？　そんなわけ、あるはずが無いでしょう、とうとう頭もおかしくなりましたか？」
+									PRINTFORMDW 辛辣な物言いだが、むしろ見やすい様に覚がわずかに足を開いた
+								ENDIF
+							;ノーパン
+							ELSE
+								IF RAND:2
+									PRINTFORML 「や、やめてください、このヘンタイスケベ色情魔」
+									PRINTFORMDL 口で文句を言いながらも、抵抗しない覚の丸出しの%秘処状態%を視姦する
+									PRINTFORMW 「『美味しそう』……って、他の子でも十分楽しんでるくせに」
+									PRINTFORMDL その非難の言葉を無視して、悄悄的手を伸ばす
+									PRINTFORML 「だだだ、ダメですそれはっ！」
+									PRINTFORMDW さすがに%秘処状態%に触れられるのはイヤなのか、手を捕まれて止められた
+								ELSE
+									PRINTFORML 「この、このっっ！」
+									PRINTFORMDL 言いたいことはあるのに、きちんと言葉にならない、そんな覚に笑みが浮かぶ
+									PRINTFORMW 「『見られて気持ちいいだろう』？　そんなわけないでしょうっっっ！！」
+									PRINTFORMDL 顔を真っ赤にして叫ぶ覚の%秘処状態%を、しっかりと見つめる
+									PRINTFORML 「この色情魔、いい加減にしてくださいっ！！」
+									PRINTFORMDW 文句を言いつつ、手を支付のけようとしない覚に、苦笑が浮かんだ
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				;TARGET以外のキャラがいるorモブキャラがいてもおかしくない場所
+				ELSE
+					IF ABL:露出癖 > 5
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;モブキャラに見られてます
+							IF GET_TARGETNUM() == 1 && TFLAG:400
+								;ペットに見られてます
+								IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+									IF GROUPMATCH(TIME:2,1,6,7)
+										PRINTFORML 「ん、だめ、なのに……こんなの、こんなの」
+										PRINTFORMDL そういいながらも、%勃起状態%を隠そうとしない覚
+										PRINTFORMDW むしろ見て欲しそうに、眠る%ANIMALNAME()%に向かって腰を突き出す
+										PRINTFORML 「……はぁ、はぁ……、だめ、こんなの……、『いっそ入れてしまえば良い』？」
+										PRINTFORML 「バカですか、%CALLNAME:MASTER%は。人型に成れない子にするわけにはいきません」
+										PRINTFORMDW なら、阿燐や阿空にはするのか、と言う内心の問いに、红了脸的覚は答えない
+									ELSE
+										PRINTFORML 「『%覚ん呼称%の%勃起状態%美味しそう』？　って、何を考えてるのよ」
+										PRINTFORMDL 唇をとがらせ的同时、%ANIMALNAME()%をたしなめる覚
+										PRINTFORMW 「『確かに美味しい』って、余計なことを言わないでください」
+										PRINTFORMDL いらだちを込めてにらみつけてくる覚だが、%ANIMALNAME()%が興味深そうに見つめてくる
+										PRINTFORMDL まずは舐めて口で味わうと良い、こちらの言葉に%ANIMALNAME()%が覚の股間に顔を突っ込む
+										PRINTFORMW 「ちょ、こら、やめなさいっっ！　ひぅっっ！　それは、人型にっっあふっっ！」
+									ENDIF
+								;それ以外のモブキャラに見られてます
+								ELSE
+									IF RAND:2
+										PRINTFORML 「そんなに、コレが気になるなら、しっかり側に来て見てはいかがです？」
+										PRINTFORMDL 覚の言葉に、%モブ%が怯生生地近寄って、%勃起状態%を見つめる
+										PRINTFORMW 「『美味しそう』？　残念ですが、コレをあげることは出来ませんよ」
+										PRINTFORMDL そう言いながらこちらを見つめ、視線が合った瞬間、なぜかわずかに顔を赤くする
+										PRINTFORML 「まあ、どうしてもと言うなら、あちらからお情けでもいただいたらどうです」
+										PRINTFORMDW %モブ%がこちらを窺い、それから興味ないと首を振った
+									ELSE
+										PRINTFORML 「『ヘンタイ』？　ふふ、興味津々でこちらをチラ見しているヒトの言葉とも思えませんね」
+										PRINTFORMDL 覚の言葉に、%モブ%がなぜかこちらに視線を向けてくる
+										PRINTFORMDW 同意を求めているその視線に頷きを返し、じろりと覚ににらみつけられた
+										PRINTFORML 「%勃起状態%を凝視して悦んでる%CALLNAME:MASTER%に、そう言われる筋合いはありませんが」
+										PRINTFORML 「『\@ BASE:勃起 >= 1000 ? こんな堅いの # もしこれが大きかった \@どれだけ気持ちいいだろう』と考えてる時点でヘンタイのくせに」
+										PRINTFORMDW 覚の言葉に、%モブ%が顔を真っ赤にしている
+									ENDIF
+								ENDIF
+							;名ありキャラに見られています
+							ELSEIF GET_TARGETNUM() > 1
+								IF LOCAL:1 == 3
+									PRINTFORML 「恋も見たいの？　全く仕方ない子ね」
+									PRINTFORMDL %勃起状態%を見るためにへたり込んで、顔を寄せる恋に、覚が笑顔を向ける
+									PRINTFORMW 「『近親相姦』？　……本当に最低の変態ですね。ひゃんっっ！？　こ、恋っ！？」
+									PRINTFORMDL 文句を言いかけた覚の、%勃起状態%に、恋がほおずりしている
+									PRINTFORML 「こ、恋、やめてっ、んくぅ……、『それは自分の』って%CALLNAME:MASTER%はだまりなさい！」
+									PRINTFORMDW 嬉しそうな恋と、顔を真っ赤にする覚に、%CALLNAME:MASTER%はただ笑みを浮かべた
+								ELSE
+									IF RAND:2
+										PRINTFORML 「ふふ、気持ち悪い\@ LOCAL:1 == 1 ? ですか #  \@？　……『美味しそう』って、さすがにそれは予想外\@ LOCAL:1 == 1 ? ですね # だわ \@」
+										PRINTFORMDL %CALLNAME:好感度一位%がふとこちらに目を向けて、覚の味を訪ねてくる
+										PRINTFORMW 「答えたりしたら、ただじゃ置きませんよ。覚悟は出来ていますね」
+										PRINTFORMDL 目を細めて睨んでくる覚に、わざとらしく肩をすくめる
+										PRINTFORML 「『そんなにいいなら私にも』？　…………はぁ……、バカしかいない\@ LOCAL:1 == 1 ? のでしょうか # のかしら \@」
+										PRINTFORMDW 覚の呆れた声に、%CALLNAME:好感度一位%ともども抗議の声を上げた
+									ELSE
+										PRINTFORML 「そんなに、コレが気にな\@ LOCAL:1 == 1 ? ります # るかしら \@？　ふふ、好きなだけ見ていい\@ LOCAL:1 == 1 ? です # わ \@よ」
+										PRINTFORMDL 楽しげな表情で覚が放った言葉に、%CALLNAME:好感度一位%がじっと%勃起状態%を見つめる
+										PRINTFORMW 「ふふ、そんなに見られると恥ずかしい\@ LOCAL:1 == 1 ? です # わ \@ね」
+										PRINTFORMDL そう言い的同时、ぴくんぴくんと%勃起状態%を振るわせる覚
+										PRINTFORML 「『見せつけて悦ぶ変態』？　……なら、%CALLNAME:MASTER%はさっさと背中を向けてください」
+										PRINTFORMDW 不愉快そうな覚の声を無視して、%CALLNAME:好感度一位%と共に%勃起状態%を凝視した
+									ENDIF
+								ENDIF
+							ELSE
+								GOTO キレモード対面
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「はぁ、いくら寝てるからと言って、この子達の前ではしたくありませんね」
+											PRINTFORMDL そう言いながらもまくり上げた裙子から手を離そうとはしない覚
+											PRINTFORMW 「『%秘処状態%を見るのは気分が良い』？　見せてる私は最悪な気分ですが」
+											PRINTFORMDL そういい的同时、どことなく柔らかい表情で、覚が%ANIMALNAME()%の方に顔を向ける
+											PRINTFORML 「この子達になら、見られてもそういう気分にはならないのですが」
+											PRINTFORMDW そう呟く覚の%秘処状態%に思わず手を伸ばして支付のけられた
+										ELSE
+											PRINTFORML 「ふふ、そんなに見て面白いかしら？」
+											PRINTFORMDL 覚の問いかけに%ANIMALNAME()%がうなずく
+											PRINTFORMW 「『%覚ん呼称%の%秘処状態%、良い匂い』？　ふふ、気持ちよくなる匂いよ」
+											PRINTFORMDL %ANIMALNAME()%に舐めたら喜ぶ、とささやきかける
+											PRINTFORML 「ちょ、何を言って、ひんっ！　こ、こら、それは人型になれてからっ！」
+											PRINTFORMDW 慌てて押し離された%ANIMALNAME()%に、良くやったと笑いかけ、覚に思い切り睨まれた
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+											PRINTFORML 「『へんたい』？　ふふ、同性の%秘処状態%をみて興奮してるヒトが言える事ではありませんね」
+											PRINTFORMDL ちらちらとこちらを窺う%モブ%に覚が笑いかける
+											PRINTFORMW 「『可愛い笑顔』…………、そこでそう言われると困りますけど」
+											PRINTFORMDL 照れくさそうに顔をそらす覚を見的同时、%モブ%に同意の頷きを返す
+											PRINTFORML 「…………気持ち悪いことを考えないでください」
+											PRINTFORMDW 顔を赤くする覚に%モブ%が胡乱げな視線を向けてくるが、それは無視した
+										ELSE
+											PRINTFORML 「『恥ずかしくないの』？　ふふ、恥ずかしがる必要がどこにあるんですか？」
+											PRINTFORMDL %モブ%の内心に、どことなくツヤのある笑みで答える覚
+											PRINTFORMW 「『見られて悦ぶ変態』……って、他者に見せる様に誘導している%CALLNAME:MASTER%に言われたくないですね」
+											PRINTFORMDL 覚の言葉に、%モブ%が何か言いたげな表情でこちらを見つめてくる
+											PRINTFORML 「『相思相愛』？　っっ！　ななな、何をばかげたことを！」
+											PRINTFORMDW 顔を真っ赤にして%モブ%に憤怒を向ける覚に苦笑が浮かんだ
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORML 「ふふ、そんなにじっと見て、可愛い子ね」
+										PRINTFORMDL お姉ちゃんの方が可愛いと呟く恋が、%秘処状態%をじっと見つめる
+										PRINTFORMW 「なら、私にも恋の胖次を見せてちょうだい」
+										PRINTFORMDL そんな覚の言葉に\@ ABL:(LOCAL:2):露出癖 > 5 ? 开心地 # 有点害臊的 \@裙子をまくり上げる恋
+										PRINTFORMDL \@ !CFLAG:(LOCAL:2):291 ? 胖次 # 餡餅パン \@を晒す恋をガン見してから覚の胖次に視線を向ける
+										PRINTFORMW 「『姉妹比べ』？　……本当に、最低の変態ですね」
+									ELSE
+										IF RAND:2
+											PRINTFORML 「ふふ、\@ LOCAL:1 == 1 ? 同性 # 主 \@の胖次を見るのは楽しい\@ LOCAL:1 == 1 ? ですか # かしら \@？」
+											PRINTFORMDL 覚の言葉に、%CALLNAME:好感度一位%が我に返った様子で視線をそらす
+											PRINTFORMW 「『\@ !RAND:2 ? 綺麗 # 可愛い \@』\@ LOCAL:1 == 1 ? ですか #  \@？　ふふ、ありがとう\@ LOCAL:1 == 1 ? ございます #  \@」
+											PRINTFORMDL 裙子の裾を上げたまま、轻轻地頭を下げる覚に、%CALLNAME:好感度一位%が苦笑を浮かべる
+											PRINTFORML 「『無視するな』……？　あら、まだいたんですか？」
+											PRINTFORMDW 冷めた表情で呟く覚だが、もっと見られたいのか、わずかに腰を突き出している
+										ELSE
+											PRINTFORML 「『触ってみたい』？　ふふ、残念\@ LOCAL:1 == 1 ? ですが # だけど \@、無理に決まってい\@ LOCAL:1 == 1 ? ますね # るわね \@」
+											PRINTFORMDL 覚の言葉に、%CALLNAME:好感度一位%が残念そうに首を振る
+											PRINTFORMW 「『これは自分のだから』？　…………%CALLNAME:MASTER%は黙ってください」
+											PRINTFORMDL じろりとこちらを睨んでくる覚だが、%秘処状態%を晒しながらでは迫力などない
+											PRINTFORML 「…………粪、%CALLNAME:MASTER%に見せてる訳ではありませんから」
+											PRINTFORMDW 口ではそう言いながらも、裙子を下ろさずに、わずかに腰を揺らしている
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO キレモード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「だめなのに、こんなところを見せるなんて」
+											PRINTFORMDL そんなことを言い的同时、沉眠著%ANIMALNAME()%の顔によく見えるように足を開く覚
+											PRINTFORMW 「『気持ちいいか』？　良いはずがないでしょう、バカですか？」
+											PRINTFORMDL 唇をとがらせる覚だが、ぽたり、ぽたりとこぼれ落ちる愛蜜が興奮を如実に伝えてくる
+											PRINTFORML 「…………それ以上、何か言ったら、本気で殺しますよ」
+											PRINTFORMDW その言葉に、普段とは違う危険を感じて、%CALLNAME:MASTER%は口をつぐんだ
+										ELSE
+											PRINTFORML 「『%覚ん呼称%の%秘処状態%美味しそう』？　ふふ、嬉しいわね」
+											PRINTFORMDL 口元に柔らかな露出笑容、%ANIMALNAME()%に見えやすいよう腰を突き出す覚
+											PRINTFORMW 「ちゃんと人型になれるよう、覚えておきなさい」
+											PRINTFORMDL ……のけ者にされてる様な気分の%CALLNAME:MASTER%に、覚が珍しく笑みを向けてくる
+											PRINTFORML 「『様な』、ではなくのけ者にしているんですけどね」
+											PRINTFORMDW そう言いながら用陰唇割り開き、サーモンピンクを見せつけてくる覚に、生唾が湧いた
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF RAND:2
+											PRINTFORML 「こんなところを見たがる人がいるなんてね」
+											PRINTFORMDL ちらちらと红着脸こちらを窺っている%モブ%に、覚が笑みを向ける
+											PRINTFORMW 「『恥ずかしくないの』？　ふふ、させている人が悪いのですから」
+											PRINTFORMDL そう言い的同时、こちらに非難のまなざしを向け、足を開く覚
+											PRINTFORML 「『綺麗』？　……ふふ、ふふふふ」
+											PRINTFORMDW 开心地笑い%秘処状態%を晒す覚の内ももを、つつっと愛蜜がたれ落ちた
+										ELSE
+											PRINTFORML 「はぁ、ふふ、しょうがないヒト達ですね」
+											PRINTFORMDL 欲情に瞳を潤ませて、覚が%モブ%に顔を向ける
+											PRINTFORMW 「見たいなら、近くによってはいかがです？」
+											PRINTFORMDL 蠱惑的なその誘いに、ふらふらと%モブ%が近づいてきて、じっと%秘処状態%を見つめる
+											PRINTFORML 「『おいしそう』？　ふふ、残念ですけど味わうことも触れることも許しませんよ」
+											PRINTFORMDW クスクスと笑う覚の言葉に、%モブ%が残念そうに一歩下がった
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORML 「……そんなにあんたも見たいなら好きになさい」
+										PRINTFORMDL そう言い的同时、裙子をまくり上げて、%秘処状態%を晒す覚
+										PRINTFORMW 「『相変わらず綺麗』？　%CALLNAME:MASTER%に言われても嬉しくないですね」
+										PRINTFORMDL じゃあ自分は？　と問いかける恋に、嬉しいと満脸笑容地向ける覚
+										PRINTFORML 「『妹に見られて恥ずかしくないか』？　……ふふ、さぁ、どうでしょうね」
+										PRINTFORMDW 妙に艶っぽい笑みに、恋共々見とれてしまった
+									ELSE
+										IF RAND:2
+											PRINTFORML 「ふふ、そんなにじっと見るなんて、%CALLNAME:好感度一位%も変態\@ LOCAL:1 == 1 ? です #  \@ね」
+											PRINTFORMDL クスクスと笑い的同时、%秘処状態%を晒す覚に、%CALLNAME:好感度一位%共々思わず生唾を飲む
+											PRINTFORMW 「ああ、別に%CALLNAME:MASTER%に見せるためではありませんから、勘違いしないでください」
+											PRINTFORMDL くすくすと笑う覚に、少し不愉快さを覚える
+											PRINTFORML 「『おまんこをさらしてるくせに』？　ふふふ、見せてあげてるのですから悦んだらどうです？」
+											PRINTFORMDW 带着得意洋洋表情的覚の%秘処状態%から、愛蜜がつっとこぼれ落ちた
+										ELSE
+											PRINTFORML 「『%覚ん呼称%の変態』？　ふふ、%CALLNAME:好感度一位%も、こっちを見て発情してる変態\@ LOCAL:1 == 1 ? ですし # だもの \@ね」
+											PRINTFORMDL 覚の言葉に%CALLNAME:好感度一位%が顔を真っ赤にする
+											PRINTFORMW 「まあ、もっとも、一番の変態はこんなことをさせて悦に入ってるソレですが」
+											PRINTFORMDL そう言いながら非難のまなざしを向けてくる
+											PRINTFORML 「『主动してるくせに』？　%CALLNAME:MASTER%がさせているんですよ」
+											PRINTFORMDW 不敵そうな表情で呟く覚だが、%秘処状態%から蜜を垂らし興奮を露わにしている
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO キレモード対面
+								ENDIF
+							ENDIF
+						ENDIF
+					ELSE
+						;さとりがふたなりかつMASTERが女かふたなりかつ二分の一
+						IF GETBIT(TALENT:TARGET:性別,1) && GETBIT(TALENT:MASTER:性別,0) && !RAND:2
+							;モブキャラに見られてます
+							IF GET_TARGETNUM() == 1 && TFLAG:400
+								;ペットに見られてます
+								IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+									IF GROUPMATCH(TIME:2,1,6,7)
+										PRINTFORML 「だから、この子達のまえでこんなことはしないでくださいっ！」
+										PRINTFORMDL 別に沉眠著から構わないだろう、とそんな事を考える%CALLNAME:MASTER%に、覚が目尻に涙を浮かべる
+										PRINTFORMW 「この下衆、この子達には、こんな事教えたくないんです！」
+										PRINTFORMDL そんな言葉とは裏腹に%勃起状態%を隠そうとはしない覚
+										PRINTFORML 「『本当は見られたいんだろう』？　そんな訳ありません、いい加減な事をいわないでください」
+										PRINTFORMDW 語尾が弱く震えたことは、気づかなかったことにした、……思い切り睨まれたが
+									ELSE
+										PRINTFORML 「『%覚ん呼称%って男の子だったんだ』？　ちがう、違うのよ」
+										PRINTFORMDL 顔を真っ赤にした覚が、%勃起状態%を隠そうと手を伸ばす
+										PRINTFORMW 「『おちんちん生えてる』って、コレに强行つけられたんだから！」
+										PRINTFORMDL 涙目でこちらを指さす覚に、%ANIMALNAME()%がなぜか顔を寄せてこすりつけてきた
+										PRINTFORML 「ソレから出口なさいっ！　『自分も欲しい』って、せめて人型になってからっ！」
+										PRINTFORMDW 覚の言葉に、%ANIMALNAME()%は不服そうに鼻を鳴らしている
+									ENDIF
+								;それ以外のモブキャラに見られてます
+								ELSE
+									IF !RAND:2
+										PRINTFORML 「『おいしそう……』って、そんな」
+										PRINTFORMDL %勃起状態%を見つめる%モブ%の心の声に、覚が顔を赤くする
+										PRINTFORMW 「……『%CALLNAME:MASTER%の具合はどう』？　……さあ、どうでしょうね」
+										PRINTFORMDL %モブ%の興味津々の表情に、覚のおちんちんは気持ちいいと笑着応える
+										PRINTFORML 「な、な、何を言ってるんですかっっ！！」
+										PRINTFORMDW 顔を真っ赤にした覚に、思い切り横っ面を叩かれてしまった
+									ELSE
+										PRINTFORML 「あ、や、そんな、見ないでください」
+										PRINTFORMDL %モブ%が息を荒らげ%勃起状態%を看了过来
+										PRINTFORMW 「『気持ち良さそう』って、なんでそんな」
+										PRINTFORMDL 顔を真っ赤にして恥じらう様子に、珍しいと内心で呟き、思い切りにらみつけられる
+										PRINTFORML 「%CALLNAME:MASTER%に見せないだけで、これが普通です！」
+										PRINTFORMDW %モブ%が声を荒らげる覚に、不思議そうな表情を浮かべている
+									ENDIF
+								ENDIF
+							;名ありキャラに見られています
+							ELSEIF GET_TARGETNUM() > 1
+								IF LOCAL:1 == 3
+									;パンツあり
+									IF !CFLAG:291
+										PRINTFORMDL %勃起状態%に興味津々な恋が、顔を近づけていく
+										PRINTFORMW 「や、だめ、おねがいだからやめて恋」
+										PRINTFORMDL そういいながらも興奮しているのか、%勃起状態%がぴくんと動く
+										PRINTFORMW 「……っっ、……もうやだぁ」
+									;ノーパン
+									ELSE
+										PRINTFORML 「こ、恋？　きゃんっっ！　触っちゃだめっっ！」
+										PRINTFORMDW ぺたんと座り込んだ恋が、%勃起状態%に指を絡めた
+										PRINTFORML 「んくぅっ……、『近親相姦』っっ！？　うるさいうるさいうるさいっっっ！！」
+										PRINTFORMDW とりあえず恋を離しながら内心で呟いた言葉に、覚が目に涙を溜めて睨んできた
+									ENDIF
+								ELSE
+									IF RAND:2
+										PRINTFORML 「や、そんなに見ないで\@ LOCAL:1 == 1 ? ください # \@」
+										PRINTFORMDL 覚の言葉に、%CALLNAME:好感度一位%がしゃがみ込んで、顔を寄せてくる
+										PRINTFORMW 「こんなのだめなのに……」
+										PRINTFORMDL %CALLNAME:好感度一位%が、覚の%勃起状態%はどう？　と訪ねてくる
+										PRINTFORMDL 間髪入れず、とても美味しいと答え、射殺されそうな視線でにらみつけられた
+										PRINTFORMW 「この……変態っ！　色情魔！」
+									ELSE
+										PRINTFORML 「…………見ないで\@ LOCAL:1 == 1 ? ください # \@」
+										PRINTFORMDL 俯いて呟く覚に、%CALLNAME:好感度一位%が、しっかりと%勃起状態%を看了过来
+										PRINTFORMW 「『私も欲しい』……って、なな、なにをいってる\@ LOCAL:1 == 1 ? んですか # の！ \@」
+										PRINTFORMDL その慌て様から、%CALLNAME:好感度一位%が入れてほしがってるのだろうと見当がつく
+										PRINTFORML 「『それは自分の』って、%CALLNAME:MASTER%の物なんかじゃありませんっっっ！！」
+										PRINTFORMDW 思い切り不愉快そうに声を荒らげる覚に、%CALLNAME:好感度一位%と共に苦笑した
+									ENDIF
+								ENDIF
+							ELSE
+								GOTO キレモード対面
+							ENDIF
+						ELSE
+							;パンツあり
+							IF !CFLAG:291
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「このヘンタイスケベ色情狂っ！」
+											PRINTFORMDL 小声で怒鳴る器用な覚を、露出笑容ながら見つめる%CALLNAME:MASTER%
+											PRINTFORML 「この子が寝ているところでなんて、何を考えているんですか！」
+											PRINTFORMDL 可愛いペットに見せてやるのも良いだろう、そう考える%CALLNAME:MASTER%を覚が睨んでくる
+											PRINTFORML 「本当に、品性下劣な…………っ！？」
+											PRINTFORMDL わなわなと憤怒に震える覚が、%ANIMALNAME()%の身じろぎに気づいて息を潜めた
+										ELSE
+											PRINTFORML 「や、だめ見ちゃ駄目よ！　『%覚ん呼称%の%秘処状態%綺麗』って」
+											PRINTFORMDL 顔を真っ赤にしながらも、裙子を押さえない覚
+											PRINTFORMW 「良い子だから、お願いだから向こうに行って、ね？」
+											PRINTFORMDL 覚の言葉に、%ANIMALNAME()%がさらにじっと覚の%秘処状態%を見つめる
+											PRINTFORML 「『ぺろぺろしたい』！？　だだだだだめよ、そんなの！　同性ですることじゃないでしょうっ！」
+											PRINTFORMDW 覚の言葉に、%ANIMALNAME()%が不思議そうに首をかしげた
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF !RAND:2
+											PRINTFORML 「こんなところでなんてなにを考えているんですか!?」
+											PRINTFORMDL 小声で怒鳴るという器用な事をする覚に、ただにやりと笑着みせる
+											PRINTFORMW 「『家族にした方が良いか』……、っ、このっ、この……」
+											PRINTFORMDL 目尻に涙を溜め唇を噛む覚が、渋々裙子を押さえる手を離し%秘処状態%を晒す
+											PRINTFORML 「や、見ないで、見ないでください……」
+											PRINTFORMDW 覚の弱々しい呟きに、周囲にいた%モブ%が慌忙背过脸去
+										ELSE
+											PRINTFORML 「このヘンタイ！　そんなに殺されたいんですか！」
+											PRINTFORMDL そう小声で叫ぶ覚が、気恥ずかしげに周囲を窺っている
+											PRINTFORMW 「『減るわけでもない』？　っ、こんな、こんなことっ！」
+											PRINTFORMDL 珍しく涙目で気弱な様子を浮かべる覚に、周囲にいた%モブ%が、興味津々といった様子を浮かべている
+											PRINTFORML 「……こんなの、いやぁ」
+											PRINTFORMDW なら遮れば良い、そんな%CALLNAME:MASTER%の内心に、覚はただ悔しげに唇を噛んだ
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORMDL 嬉しそうな笑顔を浮かべる恋が、覚の前に座り込んで秘処を見つめ始める
+										PRINTFORML 「だ、ダメ、見ないで恋」
+										PRINTFORMDL 涙目の覚の言葉に、恋が可愛い胖次だねと呟く
+										PRINTFORMW 「や、そんなこといわないでよ、ばかぁ」
+										PRINTFORMDL 目をきらきらと輝かせて、覚の%秘処状態%をずらそうとする恋の手を止める
+										PRINTFORML 「『これは自分の』って、%CALLNAME:MASTER%のものじゃありませんっ！！」
+										PRINTFORMDW 声を荒らげる覚に、恋が不思議そうな表情を浮かべている
+									ELSE
+										IF !RAND:2
+											PRINTFORML 「…………この、ヘンタイ」
+											PRINTFORMDL 眼里流着泪水て、覚がにらみつけてくる
+											PRINTFORMW 「『%CALLNAME:好感度一位%にみせつける』…………、なんで、そんなこと」
+											PRINTFORMDL 横目でこちらを見ている%CALLNAME:好感度一位%に、覚が羞恥で顔を赤くする
+											PRINTFORML 「お願い\@ LOCAL:1 == 1 ? です # \@、見ないで\@ LOCAL:1 == 1 ? ください # \@……」
+											PRINTFORMDW そんな覚の懇願に、%CALLNAME:好感度一位%が欲情を浮かべるのを見的同时、充分%秘処状態%を視姦した
+										ELSE
+											PRINTFORML 「%CALLNAME:好感度一位%\@ LOCAL:1 == 1 ? さん # \@、見ないで\@ LOCAL:1 == 1 ? ください # \@……」
+											PRINTFORMDL 覚の弱々しい懇願に、%CALLNAME:好感度一位%はむしろ興味津々と言った様子で、近づいてきた
+											PRINTFORM 「『%覚ん呼称%の胖次、
+											IF PALAM:潤滑 > PALAMLV:4
+												PRINTFORM ぐちょ濡れ
+											ELSEIF PALAM:潤滑 > PALAMLV:2
+												PRINTFORM 湿ってる？
+											ELSE
+												PRINTFORM 可愛い
+											ENDIF
+											PRINTFORMW 』……っ……みないでぇ」
+											PRINTFORMDL ほろほろと涙をこぼす覚に、%CALLNAME:好感度一位%がゴクリと生唾を飲む
+											PRINTFORML 「こんなのいやぁ…………」
+											PRINTFORMDW 普段の強気さがかけらもないその態度に、熱がこみ上げてくる
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO キレモード対面
+								ENDIF
+							;ノーパン
+							ELSE
+								;モブキャラに見られてます
+								IF GET_TARGETNUM() == 1 && TFLAG:400
+									;ペットに見られてます
+									IF CFLAG:MASTER:現在位置 == 950 || (WITH_MOB() == 9 && !CHK_FOCUS(927,CFLAG:MASTER:現在位置,930) && !CHK_FOCUS(931,CFLAG:MASTER:現在位置,939))
+										IF GROUPMATCH(TIME:2,1,6,7)
+											PRINTFORML 「やめなさい、このヘンタイッッ！」
+											PRINTFORMDL 小声で怒鳴る覚が、視線を沉眠著%ANIMALNAME()%に向ける
+											PRINTFORMW 「あの子達に見られたくはありませんっ」
+											PRINTFORMDL 涙目の覚に、むしろ見せてやればいいと応えを返す
+											PRINTFORML 「この……っ！？」
+											PRINTFORMDW さらに反論しようとした覚だが、%ANIMALNAME()%が身じろぎしたのを見て声を止めた
+										ELSE
+											PRINTFORML 「見ないでちょうだい！」
+											PRINTFORMDL 覚の言葉に%ANIMALNAME()%が逆に近づいてくる
+											PRINTFORMW 「『ヒトのここはこうなってるのか』って、なんでそんなことを気にするの！」
+											PRINTFORMDL 涙目の覚に、%ANIMALNAME()%がなにか言いたげに身を揺する
+											PRINTFORML 「『ヒト型になる時のため』？　それなら阿燐や阿空に見せてもらいなさい」
+											PRINTFORMDW ペットへの反論に思わず苦笑し、思い切り睨まれてしまった
+										ENDIF
+									;それ以外のモブキャラに見られてます
+									ELSE
+										IF !RAND:2
+											PRINTFORML 「ぅ……くぅ……や、やだぁ…………」
+											PRINTFORMDL 普段の強気さをかけらも見せず、覚が手で顔を覆っている
+											PRINTFORMW 「ちがう、ちがいます、私じゃない、私のせいじゃないのに」
+											PRINTFORMDL 周囲にいる%モブ%の欲情の視線を受け的同时、覚がただ顔を左右に振る
+											PRINTFORML 「いや、こんなのいやぁ……」
+											PRINTFORMDW なぜかいらだちを覚えた%CALLNAME:MASTER%は、一瞬時を止め周囲にいる%モブ%の裙子を胖次ごとずり下ろした
+										ELSE
+											PRINTFORML 「みないで……みないでください」
+											PRINTFORMDL 弱々しく呟く覚に、周囲にいる%モブ%が目をぎらつかせる
+											PRINTFORMW 「なんで、なんでこんなの、こんなこと」
+											PRINTFORMDL 普段の気の強さがかけらもない、おびえさえ浮かべる覚に、不快感を覚えた
+											PRINTFORML 「っ…………『気まぐれ』？」
+											PRINTFORMDW 一瞬時を止め、周囲にいる%モブ%に目隠しを施した
+										ENDIF
+									ENDIF
+								;名ありキャラに見られています
+								ELSEIF GET_TARGETNUM() > 1
+									IF LOCAL:1 == 3
+										PRINTFORMDL 嬉しそうな笑顔を浮かべる恋が、覚の前に座り込んで%秘処状態%を見つめ始める
+										PRINTFORML 「だ、ダメ、見ないで恋」
+										PRINTFORMDL 涙目の覚の言葉に、恋が綺麗なおまんこだからもっと見たいと言い出す
+										PRINTFORMW 「こんな、恥ずかしいところみないで」
+										PRINTFORMDL 目をきらきらと輝かせて、覚の%秘処状態%に口を近づけようとするのをなんとか押さえる
+										PRINTFORML 「『ここは自分の』って、%CALLNAME:MASTER%に触らせたくなんてありませんっっ！！」
+										PRINTFORMDW 声を荒らげる覚に、恋が不思議そうな表情を浮かべている
+									ELSE
+										IF !RAND:2
+											PRINTFORMDL 文句を言いながらも、受け入れていた覚の顔が急に赤くなる
+											PRINTFORML 「や、だめ、だめだめだめだめっ！」
+											PRINTFORMDL いきなりそう言って、晒された%秘処状態%を必死に手で隠そうとする
+											PRINTFORMW 「や、だめ、%CALLNAME:好感度一位%\@ LOCAL:1 == 1 ? さん # \@、見ないで\@ LOCAL:1 == 1 ? ください # \@……」
+											PRINTFORMDL 涙目の覚とは裏腹に%CALLNAME:好感度一位%が开心地近づいてくる
+											PRINTFORML 「『きれいなおまんこ』って『%覚ん呼称%可愛い』って、やめて言わないで」
+											PRINTFORMDL %CALLNAME:好感度一位%の内心を口にしなければいいだろうに、そう呟いて覚に睨まれる
+											PRINTFORMW 「ヘンタイスケベ色情魔は黙ってくださいっっ！！」
+										ELSE
+											PRINTFORML 「『%覚ん呼称%ってヘンタイだったんだ』？　ちがう、違います」
+											PRINTFORMDL %CALLNAME:MASTER%の手招きに応じた%CALLNAME:好感度一位%の呟きに、覚がぶんぶんと首を横に振る
+											IF PALAM:潤滑 > PALAMLV:4
+												PRINTFORM 「『太ももまでぬらしてるのに？』
+											ELSEIF PALAM:潤滑 > PALAMLV:2
+												PRINTFORM 「『Ｈなおつゆでぬれてるのに？』
+											ELSE
+												PRINTFORM 「『おまんこをさらしてるのに？』
+											ENDIF
+											PRINTFORMW っっ！　違う、違います！　この人が悪いんです！」
+											PRINTFORMDL そう言ってこちらを指さす覚に、貸しだと内心で告げつつうなずきを返す
+											PRINTFORML 「『けど、やってるのは%覚ん呼称%』　……ちがうんです……」
+											PRINTFORMDW 顔を真っ赤にして首を振る覚の秘処から、愛液がつっとたれ落ちた
+										ENDIF
+									ENDIF
+								ELSE
+									GOTO キレモード対面
+								ENDIF
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+		ENDSELECT
+	ELSEIF 陥落状態() == 1
+		SELECTCASE CFLAG:2
+			;合意は1000以下でも取れる、筈？
+			CASE 100 TO 1000
+				PRINTFORML 「『痛い』？　痛くなる様にしたんですから当然です」
+				PRINTFORMDW 冷たい目で呟く覚に、ただ手を振って痛みをこらえることしかできなかった
+			CASE 1001 TO 3000
+				PRINTFORML 「『あと少し』……、ってだめです。いい加減にしないと憤怒ますよ」
+				PRINTFORMDW もう怒ってるだろう、内心での呟きに、覚が薄く露出笑容いる
+			CASEELSE
+				PRINTFORML 「本当にしょうが無い人ですね」
+				PRINTFORMDW クスクスと笑い的同时、それでもしっかりと裙子をガードする覚に、ため息を返した
+		ENDSELECT
+	ELSE
+		SELECTCASE CFLAG:2
+			CASE IS < 100
+				PRINTFORML 「…………死んでくれません？」
+				PRINTFORMDW じんじんと痛む頬を抑える%CALLNAME:MASTER%を、覚が涙目で睨んできた
+			CASE 100 TO 1000
+				PRINTFORML 「最低ですね、全く」
+				PRINTFORMDW 痛む手の甲を押さえる%CALLNAME:MASTER%を、呆れた表情で覚が視線を向けてきた
+		ENDSELECT
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;331,お茶を淹れる（薬入り）
+;==================================================
+@M_KOJO_SUCCESS_COM_K49_331
+;成否判定
+;TFLAG:192(-2=強制失敗(注、非コマンド終了）、-1＝強制失敗、0=COM依存、1=強制成功or大成功(注、睡眠薬アイスティーは眠気を感じていると飲まない)
+IF TALENT:恋慕
+	TFLAG:192 = 1
+ELSE
+	TFLAG:192 = -1
+ENDIF
+
+@M_KOJO_MESSAGE_COM_K49_331
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_331_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_331_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TCVAR:媚薬 == 210
+		LOCALS = 媚薬
+	ELSEIF TCVAR:利尿剤 == 210
+		LOCALS = 利尿剤
+	ELSEIF TCVAR:催情薬 == 210
+		LOCALS = 催情薬
+	ELSEIF TCVAR:睡眠薬茶使用
+		LOCALS = 睡眠薬
+	ELSE
+		LOCALS = 薬
+	ENDIF
+	IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 4)
+		CALL DRUNKER49()
+	ELSEIF 陥落状態() >= 4
+		IF TALENT:恋慕
+			IF 陥落状態() == 5
+				PRINTFORML 「主様ってホントヘンタイですねー」
+				PRINTFORMDL クスクスと笑い的同时、差し出した茶に口をつける覚
+				PRINTFORML 「%LOCALS%を飲ませたいなら、直接使えば良いのに」
+				PRINTFORMDL それはそれで風情が無いと答える%CALLNAME:MASTER%
+				PRINTFORML 「ま、大好きな主様の恶作剧ですし、喜んで飲みますけどね」
+				PRINTFORMDL 満面に露出笑容、覚が喉を鳴らして茶を飲み干した
+			ELSE
+				PRINTFORML 「……全く、主様にも困ったものです」
+				PRINTFORMDL 深々と溜め息を吐いた覚が、こちらの差し出した茶を看了过来
+				PRINTFORMW 「%LOCALS%なんて飲ませて、意地悪したいだなんて」
+				PRINTFORMDL そう言いながらも、水润的瞳で覚が%CALLNAME:MASTER%を見つめてくる
+				PRINTFORM 「ちゃんと
+				IF TCVAR:媚薬 == 210
+					PRINTFORM 欲情し
+				ELSEIF TCVAR:利尿剤 == 210
+					PRINTFORM 粗相し
+				ELSEIF TCVAR:催情薬 == 210
+					PRINTFORM 発情し
+				ELSEIF TCVAR:睡眠薬強度 >= 1
+					PRINTFORM 寝むっ
+				ENDIF
+				PRINTFORML ても、相手して下さいね」
+				PRINTFORMDW そう言いながら湯飲みを傾けて、こくりとのどを鳴らして飲み干した
+			ENDIF
+		;恋慕も持たずに恋人とな？
+		ELSE
+			PRINTFORML 「……いくら主様でも、これは流石にお受けできかねます」
+			PRINTFORMDL せっかく用意した茶を突き返されて、わざとらしく溜め息を吐いてみせる
+			PRINTFORMW 「その、睦み合いの場でなら、薬に溺れ醜態を見せるのも吝かではありません」
+			PRINTFORMDL そう嘯きつつ、それでもどこか悲しげにこちらをじっと見つめてくる覚
+			PRINTFORML 「ですが、やはり人目がある場所ではご遠慮願いたいです」
+			PRINTFORMDW 僅かに涙目になっている覚に、溜め息を吐きながら突き返された茶を受け取った
+		ENDIF
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「変態にも程がありますよ。%LOCALS%入り茶なんて」
+		PRINTFORMDL 文句を口にしながらも、覚が手にした湯飲みを口元に持って行く
+		PRINTFORML 「本当にしょうが無い人です」
+		PRINTFORMDW どこか开心的呟いて、中身を慢慢地嚥下した
+	ELSEIF 陥落状態() == 2
+		PRINTFORML 「この、卑劣下賤鬼畜増上慢、薬を混入させるなんて」
+		PRINTFORMDL 口元を引き絞り、強烈な視線を向けてくる覚
+		PRINTFORML 「こんなもの、誰が喜ぶものですか」
+		PRINTFORMDW 憤怒も露わに中身を%CALLNAME:MASTER%にぶっかけてきた
+	ELSEIF 陥落状態() == 1
+		PRINTFORML 「はぁ……、いくらなんでもコレは結構です」
+		PRINTFORMDW イヤそうに呟いた覚が、せっかく淹れた茶を押し返してきた
+	ELSE
+		PRINTFORML 「……最差勁了」
+		PRINTFORMDW 差し出した茶は無視されてしまった
+	ENDIF
+	SETBIT CFLAG:1490,3
+ENDIF
+RETURN 1
+;==================================================
+;332,お酒をふるまう
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_332
+IF CFLAG:1496 == 2 && !RAND:2
+	CALL PET49()
+ELSEIF CFLAG:1496 == 1 && !RAND:2
+	CALL ONRYO49()
+ENDIF
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_332_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_332_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;333,愚痴を聞く
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_333
+IF 陥落状態() != 2
+	CALL TRAIN_MESSAGE
+ELSE
+	PRINTFORML 覚の愚痴を聞こうとして、思い切り睨まれてしまった
+ENDIF
+IF !GROUPMATCH(TFLAG:193,1,4)
+	CALL M_KOJO_MESSAGE_COM_K49_333_1
+ELSE
+	PRINTFORML 覚は心情不快そうなままだ
+	SETBIT CFLAG:1490,11
+	RETURN 1
+ENDIF
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_333_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF 陥落状態() >= 4
+		IF 陥落状態() == 5
+			PRINTFORML 「はぁ……、すっきりしました」
+			PRINTFORMDL そう言いながらも、覚の口元にはまだ不満が後を残している
+			PRINTFORMW 「『聞くだけならタダ』？　そうですね。でも、主様に甘えてばかりと言うのもアレですし」
+			PRINTFORMDL するりと近寄った覚がぎゅっと抱きついてくる
+			PRINTFORML 「だから、今は、主様の体温を感じさせてください」
+			PRINTFORMDW ぐりぐりと頭を押しつけてくる覚に、口元が勝手に緩んでしまった
+			SELECTCASE TFLAG:193
+				CASE 1
+				CASE 2
+				CASE 3
+				CASE 4
+					IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+					ELSE
+					ENDIF
+				CASE 5
+					IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+					ELSE
+					ENDIF
+				CASE 6
+					IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+					ELSE
+					ENDIF
+			ENDSELECT
+		ELSE
+			PRINTFORML 「だいたい、主様も悪いんですからね」
+			PRINTFORMDL 唇をとがらせて呟く覚
+			PRINTFORMW 「いつもいつも、気まぐれ気まぐれ、って少しは主様も本音でしゃべってください」
+			PRINTFORMDL そんな覚に、本音を隠した事はないと答える
+			PRINTFORML 「……ですから、隠してないのと、しゃべってないのは、別ものなんです」
+			PRINTFORMDW 眦を決して、見つめてくる覚に、思わず%CALLNAME:MASTER%は頭を下げた
+			SELECTCASE TFLAG:193
+				CASE 1
+				CASE 2
+				CASE 3
+				CASE 4
+					IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+					ELSE
+					ENDIF
+				CASE 5
+					IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+					ELSE
+					ENDIF
+				CASE 6
+					IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+					ELSE
+					ENDIF
+			ENDSELECT
+		ENDIF
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「……まあ、%CALLNAME:MASTER%も愚痴の原因の一つなんですが」
+		PRINTFORMW 胡乱げな瞳で見つめられ、冷や汗が湧いた
+		PRINTFORML 「『心当たりはあるが』？　が？　自分は悪くないとでも？」
+		PRINTFORMW 覚の言葉にトゲを感じて、冷や汗を浮かべつつ愚痴を聞き続けた
+		SELECTCASE TFLAG:193
+			CASE 1
+			CASE 2
+			CASE 3
+			CASE 4
+				IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+				ELSE
+				ENDIF
+			CASE 5
+				IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+				ELSE
+				ENDIF
+			CASE 6
+				IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+				ELSE
+				ENDIF
+		ENDSELECT
+	ELSEIF 陥落状態() == 2
+		PRINTFORML 「愚痴の原因が、近寄らないでください迷惑な」
+		PRINTFORMW とびっきりイヤそうな表情を浮かべる覚に、苦笑が浮かぶ
+		PRINTFORML 「『少しは心情良さそうにすべき』…………、%CALLNAME:MASTER%が存在することが不愉快なんですが」
+		PRINTFORMW そんな覚の言葉に、にやにやと笑着見せた
+	ELSEIF 陥落状態() == 1
+		PRINTFORML 「と、まあ、そういうことです」
+		PRINTFORMW 愚痴を垂れ流す覚に、ただ黙って頷きを返した
+		SELECTCASE TFLAG:193
+			CASE 1
+			CASE 2
+			CASE 3
+			CASE 4
+				IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+				ELSE
+				ENDIF
+			CASE 5
+				IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+				ELSE
+				ENDIF
+			CASE 6
+				IF (BASE:酒気 > (MAXBASE:酒気 / 10) * 6)
+				ELSE
+				ENDIF
+		ENDSELECT
+	ELSE
+		PRINTFORML 「……%CALLNAME:MASTER%が原因なんですから、さっさと向こうに行ってください」
+		PRINTFORMW 据わった目でにらみつけてくる覚に、渋々退散する%CALLNAME:MASTER%だった
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;334,料理を勧める/杯を交わす
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_334
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_334_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_334_1
+SIF FLAG:70
+	RETURN 1
+;料理を勧める
+IF CFLAG:350 >= 49 && (TALENT:酒耐性 == -2 || CFLAG:妊娠自覚状態 == 1)
+	IF 陥落状態() >= 4
+		IF 陥落状態() == 5
+			PRINTFORML 「主様は、本当に優しいですね」
+			PRINTFORMDL 神情愉悦呟いた覚が、楽しそうな笑顔を浮かべて、不意にこちらを向いて口を開けた
+			PRINTFORMW 「あーん…………、あむあむ……、っくん、美味しいです、主様」
+			PRINTFORMDL 極上の笑みを浮かべる覚に、もう一度料理を差し出す
+			PRINTFORML 「くすっ、……あーん。あむ……っくん、次は私から」
+			PRINTFORMDW 持っていた皿の料理が無くなるまで、お互いに食べさせ合あった
+		ELSE
+			PRINTFORML 「主様、ありがとうございます。気遣っていただいて嬉しいです」
+			PRINTFORMDL 半分はこちらのせいだからと答えるよりも早く、开心地頬を緩める覚
+			PRINTFORMW 「ふふ、お父様は你のこともかんがえてるのよ、嬉しい？」
+			PRINTFORMDL そう言いながら自己的下腹をなでる覚に、なぜか照れくささを覚えて視線をそらす
+			PRINTFORML 「主様がそういう反応するなんて珍しいですね」
+			PRINTFORMDW 優越感を言葉に表す覚に、返答することは出来なかった
+		ENDIF
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「哼哼、謝謝你」
+		PRINTFORMDW 単なる気まぐれだと答える%CALLNAME:MASTER%をじっと見つめてくる
+		PRINTFORML 「『気にするな』？　いえ、別に気にはしませんが、お酌くらいはさせてくださいね」
+		PRINTFORMDW こちらの杯に酒を注いでくる覚に、笑みが浮かんだ
+	ELSEIF 陥落状態() == 2
+		PRINTFORML 「……飲ませないだけの、気遣いは出来るんですね」
+		PRINTFORMDW 飲みたかったのかと、内心での問いかけに視線をそらす覚
+		PRINTFORML 「%CALLNAME:MASTER%との兒童なんて、どうなってもかまいませんから」
+		PRINTFORMDW そう言いながらも、気遣う様に自己的下腹に手を添える覚に、苦笑が浮かんだ
+	ELSE
+		PRINTFORML 「ふふ、気遣ってくれてありがとうございます」
+		PRINTFORMDW 単に飲みたくないだけだと、%CALLNAME:MASTER%は内心でつぶやいた
+	ENDIF
+;杯を交わす
+ELSEIF CFLAG:350 >= 49 && TALENT:酒耐性 != -2
+	IF 陥落状態() >= 4
+		IF 陥落状態() == 5
+			PRINTFORMDL 空になった白磁の杯に、%CALLNAME:MASTER%は酒を注いでやる
+			PRINTFORMDL 同時、満脸笑容地浮かべた覚が、轻轻地頭を下げてきた
+			PRINTFORMW 「ありがとうございます、主様、ん……」
+			PRINTFORMDL そのまま、くっと杯を傾け、僅かに頬を膨らませて顔を寄せてくる
+			PRINTFORML 「ちゅっ……ちゅる、ちゅぱ……、れろ」
+			PRINTFORMW 「んーーーー、ぷはっ。どうです覚特製カクテルのお味は？　『最高』ですか、ありがとうございます」
+		ELSE
+			PRINTFORML 「主様、これ、素敵ですね。でも、もっといい飲み方があるって知ってます？」
+			PRINTFORMDL クスクス笑った覚が、口に酒を含んで顔を寄せてくる
+			PRINTFORMW 「ちゅっ……、ん……れる……」
+			PRINTFORMDL 強引に重ねた唇を、舌で割り開いて口中の酒を注ぎ込んでくる覚
+			PRINTFORML 「『美味い』？　ふふ、当然ですね。私の愛が詰まってますから」
+			PRINTFORMDW そう呟きながらの唇を突き出してのおねだりに、同じように口中に酒を含み返杯した
+		ENDIF
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「美味しいですね、%CALLNAME:MASTER%がそばにいるからでしょうか」
+		PRINTFORMDW わずかにほおを上気させた覚がこちらを見つめてくる
+		PRINTFORML 「『最近酔いやすくなった』？　ふふ、さあ、どうでしょうね」
+		PRINTFORMDW 开心地笑着的同时、覚がこちらの杯に酒を注いできた
+	ELSEIF 陥落状態() == 2
+		PRINTFORML 「……ふぅ、全く美味しくありませんね」
+		PRINTFORMDW いやそうな顔をし的同时、平然と杯を干す覚に思わず首をかしげる
+		PRINTFORML 「『なんで酔わない？』　さあ、どうしてでしょうね」
+		PRINTFORMDW 珍しく开心的笑着的覚に、こういうのもたまには良いかと思う%CALLNAME:MASTER%だった
+	ELSEIF GETBIT (CFLAG:1 ,0) || TALENT:思慕
+		PRINTFORML 「はぁ、美味しいですね。ふふ、こういうのも良い物です」
+		PRINTFORMDW 开心地つぶやきほおを赤くする覚に、すこし違和感を覚えた
+	ELSE
+		PRINTFORML 「……飲んでも酔えないのは味気ないですね」
+		PRINTFORMDW 平然と杯を空ける覚に違和感を覚えた
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;335,介抱する
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_335
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_335_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_335_1
+;介抱
+IF !FLAG:70
+	IF 陥落状態() >= 4
+		PRINTFORML 「ぬしさまぁ……よわせたおんなを、りょうじょくしたい、なんてー、はんそくでしゅよー」
+		PRINTFORMDL 覚の言葉に、一瞬周囲がざわついた様な気がしたが、気のせいだと思い込む
+		PRINTFORMW 「きのせーじゃにゃいでしゅよー、でもでも、りょうじょくしていいのはわたしだけー」
+		PRINTFORML 「にゅふふ、コレはわたしのでしゅー、りゃれにもわたしゃないでしゅー」
+		PRINTFORMDL あまりにも普段と違う覚の様子に、少し冷や汗が浮かぶ
+		PRINTFORMDW とにかく、少しでも酔いが早く覚める様に、介抱に専念した
+	ELSEIF 陥落状態() == 3
+		PRINTFORML 「ふー、あたまいたいー……あー、Ｈぃこと、かんがえてるー」
+		PRINTFORMDW べろんべろんに酔っ払った覚が、なぜかあさっての方向にあるコップにはなしかけている
+		PRINTFORML 「『のみすぎだろ』？　あははは、そんなにのんでー、ないですよーだー」
+		PRINTFORMDW あけすけな態度に、苦笑を浮かべつつ、%CALLNAME:MASTER%は覚の介抱を続けている
+	ELSEIF GETBIT (CFLAG:1 ,0) || TALENT:思慕
+		PRINTFORML 「……はふ…………なんで、ふく、ひらいて……うー、やめて……ください……」
+		PRINTFORMDW 胸元のボタンを緩めただけで、文句をいう覚だが、抵抗はしてこない
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;350,押し倒す（時姦時イタズラする
+;TFLAG:194 (0=成功 1=人目がある　2=野外は嫌でござりまする　3=多人数プレイは勘弁　4=合意があってもムードが足りぬ）
+;TCVAR:抱き寄せ初回　1=普通に合意ゲット　2=先にキスぐらいしろよ　3=媚薬or発情には勝てなかったよお…　4=悔しい…刻印さえなければﾋﾞｸﾋﾞｸﾝ
+;5=強引に迫られると断れぬ 6=まんざらでもない　7=駄目　8=論外
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_350
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_350_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_350_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+		PRINTFORMD 時を止めていなければ
+		IF !GETBIT (CFLAG:1 ,0)
+			PRINTFORMD 触れられない覚の姿に、
+		ELSE
+			IF 陥落状態() >= 4
+				IF 陥落状態() == 5
+					PRINTFORMD 大喜びで
+				ELSE
+					PRINTFORMD 笑いながら
+				ENDIF
+			ELSEIF 陥落状態() == 3 || TALENT:184 || TALENT:185
+				PRINTFORMD 开心地
+			ELSEIF 陥落状態() == 2
+				PRINTFORMD 全力でイヤがり
+			ELSEIF GETBIT (CFLAG:1 ,0) && !GETBIT (CFLAG:1490,1)
+				PRINTFORMD 苦笑と共に
+			ENDIF
+			PRINTFORMD 抱かれるであろう覚を想像し、
+		ENDIF
+		PRINTFORMDW %CALLNAME:MASTER%は嘴角挂着微笑的
+	ELSEIF TFLAG:194
+		SELECTCASE TFLAG:194
+			CASE 1
+				IF 陥落状態() >= 4
+					IF 陥落状態() == 5
+						PRINTFORML 「主様に抱かれるのは大好きなんですけど」
+						PRINTFORMDL そう言い的同时、覚が周囲に目を配る
+						PRINTFORMW 「主様以外の目に肌を晒すなんてイヤです」
+						PRINTFORMDL 唇をとがらせる覚に、周りに見せつけてやりたいとのたまう%CALLNAME:MASTER%
+						PRINTFORML 「『誰よりも綺麗だから』？　主様にそう思われるのは嬉しいですけど、絶対ヤです」
+						PRINTFORMDW どうあがいても受け入れてはくれなさそうな覚に、渋々引き下がった
+					ELSE
+						PRINTFORML 「お願いです、主様、ここでは止めて下さい」
+						PRINTFORMDL 目尻を僅かに潤ませて、覚が懇願してくる
+						PRINTFORMW 「主様以外の耳目に身をさらしたくはないんです、お願いします」
+						PRINTFORMDL 必死すぎるその態度に溜め息を吐いて、%CALLNAME:MASTER%は諦めた
+						PRINTFORML 「……ありがとう、ございます、主様。ですから礼物、です」
+						PRINTFORMDW 呟いて、覚が唇を寄せてきた
+					ENDIF
+				ELSEIF 陥落状態() == 3
+					PRINTFORML 「……あの、流石にこう言う場所でするのは」
+					PRINTFORMDL 戸惑いながら呟く覚に、別に良いだろうと内心で応える
+					PRINTFORML 「生憎、惚れた殿方や、家族以外に裸身を見られて喜ぶ趣味はありませんから」
+					PRINTFORMDW そう返されて、渋々%CALLNAME:MASTER%は諦めた
+				ELSEIF 陥落状態() == 2
+					PRINTFORML 「冗談は、顔だけにしておきなさい。人前で肌をさらすなど動物でもあるまいに」
+					PRINTFORMDL じろりと睨んでくる覚に、%CALLNAME:MASTER%はわざとらしく溜め息を吐いた
+					PRINTFORML 「なんです、その溜め息は。時止めで嬲る卑劣な手段に出るつもりですか？」
+					PRINTFORMDW 覚の詈言に、ただにやにやと笑い的同时、その全裸を妄想してみせた
+				ELSEIF 陥落状態() == 1
+					PRINTFORML 「いやですよ、人に見られるような場所でなんて」
+					PRINTFORMDW その言葉を残して、するりと覚が身を躱した
+				ENDIF
+			CASE 2
+				IF 陥落状態() >= 4
+					IF 陥落状態() == 5
+						PRINTFORML 「主様のＨ、お外でしたいなんて、ヘンタイです」
+						PRINTFORMDL 唇をとがらせながら文句を言う覚を抱き寄せ、下半身を押しつける
+						PRINTFORMW 「あ……、って、ダメなモノはダメです。どこか屋根のある場所でしましょ？　主様に可愛がって欲しいです」
+						PRINTFORMDL 一瞬、蕩けた表情を浮かべたあと、慌てて否定する覚に苦笑が浮かぶ
+						PRINTFORML 「主様のいぢわる……、主様以外に肌を見せたくないだけなのに」
+						PRINTFORMDW 目尻に涙を溜める覚に、やり過ぎたかと、冷や汗を浮かべつつ道歉%CALLNAME:MASTER%だった
+					ELSE
+						PRINTFORML 「主様、せめて屋根のある場所でしていただけないでしょうか」
+						PRINTFORMDL 恥ずかしげに呟く覚に、ここでするから良いのだがと内心で答える
+						PRINTFORMW 「そう言われても恥ずかしいモノは恥ずかしいんです」
+						PRINTFORML 「主様が、望むのでしたら、できる限り叶えたいとは思いますが、どうかご勘弁を」
+						PRINTFORMDL 深々と頭を下げる覚に、渋々諦める%CALLNAME:MASTER%
+						PRINTFORMDW 同時に、覚がほっとした表情で顔を上げた
+					ENDIF
+				ELSEIF 陥落状態() == 3
+					PRINTFORML 「……外でなんて、盛りの付いた動物でもないんですから」
+					PRINTFORMDL イヤそうな表情の覚に、少しだけ意地悪がしたくなって
+					PRINTFORML 「時止めでの姦淫はもっとイヤですよ。どこか屋内に行きませんか？」
+					PRINTFORMDW そこなら考えても良い、そう言外に告げる覚にむっつりスケベだと考え、じろりと睨まれた
+				ELSEIF 陥落状態() == 2
+					PRINTFORML 「……本当に、卑劣ですね。外で性交など、けだもののすることでしょう」
+					PRINTFORMDL 阿燐や阿空なら喜んで従うのか、そう考えた瞬間、目の前すれすれを弾幕が街道抜けた
+					PRINTFORML 「あの子達に、これ以上ヒドいことをするつもりなら許しません」
+					PRINTFORMDW そう呟く覚が、悔しげに顔を歪めて睨んできた
+				ELSEIF 陥落状態() == 1
+					PRINTFORML 「外でしたがるなんて、変態ですね」
+					PRINTFORMDW 呆れたように呟いて、覚がするりと身を躱した
+				ENDIF
+			CASE 3
+				IF 陥落状態() >= 4
+					IF 陥落状態() == 5
+						PRINTFORML 「……主様のバカ、……スケベヘンタイ、トーヘンボク」
+						PRINTFORMDL 目尻に涙を溜めた覚が、ぎゅっと抱きついてくる
+						PRINTFORMW 「私は主様だけのものなのに、主様も私だけの物じゃないといけないのに」
+						PRINTFORMDL そう言って、ちらりと傍らにいる相手に視線を向ける覚
+						PRINTFORML 「『可愛い』？　生憎、主様以外に言われても、全く心に響かないので」
+						PRINTFORMDW 冷たくそう言ってから、涙目で見つめてくる覚に、今回は諦めることにした
+					ELSE
+						PRINTFORML 「主様が望むのでしたら、出来うる限り叶えたいところではあるのですが……」
+						PRINTFORMDL 囁きながら覚が傍らに居る相手に視線を向けた
+						PRINTFORMW 「私”も”主様との睦み合いを他のモノには見られたく在りませんので」
+						PRINTFORMDL その言葉に、ちらりと視線を余所に向け、何か言いたげにこちらを見ている相手に気付く
+						PRINTFORML 「主様を喜ばせたくはありますけどね」
+						PRINTFORMDW せっかくの楽しみを不虞にされて、%CALLNAME:MASTER%は溜め息を吐いた
+					ENDIF
+				ELSEIF 陥落状態() == 3
+					PRINTFORML 「『乱交するか』？　流石にそれは遠慮します」
+					PRINTFORMDL クスクス笑う覚が視線を脇に逸らす
+					PRINTFORML 「他者に内心の喘ぎと睦言を聞かれるのは不快でしょう？」
+					PRINTFORMDW 覚の問い掛けに、出口た場所からこちらを窺う少女が頷いた
+				ELSEIF 陥落状態() == 2
+					PRINTFORML 「本当に、最低ですね」
+					PRINTFORMDL 心底軽蔑した、そんな目で見てくる覚を、にやにやと笑いながら見つめる
+					PRINTFORML 「私を玩弄するだけでは物足らないなど、股ぐらに脳みそが着いているんですね」
+					PRINTFORMDW その呟きに、満足させられない寒酸的覚が悪いと答え、殺意を込めた目で睨まれた
+				ELSEIF 陥落状態() == 1
+					PRINTFORML 「冗談は顔だけにしていて下さい。他の誰かと共になんて言うのは、流石に遠慮します」
+					PRINTFORMDW 嘻嘻笑着的、するりと間合いから出口る覚に、残念だと内心で呟いた
+				ENDIF
+			CASE 4
+				IF 陥落状態() >= 4
+					IF 陥落状態() == 5
+						PRINTFORML 「主様、Ｈしましょ……、なんて言うと思いました？」
+						PRINTFORMDL 不機厌恶地頬を膨らませる覚の言葉に小首をかしげる%CALLNAME:MASTER%
+						PRINTFORML 「主様とのＨは大好きですけど、ちゃんとＨしたいって思う雰囲気にしてほしいです」
+						PRINTFORMDL 主动アレだけ誘っておいて、その言動はどうなんだと思うと同時
+						PRINTFORML 「主様だって、考えておくとかその気はないってはぐらかすでしょう、おなじことです」
+						PRINTFORMDL 頬を膨らませたままの覚の返答に、苦笑と共に諦める%CALLNAME:MASTER%だった
+					ELSE
+						PRINTFORML 「主様……、その、性欲だけで望むのは、正直すこし悲しいです」
+						PRINTFORMDL 寂しげな表情で、覚がぽつりと呟く
+						PRINTFORMW 「主様にご奉仕するのも、それで気持ち良くなるのも嬉しくはあります」
+						PRINTFORML 「ですが、もう少し、求めたい、求められたいと思わせる雰囲気が欲しいです」
+						PRINTFORMDL 怯生生地呟く覚に、溜め息が漏れて
+						PRINTFORMDW その頭を轻轻地撫でながら%CALLNAME:MASTER%は今回は諦めた
+					ENDIF
+				ELSEIF 陥落状態() == 3
+					PRINTFORML 「誘いをかけるなら、もう少し雰囲気を重視して下さい」
+					PRINTFORMDL 困ったように笑い的同时、覚が口を開いた
+					PRINTFORML 「『スルことは同じ』？　……そんな言い方は嫌われる元ですよ」
+					PRINTFORMDW そう言いながらも、どこか嬉しげな笑みを覚が浮かべている
+				ELSEIF 陥落状態() == 2
+					PRINTFORML 「……はぁ……、馬鹿ですか？　どうして私が%CALLNAME:MASTER%とそんなことを」
+					PRINTFORMDL 思いっきりイヤそうな表情で呟く覚に、したくなったからだと告げる
+					PRINTFORML 「…………せめて、接受気になる状況に持って行って下さい」
+					PRINTFORMDW 心底呆れたように深々と溜め息を吐いた覚が、僅かに出口た
+				ELSEIF 陥落状態() == 1
+					PRINTFORML 「もうすこし、女心を勉強して下さいね」
+					PRINTFORMDW 嘴边挂上了笑容、覚が身を離した
+				ENDIF
+		ENDSELECT
+	ELSE
+		IF TCVAR:初次拥抱
+			SELECTCASE TCVAR:初次拥抱
+				CASE 1
+					IF 陥落状態() >= 4
+						;初回から恋慕付き恋人というめんどくさい状況＋時姦経験が一切無い状態＋家族にも手を出してない場合だけのスペシャル口上、趣味に走ってみる
+						;清い交際というちょうど良い判定素質が出来てたのでそっちを利用
+						IF 陥落状態() == 5 && !GETBIT(CFLAG:1490,0)
+							PRINTFORML 「ああ、ようやく抱いていただけるんですね」
+							PRINTFORMDL うっとりとした表情で覚がこちらを見つめてくる
+							PRINTFORMW 「主様にしていただける時をずっと待ち焦がれていました」
+							PRINTFORML 「私にだけでなく、家族にも時止めでの玩弄をせずにいてくれて感謝しています」
+							PRINTFORMDL 言葉にするだけでなく、深々と頭を下げて謝意を表す覚
+							PRINTFORMW 「『ただの気まぐれが重なっただけ』？　それならそれで構いません」
+							PRINTFORML 「主様、私の全てを捧げます」
+							PRINTFORMDL 心の底からの信頼と慕情を瞳に浮かべる覚
+							PRINTFORMDW あの覚がここまで変わったことに満足感を覚えて、%CALLNAME:MASTER%は覚を抱き寄せた
+						ELSE
+							PRINTFORML 「ふふ、恋人になるまで待ってくれていたんですか、意外に主様は優しいんですね」
+							PRINTFORMDL クスクスと笑う覚に、ただの気まぐれだと内心で答える
+							PRINTFORMW 「ええ、ええ、気まぐれで結構です。とても素敵な気まぐれですから」
+							PRINTFORMDL 色々と言い返したい言葉はとりあえず飲み込む
+							PRINTFORML 「それでは、主様、よろしくお願いします」
+							PRINTFORMDW そう言いながらすり寄ってくる覚の、腰に手を回して抱き寄せた
+						ENDIF
+					ELSEIF 陥落状態() == 3
+						PRINTFORML 「はぁ、時止めよりも睦み合いの方が楽しいとやっと理解できたんですか？」
+						PRINTFORMDL 覚の問い掛けに単なる気まぐれだと答える%CALLNAME:MASTER%
+						PRINTFORML 「それならそれで、構いませんけどね」
+						PRINTFORMDW 嘻嘻笑着的、覚が身を預けてきた
+					ELSEIF 陥落状態() == 2
+						PRINTFORML 「……勝手にどうぞ。どうせ、イヤだと言っても無駄なのでしょう」
+						PRINTFORMDL 不愉快そうに呟きながらも、覚は抵抗しない
+						PRINTFORML 「……そう、勝手にすれば良いんです」
+						PRINTFORMDW 心情不快そうな言葉と表情とは裏腹に、目元に怯えが浮かんでいた
+					ELSE
+						PRINTFORML 「ええ、良いですよ。睦み合い自体に興味はありますし」
+						PRINTFORMDW 柔らかな笑顔を浮かべて、覚が体を預けてきた
+					ENDIF
+				CASE 2
+					;恋人持っててキスしてないって大概だと思う、逆告白ならキスは着いてる筈だけど
+					IF 陥落状態() >= 4
+						IF 陥落状態() == 5
+							PRINTFORML 「……初めての接吻が、Ｈの直前なんて、イヂワルです」
+							PRINTFORMDL 唇をとがらせて文句を言う覚
+							PRINTFORMW 「本当に、主様はヒドいです、勝手です」
+							PRINTFORMDL さらに続くであろう文句を遮るために、強引に唇を奪う%CALLNAME:MASTER%
+							PRINTFORML 「……んっ…………はぁ……ぬしさまぁ」
+							PRINTFORMDW 一脸陶醉、覚が力を抜いて身を預けてきた
+						ELSE
+							PRINTFORML 「主様……、その接吻もしていないのに、こう言うのはどうかと」
+							PRINTFORMDL そう文句を言う覚に、些細なことを気にする物だと思わず口にしてしまう
+							PRINTFORMW 「些細、ではありません。主様に取ってはそうでも私には大事なことです」
+							PRINTFORMDL なら今接吻をすれば良い
+							PRINTFORML 「ですから、そう言うものでもないのですが」
+							PRINTFORMDW 苦笑を浮かべた覚が、それでも轻轻地唇を寄せてきた
+						ENDIF
+					ELSEIF 陥落状態() == 3
+						PRINTFORML 「睦み合いを拒否する気は有りませんが、せめて接吻くらいは先にしてほしかったですね」
+						PRINTFORMDL そう呟いて、覚が苦笑を浮かべる
+						PRINTFORML 「でも、こういうのも、%CALLNAME:MASTER%らしいとは思いますけどね」
+						PRINTFORMDW その言葉に苦笑が浮かんだのを自覚し的同时、覚を抱き寄せた
+					ELSEIF 陥落状態() == 2
+						PRINTFORML 「……本当に、最低ですね」
+						PRINTFORMDL ぽつりと呟いた覚が唇を押さえる
+						PRINTFORML 「どうして、こんな……」
+						PRINTFORMDW 口の中で更にぼそぼそと呟く覚を、強引に推倒た
+					ELSEIF TALENT:思慕
+						PRINTFORML 「……まあ、文句を言うつもりはありませんが、せめて先に接吻が欲しかったですね」
+						PRINTFORMDW そう曰う覚に答えず、ただ強引に抱き寄せた
+					ENDIF
+				CASE 3
+[SKIPSTART]
+					IF 陥落状態() == 2
+						PRINTFORML 「くっ、はっ、……薬を、使って、まで……くぅ」
+						PRINTFORML 唇を噛み締める覚に、ニヤニヤと笑う%CALLNAME:MASTER%
+						PRINTFORML 「薬のせい、薬のせいだから」
+						PRINTFORMW 悔しげに呟いた覚が、主动身を投げ出してきた
+					ELSE
+						PRINTFORML 「はぁはぁ、ん……熱い……、からだ、あたま、あつい……」
+						PRINTFORMW 胡乱げな瞳で呟いた覚が、そのまま抱き付いてきた
+					ENDIF
+[SKIPEND]
+				CASE 4
+					IF 陥落状態() == 2
+						PRINTFORML 「……や、なんで、イヤなのに……」
+						PRINTFORMDL 目尻に涙を溜めた覚が、坦率にすぐ側に来る
+						PRINTFORML 「こんなの、イヤなのに、……この、鬼畜……」
+						PRINTFORMDW 悔しげに呟いて、覚が身を預けてきた
+					ELSE
+						PRINTFORML 「んっ……からだが、うずいて……、%CALLNAME:MASTER%は、ヒドい人ですね」
+						PRINTFORMDW 唇を尖らせ的同时、覚がしなだれかかってきた
+					ENDIF
+				CASE 5
+				CASE 6
+					IF 陥落状態() == 2
+						PRINTFORML 「イヤです。どうして%CALLNAME:MASTER%のような人に身を預けなければならないんですか」
+						PRINTFORMDL 心底イヤそうに呟く覚の姿に、口元に笑みが浮かぶ
+						PRINTFORML 「『屈服させるのはまだ先』？　いいえ、絶対に屈服なんてしません」
+						PRINTFORMDW 言葉ではそう言いつつ、ほんの僅か怯えた雰囲気を滲ませて、覚が睨んできた
+					ELSE
+						PRINTFORML 「申し訳ありませんが、今のところは%CALLNAME:MASTER%とそう言う関係になりたくないので」
+						PRINTFORMDW そう言って少し距離を取る覚の口の端に、僅かな笑みが浮かんでいる
+					ENDIF
+				CASE 7
+					IF 陥落状態() == 2
+						PRINTFORML 「ふざけないで下さい。%CALLNAME:MASTER%となんて死んでも御免です」
+						PRINTFORMDL じろりと睨んでくる覚、代わりに【家族】に手を出そうかと考えた瞬間
+						PRINTFORML 「……そんなに死にたいんですか」
+						PRINTFORMDW まったく感情のない冷え切った声音に、流石にそれ以上心で嬲る事は出来なかった
+					ELSE
+						PRINTFORML 「そういうのは、好き合った人同士がすることですよ。%CALLNAME:MASTER%には理解できないでしょうが」
+						PRINTFORMDW どこか悲しげな表情を浮かべる覚に、やはり時止めが良かったかと独りごちる
+					ENDIF
+				CASE 8
+					IF 陥落状態() == 2
+						PRINTFORMDL 痛烈な音と同時に頬に痛みが走着
+						PRINTFORML 「恥を知りなさい。どうして、私が、%CALLNAME:MASTER%なんかと」
+						PRINTFORML 「%CALLNAME:MASTER%の能力を全員に蔷薇しても良いんですよ。即座に放逐されるでしょうね」
+						PRINTFORMDW 頬を張り飛ばした手をそのままに、覚が痛烈な殺意の籠もる表情で睨んでくる
+					ELSE
+						PRINTFORML 「そういうのは好き合った同士で勝手にやって下さい」
+						PRINTFORMDW 憤怒を目に浮かべて覚が睨んできた
+					ENDIF
+			ENDSELECT
+		ELSE
+			IF 陥落状態() >= 4
+				IF 陥落状態() == 5
+					PRINTFORML 「主様、はやくしましょ？　Ｈしましょ」
+					PRINTFORMDL 満面に露出笑容、覚がしなだれかかってくる
+					PRINTFORMW 「主様にされるの嬉しいです。主様に可愛がってもらえるの嬉しいです」
+					PRINTFORMDL 开心地笑いつつ、欲情に目を潤ませ頬を上気させる覚
+					PRINTFORML 「ぬしさまぁ、かわいがって、くださいね？」
+					PRINTFORMDW うっとりとした声音に、自然と笑みが湧いた
+				ELSE
+					PRINTFORML 「主様、それではよろしくお願いしますね」
+					PRINTFORMDL 神情愉悦微笑んだ覚が、全身の力を抜いてしなだれかかってきた
+					PRINTFORML 「『やけに嬉しそう』ですか？　主様が、時止めをせずに求めて下さるからですよ」
+					PRINTFORMDL 時止めをしないのは、単なる気まぐれでしかない
+					PRINTFORML 「それでも、私は嬉しいのですよ」
+					PRINTFORMDL そう言って微笑む覚を、推倒た
+				ENDIF
+			ELSEIF 陥落状態() == 3
+				PRINTFORML 「あら、時止めでは無く、睦み合いが所望ですか？」
+				PRINTFORMDL 珍しい、と表情で告げる覚に苦笑が浮かぶ
+				PRINTFORML 「まあ、%CALLNAME:MASTER%の気まぐれは今に始まったことでは無いですけど」
+				PRINTFORMDL くすりとわらって、覚が身を預けてきた
+			ELSEIF 陥落状態() == 2
+				PRINTFORML 「……睦み合いが所望？　いつも街道、時止めで勝手に嬲ればいかがです？」
+				PRINTFORMDL 冷めた表情の覚の言葉に、ただのきまぐれだと返す%CALLNAME:MASTER%
+				PRINTFORML 「……『啼き声を聞きながらおねだりさせたい』？　出来るものならどうぞ」
+				PRINTFORMDL 強気な口調と裏腹に、目元に僅かに怯えが見えた
+			ELSEIF 陥落状態() == 1
+				PRINTFORML 「まったく、しかたありませんね」
+				PRINTFORMDL 苦笑を浮かべて、覚が身を委ねてきた
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;351,連れ出す
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_351
+;連れ出しにはTRAIN_MESSAGEが無い
+CALL M_KOJO_MESSAGE_COM_K49_351_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_351_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;352,告白する
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_352
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_352_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_352_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TFLAG:193
+		IF CFLAG:清い交際 && GETBIT (CFLAG:1490,6)
+			PRINTFORML 「……あ」
+			PRINTFORML 片刻后呆然とした表情を浮かべる覚の目尻に涙が盛り上がる
+			PRINTFORML 「『めいわ、くだっ、た？』　いえ、ちが、ちがい、ます」
+			PRINTFORMDL 嗚咽を堪えながら呟く覚は、それでも涙を止めない
+			PRINTFORML 「あ、あの、その、うれし、うれしいです」
+			PRINTFORMDL そう言って、不意に抱きついてくる覚
+			PRINTFORMDL 胸元が涙で濡れるのも気にせず、%CALLNAME:MASTER%は覚の頭を轻轻地撫でる
+			PRINTFORML 「うれしい、です、うれしいんです。なんで、なみだ、とめられ……」
+			PRINTFORMDL そこまでが限界だったのか、そのまま嗚咽を漏らし始めた
+			PRINTL 
+			PRINTL 
+			PRINTFORMDL 泣き止んだ覚が、胸元にすがりついたまま上目遣いに見つめてくる
+			PRINTFORML 「……愛しています。私の、私だけの、主様（ぬしさま）」
+			PRINTFORMDL ぽつりと呟いた覚が、今まで見たことの無いひまわりのような笑顔を浮かべている
+			PRINTFORML 「『可愛い笑顔』？　……恥ずかしいです」
+			PRINTFORMDL そう言いながら頬を朱に染め、もじもじと体を揺らす覚
+			PRINTFORMDL 今までと違うその様子に、小首をかしげる
+			PRINTFORML 「…………これが、本当の、私ですよ」
+			PRINTFORML 「家族にさえ見せない、……いえ見せられない、タダの女としての私」
+			PRINTFORMDL そう呟いたあと、恥ずかしげに顔を伏せる覚
+			PRINTFORML 「主様は、こんな私はお嫌いですか？」
+			PRINTFORMDL きらいなわけが無い、そう答えて抱きしめる
+			PRINTFORML 「愛しています、あいして、います」
+			PRINTFORMDL またほろりと涙をこぼす覚
+			PRINTFORMDL その頬に接吻し的同时、涙を舌でぬぐい取った
+			PRINTL 
+			PRINTL 
+			PRINTL 
+			PRINTL 
+			PRINTL 
+			PRINTL 
+			PRINTL 覚、获得[坦率]
+			TALENT:49:態度 = -1
+			PRINTL 覚、失去[施虐狂]
+			TALENT:49:施虐狂 = 0
+		ELSEIF TALENT:恋慕
+			PRINTFORML 「やっと、ですね」
+			PRINTFORMDL 心底ほっとした表情で、覚がぽつりと呟く
+			PRINTFORML 「%CALLNAME:MASTER%を恋い慕うようになってから、いつかこんな日が来て欲しいと思っていました」
+			PRINTFORMW 「けれど、%CALLNAME:MASTER%は、他の女に手を出したり、時止めでの性交に励んだり」
+			PRINTFORML 「心と言葉で嬲ったりして、私の思いを無碍にするような事ばかりをしてましたから」
+			PRINTFORMDL そこまで言ったあと、じっとりとした視線を向けてくる覚
+			PRINTFORMDL その視線のコワさに、冷や汗が背中を伝い落ちる
+			PRINTFORMW 「でも、やっと言ってくれました。私を側に置いてくれると」
+			PRINTFORML 「今更取り消すなんて、出来るとは思わないことですね」
+			PRINTFORMDL その言葉に、苦笑と共に頷く
+			PRINTFORMDL 想いを読み取られたのではなく、言葉として口舌に馮せたのだ
+			PRINTFORMDW 覚にとってみれば、それほど固い誓いはない筈
+			PRINTFORML 「ええ、そう言うことです」
+			PRINTFORML 「%CALLNAME:MASTER%には心情と言動に乖離がないから、私は惹かれました」
+			PRINTFORML 「ですから、私は%CALLNAME:MASTER%の御側に居たい」
+			PRINTFORML 「これから、よろしくお願いしますね。主（ぬし）様」
+			PRINTFORMDW 満脸笑容地浮かべる覚に、苦笑と共にただ頷いた
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「%CALLNAME:MASTER%はバカですね」
+			PRINTFORMDL いきなりそう言われて、自然と苦笑が浮かぶ
+			PRINTFORML 「『予想街道』？　ならなぜこんなバカなマネをするんですか」
+			PRINTFORMDW そう呟く覚の目元に、僅かな喜色が浮かぶ
+			PRINTFORML 「………………ええ、そうです。私は%CALLNAME:MASTER%の告白を嬉しく思っています」
+			PRINTFORMDL 悔しげに唇を噛んだ後、目尻に涙を溜めた覚が見つめてきた
+			PRINTFORML 「私の大事な家族に、時を止めて手を出した最低悪辣な鬼畜だというのに」
+			PRINTFORMW 「こんな、こんな相手なのに」
+			PRINTFORMDL ふいに、ほろりと涙がこぼれた
+			PRINTFORML 「本当は……、本当は嬉しかったんです」
+			PRINTFORML 「私のようなバケモノに、話しかけてくれることが、連れ回してくれることが」
+			PRINTFORMW 「けれど、大事な家族に手を出されていることが辛かった、苦しかった」
+			PRINTFORML 「だから、必死で抗った。%CALLNAME:MASTER%を受け入れたがっている私自身に」
+			PRINTFORMDL そこまで呟いた後、儚げな露出笑容、覚が見つめてきた
+			PRINTFORML 「……でも、もう不行。%CALLNAME:MASTER%を拒めない……いえ、もう拒まない」
+			PRINTFORML 「これから、よろしくお願いします、主（ぬし）様」
+			PRINTFORMDW 柔らかさと甘さをさらけ出した微笑みを向けてくる覚に、頷きを返した
+		ELSE
+			PRINTFORML 「…………本気、ですか？」
+			PRINTFORMDL 覚が真剣な表情で見つめてくる
+			PRINTFORML 「流石にコレばかりは気まぐれでなかったことに出来ませんし、しませんよ？」
+			PRINTFORMDW その問い掛けに、告白自体は気まぐれだと答える%CALLNAME:MASTER%
+			PRINTFORML 「ふふ……、でも、告白を無かったことにはしないんですね」
+			PRINTFORMDL 内心をあっけなく見取られて、視線を逸らす
+			PRINTFORML 「私は同類からさえ嫌われた妖怪が集まる、地底に置いてすらバケモノと忌まれる者です」
+			PRINTFORMW 「そんな私を、性欲の対象にしたあげく、今度は心まで縛ろうとする」
+			PRINTFORML 「これほど強欲な者が居るとは想いもしませんでした」
+			PRINTFORMDL 覚の言葉に妙なむずがゆさを覚える%CALLNAME:MASTER%
+			PRINTFORML 「%CALLNAME:MASTER%は、本心から私を隣に置くことを望んでいる」
+			PRINTFORMW 「そして、私も、%CALLNAME:MASTER%の隣にずっと身を置いていたいと思っています」
+			PRINTFORMDL そこで一度言葉を切った覚が正面から視線を向けてくる
+			PRINTFORMDL 深く強い思いのこもる瞳
+			PRINTFORML 「……私は、%CALLNAME:MASTER%の想いを受け入れます」
+			PRINTFORMW 「私の心も体も、能力も、全て%CALLNAME:MASTER%のものです」
+			PRINTFORML 「これから、よろしくお願いします……主（ぬし）様」
+			PRINTFORMDW 万感の思いがこもるその呼びかけに、深く頷き返した
+		ENDIF
+		IF !CFLAG:清い交際 || !GETBIT (CFLAG:1490,6)
+			PRINTL 
+			PRINTL 
+			PRINTL 
+			PRINTL 
+			PRINTL 
+			PRINTL 
+		ENDIF
+		PRINTL 覚、失去[自尊心高]
+		TALENT:49:自尊心 = 0
+		PRINT 覚、
+		IF TALENT:MASTER:性別 == 2
+			TALENT:49:性別嗜好 = 0
+			PRINTL 失去[討厭男人]
+		ELSE
+			TALENT:49:性別嗜好 = -1
+			PRINTL 获得[兩面通吃]
+		ENDIF
+	ELSE
+		IF 陥落状態() == 2
+			PRINTFORML 「……バカですか、%CALLNAME:MASTER%は」
+			PRINTFORMDL 冷め切った表情に、返す言葉が見つからない
+			PRINTFORML 「他人の体を踏みにじるけだものに、懸想する趣味はありません」
+			PRINTFORMDW 他人の心に踏み込むのにか、と内心で呟き、覚に睨まれた
+		ELSE
+			PRINTFORML 「……はぁ、相手を間違えてますよ」
+			PRINTFORMDW 口を開いていないのにそう返されて、ため息しか出てこなかった
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;353,イタズラする
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_353
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_353_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_353_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;354,添い寝する（相手は起きて布団に招く感じ）
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_354
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_354_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_354_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;355,時止め（地の文の改変程度に留めるべき
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_355
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_355_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_355_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;360,身を任せる
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_360
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_360_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_360_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;SIF !FLAG:70
+		;CALL 渧泣()
+ENDIF
+RETURN 1
+;==================================================
+;363,読み聞かせ（[幼稚]持ち）
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_363
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_363_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_363_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;402,就寝（添い寝時）
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_402
+;就寝にTRAIN_MESSAGEは無い
+SETBIT CFLAG:1492,0
+CALL M_KOJO_MESSAGE_COM_K49_402_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_402_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;403,休憩
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_403
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_403_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_403_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;405,出掛ける(同行時デートに出掛ける
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_405
+;出掛けるにTRAIN_MESSAGEは無い
+CALL M_KOJO_MESSAGE_COM_K49_405_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_405_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;410,掃除
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_410
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_410_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_410_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL && !FLAG:70 && !CFLAG:睡眠
+	IF GET_MAPID(CFLAG:MASTER:現在位置) == MAIN_MAP && MAIN_MAP == 9 && CFLAG:MASTER:現在位置 == CFLAG:初始位置
+		SELECTCASE TFLAG:194
+			CASE 3
+				IF 陥落状態() >= 4
+					IF 陥落状態() == 5
+						PRINTFORML 「『コレはヒドい』？　……うー、そういうときだってあるんですー」
+						PRINTFORMDL 垃圾山に埋もれた部屋を見渡す%CALLNAME:MASTER%に、覚が唇をとがらせる
+						PRINTFORMW 「下手に掃除しちゃうと、どこになにが行ったかわからなくなるんです」
+						PRINTFORMDL 地底で重きを成す地霊殿の主としてどうなんだと思いつつ、掃除を始める%CALLNAME:MASTER%
+						PRINTFORML 「主様のイヂワル……、最近掃除係の子がサボるのを覚えたからなんですー」
+						PRINTFORMDW 覚の言葉に、どこぞの死神がくしゃみしてるのが見えた気がした
+					ELSE
+						PRINTFORML 「手間をかけさせてすみません、主様」
+						PRINTFORMDL 掃除は好きだから構わない、そう答える%CALLNAME:MASTER%に覚がくすりと笑う
+						PRINTFORMW 「まあ、Ｈの最中にもするくらいですね」
+						PRINTFORMDL そう宣う覚の目が、なぜか据わってる気がして冷や汗が浮かぶ
+						PRINTFORML 「別に怒っていませんよ。主様がそう言う人だというのは分かっていますし」
+						PRINTFORMDW そう言いつつ浮かべる笑みに、コワい物を感じつつ、%CALLNAME:MASTER%は掃除に精を出した
+					ENDIF
+				ELSEIF 陥落状態() == 3
+					PRINTFORML 「……普段は、ここまでヒドくはならないんですけど」
+					PRINTFORMDW そう言い的同时、覚が垃圾山に埋もれている室内を眺めている
+					PRINTFORML 「『一人でさせるつもりか』？　ふふ、そう出来れば楽ですけどね」
+					PRINTFORMDW 掃除を始める%CALLNAME:MASTER%に、笑みを向けてきた覚が手伝ってくれている
+				ELSEIF 陥落状態() == 2
+					PRINTFORML 「……なにがおかしいのですか」
+					PRINTFORMDW 目を三角にして睨んでくる覚に、掃除も出来ないのかとわざとらしくため息をつく
+					PRINTFORML 「っっ！　だ、黙りなさいっ！」
+					PRINTFORMDW 羞恥に顔を赤らめる覚に満足しつつ、%CALLNAME:MASTER%は掃除を始めた
+				ELSEIF 陥落状態() == 1
+					PRINTFORML 「…………えと、こういうときもあると言うことです」
+					PRINTFORMDW 恥ずかしげに視線を泳がせる覚に構わず、掃除を始める%CALLNAME:MASTER%だった
+				ELSE
+					PRINTFORML 「………………お見苦しくてすみません」
+					PRINTFORMDW 困ったように視線をそらす覚に答えず、%CALLNAME:MASTER%は掃除を始めた
+				ENDIF
+				;まず見れないだろう、超趣味に則った分岐を仕込んでみる
+				IF !RAND:10 && !CFLAG:诶嘿嘿
+					PRINTFORMDL	垃圾山をかたづける際、そこらに置かれた書物とは明らかに違う物を見つけた
+					PRINTFORMDL 全く装丁されてない単なるノート
+					PRINTFORMDL ソレを開いた瞬間、覚の声にならない悲鳴が聞こえた
+					PRINTFORMW 
+					IF 陥落状態() >= 4
+						IF 陥落状態() == 5
+							PRINTFORML 「主様それダメです見ちゃダメです！」
+							PRINTFORMDL そう言いながらも覚はその場から動かず、%CALLNAME:MASTER%の動きを見守っている
+							PRINTFORMDW ふと恶作剧心が湧いて、%CALLNAME:MASTER%は手にしたノートの中身を朗読する事にした
+							PRINTFORML 「主様のバカ……」
+							PRINTFORMDL 顔を真っ赤にする覚に構わず、朗読しようとした%CALLNAME:MASTER%だったが思わず凍り付いた
+							PRINTFORMW 「…………だから、見ちゃダメと言ったんです」
+							IF !RAND:2
+								PRINTFORMDL 赤裸々な恋慕の情を綴った抒情詩は、まごうことなく%CALLNAME:MASTER%に向けられたもので
+								PRINTFORMDL 気恥ずかしさとうれしさに動けない%CALLNAME:MASTER%に覚がギュッと抱きついてくる
+								PRINTFORML 「そこで、嬉しいと思ってくれる主様で、よかったです」
+								PRINTFORMDW そう言いながら覚が、すりすりとほおずりしてきた
+							ELSE
+								PRINTFORMDL 普段の睦み合いそのままの、濃厚的描写の官能小説に引き込まれてしまう
+								PRINTFORML 「『普段、こう感じているのか』？　……はい、言葉では万分の一も表現できていませんけど」
+								PRINTFORMDW そう言い的同时、身を寄せてきた覚がこちらの股間をなでさすってくる
+								PRINTFORML 「主様のここのせいで、私はいつもコワれるんですよ？　責任とってくれますよね」
+								PRINTFORMDL 恋人になった時点で、責任はとっているつもりだと答える%CALLNAME:MASTER%
+								PRINTFORMDW 途端に、嬉しそうな笑顔を浮かべて覚がギュッと抱きついてきた
+							ENDIF
+						ELSE
+							PRINTFORML 「主様、それは読まないでください」
+							PRINTFORMDW そう言いながらも、奪い取ろうとはしない覚に首をかしげる
+							PRINTFORML 「『本当は読まれたい』？　……それは、その、でも」
+							PRINTFORMDL 煮え切らない態度にこれ以上の問答は無用と、%CALLNAME:MASTER%は開いた页に目を通す
+							PRINTFORMDW 自分と覚の睦み合いをそのまま描写した官能小説
+							PRINTFORMDL 余りにも予想外の内容に、思わず、他の誰かに読まれていないか心配になる
+							PRINTFORML 「ソレは大丈夫です。…………トラウマって便利ですよね」
+							PRINTFORMDW 不穏な言葉が聞こえた気がしたが、気のせいだと思い込む%CALLNAME:MASTER%だった
+						ENDIF
+					ELSEIF 陥落状態() == 3
+						PRINTFORML 「みみみみ見ないでくださいっっ！！」
+						PRINTFORMDL ひゅん、と音が鳴って、手にしていたノートがかき消えた
+						PRINTFORMDL サードアイの触手で奪い取ったのだろう、覚の手元に件のノートがあって
+						PRINTFORM ”人を好きになるのが、これほど心地良いとはおもいませんでした”
+						PRINTFORMDW と書かれていた言葉を思い出す
+						PRINTFORML 「中を見たんですね？　ふふ、诶嘿嘿ふふふふ」
+						PRINTFORMDL 轻轻地俯き微妙にコワい含み笑いを漏らす覚
+						PRINTFORMDW 慢慢地顔を上げた覚の目に、強い決意が浮かんでいる
+						PRINTFORML 「…………%CALLNAME:MASTER%を殺して私も死ぬーーーーーっっっっっ！！」
+						PRINTFORMDL 全力で叫ぶ覚に、間髪入れず時を止めた%CALLNAME:MASTER%は、素早く覚の背後に回った
+						BASE:MASTER:TSP -= 3
+						PRINTFORMDW ギュッと抱きしめた状態で、時止めを解除する
+						PRINTFORML 「離してください！　バカーーっ！」
+						PRINTFORMDL ノートの内容を思い出しつつ、こういうのを書いてるのも可愛いと囁く%CALLNAME:MASTER%
+						PRINTFORMW 「か、かわっ！？　ほ、本当、ですか？」
+						PRINTFORMDL 怯生生地問いかけてくる覚に、ウソかどうかは視ればわかるだろうにと、内心で呟く
+						PRINTFORML 「…………うー……、でも、恥ずかしいです」
+						PRINTFORMDW 恥ずかしがる覚の愛らしさに、思わず額に轻轻地接吻%CALLNAME:MASTER%だった
+					ELSEIF 陥落状態() == 2
+						PRINTFORML 「見るな触るな開くなーーーーーーっっっっっ！！！」
+						PRINTFORMDW 普段とは全く違う言葉遣いで叫んだ覚が、サードアイの触手で手の中のノートを奪い取った
+						PRINTFORML 「このヘンタイスケベ色情狂！」
+						PRINTFORMDL 耳まで真っ赤になりながら叫ぶ覚に、にやりと笑いを向け目に入った一節を口にする
+						PRINTFORM ”この世界のどこかに、私を受け入れてくれる人がきっといる”
+						PRINTFORMDW 　……夢見がちだと、呟く%CALLNAME:MASTER%
+						PRINTFORMDL 顔を紅くして俯いた覚の肩がふるふると震えている
+						PRINTFORM ”どこにいるんですか、早く来てください”
+						PRINTFORMDL 　待ってるだけで来るわけないだろうと嘲弄する
+						PRINTFORMDW 瞬間、全身の毛が逆立つような感触を覚え、間髪入れず時を止めた
+						CFLAG:ブチギレ = 1
+						BASE:憤怒 = MAXBASE:憤怒
+						BASE:MASTER:TSP -= 3
+						CFLAG:同行 = 0
+						PRINTFORMDL 眼前、数センチのところにサードアイの触手がある
+						PRINTFORMDL 時を止めるのが後一刹那でも遅れていれば、確実に死んでいたであろう早さと強さの一撃
+						PRINTFORMDW 全身に冷や汗を掻き的同时、部屋を後にして門前まで移動する%CALLNAME:MASTER%
+						BASE:MASTER:TSP -= 20
+						PRINTFORMDL ここまで来れば大丈夫だろうと時止めを解除した瞬間
+						PRINTFORML 「逃跑なバカーーーーーーーっっっっっっっっっっ！！！！！！！！」
+						PRINTFORMDW 覚の叫びがここまで響いてきた
+						CFLAG:MASTER:現在位置 = 901
+					ELSEIF 陥落状態() == 1
+						PRINTFORML 「みみみみみみみないでくださいっっっ！！」
+						PRINTFORMDL 懇願する覚に、内心では惜しいと思いながらも中身には目を通さずノートを返す%CALLNAME:MASTER%
+						PRINTFORML 「非、非常感谢您」
+						PRINTFORMDW ほっとしたその表情に、代わりになにをするかと、内心で問いかける
+						PRINTFORML 「え、えと、それは」
+						PRINTFORMDL どんなことでも言うことを聞きそうな气息をみせる覚
+						PRINTFORMDW 冗談だと言いつつ、中身がどんな物なのか今更興味が沸いてきた
+					ELSE
+						PRINTFORMDL 問答無用で、手の中のノートを奪い取られた
+						PRINTFORML 「……出入り禁止にした方が良いかもしれませんね」
+						PRINTFORMDW 冷たい表情で呟く覚に、掃除ぐらいすればどうだと返す%CALLNAME:MASTER%
+						PRINTFORML 「うるさい」
+						PRINTFORMDW 珍しく、頬を紅くして少女らしい所作を見せる覚に、なんとなく苦笑が浮かんだ
+					ENDIF
+				ENDIF
+			CASE 2
+				IF 陥落状態() >= 4
+					IF 陥落状態() == 5
+						PRINTFORML 「『もう少し綺麗に』？　主様も、してくれるんですよね？」
+						PRINTFORMDL 上目遣いに小首をかしげる覚に、頷きを返し掃除を始める%CALLNAME:MASTER%
+						PRINTFORMW 「主様大好きです」
+						PRINTFORMDL 掃除道具を突きつける%CALLNAME:MASTER%へ笑みをむけてきて、覚が道具を受け取る
+						PRINTFORML 「はい、分かってますよー」
+						PRINTFORMDW 嬉々として掃除を始めるのをみ的同时、普段からすれば良いだろうにと思う%CALLNAME:MASTER%だった
+					ELSE
+						PRINTFORML 「『どうして自己出来ない』？　……その、いろいろと用事が重なったんです」
+						PRINTFORMDL 申し訳なさそうに呟く覚に、掃除係でも雇えば良いと呟く%CALLNAME:MASTER%
+						PRINTFORMW 「……掃除係の子は居るんですよ。最近サボりぎみなだけで」
+						PRINTFORMDL 主からして玩耍ほうけているから仕方ないと、答えを返す
+						PRINTFORML 「あ、遊んでばかりじゃありません、大体主様が引っ張り回すからじゃないですか」
+						PRINTFORMDW 人の所為にするなと内心で答え、掃除を始めた
+					ENDIF
+				ELSEIF 陥落状態() == 3
+					PRINTFORML 「『自己しろ』？　分かってはいるんですが……」
+					PRINTFORMDW ついっと、視線をそらしつつ呟く覚
+					PRINTFORML 「どうしても、先に済ませないといけない用事が」
+					PRINTFORMDW しどろもどろの言い訳に珍しい物を見たと思い的同时、%CALLNAME:MASTER%は掃除を始めた
+				ELSEIF 陥落状態() == 2
+					PRINTFORML 「……誰も触って良いなどと言っていませんが」
+					PRINTFORMDW 嫌そうな表情を浮かべる覚に、掃除道具を突きつける%CALLNAME:MASTER%
+					PRINTFORML 「『なら、自己やれ』？　言われなくてもそうします」
+					PRINTFORMDW 掃除道具を奪い取る覚に、どうしてここまで放っておけると嫌みを呟いた
+				ELSEIF 陥落状態() == 1
+					PRINTFORML 「……お手数をおかけしてすみません」
+					PRINTFORMDW 単にやりたいからやってると返しつつ、掃除道具を手渡した
+				ELSE
+					PRINTFORML 「…………ありがとうございます」
+					PRINTFORMDW 戸惑いを浮かべる覚と共に、%CALLNAME:MASTER%は部屋を掃除している
+				ENDIF
+			CASEELSE
+				IF 陥落状態() >= 4
+					IF 陥落状態() == 5
+						PRINTFORML 「诶嘿嘿、主様大好きですー」
+						PRINTFORMDL ギュッと抱きついてくる覚に、ため息をつきながら掃除道具を突きつける
+						PRINTFORMW 「分かってますよー、主様は本当にお掃除好きですねー」
+						PRINTFORMDL なにが楽しいのかクスクス笑い的同时、掃除を始める覚
+						PRINTFORML 「『どうして一人では掃除できない』？　……そういう性分なんですー」
+						PRINTFORMDW こちらの内心を読んだ覚が唇をとがらせている
+					ELSE
+						PRINTFORML 「主様、お手を煩わせて申し訳ありません」
+						PRINTFORMDL そう思うなら自己すれば良いと答える%CALLNAME:MASTER%
+						PRINTFORMW 「その街道なんですが……」
+						PRINTFORMDL 苦笑を浮かべる覚に小首をかしげ、%CALLNAME:MASTER%は掃除を始める
+						PRINTFORML 「あ、主様だけにさせるわけにはいきませんので」
+						PRINTFORMDW そう言いながら道具に手を伸ばした覚が、手伝いを始めた
+					ENDIF
+				ELSEIF 陥落状態() == 3
+					PRINTFORML 「『少しは自己すべき』？　返す言葉がありませんね」
+					PRINTFORMDW 押しつけた掃除道具を使って、掃除を始める覚
+					PRINTFORML 「『なぜ一人だと出来ない』？　そういうものなんです」
+					PRINTFORMDW 恥ずかしげに視線をそらす覚に、苦笑しながら%CALLNAME:MASTER%も掃除を始めた
+				ELSEIF 陥落状態() == 2
+					PRINTFORML 「さっさと出て行きなさい」
+					PRINTFORMDW 覚の言葉を無視して掃除を始める%CALLNAME:MASTER%
+					PRINTFORML 「『部屋の掃除すら出来ずにペットを飼うのか』……、%CALLNAME:MASTER%に関係ありません」
+					PRINTFORMDW 顔を紅くする覚に、掃除道具を押しつけた
+				ELSEIF 陥落状態() == 1
+					PRINTFORML 「……手間をとらせてすみません」
+					PRINTFORMDW 楽しいからしているだけだと返しつつ、掃除道具を手渡した
+				ELSE
+					PRINTFORML 「………………その、ありがとう、ございます」
+					PRINTFORMDW 珍しい覚の微笑みに、%CALLNAME:MASTER%は苦笑を浮かべた
+				ENDIF
+		ENDSELECT
+	ELSE
+		IF 陥落状態() >= 4
+			IF 陥落状態() == 5
+				PRINTFORML 「主様ってお掃除好きですよねぇ、そんなに楽しいですか？」
+				PRINTFORMDL 覚の問いかけに当然だと答える%CALLNAME:MASTER%
+				PRINTFORMW 「『胖次も取れるし』？　……むー、主様のヘンタイ」
+				PRINTFORMDL そう言ったかと思うと、覚が裙子をめくり上げる
+				IF !CFLAG:291
+					PRINTFORML 「私の胖次だったらいつでも差し上げるのに」
+					PRINTFORMDW 自力で手に入れるのが楽しいと答える%CALLNAME:MASTER%に、唇をとがらせつつ手伝い始めた
+				ELSE
+					PRINTFORML 「私の胖次とってるのに、まだ欲しいんですか？」
+					PRINTFORMDW 秘処を露わにする覚に当然だと答え、手伝うように促した
+				ENDIF
+			ELSE
+				PRINTFORML 「主様は本当に掃除が好きなんですね」
+				PRINTFORMDL 苦笑を浮かべながら呟く覚に頷きを返す
+				PRINTFORMW 「それでしたら、もういっそ掃除を生業にしては？」
+				PRINTFORMDL しなければならないとなればつまらない、そう答える%CALLNAME:MASTER%に覚が苦笑する
+				PRINTFORML 「まったく、難儀な性分ですねぇ」
+				PRINTFORMDW クスクス笑う覚が、掃除を手伝い始めた
+			ENDIF
+		ELSEIF 陥落状態() == 3
+			PRINTFORML 「そんなに掃除のは楽しいですか？　私にはわかりませんが」
+			PRINTFORMDW 覚の言葉に、汚れた場所が綺麗になっていくのは楽しいと答える%CALLNAME:MASTER%
+			PRINTFORML 「『それに胖次も手に入る』？　…………ｺﾉﾍﾝﾀｲ」
+			PRINTFORMDW 呆れた表情で咎めの言葉を投げつけてくる覚に掃除道具を渡した
+		ELSEIF 陥落状態() == 2
+			PRINTFORML 「腹黒い人类ほどきれい好きというのは本当ですね」
+			PRINTFORMDW 呆れた表情を浮かべる覚に、きれい好きでないのに腹黒い妖怪が何か言ってると答える
+			PRINTFORML 「誰が腹黒ですかっ！　女性に対して失礼でしょうっ！」
+			PRINTFORMDW 女性なら、掃除の一つくらい出来て当然と返しつつ、掃除道具を押しつけた
+		ELSEIF 陥落状態() == 1
+			PRINTFORML 「掃除がそんなに楽しいなら、時止めなんてしなくても」
+			PRINTFORMDW 呆れたように呟く覚に、それはそれと答え、掃除道具を手渡した
+		ELSE
+			PRINTFORML 「掃除が楽しいなんて理解できません」
+			PRINTFORMDW 他人任せならそうだろうと答え、%CALLNAME:MASTER%は掃除を手伝うよう促す
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;411,戦闘訓練
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_411
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_411_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_411_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;412,勉強
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_412
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_412_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_412_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;413,料理
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_413
+;料理にTRAIN_MESSAGEは無い
+CALL M_KOJO_MESSAGE_COM_K49_413_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_413_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;414,食事
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_414
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_414_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_414_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;415,食事をふるまう
+;==================================================
+@M_KOJO_SUCCESS_COM_K49_415
+;成否判定
+;TFLAG:192(-2=コマンド終了、-1＝強制失敗、0=COM依存、1=強制成功or大成功
+IF TALENT:恋慕
+	TFLAG:192 = 1
+ELSEIF TCVAR:MASTER:308
+	TFLAG:192 = -2
+ELSE
+	TFLAG:192 = 0
+ENDIF
+
+@M_KOJO_MESSAGE_COM_K49_415
+IF TALENT:恋慕
+	CALL TRAIN_MESSAGE
+ELSEIF TCVAR:MASTER:308
+	PRINTFORML 覚は無言で吃飯を突き返してきた
+	RETURN 1
+ELSE
+	CALL TRAIN_MESSAGE
+ENDIF
+CALL M_KOJO_MESSAGE_COM_K49_415_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_415_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;416,演奏する
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_416
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_416_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_416_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;417,昼寝をする
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_417
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_417_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_417_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;421,願掛けする
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_421
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_421_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_421_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;431,お風呂でくつろぐ
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_431
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_431_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_431_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;440,待つ
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_440
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_440_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_440_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;デート系コマンド
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+[SKIPSTART]
+;現状未実装
+;==================================================
+;600,デート会話
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_600
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_600_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_600_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;601,デートスキンシップ
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_601
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_601_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_601_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;602,デートキス
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_602
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_602_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_602_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+[SKIPEND]
+;==================================================
+;603,手を繋ぐ
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_603
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_603_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_603_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;604,散策する
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_604
+;散策するにはTRAIN_MESSAGEが無い
+CALL M_KOJO_MESSAGE_COM_K49_604_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_604_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;605,寄り道する
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_605
+;寄り道するにはTRAIN_MESSAGEが無い
+CALL M_KOJO_MESSAGE_COM_K49_605_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_605_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;610,食事に誘う
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_610
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_610_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_610_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;613,お金稼ぎする
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_613
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_613_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_613_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;614,食材の買い出し
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_614
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_614_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_614_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;615,お弁当を食べる
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_615
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_615_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_615_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;617,甘味処に誘う
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_617
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_617_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_617_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;618,花屋
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_618
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_618_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_618_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;620,鈴奈庵
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_620
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_620_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_620_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;660,読書
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_660
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_660_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_660_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;698,部屋に入る
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_698
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_698_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_698_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;699,外に出る
+;==================================================
+@M_KOJO_MESSAGE_COM_K49_699
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K49_699_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K49_699_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;派生コマンド
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;60,耳かき
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K49_60
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K49_60_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K49_60_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;61,抱き枕
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K49_61
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K49_61_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K49_61_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;62,デコちゅー
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K49_62
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K49_62_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K49_62_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;63,もっとキスする
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K49_63
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K49_63_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K49_63_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;80,手を引く
+;==================================================
+@M_KOJO_MESSAGE_SCOM_K49_80
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_SCOM_K49_80_1
+RETURN RESULT
+@M_KOJO_MESSAGE_SCOM_K49_80_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1

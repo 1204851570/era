@@ -1,0 +1,423 @@
+﻿;=========================================================
+;	モブ子用の画像文字列を設定
+;
+;	iID：キャラ番号
+;=========================================================
+@SET_MOB_IMAGE_STR(iID, ARGS)
+#DIM iID
+
+#DIMS CN_PARTS_STRUCT      ;可変画像用の文字列(服)
+#DIMS CN_PARTS_STRUCT_NUDE ;可変画像用の文字列(裸)
+
+#DIMS HAIR_TYPE        ;髪種別(STR:2000以降)
+#DIMS HAED_TYPE        ;頭部種別(STR:2110以降)
+#DIMS FACE_TYPE        ;表情種別(未実装)
+#DIMS CLOTH_TYPE       ;服装種別(STR:2210以降)
+#DIMS EYE_COLOR_TYPE   ;瞳色 *汎用色(STR:2050以降)
+#DIMS HAIR_COLOR_TYPE  ;髪色 *汎用色(STR:2050以降)
+#DIMS CLOTH_COLOR_TYPE ;服色 *汎用色(STR:2050以降)
+#DIMS SKIN_COLOR_TYPE  ;肌色(STR:2100以降)
+#DIMS EAR_COLOR_TYPE   ;耳色 *汎用色(STR:2050以降)
+#DIMS TAIL_COLOR_TYPE  ;尾色 *汎用色(STR:2050以降)
+#DIMS ACCESSORY_TYPE_1 ;装飾品種別(STR:2300以降)
+#DIMS ACCESSORY_TYPE_2 ;装飾品種別(STR:2300以降)
+#DIMS ACCESSORY_TYPE_3 ;装飾品種別(STR:2300以降)
+
+#DIM pauseNo
+#DIM nudeFlag
+
+;パーツをランダムに設定
+HAIR_TYPE        = %STR:(RAND:22 + 2000)%
+;HAED_TYPE        = %STR:(RAND:3 + 2110)%
+;顔は普通一択でいいじゃろ
+HAED_TYPE        = 普通な顔
+FACE_TYPE        = ""                      ;表情種別(未実装)
+
+ACCESSORY_TYPE_1 = なし
+ACCESSORY_TYPE_2 = なし
+ACCESSORY_TYPE_3 = なし
+
+pauseNo          = RAND(1,4)
+EYE_COLOR_TYPE   = %STR:(RAND:13 + 2050)%
+HAIR_COLOR_TYPE  = %STR:(RAND:13 + 2050)%
+CLOTH_COLOR_TYPE = %STR:(RAND:13 + 2050)%
+
+SKIN_COLOR_TYPE  = 普通
+
+IF !RAND:5
+	SKIN_COLOR_TYPE  = %TEXTR("褐色/日焼/不健康")%
+ENDIF
+
+SELECTCASE ARGS
+	CASE "白狼天狗"
+		CLOTH_TYPE = 白狼天狗服(色固定)
+		SIF !RAND:5
+			CLOTH_TYPE = 天狗服(色固定)
+		HAIR_COLOR_TYPE  = 白
+		ACCESSORY_TYPE_1 = 獣耳(耳)
+		ACCESSORY_TYPE_2 = 獣しっぽ(尾)
+		ACCESSORY_TYPE_3 = 白浪天狗帽子
+	CASE "河童"
+		CLOTH_TYPE = %TEXTR("河童服(色固定)/河童服(色固定)/河童服(色固定)/河童服")%
+		ACCESSORY_TYPE_1 = 河童帽子
+		SIF !RAND:4
+			ACCESSORY_TYPE_2 = %TEXTR("メガネ(普通)/メガネ(赤縁)/メガネ(黒縁)")%
+	CASE "妖精", "女仆妖精", "僵尸妖精"
+		CLOTH_TYPE = 妖精服
+		ACCESSORY_TYPE_1 = 妖精の羽
+		SIF !RAND:6
+			ACCESSORY_TYPE_3 = %TEXTR("メガネ(普通)/メガネ(赤縁)/メガネ(黒縁)")%
+		SIF !RAND:3
+			ACCESSORY_TYPE_2 = %TEXTR("ヘアバンド(白)/ヘアバンド(赤)/ヘアバンド(服)/ZUN帽(服)")%
+		IF ARGS == "女仆妖精"
+			CLOTH_TYPE = 女僕服
+			ACCESSORY_TYPE_2 = メイド髮箍
+		ENDIF
+		IF ARGS == "僵尸妖精"
+			SKIN_COLOR_TYPE  = 悪魔
+			HAIR_COLOR_TYPE = %TEXTR("白/灰/紫")%
+		ENDIF
+	CASE "玉兎"
+		CLOTH_TYPE = 玉兎服(色固定)
+		ACCESSORY_TYPE_1 = 玉兎ヘルメット
+		SIF !RAND:6
+			ACCESSORY_TYPE_2 = %TEXTR("メガネ(普通)/メガネ(赤縁)/メガネ(黒縁)")%
+		;ヘルメットからはみ出るので髪型制限
+		HAIR_TYPE = %TEXTR("長髪/セミロング/ショートカット/三つ編み/短髪/おさげ髪")%
+	CASE "狸猫妖怪"
+		CLOTH_TYPE = 和服
+		ACCESSORY_TYPE_1 = たぬき耳
+		ACCESSORY_TYPE_2 = たぬきしっぽ
+		SIF !RAND:6
+			ACCESSORY_TYPE_3 = %TEXTR("メガネ(普通)/メガネ(赤縁)/メガネ(黒縁)")%
+	CASE "化け狐"
+		CLOTH_TYPE = 和服
+		ACCESSORY_TYPE_1 = 狐耳
+		ACCESSORY_TYPE_2 = 狐しっぽ
+		SIF !RAND:6
+			ACCESSORY_TYPE_3 = %TEXTR("メガネ(普通)/メガネ(赤縁)/メガネ(黒縁)")%
+	CASE "化け猫"
+		CLOTH_TYPE = 和服
+		ACCESSORY_TYPE_1 = ネコ耳
+		ACCESSORY_TYPE_2 = ネコしっぽ
+		SIF !RAND:6
+			ACCESSORY_TYPE_3 = %TEXTR("メガネ(普通)/メガネ(赤縁)/メガネ(黒縁)")%
+	CASE "因幡"
+		CLOTH_TYPE = %TEXTR("襯褲/私服D")%
+		SELECTCASE RAND:5
+			CASE 0
+				HAIR_COLOR_TYPE = 白
+			CASE 1
+				HAIR_COLOR_TYPE = 栗
+			CASEELSE
+			;ウサ耳が映えるのは黒だと思う
+				HAIR_COLOR_TYPE = 黒
+		ENDSELECT
+		SIF !RAND:3
+			EYE_COLOR_TYPE = 赤
+		CLOTH_COLOR_TYPE = 白
+		ACCESSORY_TYPE_1 = ウサ耳
+		;髪型制限ウサ耳とテール系は見てくれの相性が悪い？
+		IF !RAND:2  ;TEXTRは7個までなんでちと汚いが仕方なし
+			HAIR_TYPE = %TEXTR("長髪/セミロング/ショートカット/三つ編み/短髪/おさげ髪")%
+		ELSE
+			HAIR_TYPE = %TEXTR("ロングヘア/ボブカット/ポンパドール/サイドダウン")%
+		ENDIF
+	CASE "町娘","人妻"
+		IF RAND:5 > 0
+			CLOTH_TYPE = 和服
+		ELSE
+			CLOTH_TYPE = %TEXTR("私服A/私服B/私服CA/私服CB/私服D")%
+		ENDIF
+		SIF !RAND:4
+			ACCESSORY_TYPE_3 = %TEXTR("メガネ(普通)/メガネ(赤縁)/メガネ(黒縁)")%
+		;SIF !RAND:3
+		;	ACCESSORY_TYPE_1 = %TEXTR("ヘアバンド(白)/ヘアバンド(赤)/ヘアバンド(服)")%
+	CASE "鬼"
+		CLOTH_TYPE = 和服
+		HAIR_TYPE = %TEXTR("長髪/セミロング/ショートカット/短髪/ボブカット/ロングヘア/ポンパドール")%
+		SELECTCASE RAND:2
+			CASE 0
+				ACCESSORY_TYPE_1 = 鬼の角
+			CASEELSE
+				HAIR_TYPE = %TEXTR("長髪/ロングヘア/セミロング/ポニーテール/ツインテール/ポンパドール")%
+				ACCESSORY_TYPE_1 = 鬼の角(一角)
+		ENDSELECT
+	CASEELSE
+		CLOTH_TYPE       = %STR:(RAND:17 + 2210)%
+		ACCESSORY_TYPE_1 = %STR:(RAND:32 + 2300)%
+		ACCESSORY_TYPE_2 = %STR:(RAND:32 + 2300)%
+		ACCESSORY_TYPE_3 = %STR:(RAND:32 + 2300)%
+ENDSELECT
+
+EAR_COLOR_TYPE   = HAIR_COLOR_TYPE
+TAIL_COLOR_TYPE  = HAIR_COLOR_TYPE
+;髪色に合わせた方が統一感出るよね
+SIF RAND:2
+	CLOTH_COLOR_TYPE = HAIR_COLOR_TYPE
+
+;可変画像の設定
+CN_PARTS_STRUCT = ""
+CN_PARTS_STRUCT += GET_CN_STR_HAIR(HAIR_TYPE)
+CN_PARTS_STRUCT += GET_CN_STR_HAED(HAED_TYPE)
+CN_PARTS_STRUCT += GET_CN_STR_EYE_COLOR(EYE_COLOR_TYPE)
+CN_PARTS_STRUCT += GET_CN_STR_HAIR_COLOR(HAIR_COLOR_TYPE)
+CN_PARTS_STRUCT += GET_CN_STR_CLOTH_COLOR(CLOTH_COLOR_TYPE)
+CN_PARTS_STRUCT += GET_CN_STR_SKIN_COLOR(SKIN_COLOR_TYPE)
+CN_PARTS_STRUCT += GET_CN_STR_EAR_COLOR(HAIR_COLOR_TYPE)
+CN_PARTS_STRUCT += GET_CN_STR_TAIL_COLOR(HAIR_COLOR_TYPE)
+
+
+; 服・裸で文字列を分ける
+CN_PARTS_STRUCT_NUDE = %CN_PARTS_STRUCT%
+
+; 服
+nudeFlag = 0
+CN_PARTS_STRUCT += GET_CN_STR_CLOTH(CLOTH_TYPE, nudeFlag, pauseNo)
+CN_PARTS_STRUCT += GET_CN_STR_ACCESSORY(ACCESSORY_TYPE_1, 1, nudeFlag)
+CN_PARTS_STRUCT += GET_CN_STR_ACCESSORY(ACCESSORY_TYPE_2, 2, nudeFlag)
+CN_PARTS_STRUCT += GET_CN_STR_ACCESSORY(ACCESSORY_TYPE_3, 3, nudeFlag)
+; 裸
+nudeFlag = 1
+CN_PARTS_STRUCT_NUDE += GET_CN_STR_CLOTH(CLOTH_TYPE, nudeFlag, pauseNo)
+CN_PARTS_STRUCT_NUDE += GET_CN_STR_ACCESSORY(ACCESSORY_TYPE_1, 1, nudeFlag)
+CN_PARTS_STRUCT_NUDE += GET_CN_STR_ACCESSORY(ACCESSORY_TYPE_2, 2, nudeFlag)
+CN_PARTS_STRUCT_NUDE += GET_CN_STR_ACCESSORY(ACCESSORY_TYPE_3, 3, nudeFlag)
+;保存
+CSTR:iID:路人子画像文字列_服_通常 = %CN_PARTS_STRUCT%%GET_CN_STR_FACE(FACE_TYPE, "通常", HAIR_COLOR_TYPE)%
+CSTR:iID:路人子画像文字列_服_笑顔 = %CN_PARTS_STRUCT%%GET_CN_STR_FACE(FACE_TYPE, "笑顔", HAIR_COLOR_TYPE)%
+CSTR:iID:路人子画像文字列_服_憤怒 = %CN_PARTS_STRUCT%%GET_CN_STR_FACE(FACE_TYPE, "憤怒", HAIR_COLOR_TYPE)%
+CSTR:iID:路人子画像文字列_裸_通常 = %CN_PARTS_STRUCT_NUDE%%GET_CN_STR_FACE(FACE_TYPE, "通常", HAIR_COLOR_TYPE)%
+CSTR:iID:路人子画像文字列_裸_笑顔 = %CN_PARTS_STRUCT_NUDE%%GET_CN_STR_FACE(FACE_TYPE, "笑顔", HAIR_COLOR_TYPE)%
+CSTR:iID:路人子画像文字列_裸_憤怒 = %CN_PARTS_STRUCT_NUDE%%GET_CN_STR_FACE(FACE_TYPE, "憤怒", HAIR_COLOR_TYPE)%
+
+RETURN RESULT
+
+;=========================================================
+;	髪型文字列の取得
+;
+;	HAIR_TYPE：髪種別(STR:2000以降)
+;=========================================================
+@GET_CN_STR_HAIR(HAIR_TYPE)
+#FUNCTIONS
+#DIMS HAIR_TYPE
+
+SELECTCASE HAIR_TYPE
+	CASE "長髪"
+		RETURNF "[前髪:前髪_お嬢様][後髪:後髪_ロング]"
+	CASE "セミロング"
+		RETURNF "[前髪:前髪_ワイルド][後髪:後髪_セミロング]"
+	CASE "ショートカット"
+		RETURNF "[前髪:前髪_ぱっつん][後髪:後髪_ショート]"
+	CASE "ポニーテール"
+		RETURNF "[前髪:前髪_お嬢様][後髪:後髪_ポニーテール]"
+	CASE "ツインテール"
+		RETURNF "[前髪:前髪_無造作][後髪:後髪_ツインテール(長)]"
+	CASE "サイドテール"
+		RETURNF "[前髪:前髪_中分け1][後髪:後髪_サイドテール【蝴蝶結なし】]" + "[装飾10:装飾_ヘアバンド(赤)]"
+	CASE "縦ロール"
+		RETURNF "[前髪:前髪_ぱっつん][後髪:後髪_ツインドリル【蝴蝶結なし】]"
+	CASE "ツインリング"
+		;髪型が無い
+		RETURNF "[前髪:前髪_ナチュラル][後髪:後髪_ツインテール(短)]"
+	CASE "三つ編み"
+		RETURNF "[前髪:前髪_横分け][後髪:後髪_三つ編み【蝴蝶結なし】]"
+	CASE "短髪"
+		RETURNF "[前髪:前髪_無造作][後髪:後髪_ショート]"
+	CASE "おさげ髪"
+		RETURNF "[前髪:前髪_ワイルド][後髪:後髪_ショート]" + "[装飾10:装飾_もみあげ編み(髪)]"
+	CASE "ポンパドール"
+		RETURNF "[前髪:前髪_中分け1][後髪:後髪_ウェーブセミロング]"
+	CASE "ポニーアップ"
+		RETURNF "[前髪:前髪_無造作][後髪:後髪_ポニーテール【蝴蝶結なし】]"
+	CASE "サイドダウン"
+		RETURNF "[前髪:前髪_横分け][後髪:後髪_ショート]" + "[装飾10:装飾_もみあげ片編み(髪)]"
+	CASE "お団子髪"
+		;髪型が無い
+		RETURNF "[前髪:前髪_ぱっつん][後髪:後髪_セミロング]"
+	CASE "ツーサイドアップ"
+		RETURNF "[前髪:前髪_ぱっつん][後髪:後髪_ツインテール(短)【蝴蝶結なし】]"
+	CASE "ダブルポニー"
+		RETURNF "[前髪:前髪_中分け1][後髪:後髪_ポニーテール【蝴蝶結なし】]"
+	CASE "横ロール"
+		RETURNF "[前髪:前髪_ナチュラル][後髪:後髪_ツインドリル【蝴蝶結なし】]"
+	CASE "まとめ髪"
+		RETURNF "[前髪:前髪_ワイルド][後髪:後髪_サイドテール【蝴蝶結なし】]"
+	CASE "ボブカット"
+		RETURNF "[前髪:前髪_ぱっつん][後髪:後髪_ボブカット]"
+	CASE "シニヨン"
+		;髪型が無い
+		RETURNF "[前髪:前髪_ウェーブ][後髪:後髪_ウェーブショート]"
+	CASE "ロングヘア"
+		RETURNF "[前髪:前髪_ナチュラル][後髪:後髪_ウェーブロング]"
+	CASEELSE
+		RETURNF "[前髪:前髪_お嬢様][後髪:後髪_ロング]"
+ENDSELECT
+
+;=========================================================
+;	頭部文字列の取得
+;
+;	HAED_TYPE：頭部種別(STR:2110以降)
+;=========================================================
+@GET_CN_STR_HAED(HAED_TYPE)
+#FUNCTIONS
+#DIMS HAED_TYPE
+
+RETURNF @"[頭部:頭部_%HAED_TYPE%]"
+
+;=========================================================
+;	表情文字列の取得
+;
+;	FACE_TYPE：表情種別(未実装)
+;	moodStr：表情種別("通常"・"笑顔"・"怒り")
+;	HAIR_COLOR_TYPE：髪色(STR:2050以降)
+;	* 髪色が赤系統の場合、見えづらいので[マーク(怒り赤)]を[マーク(怒り黄)]に変更
+;=========================================================
+@GET_CN_STR_FACE(FACE_TYPE, moodStr, HAIR_COLOR_TYPE)
+#FUNCTIONS
+#DIMS FACE_TYPE
+#DIMS moodStr
+#DIMS HAIR_COLOR_TYPE
+
+SELECTCASE moodStr
+	CASE "通常"
+		RETURNF "[目瞳:目瞳_普通な目1][表情:表情_笑い(口閉じ)]"
+	CASE "笑顔"
+		RETURNF "[目瞳:目瞳_閉じ目2][表情:表情_笑い(口開き)]"
+	CASE "憤怒"
+		IF GET_CN_STR_HAIR_COLOR_IS_RED(HAIR_COLOR_TYPE)
+			RETURNF "[目瞳:目瞳_普通な目2][表情:表情_憤怒(口開き)][装飾10:装飾_マーク(憤怒黄)]"
+		ELSE
+			RETURNF "[目瞳:目瞳_普通な目2][表情:表情_憤怒(口開き)][装飾10:装飾_マーク(憤怒赤)]"
+		ENDIF
+ENDSELECT
+
+;=========================================================
+;	服装文字列の取得
+;
+;	CLOTH_TYPE：服装種別(STR:2210以降)
+;	nudeFlag：裸の場合、1
+;	pauseNo：ポーズ番号(1,2,3 のいずれか)
+;=========================================================
+@GET_CN_STR_CLOTH(CLOTH_TYPE, nudeFlag, pauseNo)
+#FUNCTIONS
+#DIMS CLOTH_TYPE
+#DIM nudeFlag = 0
+#DIM pauseNo = 1
+
+IF nudeFlag
+	SELECTCASE TALENT:RANDOM_CHARANUM:胸圍
+		CASE 0
+			RETURNF @"[身体:身体_素体(並乳){pauseNo}]"
+		CASE IS > 0
+			RETURNF @"[身体:身体_素体(巨乳){pauseNo}]"
+		CASE IS < 0
+			RETURNF @"[身体:身体_素体(絶壁){pauseNo}]"
+	ENDSELECT
+	;RETURNF @"[身体:身体_素体{pauseNo}]"
+ELSE
+	RETURNF @"[身体:身体_%CLOTH_TYPE%{pauseNo}]"
+ENDIF
+
+;=========================================================
+;	装飾品文字列の取得
+;
+;	ACCESSORY_TYPE：装飾品(STR:2300以降)
+;	accessoryNumber：装飾品の描画順序
+;	nudeFlag：裸の場合、1
+;=========================================================
+@GET_CN_STR_ACCESSORY(ACCESSORY_TYPE, accessoryNumber, nudeFlag)
+#FUNCTIONS
+#DIMS ACCESSORY_TYPE
+#DIM accessoryNumber
+#DIM nudeFlag = 0
+
+SELECTCASE ACCESSORY_TYPE
+	CASE "ZUN帽","ZUN帽(服)","河童帽子","天狗帽子","白浪天狗帽子"
+		SIF !nudeFlag
+			RETURNF  @"[装飾{accessoryNumber}:装飾_%ACCESSORY_TYPE%]"
+	CASEELSE
+		RETURNF  @"[装飾{accessoryNumber}:装飾_%ACCESSORY_TYPE%]"
+ENDSELECT
+
+;=========================================================
+;	髪色文字列の取得
+;
+;	COLOR_TYPE：汎用色(STR:2050以降)
+;=========================================================
+@GET_CN_STR_HAIR_COLOR(COLOR_TYPE)
+#FUNCTIONS
+#DIMS COLOR_TYPE
+
+RETURNF @"[髪色:%COLOR_TYPE%]"
+
+;=========================================================
+;	髪の色が赤系統かを判定
+;
+;	COLOR_TYPE：汎用色(STR:2050以降)
+;=========================================================
+@GET_CN_STR_HAIR_COLOR_IS_RED(COLOR_TYPE)
+#FUNCTION
+#DIMS COLOR_TYPE
+
+SELECTCASE COLOR_TYPE
+	CASE "赤","桃","紫","橙"
+		RETURNF 1
+	CASEELSE
+		RETURNF 0
+ENDSELECT
+
+;=========================================================
+;	瞳色文字列の取得
+;
+;	COLOR_TYPE：汎用色(STR:2050以降)
+;=========================================================
+@GET_CN_STR_EYE_COLOR(COLOR_TYPE)
+#FUNCTIONS
+#DIMS COLOR_TYPE
+
+RETURNF @"[瞳色:%COLOR_TYPE%]"
+
+;=========================================================
+;	服色文字列の取得
+;
+;	COLOR_TYPE：汎用色(STR:2050以降)
+;=========================================================
+@GET_CN_STR_CLOTH_COLOR(COLOR_TYPE)
+#FUNCTIONS
+#DIMS COLOR_TYPE
+
+RETURNF @"[服色:%COLOR_TYPE%]"
+
+;=========================================================
+;	肌色文字列の取得
+;
+;	COLOR_TYPE：汎用色(STR:2050以降)
+;=========================================================
+@GET_CN_STR_SKIN_COLOR(SKIN_COLOR_TYPE)
+#FUNCTIONS
+#DIMS SKIN_COLOR_TYPE
+
+RETURNF @"[肌色:%SKIN_COLOR_TYPE%]"
+
+;=========================================================
+;	耳色文字列の取得
+;
+;	COLOR_TYPE：汎用色(STR:2050以降)
+;=========================================================
+@GET_CN_STR_EAR_COLOR(COLOR_TYPE)
+#FUNCTIONS
+#DIMS COLOR_TYPE
+
+RETURNF @"[耳色:%COLOR_TYPE%]"
+
+;=========================================================
+;	尾色文字列の取得
+;
+;	COLOR_TYPE：汎用色(STR:2050以降)
+;=========================================================
+@GET_CN_STR_TAIL_COLOR(COLOR_TYPE)
+#FUNCTIONS
+#DIMS COLOR_TYPE
+
+RETURNF @"[尾色:%COLOR_TYPE%]"

@@ -1,0 +1,107 @@
+﻿@MAP_koumakan
+PRINTL 紅魔館 ===================================================
+PRINTL ■■■■■■■■■■■■■■■■■■■■■■■■■■■　二階
+PRINTL ■　　　　　　　　　　　　６　　　　　　　　　　│５■　■■■■■■■■■■■■■■■■■■
+PRINTL ■　　　　　　　　　　　　　　　　　　　　　　　■■■　■21■20■　 >　　 17　 　　< ■∧■
+PRINTL ■　　　■■■■■■■■■―■■■■■■■■■　　　■　■―■―■　l￣￣】↓【￣￣l　■25■
+PRINTL ■　　■　　　│　　13　　　■■■< 18■11■12■　　■　■　19　　　￣￣￣￣￣￣￣￣  　　■
+PRINTL ■　　■　14　■―■■■■■■■■■　■―■―■　　■　■―■―■■■―■ー―■―■■■■■
+PRINTL ■　　■　　　■　l>　　　17　　　<l　■　　　■　　■　■22■23■　ll　　 24 　　ll
+PRINTL ■　　■　　　■　￣￣￣】↑【￣￣￣　■　　　■　　■　■■■■■　ll　　　　　　ll
+PRINTL ■　　■■―■■　　　　　　　　　　　■　　　■　　■　　　　　　　■＝＝＝＝＝＝■
+PRINTL ■　　■　　　　　　　　　９　　　　　│　10　■　　■
+PRINTL ■　　■―■■―■■■■■―■■■■■■　　　■　　■　三階　　　　　　　　地下
+PRINTL ■　　■16■　15■＿＿　　　　　＿＿■　　　　■　　■　■■■■■■■■■　■■■■■■■■■■
+PRINTL ■　　■■■　  ■　∥　　　　　∥　■　　　　■　　■　■　　　　　│25■　■31■30■29■18 <■
+PRINTL ■　　　　■　　■８∥　　２　　∥７■　　　　■　　■　■　　26　　■∧■　■＝■―■―■　■■
+PRINTL ■　　　　■　　■　∥　　　　　∥　■　　　　■　　■　■　　　　　■■■　■　　　28　　　　■
+PRINTL ■　　　　■■■■￣￣　　　　　￣￣■■■■■　　　■　■■■―■■■    　■■■■■■■■―■
+PRINTL ■■■　　　　　　　　　　　　　　　　　　　　　■■■　　ll　27　ll　      ■　　　　　　■　■
+PRINTL ■３│　　　　　　　　　　　　　　　　　　　　　│４■　　■＝＝＝■      　■　　　33　　│32■
+PRINTL ■■■■■■■■■■■■●１●■■■■■■■■■■■■　　　　　　　　　　　■■■■■■■■■■
+PRINTL 　
+IF FLAG:移動先表示 == 0 || FLAG:移動先表示 == 1
+PRINTBUTTON "１:正門 ",1
+PRINTBUTTON "２:庭 ",2
+PRINTBUTTON "３:守衛小屋 ",3
+PRINTBUTTON "４:空的小屋 ",4
+PRINTBUTTON "５:仓库 ",5
+PRINTBUTTON "６:後院 ",6
+PRINTBUTTON "７:東陽台 ",7
+PRINTBUTTON "８:西陽台 ",8
+PRINTL 
+PRINTBUTTON "９:大廳 ",9
+PRINTBUTTON "10:図書館 ",10
+PRINTBUTTON "11:帕秋莉私室 ",11
+PRINTBUTTON "12:小悪魔私室 ",12
+PRINTBUTTON "13:厨房 ",13
+PRINTBUTTON "14:食堂 ",14
+PRINTBUTTON "15:會客廳 ",15
+PRINTBUTTON "16:一層廁所 ",16
+PRINTBUTTON "17:大樓梯 ",17
+PRINTBUTTON "18:地下樓梯 ",18
+PRINTL 
+PRINTBUTTON "19:二階廊下 ",19
+PRINTBUTTON "20:咲夜私室 ",20
+PRINTBUTTON "21:空的部屋 ",21
+PRINTBUTTON "22:二層廁所 ",22
+PRINTBUTTON "23:妖精女僕的值班室 ",23
+PRINTBUTTON "24:大露台 ",24
+PRINTBUTTON "25:三階樓梯 ",25
+PRINTBUTTON "26:蕾米莉亜私室 ",26
+PRINTBUTTON "27:小露台 ",27
+PRINTL
+PRINTBUTTON "28:地下走廊 ",28
+PRINTBUTTON "29:倉庫 ",29
+PRINTBUTTON "30:使用人部屋 ",30
+PRINTBUTTON "31:地下室 ",31
+PRINTBUTTON "32:脱衣所 ",32
+PRINTBUTTON "33:大浴場 ",33
+ENDIF
+@MAP_H_ALL
+PRINTL
+PRINTL 　　湖畔　　■１■
+PRINTL             ■ll■
+PRINTL 
+PRINTL 　　　　　　　　　　■■■  ■■■
+PRINTL 　■■　　　　　　　■44■  ■45■　■■
+PRINTL 　■34　　　　43　　　　　　　　　　46■
+PRINTL 　■■　　　　　＿＿＿＿＿　　　　　■■
+PRINTL 　　　　　　　√ 　47　
+PRINTL 　　　　49　　　　　 48
+PRINTBUTTON "1:正門 ",1
+PRINTBUTTON "34:廃洋館 ",34
+PRINTBUTTON "43:湖畔 ",43
+PRINTBUTTON "44:蕾蒂的冰屋 ",44
+PRINTBUTTON "45:琪露諾的冰屋 ",45
+PRINTBUTTON "46:大妖精宅 ",46
+PRINTBUTTON "47:霧之湖 ",47
+PRINTBUTTON "48:霧之湖・湖底",48
+PRINTBUTTON "49:霧の向こう",49
+PRINTL
+@MAP_haiyoukan
+PRINTL 廃洋館 ===================================================
+PRINTL 
+PRINTL 　　　■■■　二階　　■■■
+PRINTL  　 ■　40　■　　　■　37　■
+PRINTL 　■■■―■　■　■■■―■■■
+PRINTL 　■＜　39｜41■　■36　35　 34￤
+PRINTL 　■■■―■　■　■■■―■■■
+PRINTL 　　■　42　■　　　■　38　■
+PRINTL 　　　■■■　　　　　■■■　一階
+PRINTL
+IF FLAG:移動先表示 == 0 || FLAG:移動先表示 == 1
+PRINTBUTTON "34:廃洋館・入口 ",34
+PRINTBUTTON "35:廃洋館・大廳 ",35
+PRINTBUTTON "36:廃洋館・樓梯 ",36
+PRINTBUTTON "37:廃洋館・廚房 ",37
+PRINTBUTTON "38:廃洋館・浴室 ",38
+PRINTBUTTON "39:廃洋館・二階廊下 ",39
+PRINTL
+PRINTBUTTON "40:露娜薩私室 ",40
+PRINTBUTTON "41:梅露蘭私室 ",41
+PRINTBUTTON "42:莉莉喀私室 ",42
+PRINTL
+ENDIF
+@MAP_kamakura
+PRINTL かまくら ===================================================

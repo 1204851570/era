@@ -1,0 +1,1720 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;性交系指令
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;60,正常位
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_60
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_60_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_60_1
+
+
+;立位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL && TFLAG:193
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;処女
+		IF TCVAR:破瓜 == 1
+			IF TALENT:恋人
+				PRINTFORML 「没想到要被夺走处女……」
+				PRINTFORML 「感觉有点害怕……」
+				PRINTFORMW 不安的话，就放弃吧？
+				PRINTFORML 「%MASTERNAME:106%好温柔……但是，没关系的」
+				PRINTFORML 「能把自己完全的献给%MASTERNAME:106%，感觉好幸福……」
+				PRINTFORML 「呜嗯，%MASTERNAME:106%……请温柔的疼爱我吧」
+				PRINTFORMW 害羞的堇子看起来很可爱，慢慢的搂住了她
+				PRINTFORMW 如果不温柔的回答她的觉悟的话……
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「这……是如此的幸福啊」
+				PRINTFORML 「被喜欢的人这样抱着……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「子宮……被肉棒亲吻了呜……%UNICODE(0x2764)%」
+				PRINTFORML 「还不可以生小宝宝呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+
+;正常位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;処女
+		IF TCVAR:破瓜 == 1
+			IF TALENT:恋人
+				PRINTFORML 「没想到要被夺走处女……」
+				PRINTFORML 「感觉有点害怕……」
+				PRINTFORMW 不安的话，就放弃吧？
+				PRINTFORML 「你真关心我啊……但是，没关系的」
+				PRINTFORML 「能把自己完全的献给%MASTERNAME:106%……」
+				PRINTFORML 「呜嗯，%MASTERNAME:106%……温柔的疼爱我吧」
+				PRINTFORMW 害羞的堇子看起来很可爱，慢慢的搂住了她
+				PRINTFORMW 如果不温柔的回答她的觉悟的话……
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「这……是如此的幸福啊」
+				PRINTFORML 「被喜欢的人这样抱着……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「子宮……被肉棒亲吻了呜……%UNICODE(0x2764)%」
+				PRINTFORML 「还不可以生小宝宝呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;61,後背位
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_61
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_61_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_61_1
+
+;立位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL && TFLAG:193
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;処女
+		IF TCVAR:破瓜 == 1
+			IF TALENT:恋人
+				PRINTFORML 「没想到要被夺走处女……」
+				PRINTFORML 「感觉有点害怕……」
+				PRINTFORMW 不安的话，就放弃吧？
+				PRINTFORML 「你真关心我啊……但是，没关系的」
+				PRINTFORML 「能把自己完全的献给%MASTERNAME:106%……」
+				PRINTFORML 「呜嗯，%MASTERNAME:106%……温柔的疼爱我吧」
+				PRINTFORMW 害羞的堇子看起来很可爱，慢慢的搂住了她
+				PRINTFORMW 如果不温柔的回答她的觉悟的话……
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「这……是如此的幸福啊」
+				PRINTFORML 「被喜欢的人这样抱着……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「子宮……被肉棒亲吻了呜……%UNICODE(0x2764)%」
+				PRINTFORML 「还不可以生小宝宝呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+
+;後背位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;処女
+		IF TCVAR:破瓜 == 1
+			IF TALENT:恋人
+				PRINTFORML 「没想到要被夺走处女……」
+				PRINTFORML 「感觉有点害怕……」
+				PRINTFORMW 不安的话，就放弃吧？
+				PRINTFORML 「你真关心我啊……但是，没关系的」
+				PRINTFORML 「能把自己完全的献给%MASTERNAME:106%……」
+				PRINTFORML 「呜嗯，%MASTERNAME:106%……温柔的疼爱我吧」
+				PRINTFORMW 害羞的堇子看起来很可爱，慢慢的搂住了她
+				PRINTFORMW 如果不温柔的回答她的觉悟的话……
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「这……是如此的幸福啊」
+				PRINTFORML 「被喜欢的人这样抱着……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「子宮……被肉棒亲吻了呜……%UNICODE(0x2764)%」
+				PRINTFORML 「还不可以生小宝宝呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;62,正常位肛交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_62
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_62_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_62_1
+
+;立位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL && TFLAG:193
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;アナル処女
+		IF TCVAR:Ａ破瓜
+			IF TALENT:恋人
+				PRINTFORML 「呜……连后面也不放过……」
+				PRINTFORML 「是不是看了什么变态的东西……！」
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+			IF RAND:15 == 0
+				PRINTFORML 「呜……被侵犯后面……%UNICODE(0x2764)%」
+				PRINTFORML 「这样不可以……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「心情好奇怪……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……被用后面来做……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+
+;正常位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;アナル処女
+		IF TCVAR:Ａ破瓜
+			IF TALENT:恋人
+				PRINTFORML 「呜……连后面也不放过……」
+				PRINTFORML 「是不是看了什么变态的东西……！」
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		IF TALENT:恋人
+			PRINTFORML 「呜……被侵犯后面……%UNICODE(0x2764)%」
+			PRINTFORML 「这样不可以……%UNICODE(0x2764)%」
+		ELSEIF RAND:14 == 0
+			PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+			PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+		ELSEIF RAND:13 == 0
+			PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+			PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+		ELSEIF RAND:12 == 0
+			PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+			PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+		ELSEIF RAND:11 == 0
+			PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+			PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+		ELSEIF RAND:10 == 0
+			PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+			PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+		ELSEIF RAND:9 == 0
+			PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+			PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+		ELSEIF RAND:8 == 0
+			PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+			PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+		ELSEIF RAND:7 == 0
+			PRINTFORML 「没关系的，更加，激烈地……」
+			PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+		ELSEIF RAND:6 == 0
+			PRINTFORML 「心情好奇怪……%UNICODE(0x2764)%」
+			PRINTFORML 「呜……被用后面来做……%UNICODE(0x2764)%」
+		ELSEIF RAND:5 == 0
+			PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+			PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+		ELSEIF RAND:4 == 0
+			PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+			PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+		ELSEIF RAND:3 == 0
+			PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+			PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+		ELSEIF RAND:2 == 0
+			PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+			PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+		ELSE
+			PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+			PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+RETURN 1
+ENDIF
+;==================================================
+;63,後背位肛交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_63
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_63_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_63_1
+
+;立位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL && TFLAG:193
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;アナル処女
+		IF TCVAR:Ａ破瓜
+			IF TALENT:恋人
+				PRINTFORML 「呜……连后面也不放过……」
+				PRINTFORML 「是不是看了什么变态的东西……！」
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「呜……被侵犯后面……%UNICODE(0x2764)%」
+				PRINTFORML 「这样不可以……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「心情好奇怪……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……被用后面来做……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+
+;後背位
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;アナル処女
+		IF TCVAR:Ａ破瓜
+			IF TALENT:恋人
+				PRINTFORML 「呜……连后面也不放过……」
+				PRINTFORML 「是不是看了什么变态的东西……！」
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「呜……被侵犯后面……%UNICODE(0x2764)%」
+				PRINTFORML 「这样不可以……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「心情好奇怪……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……被用后面来做……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+RETURN 1
+ENDIF
+;==================================================
+;64,逆強姦
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_64
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_64_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_64_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回射精した
+		IF TCVAR:104
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;恋慕
+	IF TALENT:恋慕
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;65,騎乗位
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_65
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_65_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_65_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;処女
+		IF TCVAR:破瓜 == 1
+			IF TALENT:恋人
+				PRINTFORML 「没想到要被夺走处女……」
+				PRINTFORML 「感觉有点害怕……」
+				PRINTFORMW 不安的话，就放弃吧？
+				PRINTFORML 「你真关心我啊……但是，没关系的」
+				PRINTFORML 「能把自己完全的献给%MASTERNAME:106%……」
+				PRINTFORML 「呜嗯，%MASTERNAME:106%……温柔的疼爱我吧」
+				PRINTFORMW 害羞的堇子看起来很可爱，慢慢的搂住了她
+				PRINTFORMW 如果不温柔的回答她的觉悟的话……
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TALENT:恋人
+			IF RAND:5 == 0
+				PRINTFORML 「最里面……呜……被碰到了」
+				PRINTFORML 「太……太激烈了呜%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「我一定要在上面……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……主导权……一定要让人家来主导%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「%MASTERNAME:106%、舒服吗」
+				PRINTFORML 「我这样淫乱的样子……呜%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「腰擅自动起来了呜……%UNICODE(0x2764)%」
+				PRINTFORML 「要被%MASTERNAME:106%当做泄欲玩具了……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;66,騎乗位肛交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_66
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_66_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_66_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;アナル処女
+		IF TCVAR:Ａ破瓜
+			IF TALENT:恋人
+				PRINTFORML 「呜……连后面也不放过……」
+				PRINTFORML 「是不是看了什么变态的东西……！」
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「呜……被侵犯后面……%UNICODE(0x2764)%」
+				PRINTFORML 「这样不可以……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「心情好奇怪……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……被用后面来做……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;67,対面座位
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_67
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_67_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_67_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;処女
+		IF TCVAR:破瓜 == 1
+			IF TALENT:恋人
+				PRINTFORML 「没想到要被夺走处女……」
+				PRINTFORML 「感觉有点害怕……」
+				PRINTFORMW 不安的话，就放弃吧？
+				PRINTFORML 「你真关心我啊……但是，没关系的」
+				PRINTFORML 「能把自己完全的献给%MASTERNAME:106%……」
+				PRINTFORML 「呜嗯，%MASTERNAME:106%……温柔的疼爱我吧」
+				PRINTFORMW 害羞的堇子看起来很可爱，慢慢的搂住了她
+				PRINTFORMW 如果不温柔的回答她的觉悟的话……
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「这……是如此的幸福啊」
+				PRINTFORML 「被喜欢的人这样抱着……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「子宮……被肉棒亲吻了呜……%UNICODE(0x2764)%」
+				PRINTFORML 「还不可以生小宝宝呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;68,背面座位
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_68
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_68_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_68_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;処女
+		IF TCVAR:破瓜 == 1
+			IF TALENT:恋人
+				PRINTFORML 「没想到要被夺走处女……」
+				PRINTFORML 「感觉有点害怕……」
+				PRINTFORMW 不安的话，就放弃吧？
+				PRINTFORML 「你真关心我啊……但是，没关系的」
+				PRINTFORML 「能把自己完全的献给%MASTERNAME:106%……」
+				PRINTFORML 「呜嗯，%MASTERNAME:106%……温柔的疼爱我吧」
+				PRINTFORMW 害羞的堇子看起来很可爱，慢慢的搂住了她
+				PRINTFORMW 如果不温柔的回答她的觉悟的话……
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「这……是如此的幸福啊」
+				PRINTFORML 「被喜欢的人这样抱着……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「子宮……被肉棒亲吻了呜……%UNICODE(0x2764)%」
+				PRINTFORML 「还不可以生小宝宝呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;69,対面座位肛交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_69
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_69_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_69_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;アナル処女
+		IF TCVAR:Ａ破瓜
+			IF TALENT:恋人
+				PRINTFORML 「呜……连后面也不放过……」
+				PRINTFORML 「是不是看了什么变态的东西……！」
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「呜……被侵犯后面……%UNICODE(0x2764)%」
+				PRINTFORML 「这样不可以……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「心情好奇怪……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……被用后面来做……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;70,背面座位肛交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_70
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_70_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_70_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;アナル処女
+		IF TCVAR:Ａ破瓜
+			IF TALENT:恋人
+				PRINTFORML 「呜……连后面也不放过……」
+				PRINTFORML 「是不是看了什么变态的东西……！」
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		IF TALENT:恋人
+			IF RAND:15 == 0
+				PRINTFORML 「呜……被侵犯后面……%UNICODE(0x2764)%」
+				PRINTFORML 「这样不可以……%UNICODE(0x2764)%」
+			ELSEIF RAND:14 == 0
+				PRINTFORML 「呜……热腾腾的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……又欺负人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:13 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 呜啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「不行啊，明明想被更温柔的疼爱……%UNICODE(0x2764)%」
+			ELSEIF RAND:12 == 0
+				PRINTFORML 「要变成淫乱的坏孩子了……%UNICODE(0x2764)%」
+				PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)%」
+			ELSEIF RAND:11 == 0
+				PRINTFORML 「咿呀%UNICODE(0x2764)% 啊啊啊……%UNICODE(0x2764)%」
+				PRINTFORML 「呜嗯%UNICODE(0x2764)% 啊啊啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:10 == 0
+				PRINTFORML 「明明连虫子都不忍心拍死……却这样欺负人家……%UNICODE(0x2764)%」
+				PRINTFORML 「男人，都是大骗子呜……%UNICODE(0x2764)%」
+			ELSEIF RAND:9 == 0
+				PRINTFORML 「更多%UNICODE(0x2764)% 更激烈的欺负也可以%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……更多的欺负我吧……%UNICODE(0x2764)%」
+			ELSEIF RAND:8 == 0
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊啊啊啊%UNICODE(0x2764)%」
+				PRINTFORML 「声音……要被听见了呜啊……%UNICODE(0x2764)%」
+			ELSEIF RAND:7 == 0
+				PRINTFORML 「没关系的，更加，激烈地……」
+				PRINTFORML 「呜啊%UNICODE(0x2764)% 呜啊啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:6 == 0
+				PRINTFORML 「心情好奇怪……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……被用后面来做……%UNICODE(0x2764)%」
+			ELSEIF RAND:5 == 0
+				PRINTFORML 「全身都软绵绵的……%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%……温柔的疼爱人家……%UNICODE(0x2764)%」
+			ELSEIF RAND:4 == 0
+				PRINTFORML 「嗯……%UNICODE(0x2764)% 温柔的……好棒……%UNICODE(0x2764)%」
+				PRINTFORML 「最喜欢了……%MASTERNAME:106%……%UNICODE(0x2764)%」
+			ELSEIF RAND:3 == 0
+				PRINTFORML 「呜，不要看着人家的样子……%UNICODE(0x2764)%」
+				PRINTFORML 「都怪%MASTERNAME:106%……%UNICODE(0x2764)% 呜啊啊%UNICODE(0x2764)%」
+			ELSEIF RAND:2 == 0
+				PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)% %MASTERNAME:106%……%UNICODE(0x2764)%」
+				PRINTFORML 「呜……脑子变得乱糟糟的……%UNICODE(0x2764)%」
+			ELSE
+				PRINTFORML 「啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)% 啊%UNICODE(0x2764)%」
+				PRINTFORML 「%MASTERNAME:106%%UNICODE(0x2764)%  %MASTERNAME:106%%UNICODE(0x2764)%」
+			ENDIF
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		RETURN 0
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORML
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;71,二穴挿入
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_71
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_71_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_71_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	;考えうる分岐が多すぎるので地の文の大まかな分岐だけ
+	;連続
+	IF PREVCOM == SELECTCOM
+		PRINTFORMW 
+		RETURN 1
+	;主人V挿入→助手A挿入
+	ELSEIF TCVAR:100 == MASTER
+		PRINTFORMW 
+		RETURN 1
+	;主人A挿入→助手V挿入
+	ELSEIF TCVAR:101 == MASTER
+		PRINTFORMW 
+		RETURN 1
+	;助手V挿入→主人A挿入
+	ELSEIF TCVAR:100 == ASSI
+		PRINTFORMW 
+		RETURN 1
+	;助手A挿入→主人V挿入
+	ELSEIF TCVAR:101 == ASSI
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;72,挿入Ｇ點玩弄
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_72
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_72_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_72_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回射精した
+		IF TCVAR:104
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;恋慕
+	IF TALENT:恋慕
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;73,挿入子宮口玩弄
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_73
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_73_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_73_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回射精した
+		IF TCVAR:104
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;恋慕
+	IF TALENT:恋慕
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;74,玩弄Ｓ状結腸
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_74
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_74_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_74_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回射精した
+		IF TCVAR:104
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;恋慕
+	IF TALENT:恋慕
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;75,隔着刺激陰道
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_75
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_75_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_75_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回射精した
+		IF TCVAR:104
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;恋慕
+	IF TALENT:恋慕
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;77,小人飛機杯(針妙丸用？
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_77
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_77_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_77_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+	ENDIF
+	
+	;挿入継続
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && TCVAR:101 == PLAYER
+		;前回射精した
+		IF TCVAR:104
+			PRINTFORMW 
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;基本セット
+	;恋慕
+	IF TALENT:恋慕
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1

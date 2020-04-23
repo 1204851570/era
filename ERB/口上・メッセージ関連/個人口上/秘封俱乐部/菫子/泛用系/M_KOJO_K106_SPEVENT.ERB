@@ -1,0 +1,380 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;"SP_EVENT"系口上
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;约会归来的KISS
+;==================================================
+@M_KOJO_SPEVENT_K106_1(ARG,ARG:1)
+
+	CALL SPEVENT_MESSAGE_1(ARG,ARG:1)
+
+	;口上启动开关
+	LOCAL = 1
+
+	;口上文
+	IF LOCAL
+		;非前女友
+		IF CFLAG:106:1004 == 0 && MARK:反発刻印 == 0
+			PRINTFORML 「我们，已经相遇并认识了很久了吧。」
+			PRINTFORMW 在约会回来的路上，堇子慢慢的开口说道
+			PRINTFORML 「在记忆里，我们已经认识了%TOSTR(DAY-CFLAG:106:1001)%天了呢」
+			PRINTFORML 「平时，我们也经常在一起行动的吧」
+			PRINTFORML 「看上去很亲密，但是……」
+			PRINTFORMW 对于堇子的话，%MASTERNAME:106%歪着头倾听着
+			PRINTFORML 「但是，对我来说……这种事，还不够！」
+			PRINTFORMW 话音刚落，菫子便飞扑了上来……！
+
+			PRINTL
+			PRINTFORML 啾……
+			PRINTW 
+
+			PRINTFORMW 鼻腔痒痒的，轻嗅着女孩子特有的芳香
+			PRINTFORMW 同时，也接触到了女孩子的柔软的嘴唇
+			PRINTFORMW 这一瞬间，仿佛被定格成了永恒……简直是梦幻般的亲吻
+			PRINTFORML 「这是属于我自己的经历……绝对不是外界的堇子的经历」
+			PRINTFORML 「就算是%MASTERNAME:106%也好，也是专属于我的……」
+
+			IF TALENT:6
+				PRINTFORML 「这，可是我的初吻哦……献给%MASTERNAME:106%的……」
+
+				IF TALENT:PLAYER:6
+					PRINTFORMW %MASTERNAME:106%也无奈的告诉堇子，这也是自己的初吻
+					PRINTFORML 「原来，这也是%MASTERNAME:106%的初吻吗？」
+					PRINTFORML 「%MASTERNAME:106%的初吻，就由我夺走了哦」
+				ENDIF
+
+				PRINTFORMW 	堇子娇羞的对着%MASTERNAME:106%微微一笑
+
+				IF TALENT:PLAYER:2 == 1 && TALENT:2 == 1
+					PRINTFORML 「同样都是女孩子，但是……」
+					PRINTFORMW 好像是突然明白了自己刚刚做了什么事情一样，堇子羞的捂住了脸
+				ENDIF
+
+				PRINTFORMW 羞红着脸颊的堇子，转过脚后跟向前跑去。
+				PRINTFORMW 站在原地的%MASTERNAME:106%迟钝的摸着嘴唇……
+				PRINTFORMW 品味着被飞扑袭击的钝痛和残留的柔软触感，微微的皱了皱眉
+
+			ENDIF
+
+		;前女友
+		ELSEIF CFLAG:106:1004 >= 1 && MARK:反発刻印 == 0
+			PRINTFORML 「我们已经分手了很久了吧？」
+			PRINTFORML 「在我的记忆里，已经过去了%TOSTR(DAY-CFLAG:106:1005)%天了吧……」
+			PRINT 「虽然感觉还是有点苦涩……虽然分手的理由依然记得很清楚，如果不是你
+			PRINTFORML 的话」
+			PRINTFORML 「我们本应该可以幸福的一直在一起的」
+			PRINTFORML 「不过看你最近的表现……还算可以」
+			PRINTFORML 「就……稍微再给你一次机会好了」
+			PRINTFORMW 话音刚落，堇子踮起脚来，轻轻的亲吻了的脸颊
+			PRINTFORML 「希望这次，我们可以走向美好的结局……」
+			PRINTL
+			PRINTL
+			PRINTL 
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_抵抗, 0)
+		ENDIF
+	ENDIF
+;==================================================
+;约会回家的告白
+;==================================================
+@M_KOJO_SPEVENT_K106_2(ARG,ARG:1)
+
+	CALL SPEVENT_MESSAGE_2(ARG,ARG:1)
+
+	;口上启动开关
+	LOCAL = 1
+
+	;口上文
+	IF LOCAL
+
+		;小分岐
+		;TARGET告白内容
+		;口上启动开关
+
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 0
+			;非前女友
+			IF CFLAG:106:1004 == 0 && MARK:反発刻印 == 0
+				PRINTFORML 「%MASTERNAME:106%稍等一下，听我说，可以么？」
+				PRINTFORMW 约会回来的路上，在无人的地方，堇子突然停了下来。
+				PRINTFORML 「我们最近的关系已经几乎传遍了幻想乡了吧……」
+				PRINTFORML 「在这里，我们每次都会一起行动，几乎没有分开过的时候……」
+				PRINTFORML 「……所以说，%MASTERNAME:106%有没有想到一些别的呢？」
+				PRINTFORMW 这样说着，低着头的堇子转身看向了%MASTERNAME:106%
+
+				IF TALENT:恋慕
+					PRINTFORML 「%MASTERNAME:106%明明一开始我那样对待你」
+					PRINTFORML 「但是却一直一直都对我那么温柔」
+					PRINTFORML 「就算是耍性子，也一直都这样容忍着我」
+					PRINTFORML 「结果现在，已经离不开%MASTERNAME:106%了……」
+					PRINTFORML 「%MASTERNAME:106%的微笑，没办法忘记……每天白天都在想着%MASTERNAME:106%的样子，想和%MASTERNAME:106%在一起」
+					PRINTFORML 「%MASTERNAME:106%的体贴，也刻骨铭心……在夜晚入梦的时候，都会希望第二天尽快来临，能够和%MASTERNAME:106%继续相聚」
+					PRINTFORML 「%MASTERNAME:106%的气息，更让人迷醉……约会的时候，%MASTERNAME:106%身上的味道，总是让人忽略了时间，只想更多的呆在身边」
+					PRINTFORML 「%MASTERNAME:106%知道么？……都是%MASTERNAME:106%的错」
+					PRINTFORML 「%MASTERNAME:106%既然做了这么多事……所以，要好好的负责才可以」
+
+				ELSEIF TALENT:炮友
+					PRINTFORML 「%MASTERNAME:106%的一切，都想要更多……现在这种关系……我已经满足不了了」
+					PRINTFORML 「不管是睡着入梦的时候，还是在白天，在脑子有空闲的时候，最后都会忍不住的想要被%MASTERNAME:106%疼爱……」
+					PRINTFORML 「已经被%MASTERNAME:106%给弄得……变成了这样淫乱的样子……」
+					PRINTFORML 「每天都在想着跟%MASTERNAME:106%缠绵，想更多的和%MASTERNAME:106%在一起，想着被%MASTERNAME:106%推倒」
+					PRINTFORML 「身体，已经离不开%MASTERNAME:106%了……」
+
+					IF ABL:露出癖 >= 3 && ABL:17 >= 3
+						PRINTFORML 「约会的时候，这里就已经……已经变得一塌糊涂了」
+						PRINTFORMW 仿佛是为了证明一般，堇子忍耐着羞耻感，红着脸掀起了自己的衣服，露出已经被分泌的汁液微微打湿的胖次
+						PRINTFORML 「身子的每一处，都每时每刻的渴望着%MASTERNAME:106%的疼爱……」
+						PRINTFORMW 鼓足了勇气做出这种事的堇子，脸颊红得仿佛要滴出水来
+					ENDIF
+
+				ELSEIF TALENT:愛欲
+					PRINTFORML 「而且，也还、还发生了那样的关系……」
+					PRINTFORML 「这样的话，那，那么……」
+
+				ELSE
+					PRINTFORML
+				ENDIF
+
+				IF TALENT:106:妊娠 && CFLAG:106:妊娠自覚状態 == 1
+					PRINTFORML 「最重要的是……还被%MASTERNAME:106%搞大了肚子……」
+				ENDIF
+
+				PRINTFORML 「呐，%MASTERNAME:106%告诉我……」
+				PRINTFORML 「%MASTERNAME:106%你有没有把我当做女孩子看待呢？」
+				PRINTFORMW 在她的话语中……
+
+			;前女友
+			ELSEIF CFLAG:106:1004 && MARK:反発刻印 == 0
+				PRINTFORML 「%MASTERNAME:106%稍等一下，听我说，可以么？」
+				PRINTFORMW 约会回来的路上，在无人的地方，堇子突然停了下来。
+				PRINTFORML 「我们……虽然现在不是恋人了……」
+				PRINTFORML 「但是，大家都认为，我们已经复合了……」
+				PRINTFORML 「……所以说，%MASTERNAME:106%有没有想过这些呢？」
+				PRINTFORMW 这样说着，低着头的堇子转身看向了%MASTERNAME:106%
+			ENDIF
+
+			RETURN 1
+		ENDIF
+
+		;告白成功，恋人获得
+		;口上启动开关
+		LOCAL:1 = 1
+
+		IF LOCAL:1 && ARG == 1
+			;非前女友
+			IF CFLAG:106:1004 == 0 && MARK:反発刻印 == 0
+				PRINTFORMW “当然了。”立马做出了肯定的回答
+				PRINTFORMW 自从进入了这个世界之后，发生了很多事情
+				PRINTFORMW 比如被各种富有个性的人捉弄，不过……
+				PRINTFORMW 到现在为止，能够挺起胸说『来到这个世界真是太好了』的事情最少都有一个
+				PRINTFORMW ……那就是与菫子就这样建立了羁绊
+				PRINTFORML 「……这、这样啊」
+				PRINTFORML 「……哈、哈哈哈！那我，我也是这么想的！」
+				PRINTFORMW 刚刚用细微如蚊呐一样的声音说话的堇子，突然笑了出来！
+				PRINTFORML 「你、你、你不要误会啊！我才没有爱上你呢！」
+				PRINTFORML 「嗯，但是……如果你无论如何都这么说的话？」
+				PRINTFORML 「这……这、恋人……成为你的恋人也不是不可以……」
+				PRINTFORMW 低着头说话的菫子，一抹羞红从脸颊一直攀到了耳根处……
+				PRINTFORMW 总之，她好像接受了自己脑海中的想法
+				PRINTFORMW “……那么，这样的事也可以吗？”没有等堇子反应过来，走上前去搂住了堇子小小的身躯
+				PRINTFORML 「欸？啊……哎哎哎哎哎哎～！？」
+				PRINTFORMW 在自己突然紧紧抱住她的臂弯中，堇子微微地挣扎着，
+				PRINTFORML 「突、突然就抱上来，太狡猾了啦……！」
+				PRINTFORMW “抱歉呐，堇子你太可爱了……”
+				PRINTFORML 「呜，这算什么嘛……」
+				PRINTFORML 「……那，实在是拿你没办法啦……」
+				PRINTFORMW 菫子的的身体慢慢放松了下来，伸出手臂也慢慢的搂住%MASTERNAME:106%
+				PRINTFORMW 这段梦一般的时间，仿佛是天长地久一样的漫长……
+				PRINTFORMW
+				PRINTFORML 「简直幸福的就像虚幻一样……再……再让我听一次你的答案吧」
+
+			;前女友
+			ELSEIF CFLAG:106:1004 && MARK:反発刻印 == 0
+				PRINTFORML 「……是这样的么，%MASTERNAME:106%对我也是还有这种感情的啊」
+				PRINTFORML 「那我，就再信任一次%MASTERNAME:106%好了」
+				PRINTFORML 「希望%MASTERNAME:106%不要辜负我的感情就好……」
+				PRINTFORMW 说罢，堇子走上前来，钻入了%MASTERNAME:106%的怀抱里
+				PRINTL
+				PRINTL
+				PRINTL 重新和堇子成为了恋人……
+				CALL K106_TALENT_UPDOWN(K_106_TELENT_難以越過的底線, 0)
+				CALL K106_TALENT_UPDOWN(K_106_CFLAG_前女友, 0)
+			ENDIF
+			RETURN 1
+		
+		ENDIF
+		
+		;告白失敗
+		;口上启动开关
+		LOCAL:1 = 1
+
+		IF LOCAL:1 && ARG == 2
+			;非前女友
+			IF CFLAG:106:1004 == 0 && MARK:反発刻印 == 0
+				PRINTFORMW 这是什么意思，这样回答了
+				PRINTFORML 「…………」
+				PRINTFORML 「不，没什么」
+				PRINTFORML 「今天我也很开心，再见」
+				PRINTFORMW 堇子的目光没有再继续看向这边，快步走开了
+				PRINTFORMW 那个背影，总觉得有点悲伤……
+		
+			;前女友
+			ELSEIF CFLAG:106:1004 && MARK:反発刻印 == 0
+				PRINTFORMW 这是什么意思，这样回答了
+				PRINTFORML 「…………」
+				PRINTFORML 「不，没什么，是我唐突了」
+				PRINTFORML 「…………%MASTERNAME:106%既然没有什么想法的话，这样也很好」
+				PRINTFORML 「…………今天也很开心，再见」
+				PRINTFORMW 堇子的目光没有再继续看向这边，快步走开了
+				PRINTFORMW 那个背影，总觉得有点悲伤……
+			ENDIF
+
+			RETURN 1
+		ENDIF
+	ENDIF
+RETURN 1
+
+;==================================================
+;约会归来
+;==================================================
+@M_KOJO_SPEVENT_K106_3(ARG,ARG:1)
+
+	CALL SPEVENT_MESSAGE_3(ARG,ARG:1)
+
+	;口上启动开关
+	LOCAL = 1
+	
+	IF LOCAL
+	
+		;小分岐
+		;正常回家
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 0
+			IF TALENT:恋人
+				PRINTFORML 「明天也一起行动吧」
+				PRINTFORML 「我找到了很好的店哦」
+				PRINTFORML 堇子依偎在%MASTERNAME:106%的怀抱里，似乎期待着下次的约会的样子
+				PRINTFORMW ……自己的钱包还够不够呢？
+			
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「每天都可以见面，真是幸福啊……」
+				PRINTFORML 「……没、没什么！什么也没说！」
+				PRINTFORMW 堇子看上去心里如有小鹿乱撞一样……
+			
+			ELSEIF TALENT:炮友
+				PRINTFORML 「今天晚上……要不要也玩个痛快呢……」
+				PRINTFORMW 扭过头的%MASTERNAME:106%看到了堇子羞红着的脸颊，说出这种话显然是下定了很大的决心
+			
+			ELSEIF TALENT:思慕
+				PRINTFORML 「到最后还是让我很开心呀」
+				PRINTFORML 「即使是下次也要一起哦？」
+				PRINTFORMW 堇子调皮地笑着……
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「今天晚上……我们要不要……」
+				PRINTFORML 「没，没什么，我什么都没说」
+				PRINTFORMW 和%MASTERNAME:106%对上视线之后，堇子慌张的扭开了头
+			
+			ELSE
+				PRINTFORML 「明明在约会，却感觉好乏味」
+				PRINTFORML 「%MASTERNAME:106%这样下去，可得不到女孩子喜欢哦」
+				PRINTFORMW 堇子好像看上去不太开心……
+			ENDIF
+			RETURN 1
+		ENDIF
+		
+		;反発刻印消去
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 1
+			IF TALENT:恋人
+				PRINTFORML 「啊……算了，原谅你吧」
+				PRINTFORMW 堇子听到%MASTERNAME:106%的哀求之后，无可奈何地原谅了%MASTERNAME:106%的过错……
+				PRINTFORML 「虽然也已经不生气了……但是再做出那种事情的话，还是不会原谅%MASTERNAME:106%的」
+
+				;出轨
+				IF CFLAG:106:1003 == 3
+					PRINTFORML 「出轨这种事情，本来打算绝对不会原谅你的」
+					PRINTFORML 「但是，谁让我自己对%MASTERNAME:106%实在是没法忍心这样做」
+					PRINTFORML 「我看到%MASTERNAME:106%在痛苦的时候，我自己也……备受煎熬」
+					PRINTFORML 「想去抱住%MASTERNAME:106%的，想去原谅%MASTERNAME:106%的，但是又会想到%MASTERNAME:106%出轨的事实，只能一边痛苦着，一边想要离的%MASTERNAME:106%越远越好……」
+					PRINTFORML 「我们明明是恋人，是应该心意相通的才对，但是，%MASTERNAME:106%呐……为什么要这样做？让我们都受到伤害」
+					PRINTFORMW %MASTERNAME:106%无言以对的面对着堇子的指责
+					PRINTFORML 「%MASTERNAME:106%不要在这样做了，好么？」
+					PRINTFORMW 一股无形的力量慢慢托起%MASTERNAME:106%的脸颊，堇子的目光直视着%MASTERNAME:106%的眼睛
+					PRINTFORMW 虽然还有淡淡的恼怒和不甘流露着，但是伤心的目光仿佛要刺痛%MASTERNAME:106%一样
+					CFLAG:106:1003 = 0
+				ENDIF
+			
+			ELSE
+				PRINTFORML 「……」
+				PRINTFORML 「啊……算了，原谅你吧」
+				PRINTFORML 「本来嘛，这种事本来就不应该做的，不是吗？」
+				PRINTFORMW 堇子目光炯炯的望向这边……
+			ENDIF
+
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+			RETURN 1
+		ENDIF
+		
+		;反発刻印2使用
+		;口上启动开关
+		LOCAL:1 = 1
+
+		IF LOCAL:1 && ARG == 2
+			IF TALENT:恋人
+				PRINTFORML 「虽然我们是恋人，但是，%MASTERNAME:106%你实在是太过分了！真的太过分了！」
+				PRINTFORMW 堇子怒气未消的瞪着%MASTERNAME:106%的脸庞，眼神中微微的泛着冷意
+				PRINTFORML 「只是这种程度的道歉么？就想让我一笔勾销%MASTERNAME:106%犯下的过错？」
+				PRINTFORMW %MASTERNAME:106%只敢偶尔的瞟一眼堇子的面庞，只看到堇子冷冽的眼神，就仿佛是看着一个陌生人一样冰冷
+				
+				;出轨
+				IF CFLAG:106:1003 == 3
+					PRINTFORML 「而且，明明我们已经开始交往了，竟然，%MASTERNAME:106%你竟然还敢出轨！！」
+					PRINTFORML 「%MASTERNAME:106%你……我不懂，我真的不懂！你为什么要这样做！」
+					PRINTFORML 「对我做出这种事情，还要求我原谅你……」
+					PRINTFORML 「%MASTERNAME:106%你告诉我，你不是这样的人，好么？」
+					PRINTFORML 「%MASTERNAME:106%不要以为我就会这样彻底原谅你」
+					PRINTFORML 「这件事情还没有完结，我们还可以继续慢慢算账……」
+				ENDIF
+
+				PRINTFORMW 虽然看上去堇子依旧很生气，但是，至少……没那么可怕了
+			
+			ELSE
+				PRINTFORML 「知道了知道了知道了，知道了，我不会要你的命的。」
+				PRINTFORMW ……差点儿就没命了！？
+			ENDIF
+
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+			RETURN 1
+		ENDIF
+		
+		;反発刻印3使用
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 3
+			IF TALENT:恋人
+				PRINTFORML 「仅仅是这样就想让我原谅你？」
+				PRINTFORML 「如果不是因为至少以前我们还是恋人，以及不想再被灵梦教训一顿，现在，你已经是死人了」
+				PRINTFORMW %MASTERNAME:106%在堇子冰冷的眼神的注视下，大气都不敢出，如果激怒了堇子，自己真的会死掉的吧
+				
+			ELSE
+				PRINTFORML 「仅仅是这样就想让我原谅你？」
+				PRINTFORML 「一个人走夜路的时候可要小心呀……」
+				PRINTFORMW 堇子的怒气好象还没平息……
+			ENDIF
+			
+			CALL K106_TALENT_UPDOWN(K_106_TELENT_反抗的, 0)
+			RETURN 1
+		ENDIF
+
+		PRINTFORML
+	ENDIF
+RETURN 1

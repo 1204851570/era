@@ -1,0 +1,237 @@
+﻿;FileName_SHOP.ERB -------------------------------- Rev1.00
+;起床前メニュー画面表示
+;CALL		SYSTEM
+;ARG		VOID
+;RETURN		VOID
+;COMMENT	
+;----------------------------------------------------------
+@SHOW_SHOP
+;起床前画面表示中フラグ
+TFLAG:100 = 0
+;---------------------
+;起床時間自動補正、最低睡眠時間は4時間
+LOCAL:1 = CFLAG:MASTER:就寝時間 - DAY * 1440
+IF (TIME:3 >= LOCAL:1 && (TIME:3 - LOCAL:1) < 240) || (TIME:3 < 240 && (1440 + TIME:3 - LOCAL:1) < 240)
+	PRINTL 睡眠時間太短了。至少也要睡四个小时
+	CALL 最低睡眠時間設定()
+	PRINTFORMW 起床時間设定为（%時刻表示(TIME:3)%）了
+ENDIF
+;---------------------
+DRAWLINE
+PRINTFORML {DAY}日目(%GET_DAY()%)　所持金:\\%TOSTR(MONEY,"#,###")%
+PRINTL
+
+CALL BASE_BAR(MASTER, "体力", 28, "緑")
+PRINTFORM 　　
+CALL BASE_BAR(MASTER, "気力", 28, "青", "「改行」")
+CALL BASE_BAR(MASTER, "TSP", 28, "水色")
+PRINTFORM 　　
+SIF TALENT:MASTER:2 & 2
+	CALL BASE_BAR(MASTER, "精力", 28, "黄")
+PRINTFORML 
+
+;PRINT 体力
+;CALL PRINT_COLORBAR, BASE:MASTER:0,MAXBASE:MASTER:0,28, UNICODE(0x2585), UNICODE(0x2585), BARCOLORSET("赤"), RESULT:1
+;PRINTFORML  ({BASE:MASTER:体力,5}/{MAXBASE:MASTER:体力,5})  
+;PRINT 気力
+;CALL PRINT_COLORBAR, BASE:MASTER:1,MAXBASE:MASTER:1,28, UNICODE(0x2585), UNICODE(0x2585), BARCOLORSET("緑"), RESULT:1
+;PRINTFORML  ({BASE:MASTER:1,5}/{MAXBASE:MASTER:1,5})  
+PRINTFORML 
+PRINTBUTTON "[自宅位置]", 110
+PRINTFORM ：%GET_MAPNAME(MAIN_MAP)%
+IF FLAG:気絶中断
+	PRINTFORML 気絶中	
+ELSE
+	PRINTFORML 
+ENDIF
+PRINTBUTTON "[起床時間]", 2400
+PRINTFORML ：%時刻表示(TIME:3)%
+;CALL INFO_CLOCK_IMAGE(TIME:3, 500, "left")
+PRINTFORML 
+CALL TW_TIPS
+PRINTFORML 
+
+SETCOLOR 103,228,126
+PRINTL 【主菜单】
+RESETCOLOR
+PRINTLC [100] - 睜開眼睛
+PRINTLC [102] - 居住環境設定
+SIF CFLAG:MASTER:現在位置 != OMANEKIBEYA()
+	PRINTLC [110] - 搬家
+PRINTL
+PRINTL
+
+PRINTLC [101] - 能力表示
+PRINTLC [103] - 隙間商店
+PRINTL
+PRINTLC [105] - 実績解除
+SIF FLAG:700
+	PRINTLC [106] - 收集
+PRINTLC [108] - 入手的楽譜
+PRINTL
+PRINTLC [109] - 釣魚列表
+PRINTL 
+PRINTL
+
+SETCOLOR 103,228,126
+PRINTL 【系统菜单】
+RESETCOLOR
+PRINTLC [107] - 重置委托
+PRINTLC [700] - 重置服装
+PRINTL
+PRINTLC [400] - OPTION
+PRINTLC [410] - 採集列表
+
+SIF SAVESTR:本体バージョン != eraTW_Version
+	SETCOLOR C_RED
+PRINTLC [500] - UPDATE
+RESETCOLOR
+PRINTL 
+PRINTLC [420] - 单独指导
+RESETCOLOR
+
+PRINTL
+PRINTL
+
+PRINTLC [200] - SAVE
+PRINTLC [300] - LOAD
+PRINTL
+TRYCALLFORM IS_DEBUGGERR
+IF RESULT == 1
+	SETCOLOR 241,158,194
+	PRINTLC [666] - 幻想乡之主
+	RESETCOLOR
+	SIF !MONEY:2
+		PRINTL
+ENDIF
+SIF MONEY:2
+	PRINTFORML [600] - 卖出籌碼
+
+DRAWLINE
+
+;FileName_SHOP.ERB -------------------------------- Rev1.00
+;起床前メニューRESULT処理
+;CALL		SYSTEM
+;ARG		VOID
+;RETURN		VOID
+;COMMENT	
+;----------------------------------------------------------
+@USERSHOP
+;起床
+IF RESULT == 100
+	BEGIN TRAIN
+	RETURN 1
+ELSEIF RESULT == 410
+	CALL SHOW_GATHERING_LIST
+;能力表示
+ELSEIF RESULT == 101
+	DEBUGCLEAR
+	CALL SHOW_CHARA_LIST("現有的角色列表", "体力気力", "「情報表示」「条件変更」")
+;	CALL SHOW_CHARADATA
+;コレクション
+ELSEIF RESULT == 106 && FLAG:700 && !FLAG:気絶中断
+	CALL SHOW_COLLECTION
+;通信販売
+ELSEIF RESULT == 103 && !FLAG:気絶中断
+	CALL ITEM_BUY
+;設定
+ELSEIF RESULT == 102 && !FLAG:気絶中断
+	CALL SCHEDULE
+ELSEIF RESULT == 105 && !FLAG:気絶中断
+	CALL BONUS
+ELSEIF RESULT == 107 && !FLAG:気絶中断
+	CALL IRAI_RESET
+ELSEIF RESULT == 108
+	CALL SHOW_COLLECTION_SCORE
+ELSEIF RESULT == 109
+	CALL SHOW_COLLECTION_FISH
+ELSEIF RESULT == 110 && CFLAG:MASTER:現在位置 != OMANEKIBEYA()&& !FLAG:気絶中断
+	CALL SET_MAINHOME
+;SAVE
+ELSEIF RESULT == 200
+	SAVEGAME
+;LOAD
+ELSEIF RESULT == 300
+	LOADGAME
+;OPTION
+ELSEIF RESULT == 400
+	CALL OPTION
+ELSEIF RESULT == 420
+	CALL TUTORIAL_MAIN
+ELSEIF RESULT == 500
+	CALL UPDATE
+ELSEIF RESULT == 600
+	CALL CM_BALANCE
+ELSEIF RESULT == 666
+	TRYCALLFORM IS_DEBUGGERR
+	IF RESULT == 1
+		CALL DEBUG_MODE
+	ENDIF
+ELSEIF RESULT == 700
+	CALL RESET_ALL_CLOTHES
+ELSEIF RESULT == 2400
+	CALL 起床時間設定()
+ENDIF
+
+
+@TW_TIPS
+SETCOLOR C_YELLOW
+PRINTPLAIN 温馨提示:
+PRINTDATA
+	DATAFORM 某些指令只能在特定場所使用。
+	DATAFORM 点击名字旁边的【★】、就会使用【追踪】指令、向该角色所在的場所移動。
+	DATAFORM 根据所在地图的不同、可能本地区不存在家庭菜園或者戦闘訓練的場所。如果需要的话可以考虑搬家。
+	DATAFORM 時間停止能力的TSP是越用越长的哦。
+	DATAFORM 失物去向可以去请教纳兹琳哦、她很擅长的(＾＿＾)。
+	DATAFORM 酒不但系统商城有、酒屋也能买到哦。
+	DATAFORM 神簽和占卜的一些结果会干涉现实呢、如果抽中的话……
+	DATAFORM 下雪对庄稼的生长不利。
+	DATAFORM 筹码是红魔馆赌场的硬通货。
+	DATAFORM 大部分情况下、用筹码会比现金付款便宜。
+	DATAFORM 大家都会有各自擅长的事情、多发现哦。
+	DATAFORM 战斗能力和教养越低、好感度就越难提升。
+	DATAFORM 大部分的祈求、神明总是能实现的。
+	DATAFORM 可以在人間之里广场猎艳的哦。
+	DATAFORM 随机人物只有在第一天才能够上涨能力。
+	DATAFORM 尽管选择了忘却了随机人物的话就不会再次登场、但也只有忘却的场合才能进行进行妊娠判定。
+	DATAFORM 随机角色再次登场的情况下、会失去能力上升补正、而且不会怀孕。
+	DATAFORM 不能同时出现两个以上的随机人物。
+	DATAFORM 随机角色的情報会以dat文件的形式进行保存。
+	DATAFORM 随机角色只会在第一次见到的那个地图出现。
+	DATAFORM 禁欲可是很苦的哦、还是应该诚实面对自己的身体、但求心之所安。
+	DATAFORM 有些人的生活节奏昼夜颠倒呢、想追就要委屈下自己了、把起床时间调整一下呗。
+	DATAFORM 指示不显示了？可能是你把它过滤了吧。
+	DATAFORM 無志氣的话很多种类的命令都无法使用、不过更容易被推。
+	DATAFORM 角色的个人工作都是需要专业素质的、素质不够乱帮忙的话容易失败哦。
+	DATAFORM 做料理必须准备食材哟。
+	DATAFORM 把水倒进酒虫的瓶子里就能收获酒了。
+	DATAFORM 跳蛋是可以在家庭菜園种出来的哟。
+	DATAFORM 汚臭耐性越高越难掃除。
+	DATAFORM 在赌场有很多小游戏可以玩、玩多了会员等级还会上升。
+	DATAFORM 時姦刻印与同等级的不埒刻印、具有相同的快乐效果。让傲娇们口嫌体正直起来也是一种有效的手段哦。
+	DATAFORM 随着日期变换、收藏隙間不但会补充、还会增加持有数上限、所以请使劲的用吧。
+	DATAFORM 有的地方需要你与地主关系亲密才能进入呢。
+	DATAFORM 學習与訓練是苦闷的、但是如果能跟其他人一起做就很有效率了。
+	DATAFORM 挑逗模式能抑制绝顶、等待一些钝感的部位一起进入高潮、是专为多重绝顶而设的重要功能
+	DATAFORM 到鈴奈庵借書能得到书所对应的技能经验。
+	DATAFORM 使用奇迹之石能提高角色欲望、甚至会当街把你推倒、但是亲密和信赖也就很难上升了。
+	DATAFORM 游戏一年可以用起床选项的（败者食尘）开始你的二周目、会继承一周目的一部分能力。
+	DATAFORM 多重絶頂因此而上升的额外好感度、会在射精时追加入BOUNS里一同计算。
+	DATAFORM 禁欲3日就能得到素质【濃厚精液】来使精液得到強化、射精之后第二天【濃厚精液】会消失。
+	DATAFORM 禁欲太久的话会梦遗哦。
+	DATAFORM 料理得到的评价在80点以上就会使人心情舒畅、反之35点以下会让人反胃。
+	DATAFORM 付喪神的情欲极难上升、因此妊娠率及其低下、但是会随着玩家的道具经验上升而慢慢恢复正常生育能力。
+	DATAFORM 信頼度太低的话好感度会进入瓶颈。而在约会中这种制約会消失。
+	DATAFORM 育児中时欲求不満度上升了就很麻烦。那么孩子睡觉或者上学的时候…
+	DATAFORM 就算没有拥有調合套装、也有若干可以进行調合的場所。
+	DATAFORM 調合成功率除了調合Lv之外还受到教養的影響。
+	DATAFORM 有些素材不在特定季節就无法採集到。
+	DATAFORM 採集到高級素材的话就可以提升採集等级。
+	DATAFORM 请不要在正在工作的人的面前演奏。
+	DATAFORM 宴会中进行演奏的话会有一些特别的收获、但如果水平不够的话反而会受到冷淡的对待。
+	DATAFORM 进行縁結的祈願的话、第二天被祈願的角色就会来訪。
+	DATAFORM 工作预定之类的可以在能力画面或者日历里確認。
+	DATAFORM resource文件夹内有別人版的替换用画像的圧縮文件。
+	DATAFORM 点击目标角色可以直接切换立絵与顔絵。
+ENDDATA
+PRINTFORML 

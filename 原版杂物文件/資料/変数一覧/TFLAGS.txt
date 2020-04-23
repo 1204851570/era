@@ -1,0 +1,112 @@
+﻿-----------------------------------------------------
+TFLAG
+-----------------------------------------------------
+TFLAG:0～99 毎ターン終了時にリセット
+
+TFLAG:1 射精部位 (ビット 1=膣内 2=アナル 3=手淫 4=口淫 5=乳交 6=素股 7=足交 8=体表 9=肛門奉仕
+
+TFLAG:2 破瓜抑制FLAG（処女で快Vを得た場合、経験を変動させない)
+TFLAG:3 SELECTCOM保存
+TFLAG:4 破瓜FLAG
+TFLAG:5 推倒
+
+TFLAG:8 お掃除フラグ
+
+TFLAG:10 V挿入継続フラグ
+TFLAG:11 A挿入継続フラグ
+TFLAG:12 逆強姦継続フラグ（VA共通）
+TFLAG:13 好感度没有取得
+
+;TFLAG:15 諦め
+TFLAG:16 挿入拒絶
+
+TFLAG:20 時姦刻印
+
+TFLAG:21 反発刻印
+TFLAG:22 苦痛刻印
+TFLAG:23 快楽刻印
+TFLAG:24 屈服刻印
+TFLAG:25 刻印取得時の従順の変化
+
+;TFLAG:30 奉仕快楽フラグ
+
+TFLAG:50 特殊COM;(1=シックスナイン 2=岩清水 3=Gスポット刺激 4=乱れ牡丹 5=手淫フェラ 6= 7= 8= シックスナインパイズリ 13=交互挿入 17=乳首同時吸い)
+
+TFLAG:60 MASTERの口使用中
+TFLAG:61 MASTERの手使用中
+TFLAG:62 MASTERのＣ使用中
+TFLAG:63 MASTERのＶ使用中
+TFLAG:64 MASTERのＡ使用中
+TFLAG:65 MASTERのＢ使用中
+
+TFLAG:70 不让推倒
+TFLAG:95 好感度ボー茄子
+TFLAG:96 好感度减少
+TFLAG:97 好感度管理
+TFLAG:98 信頼度管理
+TFLAG:99 信頼度管理之２
+
+TFLAG:100 調教中COMABLE管理
+TFLAG:101 調教自動実行管理
+TFLAG:102 COMABLE管理(1=日常ON 2=ウフフON)
+TFLAG:103 切换到前一回的TARGET
+TFLAG:104 現在的TARGET (0なら指定しない) TARGET変更用（変更したい相手が入ってる）
+TFLAG;105 ビデオカメラ(0=固定カメラ 1=MASTER撮影 2=助手撮影)
+TFLAG:106 MASTERのＰ挿入中
+
+
+TFLAG:117 妄想中
+TFLAG:120 接吻マーク
+TFLAG:121 套套内
+TFLAG:130 結界
+TFLAG:131 薬
+
+;TFLAG:150 前回のASSIPLAYの履歴
+TFLAG:151 前回の特殊COM
+TFLAG:152 前回のダブル○○系指令におけるTARGET以外の参加者（LOCAL）
+
+TFLAG:160 尺寸显示
+TFLAG:161 服装表示
+TFLAG:162 能力表示
+TFLAG:163 経験表示
+TFLAG:164 性技表示
+TFLAG:165 素質表示
+TFLAG:166 刻印表示
+
+TFLAG:170 PALAM非表示
+TFLAG:171 Status非表示
+TFLAG:172 表示道具種類
+
+
+TFLAG:193 SELECTCOM的分岐
+TFLAG:194 不影响SOURCE等的SELECTCOM的分岐
+TFLAG:195 遠距離移動
+TFLAG:196 その日の掃除量
+TFLAG:197 打水
+TFLAG:198 午睡フラグ
+TFLAG:199 约会中イベントフラグ(bit 1=弁当2=採購3=診察)
+TFLAG:200 从打工中赚到的金額
+;TFLAG:201 芳香の位置
+TFLAG:201 醒酒药
+;TFLAG:202 青娥の位置
+;TFLAG:203 屠自古の位置
+TFLAG:204 角色列表
+
+TFLAG:205 運搬
+TFLAG:206 遠距離移動之２
+TFLAG:207 労働量
+TFLAG:208 傘耐久度
+TFLAG:209 大衆浴場FLAG
+TFLAG:210 大衆浴場時限入湯回数
+TFLAG:211 旧地獄温泉FLAG
+TFLAG:212 旧地獄温泉時限入湯回数
+TFLAG:213 パンツ収奪
+TFLAG:214 上门清扫
+TFLAG:215 约会前好感度
+TFLAG:216 你起床;TIME:3+DAY * 1440
+
+
+TFLAG:300 時間経過
+TFLAG:301
+
+;500~603は引き継用に使用

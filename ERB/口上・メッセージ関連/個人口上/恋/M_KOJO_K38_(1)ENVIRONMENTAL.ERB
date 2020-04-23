@@ -1,0 +1,1340 @@
+﻿;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;时间系对话组
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_K38_TIME_IS_ON_OUR_SIDE
+;@M_KOJO_K38_TIME_IS_ON_OUR_SIDE_EVENT是事件组，下面是古明地恋时间情报
+;来访：17时
+;归宅：2时
+;就寝：3时
+;起床：10时
+;20%几率进入事件触发函数。
+CFLAG:38:1515 = RAND:100
+SIF CFLAG:38:1515 < 20
+     CALL M_KOJO_K38_TIME_IS_ON_OUR_SIDE_EVENT
+;早朝(AM4～6)
+IF TIME:2 == 1
+
+;正午前(AM6～12)
+ELSEIF TIME:2 == 2
+
+;昼(PM12～3)
+ELSEIF TIME:2 == 3
+
+;午后(PM3～6)
+ELSEIF TIME:2 == 4
+
+;夕(PM6～8)
+ELSEIF TIME:2 == 5
+
+;夜(PM8～11)
+ELSEIF TIME:2 == 6
+
+;深夜(PM11～AM4)
+ELSEIF TIME:2 == 7
+
+ELSE
+     $BACK
+     CFLAG:38:1517 = 1145141919810
+     CALL K38_CONFEDERATION_300_1
+     RETURN
+ENDIF
+RETURN
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;天气系对话组
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_K38_JUST_A_LITTLE_PATIENCE
+CFLAG:38:1515 = RAND:100
+;有些文本比较稀有
+SIF CFLAG:38:1515 < 20
+     CALL M_KOJO_K38_JUST_A_LITTLE_PATIENCE_EVENT
+;彩虹
+IF TIME:7 == 1
+
+;钻石星辰
+ELSEIF TIME:7 == 2
+
+;流星
+ELSEIF TIME:7 == 3
+
+;流星群
+ELSEIF TIME:7 == 4
+
+ENDIF
+SELECTCASE TIME:5
+     ;晴れ(晴天)
+     CASE 0, 1
+
+	 ;(小阴天，薄云)
+     CASE 2
+
+	 ;曇り(阴天)
+	 CASE 3
+
+	 ;雨
+	 CASE 4
+
+	 ;大雨
+	 CASE 5
+
+	 ;霧雨
+	 CASE 6
+
+	 ;霧
+	 CASE 7
+
+	 ;雪
+	 CASE 8
+
+	 ;吹雪,猛吹雪
+	 CASE 9
+
+	 ;細雪
+	 CASE 10
+
+	 ;霧雪
+	 CASE 11
+
+	 ;雨雪交加
+	 CASE 12
+
+	 ;冰雹
+	 CASE 13
+
+	 CASEELSE
+         $BACK
+         CFLAG:38:1517 = 1145141919810
+         CALL K38_CONFEDERATION_300_1
+         RETURN
+ENDSELECT
+RETURN
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;地点系对话组
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_K38_MADELIAN_IS_VOVAGE
+CFLAG:38:1515 = RAND:100
+SIF CFLAG:38:1515 < 20
+     CALL M_KOJO_K38_MADELIAN_IS_VOVAGE_EVENT
+SELECTCASE CFLAG:38:現在位置
+	 ;桜並木の鳥居
+	 CASE 10
+	     ;事件阶段
+	     IF CFLAG:38:1804 == 0
+		     CALL M_KOJO_K38_WORLD_0010_0_1804
+			 RETURN
+		 ENDIF
+		 ;分配阶段
+		 CFLAG:38:1515 = RAND:100
+		 IF CFLAG:38:1515 < 100
+		     GOTO WORLD_10_0_1
+		 ENDIF
+		 RETURN
+		 $WORLD_10_0_1
+		 CFLAG:38:1515 = RAND:100
+		 IF CFLAG:38:1515 < 50
+		         PRINTFORML %CALLNAME:MASTER%倚靠在鸟居上。
+	                 PRINTDATA
+			             DATALIST
+				             DATAFORM 望着天。
+		                     DATAFORM 说着话。
+		                 ENDLIST
+						 DATALIST
+				             DATAFORM 恋恋也倚靠在鸟居上。
+		                     DATAFORM 木刺的锋芒大显神威。
+		                 ENDLIST
+	                 ENDDATA
+					 PRINTFORMW 
+					 RETURN
+		 ELSEIF CFLAG:38:1515 < 100
+		         PRINTFORML 恋恋在鸟居附近游荡。
+	                 PRINTDATA
+			             DATALIST
+				             DATAFORM 望着充满活力的少女，%CALLNAME:MASTER%忽然有了一种。
+		                     DATAFORM 放养的感觉。
+		                 ENDLIST
+			             DATALIST
+				             DATAFORM %CALLNAME:MASTER%快步跟上。
+		                     DATAFORM 谈话中，一前一后地行走。
+		                 ENDLIST
+	                 ENDDATA
+					 PRINTFORMW 
+					 RETURN
+		 ENDIF
+		 PRINTFORMW 
+		 RETURN
+	 ;神社境内
+	 CASE 20
+		 CFLAG:38:1515 = RAND:100
+		 IF CFLAG:38:1515 < 100
+		     GOTO WORLD_20_0_1
+		 ENDIF
+		 RETURN
+		 $WORLD_20_0_1
+		 CFLAG:38:1515 = RAND:100
+		 IF CFLAG:38:1515 < 100
+		     IF DAY:2 == 1
+			     PRINTFORML 神社境内，樱花漫天。
+	                 PRINTDATA
+			             DATALIST
+				             DATAFORM 恋恋一边张望着神社的樱花，一边前行。
+		                     DATAFORM %CALLNAME:MASTER%陪伴着活泼的恋恋，在神社境内赏樱。
+		                 ENDLIST
+						 DATALIST
+				             DATAFORM %CALLNAME:MASTER%与恋恋信步走向另一处。
+		                     DATAFORM 到处都是、到处都是盛开的樱花。
+		                 ENDLIST
+	                 ENDDATA
+					 PRINTFORMW 
+					 RETURN
+			 ELSE
+			     PRINTFORML 神社境内耸立着许多樱花树。
+	                 PRINTDATA
+			             DATALIST
+				             DATAFORM 一不注意，恋恋就坐到树的枝丫上面。
+		                     DATAFORM 
+		                 ENDLIST
+						 DATALIST
+				             DATAFORM 恋恋绕着一颗又一颗的树行走。
+		                     DATAFORM %CALLNAME:MASTER%绕着一圈又一圈跟随。
+		                 ENDLIST
+	                 ENDDATA
+					 PRINTFORMW 
+					 RETURN
+			 ENDIF
+		 ENDIF
+		 PRINTFORMW 
+		 RETURN
+	 ;神社本堂
+	 CASE 30
+
+	 ;神社縁側
+	 CASE 40
+
+	 ;妖精の大樹
+	 CASE 50
+
+	 ;夢幻遺跡
+	 CASE 60
+
+	 ;お地蔵通り
+	 CASE 110
+
+	 ;枝垂れ柳の下
+	 CASE 120
+
+	 ;命蓮寺境内
+	 CASE 130
+
+	 ;命蓮寺本堂
+	 CASE 140
+
+	 ;墓地
+	 CASE 150
+
+	 ;聖徳道場
+	 CASE 160
+
+	 ;広場
+	 CASE 210
+
+	 ;商家屋
+	 CASE 220
+
+	 ;呑屋小道
+	 CASE 230
+
+	 ;寺子屋
+	 CASE 240
+
+	 ;大衆浴場
+	 CASE 250
+
+	 ;連れ込み宿
+	 CASE 260
+
+	 ;長屋街
+	 CASE 270
+
+     ;霧の湖
+	 CASE 310
+
+	 ;氷のかまくら
+	 CASE 320
+
+	 ;廃洋館
+	 CASE 330
+
+	 ;正門
+	 CASE 340
+
+	 ;広間
+	 CASE 350
+
+     ;食堂
+	 CASE 360
+
+	 ;大図書館
+	 CASE 370
+
+	 ;地下室
+	 CASE 380
+
+	 ;竹林入り口
+	 CASE 410
+
+	 ;迷いの小道
+	 CASE 420
+
+	 ;斜角の竹林
+	 CASE 430
+
+	 ;兎の洞窟
+	 CASE 440
+
+	 ;永遠亭
+	 CASE 450
+
+	 ;無名の丘
+	 CASE 460
+
+	 ;太陽の畑
+	 CASE 470
+
+	 ;永遠亭奥ノ院
+	 CASE 480
+
+	 ;森の入り口
+	 CASE 510
+
+	 ;香霖堂
+	 CASE 520
+
+	 ;古木の大樹
+	 CASE 530
+
+	 ;霧雨魔法店
+	 CASE 540
+
+	 ;人形の洋館
+	 CASE 550
+
+	 ;再思の道
+	 CASE 560
+
+	 ;無縁塚
+	 CASE 570
+
+	 ;中有の道
+	 CASE 610
+
+	 ;三途の川
+	 CASE 620
+
+	 ;マヨヒガ
+	 CASE 630
+
+	 ;彼岸
+	 CASE 670
+
+	 ;白玉楼庭
+	 CASE 680
+
+	 ;白玉楼
+	 CASE 690
+
+	 ;麓の樹海
+	 CASE 710
+
+     ;玄武の沢
+	 CASE 720
+
+	 ;大蝦蟇の池
+	 CASE 730
+
+	 ;マヨヒガ
+	 CASE 740
+
+	 ;仙人の屋敷
+	 CASE 750
+
+	 ;間欠泉地下センター
+	 CASE 760
+
+	 ;九天の滝
+	 CASE 810
+
+	 ;絶景の丘
+	 CASE 820
+
+	 ;山の湖
+	 CASE 830
+
+	 ;守矢神社境内
+	 CASE 840
+
+	 ;守矢神社本殿
+	 CASE 850
+
+	 ;天界
+	 CASE 890
+
+	 ;幻想風穴
+	 CASE 910
+
+	 ;地獄の深道
+	 CASE 920
+
+	 ;旧地獄街道
+	 CASE 930
+
+	 ;旧地獄温泉
+	 CASE 940
+
+	 ;ラブホ
+	 CASE 950
+
+	 ;地霊殿
+	 CASE 960
+
+	 ;灼熱地獄跡
+	 CASE 970
+
+	 ;槐安通路
+	 CASE 1010
+
+	 ;月の都
+     CASE 1050
+
+	 ;綿月亭
+	 CASE 1060
+
+	 ;玉兎の街
+	 CASE 1070
+
+	 ;桃林～砂浜
+	 CASE 1080
+
+	 ;静かの海
+	 CASE 1090
+
+	 CASEELSE
+         $BACK
+         CFLAG:38:1517 = 1145141919810
+         CALL K38_CONFEDERATION_300_1
+         RETURN
+ENDSELECT
+RETURN
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;时间系对话组(event)
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_K38_TIME_IS_ON_OUR_SIDE_EVENT
+;早朝(AM4～6)
+IF TIME:2 == 1
+	 IF CFLAG:38:1517 == 240110019999999 && CFLAG:38:1517 >= 240010010000000
+	     PRINTDATA
+			 DATALIST
+		         DATAFORM 「嗯～」
+		         DATAFORM 「哈----」
+		         DATAFORM 「呼----哈！」
+		         DATAFORM 「……」
+                 DATAFORM 古明地恋抬头望向天空。
+		         DATAFORM 「这就是恋恋睡觉时的空气吗？」
+				 DATAFORM 「好冷、……」
+		     ENDLIST
+	     ENDDATA
+		 PRINTFORMW 
+		 RETURN
+	 ELSE
+	     GOTO BACK
+	 ENDIF
+;正午前(AM6～12)
+ELSEIF TIME:2 == 2
+
+;昼(PM12～3)
+ELSEIF TIME:2 == 3
+
+;午后(PM3～6)
+ELSEIF TIME:2 == 4
+
+;夕(PM6～8)
+ELSEIF TIME:2 == 5
+
+;夜(PM8～11)
+ELSEIF TIME:2 == 6
+
+;深夜(PM11～AM4)
+ELSEIF TIME:2 == 7
+
+ELSE
+     $BACK
+     CFLAG:38:1517 = 1145141919810
+     CALL K38_CONFEDERATION_300_1
+     RETURN
+ENDIF
+RETURN
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;天气系对话组(通用及event)
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_K38_JUST_A_LITTLE_PATIENCE_EVENT
+;彩虹
+IF TIME:7 == 1
+	 ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	 CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+     IF CFLAG:38:1517 <= 105019999999999 && CFLAG:38:1517 >= 105010000000000
+	     PRINTDATA
+			 DATALIST
+				 DATAFORM 「呐、呐！那个！！」
+		         DATAFORM 恋恋伸手，指向天上的彩虹。
+                 DATAFORM 「把蓝蓝的天空都变得乱乱的----！」
+		     ENDLIST
+			 DATALIST
+				 DATAFORM 「没有水----」
+		         DATAFORM 恋恋看着天空，在%CALLNAME:MASTER%的注视下摇了摇头。
+                 DATAFORM 「没有水了----！」
+		     ENDLIST
+	     ENDDATA
+		 PRINTFORMW 
+		 RETURN
+     ELSEIF CFLAG:38:1517 <= 205019999999999 && CFLAG:38:1517 >= 205010000000000
+	     PRINTDATA
+			 DATALIST
+				 DATAFORM 「嗯……」
+		         DATAFORM 古明地恋歪着头，很快得出一个结论。
+                 DATAFORM 「落汤鸡和彩虹是同一个样子出现在这里的～！」
+		     ENDLIST
+			 DATALIST
+				 DATAFORM 「彩虹只是在蓝蓝的天空上不同的颜色----」
+		         DATAFORM 「为什么要看这么久呢～？」
+                 DATAFORM 古明地恋用眼睛注视了许久彩虹，才说道。
+		     ENDLIST
+	     ENDDATA
+		 PRINTFORMW 
+		 RETURN
+     ELSE
+		 GOTO BACK
+	 ENDIF
+;钻石星辰
+ELSEIF TIME:7 == 2
+	 ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	 CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+     IF CFLAG:38:1517 <= 105119999999999 && CFLAG:38:1517 >= 100511000000000
+	     PRINTDATA
+		     ;真惨。
+			 DATALIST
+				 DATAFORM 五彩斑斓的钻石星辰，像金平糖一样洒满在云端。
+		         DATAFORM 恋恋被这华美的景象所吸引。
+                 DATAFORM 抛下%CALLNAME:MASTER%，毅然决然地飞向了天空。
+		     ENDLIST
+	     ENDDATA
+		 PRINTFORMW 
+		 RETURN
+     ELSEIF CFLAG:38:1517 <= 205119999999999 && CFLAG:38:1517 >= 205110000000000
+	     PRINTDATA
+			 DATALIST
+				 DATAFORM 五彩斑斓的钻石星辰，像金平糖一样洒满在云端。
+		         DATAFORM 古明地恋被这样的景象所吸引，飞向了华美的天空。
+                 DATAFORM %CALLNAME:MASTER%看到一个渺小的身影，好像逐渐与钻石星辰合为一体。
+		     ENDLIST
+	     ENDDATA
+		 PRINTFORMW 
+		 RETURN
+     ELSEIF CFLAG:38:1517 <= 305119999999999 && CFLAG:38:1517 >= 305110000000000
+	     PRINTDATA
+			 DATALIST
+				 DATAFORM 五彩斑斓的钻石星辰，像金平糖一样洒满在云端。
+		         DATAFORM 恋恋被这华美的景象所吸引，为了离得更近一点，恋恋下意识浮在空中。
+                 DATAFORM 她眨着灵动的眼睛，转头看向%CALLNAME:MASTER%。
+                 DATAFORM 恋恋纤细的身子化作一道优美的弧线，出现到%CALLNAME:MASTER%身后。
+				 DATAFORM 还没等%CALLNAME:MASTER%反应过来，白暂的双手就已经环绕住%CALLNAME:MASTER%的腰肢。
+				 DATAFORM %CALLNAME:MASTER%回头看向恋恋，只看见恋恋脸上狡黠的笑意。
+				 DATAFORM 
+				 DATAFORM 之后，%CALLNAME:MASTER%就被恋恋环抱着，飞了起来。
+				 DATAFORM 「嗯～这么漂亮的风景，可不能恋恋独享哦————！」
+				 DATAFORM 恋恋很高兴地说道，然后使劲将自己的脑袋往%CALLNAME:MASTER%脖子里蹭来蹭去。
+				 DATAFORM %CALLNAME:MASTER%一边感受少女柔软身躯的触感，一边忍耐小脑袋的头发袭扰。
+				 DATAFORM 注视着壮丽的钻石星辰。
+		     ENDLIST
+	     ENDDATA
+		 PRINTFORMW 
+		 RETURN
+     ELSE
+		 GOTO BACK
+	 ENDIF
+	 RETURN
+;流星
+ELSEIF TIME:7 == 3
+
+;流星群
+ELSEIF TIME:7 == 4
+
+ENDIF
+SELECTCASE TIME:5
+     ;晴れ(晴天)
+     CASE 0, 1
+         IF CFLAG:38:1517 <= 140110099999999 && CFLAG:38:1517 >= 140110000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 恋恋用手遮住太阳的光线，又放下来。
+		             DATAFORM 「嗯，如果%CALLNAME:MASTER%说过，太阳会变热……」
+                     DATAFORM 「那么，是什么让它变冷的呢？」
+				     DATAFORM 「是妖怪的异变吗？」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 320119999999999 && CFLAG:38:1517 >= 320110000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「额、有些热了。」
+		             DATAFORM 恋恋紧紧抓住%CALLNAME:MASTER%的胳膊，踮起脚，用手帮%CALLNAME:MASTER%遮挡太阳。
+                     DATAFORM 「嗯——稍微休息一下～」
+					 DATAFORM 恋恋这么说着，露出了活力的微笑。
+		         ENDLIST
+			     DATALIST
+				     DATAFORM 「——这个给你~♪」
+		             DATAFORM 还没等%CALLNAME:MASTER%反应过来，恋恋就像奉上王冠一样将帽子给%CALLNAME:MASTER%戴上了。
+                     DATAFORM 「帽子先生说它很愿意在烈烈阳光之下为%CALLNAME:MASTER%效劳——！」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ENDIF
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+		 IF CFLAG:38:1517 <= 100119999999999 && CFLAG:38:1517 >= 100110000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「太阳可是人类母亲一样的存在哦––––」
+		             DATAFORM 恋恋抬起头，有些纠结。
+                     DATAFORM 「恋恋什么都看不到，因为%CALLNAME:MASTER%的母亲”很亮嘛！」
+		         ENDLIST
+			     DATALIST
+				     DATAFORM 「呐、呐！天上的火球和太阳有什么区别吗？」
+		             DATAFORM 「是太阳？那和地底的太阳呢？」
+                     DATAFORM 「因为很热！」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 200119999999999 && CFLAG:38:1517 >= 200110000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「太阳的传说！」
+		             DATAFORM 「有关忠诚和梦想、希望的赞美诗！」
+                     DATAFORM 古明地恋用着奇怪的腔调说话。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 300119999999999 && CFLAG:38:1517 >= 300110000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「太阳的传说！」
+		             DATAFORM 「有关忠诚和梦想、希望的赞美诗！」
+                     DATAFORM 恋恋用着奇怪的腔调说话。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+		 
+	 ;(小阴天，薄云)
+     CASE 2
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+         IF CFLAG:38:1517 <= 100219999999999 && CFLAG:38:1517 >= 100210000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「太阳到处都有，这是什么意思呢～？」
+		             DATAFORM 恋恋将全身缩进阴影里，睁着大眼睛，问道：
+                     DATAFORM 「意味着大家都在用吗？」
+		         ENDLIST
+			     DATALIST
+				     DATAFORM 「太阳每天都会升起来。」
+		             DATAFORM 「现在恋恋已经确定它是同一个太阳了––––」
+                     DATAFORM 「嗯～～～～」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+         ELSEIF CFLAG:38:1517 <= 200219999999999 && CFLAG:38:1517 >= 200210000000000
+	         PRINTDATA
+			     ;维多利亚时期，北德身为后起之秀需要殖民地来获取原料和市场，无可避免地需要挑战英法老牌殖民国家
+				 ;“阳光下的地盘”是这个诉求公开化的体现，最后导致第一次世界大战的爆发。
+				 ;在这里使用这个名词，是为了隐喻恋恋的状态。
+			     DATALIST
+				     DATAFORM 「太阳肯定不想要某些人生活在阴影里嘛––––」
+					 DATAFORM 古明地恋摇晃身子，好像悟出什么大道理的样子。
+		             DATAFORM 「不过有些时候～」
+                     DATAFORM 「恋、恋、也、想、要、阳、光、下、的、地、盘！」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;曇り(阴天)
+	 CASE 3
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+         IF CFLAG:38:1517 <= 100319999999999 && CFLAG:38:1517 >= 100310000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「太阳到处都有，这是什么意思呢～？」
+		             DATAFORM 恋恋将全身缩进阴影里，睁着大眼睛，问道：
+                     DATAFORM 「意味着大家都在用吗？」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+         ELSEIF CFLAG:38:1517 <= 200319999999999 && CFLAG:38:1517 >= 200310000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「%CALLNAME:MASTER%？、%CALLNAME:MASTER%！」
+		             DATAFORM 「是太阳比较远，还是恋恋比较远呢～？」
+                     DATAFORM 「……？果然是太阳吧––––」
+					 DATAFORM 古明地恋好像并不需要答案，注视着阴暗的天空，又自顾自地说了起来。
+		             DATAFORM 「因为只听说过大家靠近恋恋身边，没听说过大家靠近太阳身边啊～」
+                     DATAFORM 「可是、为什么大家抬头就能看见太阳，低头却看不见恋恋呢？」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;雨
+	 CASE 4
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+         IF CFLAG:38:1517 <= 100419999999999 && CFLAG:38:1517 >= 100410000000000
+	         PRINTDATA
+			     ;是《三体》，我看了《三体》！
+			     DATALIST
+				     DATAFORM 「……」
+		             DATAFORM 恋恋茫然地抬起头。
+                     DATAFORM 天空正在下雨。
+		         ENDLIST
+			     DATALIST
+				     DATAFORM 「“没关系”～？」
+		             DATAFORM 恋恋愤愤不平地看向正在下雨的天空。
+                     DATAFORM 「谁和雨点说“没关系”呢？」
+					 DATAFORM 「它们马上没有了，“没关系”又能怎么样呢？」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 100429999999999 && CFLAG:38:1517 >= 100420000000000
+		     PRINTDATA
+			     DATALIST
+		             DATAFORM 漫步在%CALLNAME:MASTER%的雨伞下，恋恋突然显得很沮丧。
+		             DATAFORM 「雨大人只需要一次幸运––––」
+                     DATAFORM 「而恋恋却需要每一次幸运！」
+					 DATAFORM 前思后想，左思右想，恋恋只能感叹一声。
+					 DATAFORM 「一点儿也不公平～！」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 200419999999999 && CFLAG:38:1517 >= 200410000000000
+		     PRINTDATA
+			     DATALIST
+		             DATAFORM 「据说一流的妖怪可以躲过下雨～」
+                     DATAFORM 「恋恋不是一流的妖怪、」
+					 DATAFORM 「所以、躲不过––––」
+					 DATAFORM 古明地恋无视了自己被打湿的命运，侃侃而谈。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;大雨
+	 CASE 5
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+         IF CFLAG:38:1517 <= 100519999999999 && CFLAG:38:1517 >= 100510000000000
+	         PRINTDATA
+			     ;是《三体》，我看了《三体》！
+			     DATALIST
+				     DATAFORM 「只要防住水滴的第一次进攻，人类就能取得最终的胜利！！！」
+		             DATAFORM 「……？」
+                     DATAFORM 「为什么是第一次进攻呢？」
+				     DATAFORM 「……！！！」
+		             DATAFORM 「这样就说明人类比水滴厉害啊––––」
+                     DATAFORM 「后面水滴无论发动多少次进攻，人类都可以轻松化解～！」
+				     DATAFORM 「……？」
+		             DATAFORM 「所以这还是实力的对决？」
+                     DATAFORM 「……」
+				     DATAFORM 「是啊～」
+		             DATAFORM 「……」
+                     DATAFORM 「所以人类挡得住水滴的第一次进攻吗～？」
+				     DATAFORM 「……」
+				     DATAFORM 「挡不住……！」
+					 DATAFORM 恋恋在自言自语中，用双手抱住了自己湿漉漉的头。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 100529999999999 && CFLAG:38:1517 >= 100520000000000
+		     PRINTDATA
+			     DATALIST
+		             DATAFORM 恋恋和%CALLNAME:MASTER%撑着一把伞漫步在雨中。
+                     DATAFORM 「人类从小在咣锵、咣锵的打雷中长大！」
+					 DATAFORM 「所以对大雨有这个抗性––––」
+		             DATAFORM 「而且还有伞～～～～」
+                     DATAFORM 事实证明，哪怕大雨也不能冲散恋恋的无忧无虑。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 200529999999999 && CFLAG:38:1517 >= 200520000000000
+		     PRINTDATA
+			     DATALIST
+		             DATAFORM 「啊，诶！」
+                     DATAFORM 「嗯……」
+					 DATAFORM 古明地恋望着刚刚驶过的雷电痕迹，平平淡淡地说道。
+		             DATAFORM 「接下来这种情况––––」
+                     DATAFORM 「是雷声先至还是闪电先行？」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 300539999999999 && CFLAG:38:1517 >= 300530000000000
+		     PRINTDATA
+			     DATALIST
+		             DATAFORM 「很多很棒的事情都发生在其他地方––––」
+                     DATAFORM 恋恋忽然从椅子上起身。
+					 DATAFORM 「现在外面内衣大雨哦，听好啦！」
+		             DATAFORM 「虽然现在是不能外出的————」
+					 DATAFORM 「————但现在外出说不定会有意外的发现～♪」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;霧雨
+	 CASE 6
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+		 ;注意序号，这是不在室内均可生效的代号。
+         IF CFLAG:38:1517 <= 200629999999999 && CFLAG:38:1517 >= 200610000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「每到这个时候，樱花都会四散飞舞。」
+		             DATAFORM 「“四散飞舞”这个词是恋恋晚上想出来的。」
+                     DATAFORM 「因为真的很冷啊。」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;霧
+	 CASE 7
+         
+	 ;雪
+	 CASE 8
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+		 IF CFLAG:38:1517 <= 100829999999999 && CFLAG:38:1517 >= 10010000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「呼呼呼——」
+		             DATAFORM 「哈～呼！」
+                     DATAFORM 「呼出来的气变成白雾了！」
+					 DATAFORM 恋恋发现了崭新的现象。
+		             DATAFORM 这可能是第一次发现，也可能是第二次发现，甚至每年都会发现一次。
+				 ENDLIST
+				 DATALIST
+                     DATAFORM 恋恋一个劲地吹气，呼出的温暖空气在寒冷环境中结成白色的霜。
+				     DATAFORM 「呼呼呼——」
+		             DATAFORM 「哈～呼！」
+					 DATAFORM 恋恋很快就发现，对着别人吹，看着“白色的雾”冲散在他人身上，好像更有趣的样子。
+		             DATAFORM %CALLNAME:MASTER%首当其冲成为了第一个靶子。
+					 DATAFORM 两人就这么打闹着度过了一段时光……
+				 ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+         ELSEIF CFLAG:38:1517 <= 200829999999999 && CFLAG:38:1517 >= 200810000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 冬天，带着寒意的雪花和雨水倾泻而下。
+		             DATAFORM 「这是冬天----」
+                     DATAFORM 在一片混乱中，古明地恋却越发冷静。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;吹雪,猛吹雪
+	 CASE 9
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+         IF CFLAG:38:1517 <= 100929999999999 && CFLAG:38:1517 >= 100910000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「啊叭叭叭叭叭叭叭叭––––」
+		             DATAFORM 恋恋被暴雪吹袭着，渺小的身影显得如此无力。
+                     DATAFORM 「！叭叭叭叭叭叭叭叭~~~~！！！」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 300929999999999 && CFLAG:38:1517 >= 300910000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 恋恋的裙摆被暴风雪吹得舞动起来，衣角猎猎作响。
+		             DATAFORM 她一只手捂着裙子，一只手抓着帽子，歪歪斜斜地走路。
+                     DATAFORM 大雪纷飞，古明地恋却没沾上任何霜雪。
+				 ENDLIST
+				 DATALIST
+					 DATAFORM 「呼～啊～～～」
+					 DATAFORM 恋恋很夸张地叹了一口气，随后又鼓足干劲，紧紧地贴在%CALLNAME:MASTER%身边。
+					 DATAFORM 「啊……火炉先生……恋恋的火柴都用光了…………恋恋是坏孩子………………啊、好温暖啊～～～」
+					 DATAFORM 恋恋很开心地蹭来蹭去。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;細雪
+	 CASE 10
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+         IF CFLAG:38:1517 <= 101029999999999 && CFLAG:38:1517 >= 101010000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「嗯……」
+		             DATAFORM 雪花四散飞舞，恋恋的头发被染上点点白色。
+                     DATAFORM 她用手抓紧了帽子。
+		         ENDLIST
+			     DATALIST
+				     DATAFORM 「……」
+		             DATAFORM 恋恋矗立在雪地之上。
+                     DATAFORM 她遥望着四周洁白的一切。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 201029999999999 && CFLAG:38:1517 >= 201010000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「等待了一年的结果––––」
+		             DATAFORM 「是这些雪吗？」
+                     DATAFORM 恋恋嘟囔着，有点失落的样子。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 301029999999999 && CFLAG:38:1517 >= 301010000000000
+	         PRINTDATA
+			     ;细雪时，雪通过对比反而会感觉比较多。
+			     DATALIST
+				     DATAFORM 「好多的雪！」
+		             DATAFORM 「春天要来了吗～？」
+                     DATAFORM 恋恋双手捧着雪，期待更远的未来
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;霧雪
+	 CASE 11
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+         IF CFLAG:38:1517 <= 201129999999999 && CFLAG:38:1517 >= 201110000000000
+		     ;这是日本经历超级台风的时候，当事人的聊天记录（明示）。
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「颜色褪去了，现在只有白。」
+		             DATAFORM 「风和雨还在，颜色没了––––」
+                     DATAFORM 「太阳下山了？」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;雨雪交加
+	 CASE 12
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+		 IF CFLAG:38:1517 <= 101229999999999 && CFLAG:38:1517 >= 101210000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 恋恋将自己置身在雨雪交加的幻想乡。
+		             DATAFORM 「冬天来啦～！」
+                     DATAFORM 恋恋看起来很高兴。
+		         ENDLIST
+			     DATALIST
+				     DATAFORM 「呼噜呼噜……呼噜呼噜呼噜……」
+		             DATAFORM 「啊……哼！」
+                     DATAFORM 恋恋被雨雪弄得很不舒服。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+         ELSEIF CFLAG:38:1517 <= 201229999999999 && CFLAG:38:1517 >= 201210000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 冬天，带着寒意的雪花和雨水倾泻而下。
+		             DATAFORM 「这是冬天----」
+                     DATAFORM 在一片混乱中，古明地恋却越发冷静。
+		         ENDLIST
+			     DATALIST
+				     DATAFORM 「额……嗯……」
+		             DATAFORM 恋恋用手遮挡住雨雪的侵袭。
+                     DATAFORM 「这就是大自然吗？」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 301229999999999 && CFLAG:38:1517 >= 301210000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「哇哇哇、这种时候就不要出来了嘛！」
+		             DATAFORM 雨水与霜雪结合在一起，颇具视觉冲击力。
+                     DATAFORM 天不怕地不怕的恋恋被吓到了！
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 ;冰雹
+	 CASE 13
+	     ;这是去除四季检定的编码系统，后面不能做节日对话！！！！！
+	     CALL M_KOJO_K38_WIND_AND_RAIN_CAME_JUST_IN_TIME
+		 IF CFLAG:38:1517 <= 101329999999999 && CFLAG:38:1517 >= 101310000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 「啊……诶！」
+		             DATAFORM 「诶！！！」
+                     DATAFORM 恋恋捂着被冰雹砸到的地方。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+         ELSEIF CFLAG:38:1517 <= 201329999999999 && CFLAG:38:1517 >= 201310000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 冬天，带着寒意的雪花和雨水倾泻而下。
+		             DATAFORM 「这是冬天----」
+                     DATAFORM 在一片混乱中，古明地恋却越发冷静。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSEIF CFLAG:38:1517 <= 301329999999999 && CFLAG:38:1517 >= 301310000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 在漫天的冰雹中，恋恋踩着悠然的步伐。
+		             DATAFORM %CALLNAME:MASTER%注意到古明地恋完美避开了所有下坠的冰雹。
+                     DATAFORM 「？%CALLNAME:MASTER%？」
+				     DATAFORM 恋恋纯真的目光看过来。
+		             DATAFORM 注视着%CALLNAME:MASTER%的脸，恋恋嫣然一笑。
+                     DATAFORM 「没关系、恋恋很乐在其中哦～！」
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+	 CASEELSE
+         $BACK
+         CFLAG:38:1517 = 1145141919810
+         CALL K38_CONFEDERATION_300_1
+         RETURN
+ENDSELECT
+RETURN
+
+
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;地点系对话组(通用及event)
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_K38_MADELIAN_IS_VOVAGE_EVENT
+SELECTCASE CFLAG:38:現在位置
+	 ;桜並木の鳥居
+	 CASE 10
+
+	 ;神社境内
+	 CASE 20
+
+	 ;神社本堂
+	 CASE 30
+
+	 ;神社縁側
+	 CASE 40
+
+	 ;妖精の大樹
+	 CASE 50
+
+	 ;夢幻遺跡
+	 CASE 60
+
+	 ;お地蔵通り
+	 CASE 110
+
+	 ;枝垂れ柳の下
+	 CASE 120
+
+	 ;命蓮寺境内
+	 CASE 130
+
+	 ;命蓮寺本堂
+	 CASE 140
+
+	 ;墓地
+	 CASE 150
+
+	 ;聖徳道場
+	 CASE 160
+
+	 ;広場
+	 CASE 210
+
+	 ;商家屋
+	 CASE 220
+
+	 ;呑屋小道
+	 CASE 230
+
+	 ;寺子屋
+	 CASE 240
+
+	 ;大衆浴場
+	 CASE 250
+
+	 ;連れ込み宿
+	 CASE 260
+
+	 ;長屋街
+	 CASE 270
+
+     ;霧の湖
+	 CASE 310
+	     ;事件阶段
+	     IF CFLAG:38:1803 == 0
+		     CALL M_KOJO_K38_WORLD_0310_0_1803
+			 RETURN
+		 ENDIF
+		 ;分配阶段
+		 CFLAG:38:1515 = RAND:100
+		 IF CFLAG:38:1515 < 20
+		     GOTO WORLD_310_0_1
+		 ELSEIF CFLAG:38:1515 < 40
+		     GOTO WORLD_310_0_3
+		 ENDIF
+		 RETURN
+		 $WORLD_310_0_1
+	     CALL M_KOJO_K38_WAR_NEVER_CHANGE
+		 IF CFLAG:38:1517 <= 020119999999999 && CFLAG:38:1517 >= 020110000000000
+	         PRINTDATA
+			     DATALIST
+				     DATAFORM 正值盛夏，雾之湖看起来清爽无比。
+		             DATAFORM “扑通！”
+                     DATAFORM 古明地恋将石头丢入湖中的行为，同样清爽无比。
+		         ENDLIST
+	         ENDDATA
+		     PRINTFORMW 
+		     RETURN
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+		 RETURN
+		 $WORLD_310_0_3
+	     CALL M_KOJO_K38_WHEN_THE_CHERRY_BLOSSOMS_SCATTER
+		 IF CFLAG:38:1517 <= 120019999999999 && CFLAG:38:1517 >= 120010000000000
+		     
+		 ELSE
+		     GOTO BACK
+		 ENDIF
+		 RETURN
+	 ;氷のかまくら
+	 CASE 320
+
+	 ;廃洋館
+	 CASE 330
+
+	 ;正門
+	 CASE 340
+
+	 ;広間
+	 CASE 350
+
+     ;食堂
+	 CASE 360
+
+	 ;大図書館
+	 CASE 370
+
+	 ;地下室
+	 CASE 380
+
+	 ;竹林入り口
+	 CASE 410
+
+	 ;迷いの小道
+	 CASE 420
+
+	 ;斜角の竹林
+	 CASE 430
+
+	 ;兎の洞窟
+	 CASE 440
+
+	 ;永遠亭
+	 CASE 450
+
+	 ;無名の丘
+	 CASE 460
+
+	 ;太陽の畑
+	 CASE 470
+
+	 ;永遠亭奥ノ院
+	 CASE 480
+
+	 ;森の入り口
+	 CASE 510
+
+	 ;香霖堂
+	 CASE 520
+
+	 ;古木の大樹
+	 CASE 530
+
+	 ;霧雨魔法店
+	 CASE 540
+
+	 ;人形の洋館
+	 CASE 550
+
+	 ;再思の道
+	 CASE 560
+
+	 ;無縁塚
+	 CASE 570
+
+	 ;中有の道
+	 CASE 610
+
+	 ;三途の川
+	 CASE 620
+
+	 ;マヨヒガ
+	 CASE 630
+
+	 ;彼岸
+	 CASE 670
+
+	 ;白玉楼庭
+	 CASE 680
+
+	 ;白玉楼
+	 CASE 690
+
+	 ;麓の樹海
+	 CASE 710
+
+     ;玄武の沢
+	 CASE 720
+
+	 ;大蝦蟇の池
+	 CASE 730
+
+	 ;マヨヒガ
+	 CASE 740
+
+	 ;仙人の屋敷
+	 CASE 750
+
+	 ;間欠泉地下センター
+	 CASE 760
+
+	 ;九天の滝
+	 CASE 810
+
+	 ;絶景の丘
+	 CASE 820
+
+	 ;山の湖
+	 CASE 830
+
+	 ;守矢神社境内
+	 CASE 840
+
+	 ;守矢神社本殿
+	 CASE 850
+
+	 ;天界
+	 CASE 890
+
+	 ;幻想風穴
+	 CASE 910
+
+	 ;地獄の深道
+	 CASE 920
+
+	 ;旧地獄街道
+	 CASE 930
+
+	 ;旧地獄温泉
+	 CASE 940
+
+	 ;ラブホ
+	 CASE 950
+
+	 ;地霊殿
+	 CASE 960
+
+	 ;灼熱地獄跡
+	 CASE 970
+
+	 ;槐安通路
+	 CASE 1010
+
+	 ;月の都
+     CASE 1050
+
+	 ;綿月亭
+	 CASE 1060
+
+	 ;玉兎の街
+	 CASE 1070
+
+	 ;桃林～砂浜
+	 CASE 1080
+
+	 ;静かの海
+	 CASE 1090
+
+	 CASEELSE
+         $BACK
+         CFLAG:38:1517 = 1145141919810
+         CALL K38_CONFEDERATION_300_1
+         RETURN
+ENDSELECT
+RETURN

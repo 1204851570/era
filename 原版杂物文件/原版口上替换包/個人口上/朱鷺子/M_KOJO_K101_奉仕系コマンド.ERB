@@ -1,0 +1,457 @@
+﻿;※※※※※※※※※※※※※※※※※※※※※※※※※
+;奉仕系コマンド
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;80,手淫
+;==================================================
+@M_KOJO_MESSAGE_COM_K101_80
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K101_80_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K101_80_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;時姦中
+			IF FLAG:70
+				PRINTFORMW 凍てついた時の中で朱鷺子の手に陰茎を握らせた。
+			ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 凍てついた時の中で朱鷺子の手に陰茎を握らせた。
+	ELSEIF BASE:PLAYER:2 > 8000
+		IF RAND:3 == 0
+			PRINTFORMW 「ん？出そう？」
+			PRINTFORMW そう言うと朱鷺子は一層激烈地扱き始めた。
+			PRINTFORMW 「凄いわね、ビクビクして」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「ん…大きくなってる、興奮してるのね」
+			PRINTFORMW そう言うと朱鷺子は一層激烈地扱き始めた。
+			PRINTFORMW 「早くイッちゃいなさい」
+		ELSE
+			PRINTFORMW 「そろそろ出そうね」
+			PRINTFORMW そう言うと朱鷺子は一層激烈地好き始めた。
+			PRINTFORMW 「いっぱい出してね♥」
+		ENDIF
+	;恋慕
+	ELSEIF TALENT:恋慕
+		IF RAND:3 == 0
+			PRINTFORMW 「可愛い…もっと可愛がってあげる」
+			PRINTFORMW 「どう？気持ちいい？」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「太くて固い…」
+			PRINTFORMW 「…でも刺激したらすぐに出ちゃいそうね」
+		ELSE
+			PRINTFORMW 「シコシコされるの気持ちいい？」
+			PRINTFORMW 「もっと激烈地、気持よくしてあげる…♥」
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		IF RAND:3 == 0
+			PRINTFORMW 「ん…気持ちいい？」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「あんまり自身は無いんだけど…」
+			PRINTFORMW 「上手く出来てる？」
+		ELSE
+			PRINTFORMW 「いっぱい…出していいのよ」
+			PRINTFORMW 「もっと気持ちよくなって…」
+		ENDIF
+	;それ以外
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORMW 「うえーやっぱり、気持ち悪いわ…」
+			PRINTFORMW 「早く出すだけ出して」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「こういうの得意じゃないの…」
+			PRINTFORMW 「別にこれでいいならするけど…」
+		ELSE
+			PRINTFORMW 「あ、大きくなった」
+			PRINTFORMW 「こういうのが良いの？」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;81,フェラチオ
+;==================================================
+@M_KOJO_MESSAGE_COM_K101_81
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K101_81_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K101_81_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		;時姦中
+			IF FLAG:70
+				PRINTFORMW 凍てついた時の中で朱鷺子の口腔を犯し始めた。
+			ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 凍てついた時の中で朱鷺子の口腔を犯し始めた。
+	;恋慕
+	ELSEIF TALENT:恋慕
+		IF RAND:3 == 0
+			PRINTFORMW 「じゅる…じゅっぽ…じゅっぽ…」
+			PRINTFORMW 朱鷺子は%CALLNAME:MASTER%の阴茎を一心不乱にしゃぶり続けている。
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「…じゅる…れろん…」
+			PRINTFORMW 「あむっ…ちゅる…れろ」
+		ELSE
+			PRINTFORMW 「んぐっ…れろ…じゅる」
+			PRINTFORMW （%CALLNAME:MASTER%の美味しい…頭がボーッとして来て、もうしゃぶる事以外何も考えられない…♥）
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		IF RAND:3 == 0
+			PRINTFORMW 「ちゅる…れろ」
+			PRINTFORMW 「…んくっ…れろっ…！」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「んぐっ…んぐっ…んぐっ…」
+			PRINTFORMW 朱鷺子は一生懸命、%CALLNAME:MASTER%の阴茎をしゃぶっている。
+		ELSE
+			PRINTFORMW 「っ…れろ…れろ…ん…」
+			PRINTFORMW （…この匂いは駄目だわ……えっちな事しか考えられなくなっちゃう…♥）
+		ENDIF
+	;それ以外
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORMW 「っ…ん…」
+			PRINTFORMW 「…れろ…」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「…じゅぶ…」
+			PRINTFORMW 「…んっ…あ…」
+		ELSE
+			PRINTFORMW 「…ん…」
+			PRINTFORMW 「れろ…じゅぶ…」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;82,パイズリ（デフォルトにのっとて貧乳のナイズリでやっています。巨乳派の皆さんごめんなさい）
+;==================================================
+@M_KOJO_MESSAGE_COM_K101_82
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K101_82_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K101_82_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 凍てついた時の中で朱鷺子の胸を犯し始めた。
+		RETURN 1
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 凍てついた時の中で朱鷺子の胸を犯し始めた。
+		RETURN 1
+	;恋慕
+	ELSEIF TALENT:恋慕
+		IF RAND:3 == 0
+			PRINTFORMW 「私の胸ってほぼないみたいなものだけど、気持ちいいの？」
+			PRINTFORMW 「…そう、気持ちいいのね。良かった…」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「こすりつけてるだけの本当にこれで良いの？」
+			PRINTFORMW 「…え？寧ろ胸が单薄的からこそ出来るこれが良い？……馬鹿…」
+		ELSE
+			PRINTFORMW 「…胸で？」
+			PRINTFORMW 「気持ちいい？良かった…」
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		IF RAND:3 == 0
+			PRINTFORMW 「あっ…」
+			PRINTFORMW 「…すべすべしてて気持ちいい？それなら良かった」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「…どう？イキそう？」
+		ELSE
+			PRINTFORMW 「っ…ん…」
+			PRINTFORMW 「胸に出して…！」
+		ENDIF
+	;それ以外
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORMW 「これ、本当に気持ちいいの？」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「んっ…」
+			PRINTFORMW 「…早く出して」
+		ELSE
+			PRINTFORMW 「…人类ってよくわからないわね…」
+			PRINTFORMW 「自己言うのもなんだけど板にこすりつけてる様なもんよ、これ」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;83,素股
+;==================================================
+@M_KOJO_MESSAGE_COM_K101_83
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K101_83_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K101_83_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	;時姦中
+			IF FLAG:70
+				PRINTFORMW 凍てついた時の中で朱鷺子の股間で阴茎をしごき始めた。
+			ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 凍てついた時の中で朱鷺子の股間で阴茎をしごき始めた。
+	;恋慕
+	ELSEIF TALENT:恋慕
+		IF RAND:3 == 0
+			PRINTFORMW 「んっ♥……気持ちいい？」
+			PRINTFORMW 朱鷺子は濡れた陰唇に%CALLNAME:MASTER%の阴茎をこすりつけた。
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「あっ♥…気持ちいい……んっ♥…そんなにこすりつけないで♥……」
+		ELSE
+			PRINTFORMW 「本当にこすりつけるだけでいいの…？」
+			PRINTFORMW 朱鷺子は辛抱が出来ないように更に用陰唇濡らした。
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		IF RAND:3 == 0
+			PRINTFORMW 「んんっ♥……あっ♥…」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「更に硬くなってる…気持ちいいの？」
+			PRINTFORMW 朱鷺子は自分の股に%CALLNAME:MASTER%の阴茎を挟んで動かしている。
+		ELSE
+			PRINTFORMW 「んっ♥…どう…？」
+		ENDIF
+	;それ以外
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORMW 「え？もう挿れるの……？え、挟め？」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「ど、どう？」
+		ELSE
+			PRINTFORMW 「まだ気持ちの準備が……へ、へぇこういうのもあるのね…」
+			PRINTFORMW 朱鷺子は慣れていないのかぎこちなく自分の股に%CALLNAME:MASTER%の阴茎を挟んだ。
+		ENDIF
+	ENDIF
+RETURN 1
+;==================================================
+;84,泡踊り
+;==================================================
+@M_KOJO_MESSAGE_COM_KX_84
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_KX_84_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_KX_84_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;基本セット
+	;恋慕
+	IF TALENT:恋慕
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;85,足扱き
+;==================================================
+@M_KOJO_MESSAGE_COM_K101_85
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K101_85_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K101_85_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	;時姦中
+			IF FLAG:70
+				PRINTFORMW 凍てついた時の中で朱鷺子の足で阴茎をしごいている。
+			ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 凍てついた時の中で朱鷺子の足で阴茎をしごいている。
+	;恋慕
+	ELSEIF TALENT:恋慕
+		IF RAND:3 == 0
+			PRINTFORMW 「えいっ♪硬くしちゃって…気持ちいいの？」
+			PRINTFORMW 朱鷺子は%CALLNAME:MASTER%の阴茎を足裏で弄っている。
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「もう……こんなので興奮するなんて%CALLNAME:MASTER%は本当に変態ね♪」
+		ELSE
+			PRINTFORMW 「もっとぐりぐりしてあげる♥」
+			PRINTFORMW 朱鷺子はより激烈地%CALLNAME:MASTER%の阴茎を足でしごいた。
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		IF RAND:3 == 0
+			PRINTFORMW 「えいっ♪もっと足でして欲しいの？」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「変態ねこんなのでイキそうになるなんて♪」
+			PRINTFORMW 朱鷺子は足で%CALLNAME:MASTER%の阴茎を扱いている。
+		ELSE
+			PRINTFORMW 「えへへっ気持ちいい？もっとしてあげる♪」
+		ENDIF
+	;それ以外
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORMW 「え…？足で…？」
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 「本当に変態ね……」
+		ELSE
+			PRINTFORMW 「む、難しいわね…これでいいの？」
+			PRINTFORMW 朱鷺子はぎこちなく%CALLNAME:MASTER%の阴茎を足で弄っている。
+		ENDIF
+	ENDIF
+RETURN 1
+;==================================================
+;88,バキュームフェラ
+;==================================================
+@M_KOJO_MESSAGE_COM_K101_88
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K101_88_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K101_88_1
+;-------------------------------------------------
+;記入チェック（=0, 非表示、1, 表示）
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;小分岐
+	;-------------------------------------------------
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;恋慕
+	ELSEIF TALENT:恋慕
+	IF RAND:3 == 0
+		PRINTFORMW 「じゅっぽ…じゅっぽ…じゅるるるるるっ」
+		PRINTFORMW 朱鷺子は目をハートにして%CALLNAME:MASTER%の阴茎に貪りついている。
+	ELSEIF RAND:2 == 0
+        PRINTFORMW 「じゅぶ…じゅるる…じゅぶ…じゅぶ…」
+        PRINTFORMW （おちんちん♥…%CALLNAME:MASTER%の♥…もっと…♥しゃぶりたい…♥しゃぶらないと…♥）
+	ELSE
+		PRINTFORMW 「じゅる…じゅっぽ…じゅっぽ…じゅるるっ」
+		PRINTFORMW 「…ぷはっ……えーと、今凄い顔してたでしょ私…うう、我を忘れてつい…」
+		PRINTFORMW 朱鷺子は顔を真っ赤にして恥ずかしがったが、すぐに再び口に%CALLNAME:MASTER%の阴茎を含んだ。
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		IF RAND:3 == 0
+		PRINTFORMW 「じゅっぽ…じゅっぽ…じゅるるるるるっ」
+		PRINTFORMW 朱鷺子は目をハートにして%CALLNAME:MASTER%の阴茎に貪りついている。
+	ELSEIF RAND:2 == 0
+        PRINTFORMW 「じゅぶ…じゅるる…じゅぶ…じゅぶ…」
+        PRINTFORMW （…もっと…♥しゃぶりたい…♥しゃぶらないと…♥）
+	ELSE
+		PRINTFORMW 「じゅる…じゅっぽ…じゅっぽ…じゅるるっ」
+		PRINTFORMW 「…ぷはっ……えーと、今凄い顔してたでしょ…うう、我を忘れてつい…」
+		PRINTFORMW 朱鷺子は顔を真っ赤にして恥ずかしがったが、すぐに再び口に%CALLNAME:MASTER%の阴茎を含んだ。
+		ENDIF
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1

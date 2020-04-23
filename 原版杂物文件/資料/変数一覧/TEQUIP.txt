@@ -1,0 +1,70 @@
+﻿-----------------------------------------------------
+TEQUIP
+-----------------------------------------------------
+TEQUIP:0 下半身着衣状況(ビット0=裙子 1=ずらし可 2=ずらし不可 3=ずらせない下半身外衣 4=突っ込み不可)
+	(ビットを使いたくない人用 0=なし 1=没穿内裤裙子 2=內褲のみ 3=裙子+內褲 
+	4=安全袴(下着)もしくは没穿内裤裤子 5=裙子+安全袴 6=裤子+內褲 7=このバリアントでは無理）
+TEQUIP:1 上半身着衣状況(0=なし 1=はだけ可 2=はだけ不可 3=突っ込み不可)
+	(ビットを使いたくない人用 0=なし 1=ノーブラ和服 2=ブラのみ 3=和服+ブラ）
+TEQUIP:2 下半身挪开状態
+TEQUIP:3 上半身裸露状態
+TEQUIP:5 外衣脱衣完毕
+
+TEQUIP:11 陰蒂夾
+TEQUIP:12 飛機杯
+TEQUIP:13 振動棒
+TEQUIP:14 肛用振動棒
+TEQUIP:15 後庭拉珠
+TEQUIP:16 乳頭夾
+TEQUIP:17 搾乳機
+TEQUIP:18 眼罩
+TEQUIP:19 縄
+TEQUIP:20 口球
+TEQUIP:21 浣腸
+TEQUIP:22 拡張氣球
+TEQUIP:23 肛門電極
+
+
+TEQUIP:25 拘束
+TEQUIP:26 媚薬
+TEQUIP:27 利尿剤
+TEQUIP:28 视频拍摄
+TEQUIP:29 野外PLAY
+TEQUIP:30 羞恥PLAY
+TEQUIP:31 浴室PLAY
+TEQUIP:32 淋浴
+TEQUIP:35 避孕套
+TEQUIP:36 挿入禁止
+
+TEQUIP:41 吸乳头
+TEQUIP:42 揉胸
+TEQUIP:43 吸乳头自慰
+TEQUIP:44 揉胸自慰
+
+TEQUIP:49 子宮
+TEQUIP:50 Ｖ性交
+TEQUIP:51 Ａ性交
+TEQUIP:52 顔面騎乗
+TEQUIP:53 Ａ顔面騎乗
+TEQUIP:54 六九式
+
+TEQUIP:101 Ｐ接触部位
+TEQUIP:102 Ｃ接触部位
+TEQUIP:103 指接触部位
+TEQUIP:104 口接触部位
+TEQUIP:105 Ｂ接触部位
+TEQUIP:106 Ｖ接触部位
+TEQUIP:107 Ａ接触部位
+TEQUIP:108 足接触部位
+TEQUIP:110 体位
+
+TEQUIP:111 ペニス２
+TEQUIP:112 クリトリス２
+TEQUIP:113 指２
+TEQUIP:114 口２
+TEQUIP:115 胸２
+TEQUIP:116 膣２
+TEQUIP:117 アナル２
+TEQUIP:120 体位２
+
+TEQUIP:201 共用雨伞

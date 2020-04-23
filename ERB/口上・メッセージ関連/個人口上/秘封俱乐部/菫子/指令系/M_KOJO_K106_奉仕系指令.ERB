@@ -1,0 +1,382 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;奉仕系指令
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;80,手淫
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_80
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_80_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_80_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		IF TALENT:恋人
+			PRINTFORML 「呜……要用手做么？」
+			PRINTFORML 「……知，知道了」
+			PRINTFORMW 菫子娇嫩的手指慢慢的握住了%MASTERNAME:106%的肉棒
+			PRINTFORML 「呜……热腾腾的呢……%UNICODE(0x2764)%」
+			PRINTFORML 「%MASTERNAME:106%的……在一跳一跳的……」
+			PRINTFORMW %MASTERNAME:106%一边享受着堇子的侍奉，一边温柔的抚摸着堇子的脑袋
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;恋人
+	ELSEIF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORML 「是不是再用力一点会更舒服呢？」
+			PRINTFORML 「啊，%MASTERNAME:106%……很痛么？」
+			PRINTFORMW 堇子努力的用手侍奉着肉棒，取悦着%MASTERNAME:106%
+		ELSEIF RAND:2 == 0
+			PRINTFORML 「用上超能力会不会更方便呢」
+			PRINTFORML 「哎，不要用么？ 呜……好吧」
+		ELSE
+			PRINTFORML 「不知道为什么，感觉%MASTERNAME:106%的肉棒君很可爱呢……」
+			PRINTFORML 「肉棒君，要加油哦……%UNICODE(0x2764)%」
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;81,口交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_81
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_81_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_81_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		IF TALENT:恋人
+			PRINTFORML 「用，用嘴巴做么？」
+			PRINTFORML 「精液什么的，不允许射出来的说」
+			PRINTFORML 「…………」
+			PRINTFORML 「知，知道了……这就做……呜」
+			PRINTFORMW 菫子仿佛下定了决心一样，把%MASTERNAME:106%的肉棒慢慢含入嘴里
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;恋人
+	ELSEIF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORML 「嘴巴么……呜……虽然不是很讨厌……」
+			PRINTFORML 「可不许说什么奇怪的话出来……%UNICODE(0x2764)%」
+		ELSEIF RAND:2 == 0
+			PRINTFORML 「要射出来的时候，一定要提醒的说……」
+			PRINTFORML 「精液的味道很奇怪的啦」
+		ELSE
+			PRINTFORML 「呜……这么大的肉棒要含进嘴巴里」
+			PRINTFORML 「坏蛋……会把人家的嘴巴插坏的……%UNICODE(0x2764)%」
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;82,乳交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_82
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_82_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_82_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		IF TALENT:恋人
+			PRINTFORML 「要乳交么？」
+			PRINTFORML 「果然男人都是这样喜欢欧派的笨蛋呢……」
+			PRINTFORMW 菫子一副我就知道的眼神盯着%MASTERNAME:106%
+			PRINTFORML 「……你那是什么表情了啦」
+			PRINTFORML 「会好好的让你享受的」
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;恋人
+	ELSEIF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORML 「这样只有%MASTERNAME:106%会很舒服的吧？」
+			PRINTFORML 「一点都不公平……」
+		ELSEIF RAND:2 == 0
+			PRINTFORML 「咿呀……别这样动腰呀！」
+			PRINTFORML 「……这样摩擦着，会变奇怪的%UNICODE(0x2764)%」
+		ELSE
+			PRINTFORML 「自己的欧派就像玩具一样……被使用着……」
+			PRINTFORML 「身体也要一起变得奇怪了……%UNICODE(0x2764)%」
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;83,素股
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_83
+CALL TRAIN_MESSAGE
+
+CALL M_KOJO_MESSAGE_COM_K106_83_1
+
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_83_1
+
+;口上启动开关
+LOCAL = 1
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 1
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		IF TALENT:恋人
+			PRINTFORML 「用大腿摩擦么？」
+			PRINTFORML 「呜，知道了」
+			PRINTFORML 「好烫的肉棒……%UNICODE(0x2764)%」
+		ENDIF
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;恋人
+	ELSEIF TALENT:恋人
+		IF RAND:3 == 0
+			PRINTFORML 「这种猥琐的事情……%UNICODE(0x2764)%」
+			PRINTFORML 「%MASTERNAME:106%……真是个变态呢……%UNICODE(0x2764)%」
+		ELSEIF RAND:2 == 0
+			PRINTFORML 「突然就插入的话，不允许哦」
+			PRINTFORML 「……绝对不允许的哦！」
+		ELSE
+			PRINTFORML 「%MASTERNAME:106%看起来兴奋起来了呢」
+			PRINTFORML 「连我也……有感觉了，坏蛋……%UNICODE(0x2764)%」
+		ENDIF
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;84,泡泡浴
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_84
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_84_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_84_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;基本セット
+	;恋人
+	IF TALENT:恋人
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;85,足扱き
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_85
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_85_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_85_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;88,真空口交
+;==================================================
+@M_KOJO_MESSAGE_COM_K106_88
+CALL TRAIN_MESSAGE
+CALL M_KOJO_MESSAGE_COM_K106_88_1
+RETURN RESULT
+
+@M_KOJO_MESSAGE_COM_K106_88_1
+
+;口上启动开关
+LOCAL = 0
+
+IF LOCAL
+	
+	;小分岐
+	
+	;初めて
+	;記入チェック
+	LOCAL:1 = 0
+	
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;基本セット
+	;時姦中
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;恋人
+	ELSEIF TALENT:恋人
+		PRINTFORMW 
+		RETURN 1
+	;屈服3
+	ELSEIF MARK:不埒刻印 == 3
+		PRINTFORMW 
+		RETURN 1
+	;それ以外
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1

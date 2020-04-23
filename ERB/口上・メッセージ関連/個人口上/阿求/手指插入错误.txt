@@ -1,0 +1,239 @@
+﻿SIF FLAG:70 == 1
+RETURN 1
+
+SIF CFLAG:TARGET:ﾋｯﾃﾟ
+RETURN 1
+
+IF LOCAL
+	SELECTCASE TCVAR:20
+	CASE 35
+		IF TALENT:TARGET:70 == -1
+			IF TALENT:TARGET:Иﾅｮ
+				PRINTFORML
+				PRINTFORMW ｡ｸｰ｡｣｡｡ｹ
+				PRINTFORMW ｰ｢ﾇ・ｶﾁﾋﾒｻﾏﾂ｣ｬｰｴﾗ｡ﾁﾋ%CALLNAME:MASTER%ﾗｼｱｸﾇﾖｷｸﾒﾀｵﾄﾊﾖﾖｸ｡｣
+				PRINTFORMW ｡ｸﾖｻﾊﾇﾈﾃﾄ惞ｴｿｴｶﾑﾅｶ｡ｭ｡ｭﾇ・ｻﾒｪﾗ獗犒ﾄｾﾙｶｯ｡｣｡ｹ
+				PRINTFORMW ｰ｢ﾇﾟｺ・ﾋﾁｳ｡｣
+				PRINTFORMW ｡ｸﾈﾋｼﾒｻｹﾊﾇｴｦﾅｮ｣ｬﾋﾔ｡ｭ｡ｭﾇ・ｻﾒｪﾌｫｴﾖｱｩ｡ｹ
+			ELSE
+				PRINTFORML ｡ｸ%CALLNAME:MASTER%ﾏﾈﾉ奛ｭ｡ｭﾖｻﾐ暠ｴﾒｻｿｴﾅｶ｡｣｡ｹ
+			ENDIF
+		ELSE
+			PRINTFORML
+			PRINTFORMW ｡ｸﾕ簷ﾄﾗｰｰ醯ﾂｶｼﾄﾜ｡ｭ｡ｭ%CALLNAME:MASTER%ﾕ賁ﾇｱ萠ｬﾄﾘ｡｣｡ｹ
+			PRINTFORMW ｡ｸﾟﾞｰ｡｣ｿ｣｡｡ｪ｡ｪ｡ｪ｡ｪ｡｢ﾒｪﾕｾｲｻﾎﾈﾁﾋ｣ｬﾎﾂﾈ盞罍ｭ｡ｭ｡ｹ
+		ENDIF 
+	CASE 70
+		IF TALENT:TARGET:70 == -1
+			IF TALENT:TARGET:Иﾅｮ
+				PRINTFORML
+				PRINTFORMW ｡ｸｹ｡ｭ｡ｭｲｻﾒｪ｣｡｡ｹ
+				PRINTFORMW ｡ｸﾖｻﾊﾇﾌﾔﾅｶ｡ｭ｡ｭ｡ｹ
+				PRINTFORMW ｡ｸ｡ｭ｡ｭﾊﾖﾖｸｲｻﾐ栁・ｴ｡｣｡ｹ
+			ELSE
+				PRINTFORML
+				PRINTFORMW ｡ｸ倏ﾟﾞ｡ｪ｡ｪ｡ｪ｡ｪ｡ｹ
+				PRINTFORMW ｡ｸﾒｻｱﾟﾌ｢ﾒｻｱﾟｴﾌｼ､ﾀ・豬ﾄｻｰ｡ｭ｡ｭ｡ｹ
+				PRINTFORMW ｡ｸﾒｪﾈﾚｻｯﾀｲ｡ｪ｡ｪ｡ｪ｡ｪ｡ｹ
+			ENDIF
+		ELSE
+			PRINTFORML ｡ｸ%CALLNAME:MASTER%｡ｭ｡ｭｺﾜﾎﾂﾈ眛ﾘ｡ｹ
+			PRINTFORMW ｡ｸﾊﾖﾖｸﾒｲﾊﾇ｡ｭ｡ｭ｡ｹ
+			PRINTFORMW ｡ｸｵｫﾊﾇ｡｢ﾕ簷ﾂﾈ･｡ｭ｡ｭｰ｢ﾇ盂莊ﾃﾐﾋｷﾜﾄﾘ｡ｹ
+		ENDIF
+	CASEELSE
+		IF CFLAG:317 == 2
+			IF TALENT:70 == -1
+				IF TALENT:TARGET:Иﾅｮ
+					PRINTFORML ｡ｸｹ｣｡｡ｭ｡ｭ｡ｹ
+					PRINTFORMW ｡ｸﾕ簑・ﾄｻｰ｡ｭ｡ｭｻｹﾊﾇｲｻﾐﾐ｡ｹ
+				ELSE
+					IF ABL:｣ﾖｸﾐﾒ・<= 1
+						IF PALAM:1 < 3000
+							PRINTFORML ｡ｸ倏｡ｭ｡ｭﾓﾐﾒｻｵ罍｢ﾑﾄ｡｣｡ｹ
+							PRINTFORMW ｡ｸｲｻｹﾃｻｹﾘﾏｵ｡ｭ｡ｭﾇ・ﾌﾐﾉ｡ｹ
+						ELSE
+							PRINTFORML ｡ｸﾕ賁ﾇﾄﾑﾎｪﾇ鯑ﾘ｡ｭ｡ｭ｡ｹ
+							PRINTFORMW ｡ｸﾐ｡ﾑｨﾄﾇﾀ・ｻﾈﾋﾃﾊｲﾃｴｵﾄ｡｣｡ｹ
+						ENDIF
+					ELSE
+						IF PALAM:9 <= PALAMLV:1
+							PRINTFORML ｡ｸｰ｡｡ｪ｡ｪ｡ｪ｡ｪ｡ｹ
+							PRINTFORMW ｡ｸ%CALLNAME:MASTER%ﾄ羞ﾄﾊﾖﾖｸｶｯｵﾄﾌｫｼ､ﾁﾒﾁﾋ｡｣｡ｹ
+						ELSEIF PALAM:9 <= PALAMLV:3
+							PRINTFORML ｡ｸ｡ｭ｡ｭｹｺｭ｡ｭ倏｡ｭ｡ｭ｡ｹ
+							PRINTFORMW ｡ｸﾂﾂｵﾄ｡｢ﾂﾂｵﾄ｡ｭ｡ｭ｡ｹ
+						ELSE
+							PRINTFORML ｡ｸﾒﾑｾｭﾊｪﾁﾋﾅｶ｡ｹ
+							PRINTFORMW ｡ｸﾊﾖｱｻﾅｪﾔ狠ﾋ｡ｭ｡ｭ｡ｹ
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ELSE
+			IF TALENT:ﾁｵﾈﾋ || TALENT:ﾁｵﾄｽ
+				IF TALENT:15 == 1 && SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=300
+					DRAWLINE
+					PRINTFORM %CALLNAME:MASTER%ﾔﾚｰ｢ﾇﾉｼ莊ﾄﾊﾖ｡｢
+					SIF CFLAG:291 == 0
+						PRINTFORM ｡｢ｴ暠ｪﾄﾚﾒﾂ
+					PRINTFORML ﾊﾖﾖｸｲ衒・｡ﾑｨ
+					PRINTFORML ｰ｢ﾇｪﾕ簫ｻﾍｻｷ｢ﾊﾂﾌｬｷ｢ｳｻﾉﾉｰｮｵﾄｱｯﾃ｢ｲ｢ｳ籌ﾋ%CALLNAME:MASTER%｡ｭ｡ｭ
+					PRINTFORMW 
+					IF TALENT:TARGET:Иﾅｮ
+						PRINTFORML
+						PRINTFORMW ｡ｸｺｭ｡ｭｻｹｺﾃ｡ｭ｡ｭﾌｫｺﾃﾁﾋ｡ｭ｡ｭﾃｻﾓﾐﾊﾜﾉﾋ｡ｹ
+					ELSE
+						PRINTFORML ｡ｸｰ｡｡ｭ｡ｭﾍ｣ﾏﾂ｣｡｡ｹ
+						PRINTFORML ｡ｸｲ衒・ｮﾇｰﾇ・ﾈ｡ｭ｡ｭﾈﾃﾎﾒﾐﾋｷﾜﾆｴｰ｡｡ｭ｡ｭｲｻﾈｻｻ蘯ﾜﾍｴｵﾄ｡｣｡ｹ
+					ENDIF
+				ELSEIF TALENT:15 == -1 && SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=140
+					DRAWLINE
+					PRINTFORM %CALLNAME:MASTER%ﾔﾚｰ｢ﾇﾉｼ莊ﾄﾊﾖｲ衒・｢
+					SIF CFLAG:291 == 0
+						PRINTFORM ｡｢ﾀｭｿｪﾄﾚﾒﾂ
+					PRINTFORML ﾊﾖﾖｸｲ衒・｡ﾑｨ
+					PRINTFORML ｰ｢ﾇｪﾕ簫ｻﾍｻｷ｢ﾊﾂﾌｬｷ｢ｳｻﾉﾉｰｮｵﾄｱｯﾃ｢ｲ｢ｳ籌ﾋ%CALLNAME:MASTER%｡ｭ｡ｭ
+					PRINTFORMW 
+					IF TALENT:TARGET:Иﾅｮ
+						PRINTFORML ｡ｸﾄ耡ｪﾗｲﾃｴ｣｡｡ｹ
+						PRINTFORMW ｡ｸｺｭ｡ｭｻｹｺﾃ｡ｭ｡ｭﾌｫｺﾃﾁﾋ｡ｭ｡ｭﾃｻﾓﾐﾊﾜﾉﾋ｡ｹ
+					ELSE
+						PRINTFORML ｡ｸｰ｡｡ｭ｡ｭﾍ｣ﾏﾂ｣｡｡ｹ
+						PRINTFORML ｡ｸｲ衒・ｮﾇｰﾇ・ﾈ｡ｭ｡ｭﾈﾃﾎﾒﾐﾋｷﾜﾆｴｰ｡｡ｭ｡ｭｲｻﾈｻｻ蘯ﾜﾍｴｵﾄ｡｣｡ｹ
+					ENDIF
+				ELSEIF SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=200
+					DRAWLINE
+					PRINTFORM %CALLNAME:MASTER%ﾔﾚｰ｢ﾇﾉｼ莊ﾄﾊﾖｲ衒・｢
+					SIF CFLAG:291 == 0
+						PRINTFORM ｡｢ﾀｭｿｪﾄﾚﾒﾂ
+					PRINTFORML ﾊﾖﾖｸｲ衒・｡ﾑｨ
+					PRINTFORML ｰ｢ﾇｪﾕ簫ｻﾍｻｷ｢ﾊﾂﾌｬｷ｢ｳｻﾉﾉｰｮｵﾄｱｯﾃ｢ｲ｢ｳ籌ﾋ%CALLNAME:MASTER%｡ｭ｡ｭ
+					PRINTFORMW 
+					IF TALENT:TARGET:Иﾅｮ
+						PRINTFORML ｡ｸﾄ耡ｪﾗｲﾃｴ｣｡｡ｹ
+						PRINTFORMW ｡ｸｺｭ｡ｭｻｹｺﾃ｡ｭ｡ｭﾌｫｺﾃﾁﾋ｡ｭ｡ｭﾃｻﾓﾐﾊﾜﾉﾋ｡ｹ
+					ELSE
+						PRINTFORML ｡ｸｰ｡｡ｭ｡ｭﾍ｣ﾏﾂ｣｡｡ｹ
+						PRINTFORML ｡ｸｲ衒・ｮﾇｰﾇ・ﾈ｡ｭ｡ｭﾈﾃﾎﾒﾐﾋｷﾜﾆｴｰ｡｡ｭ｡ｭｲｻﾈｻｻ蘯ﾜﾍｴｵﾄ｡｣｡ｹ
+					ENDIF
+				ELSE
+				    SELECTCASE PALAM:3
+					CASE 0 TO 2000
+						DRAWLINE
+						PRINTFORM %CALLNAME:MASTER%ﾔﾚｰ｢ﾇﾉｼ莊ﾄﾊﾖﾖｸｲ衒・｢
+						SIF CFLAG:291 == 0
+							PRINTFORM ｡｢ﾀｭｿｪﾄﾚﾒﾂ
+						PRINTFORML ﾊﾖﾖｸｲ衒・ﾛﾁﾑ
+						IF TALENT:TARGET:Иﾅｮ
+							PRINTFORML ｰ｢ﾇ｢ﾎ｢ｲ・ｯﾗﾅﾉ﨓蝪｢ｰｴﾗ｡ﾁﾋ%CALLNAME:MASTER%ｵﾄﾊﾖ｡ｭ｡ｭ
+						ELSE
+							PRINTFORML ｰ｢ﾇﾐﾊﾜｵｽﾁﾋ%CALLNAME:MASTER%ｵﾄﾊﾖﾖｸ｡ｭ｡ｭ
+						ENDIF
+						PRINTFORMW 
+						IF TALENT:TARGET:Иﾅｮ
+							PRINTFORML ｡ｸ%CALLNAME:MASTER%ﾕ賁ﾇｵﾄ｡ｭ｡ｭﾄﾇﾀ・｢ｲｻﾐﾐｰ｡｡ｭ｡ｭ｡ｹ
+							PRINTFORMW ｡ｸﾎﾒ｡ｭ｡ｭﾃｹﾃｻ｡ｭ｡ｭ｡ｹ
+						ELSE
+							PRINTFORML ｡ｸﾟ浯ﾅ｡ｭ｡ｭ｡ｭ｡ｭｹｰ｡｡ｭ｡ｭ｡ｭ｡ｭ｡ｹ
+							IF TALENT:TARGET:70 == -1
+								PRINTFORMW ｡ｸｶ｢ｿﾉﾒﾔﾅｶ｡ｭ｡ｭﾃｻﾓﾐﾍｴ｡ｭ｡ｭ｡ｹ
+							ELSE
+								PRINTFORML ｡ｸｶ｢ﾃｻﾊﾂ｡ｭ｡ｭ｡ｹ
+								PRINTFORMW ｡ｸ倏倏｡ｭ｡ｭ｡ｹ
+							ENDIF
+						ENDIF
+					CASE 2001 TO 7000
+						DRAWLINE
+						PRINTFORM %CALLNAME:MASTER%ﾔﾚｰ｢ﾇﾉｼ莊ﾄﾊﾖﾖｸｲ衒・｢
+						SIF CFLAG:291 == 0
+							PRINTFORM ｡｢ﾀｭｿｪﾄﾚﾒﾂ
+						PRINTFORML ﾊﾖﾖｸｲ衒・ﾛﾁﾑ
+						IF TALENT:TARGET:70 == -1
+							PRINTFORML ｰ｢ﾇ｡ﾉ・ﾄﾍｬﾊｱﾉ﨓衂睇盞ﾄｲ・ｶﾗﾅ｡ｭ｡ｭ
+						ELSE
+							PRINTFORML ｰ｢ﾇｻｶﾏｽｿｴｭｵﾄﾍｬﾊｱﾉ﨓蟯ｻｳﾄｲ・ｶﾗﾅ｡ｭ｡ｭ
+						ENDIF
+						PRINTFORMW 
+						IF TALENT:TARGET:70 == -1
+							PRINTFORML ｡ｸﾎﾘ倏｡ｭ｡ｭﾟﾞ｣｡｡ｪ｡ｪ｡ｪ｡ｪ｡ｹ
+							PRINTFORMW ｡ｸﾋｹ｣｡｡ｭ｡ｭｹｰ｡｡ｭ｡ｭ｡ｹ
+						ELSE
+							PRINTFORML ｡ｸｰ｡｡ｭ｡ｭｰ｡倏｡ｭ｡ｭ%CALLNAME:MASTER%｡ｭ｡ｭ｡ｹ
+							PRINTFORMW ｡ｸﾔﾚﾉﾔﾎ｢ﾓﾃﾁｦﾒｻｵ罍ｭ｡ｭﾒｲｿﾉﾒﾔﾅｶ｡ｭ｡ｭ｡ｹ
+						ENDIF
+					CASEELSE
+						DRAWLINE
+						PRINTFORM %CALLNAME:MASTER%ﾔﾚｰ｢ﾇﾉｼ莊ﾄﾊﾖﾖｸｲ衒・｢
+						SIF CFLAG:291 == 0
+							PRINTFORM ｡｢ﾀｭｿｪﾄﾚﾒﾂ
+						PRINTFORML ﾊﾖﾖｸｲ衒・ﾛﾑｨ
+						IF TALENT:TARGET:70 == -1
+							PRINTFORML %CALLNAME:MASTER%ｱｧﾗ｡ﾁﾋｱﾕｽｫﾑﾛｵﾄｰ｢ﾇｭ｡ｭ
+						ELSE
+							PRINTFORML ｿ・ﾐﾒﾑｾｭｱ莊ﾃﾁ銧｢ﾇﾞｷｨﾈﾌﾊﾜﾁﾋ｡｢%CALLNAME:MASTER%ｱｧｽﾋｰ｢ﾇﾄﾍﾎｲｿ｡ｭ｡ｭ
+						ENDIF
+						PRINTFORMW 
+						IF TALENT:TARGET:70 == -1
+							PRINTFORML ｡ｸ倏｡｢ｰ｡倏｡ｭ｡ｭ%CALLNAME:MASTER%ﾎﾘ｡ｭ｡ｭﾇ瞑ｻｵ罍ｭ｡ｭ｡ｹ
+							PRINTFORMW ｡ｸﾇ・ｧｽﾒ｡ｭ｡ｭｰ｡｡ｭ｡ｭ倏｡ｭ｡ｭ｡ｹ
+						ELSE
+							PRINTFORML ｡ｸ｡ｭ｡ｭ%CALLNAME:MASTER%ﾎﾒﾉﾔﾎ｢ﾓﾐｵ罍ｭ｡ｭﾏ・ｪｱﾈﾊﾖﾖｸｸ・ｭ｡ｭｺﾃｵﾄｶｫﾎｭ｡ｭ｡ｹ
+							PRINTFORMW ｡ｸｰ｡｡ｪ｡ｪ｡ｪ｡ｪﾟﾞ｣｡%CALLNAME:MASTER%｣｡｡ｹ
+						ENDIF
+					ENDSELECT
+				ENDIF
+			ELSE
+				DRAWLINE
+				IF TALENT:15 == 1 && SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=1500
+					PRINTFORML %CALLNAME:PLAYER%ﾊﾔﾍｼｽｫﾊﾖﾖｸｻｬﾈ・｢ﾇﾄﾃﾛﾑｨ｡｢ﾈｴｱｻｰ｢ﾇ･ﾗ｡ﾁﾋ｡｣
+					PRINTFORML ｰ｢ﾇﾛｺｬﾀ睛ｮｵﾄｶ｢ﾗﾅ%CALLNAME:PLAYER%ｵﾄﾑﾛｾｦ｡｣
+					PRINTFORMW 
+					PRINTFORML ｡ｸ%CALLNAME:PLAYER%｡｢ﾕ賁ﾇｴｨｵﾄｾﾙｶｯﾄﾘ｡ｭ｡ｭ｡ｹ
+					PRINTFORMW ｡ｸ｡ｭ｡ｭﾖｻﾓﾐ｡ｭ｡ｭﾕ篥ｴﾒｻｴﾎﾅｶ｡ｭ｡ｭ｡ｹ
+					PRINTFORMW ｰ｢ﾇ貅・嵭犒ﾄﾐ｡ﾉｵｵﾀ｡｣
+				ELSEIF TALENT:15 == -1 && SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=670
+					PRINTFORML %CALLNAME:PLAYER%ﾊﾔﾍｼｽｫﾊﾖﾖｸｻｬﾈ・｢ﾇﾄﾃﾛﾑｨ｡｢ﾈｴｱｻｰ｢ﾇ･ﾗ｡ﾁﾋ｡｣
+					PRINTFORML ｰ｢ﾇﾛｺｬﾀ睛ｮｵﾄｶ｢ﾗﾅ%CALLNAME:PLAYER%ｵﾄﾑﾛｾｦ｡｣
+					PRINTFORMW 
+					PRINTFORML ｡ｸ%CALLNAME:PLAYER%｡｢ﾕ賁ﾇｴｨｵﾄｾﾙｶｯﾄﾘ｡ｭ｡ｭ｡ｹ
+					PRINTFORMW ｡ｸ｡ｭ｡ｭｲｻｿﾉﾒﾔﾅｶ｡ｭ｡ｭ｡ｹ
+					PRINTFORMW ｰ｢ﾇ貅・嵭犒ﾄﾐ｡ﾉｵｵﾀ｡｣
+				ELSEIF SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=1000
+					PRINTFORML %CALLNAME:PLAYER%ﾊﾔﾍｼｽｫﾊﾖﾖｸｻｬﾈ・｢ﾇﾄﾃﾛﾑｨ｡｢ﾈｴｱｻｰ｢ﾇ･ﾗ｡ﾁﾋ｡｣
+					PRINTFORML ｰ｢ﾇﾛｺｬﾀ睛ｮｵﾄｶ｢ﾗﾅ%CALLNAME:PLAYER%ｵﾄﾑﾛｾｦ｡｣
+					PRINTFORMW 
+					PRINTFORML ｡ｸ%CALLNAME:PLAYER%｡｢ﾕ賁ﾇｴｨｵﾄｾﾙｶｯﾄﾘ｡ｭ｡ｭ｡ｹ
+					PRINTFORMW ｡ｸ｡ｭ｡ｭﾃｻﾓﾐﾏﾂｴﾎﾁﾋﾓｴ｡ｹ
+				ELSEIF TALENT:15 == 1 && SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=320
+					PRINTFORML %CALLNAME:PLAYER%ﾊﾔﾍｼｽｫﾊﾖﾖｸｻｬﾈ・｢ﾇﾄﾃﾛﾑｨ｡｢ﾈｴｱｻｰ｢ﾇ･ﾗ｡ﾁﾋ｡｣
+					PRINTFORML ｰ｢ﾇﾛｺｬﾀ睛ｮｵﾄｶ｢ﾗﾅ%CALLNAME:PLAYER%ｵﾄﾑﾛｾｦ｡｣
+					PRINTFORMW 
+					PRINTFORML ｡ｸﾄ耘・ﾄﾄﾀ・ｿ｡ｹ
+					PRINTFORMW ｡ｸﾕ賁ﾇﾎﾞｷｨﾏ獎ﾅ｡｣｡ｹ
+				ELSEIF TALENT:15 == -1 && SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=150
+					PRINTFORML %CALLNAME:PLAYER%ﾊﾔﾍｼｽｫﾊﾖﾖｸｻｬﾈ・｢ﾇﾄﾃﾛﾑｨ｡｢ﾈｴｱｻｰ｢ﾇ･ﾗ｡ﾁﾋ｡｣
+					PRINTFORML ｰ｢ﾇﾇﾔﾚｿｴﾗﾅﾀｬｻｻﾑﾄｶ｢ﾗﾅ%CALLNAME:PLAYER%ｵﾄﾑﾛｾｦ｡｣
+					PRINTFORMW 
+					PRINTFORML ｡ｸﾄ耘・ﾄﾄﾀ・ｿ｡ｹ
+					PRINTFORMW ｡ｸﾇ・ｻﾒｪﾗﾃﾈﾋﾀｧﾈﾅｵﾄﾊﾂ｡ｭ｡ｭ｡ｹ
+				ELSEIF SOURCE:ｷｴｸﾐ * 3 * (2000 - BASE:ﾇ鰔・ * (500 + BASE:ﾀ槢ﾔ) / ((2000 + BASE:ﾇ鰔・ * (500 + MAXBASE:ﾀ槢ﾔ)) >=220
+					PRINTFORML %CALLNAME:PLAYER%ﾊﾔﾍｼｽｫﾊﾖﾖｸｻｬﾈ・｢ﾇﾄﾃﾛﾑｨ｡｢ﾈｴｱｻｰ｢ﾇ･ﾗ｡ﾁﾋ｡｣
+					PRINTFORML ｰ｢ﾇﾇﾔﾚｿｴﾗﾅﾀｬｻｻﾑﾄｶ｢ﾗﾅ%CALLNAME:PLAYER%ｵﾄﾑﾛｾｦ｡｣
+					PRINTFORMW 
+					PRINTFORML ｡ｸﾄ耘・ﾄﾄﾀ・ｿ｡ｹ
+					PRINTFORMW ｡ｸﾕ賁ﾇﾎﾞｷｨﾏ獎ﾅ｡｣｡ｹ
+				ELSE
+					DRAWLINE
+					PRINTFORM %CALLNAME:MASTER%ｰﾑﾊﾖﾖｸﾉ・・｢ﾇﾉｼ莊ﾄﾒﾂｷﾀ・｣
+					SIF CFLAG:291 == 0
+						PRINTFORM ｡｢ｴ暠ｪﾁﾋﾄﾚｿ・
+					PRINTFORML ﾓﾃﾊﾖﾖｸﾇ睇盍衒・｢ﾇﾄﾋｽｴｦ
+					PRINTFORML ｰ｢ﾇ｢ｿﾌｿｪﾊｼｲｻｰｲｵﾄｲ・ｶﾗﾅ
+					PRINTFORMW 
+					PRINTFORML ｡ｸｲｻﾐﾐ｡ｭ｡ｭ%CALLNAME:MASTER%ｱ簷ｭ｡ｭｲｻﾒｪ｡ｹ
+					PRINTFORMW ｡ｸｰﾝﾍﾐﾁﾋﾇ・ﾑﾊﾖﾖｸｰﾎｳ･｣｡｡ｹ
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDSELECT

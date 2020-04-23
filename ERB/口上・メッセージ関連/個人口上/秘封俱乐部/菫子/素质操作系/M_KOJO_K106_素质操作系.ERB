@@ -1,0 +1,117 @@
+﻿;eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;==================================================
+;素质操作结算
+;==================================================
+;#DIM CONST K_106_TELENT_恋慕 = 3
+;#DIM CONST K_106_TELENT_恋人 = 7
+;#DIM CONST K_106_TELENT_思慕 = 8
+;#DIM CONST K_106_TELENT_反抗的 = 11
+;#DIM CONST K_106_TELENT_自尊心 = 13
+;#DIM CONST K_106_TELENT_難以越過的底線 = 25
+;#DIM CONST K_106_TELENT_痛覚 = 40
+;#DIM CONST K_106_TELENT_抵抗 = 32
+;
+;#DIM CONST K_106_ABL_親密 = 9
+;#DIM CONST K_106_ABL_従順 = 10
+;
+;#DIM CONST K_106_CFLAG_好感度 = 2
+;#DIM CONST K_106_CFLAG_信頼度 = 4
+;#DIM CONST K_106_CFLAG_前女友 = 1004
+;==================================================
+@K106_TALENT_UPDOWN(K_106_TELENT, KEY)
+#DIM K_106_TELENT
+#DIM KEY
+SELECTCASE K_106_TELENT
+    CASE K_106_TELENT_恋慕
+        IF KEY == 0 && TALENT:106:K_106_TELENT_恋慕 == 1
+            PRINTFORMW 堇子失去了【恋慕】……
+            TALENT:106:K_106_TELENT_恋慕 = 0
+        ENDIF
+
+    CASE K_106_TELENT_恋人
+        IF KEY == 0 && TALENT:106:K_106_TELENT_恋人 == 1
+            PRINTFORMW 和堇子不再是恋人了……
+            TALENT:106:K_106_TELENT_恋人 = 0
+        ENDIF
+
+    CASE K_106_TELENT_思慕
+        IF KEY == 0 && TALENT:106:K_106_TELENT_思慕 == 1
+            PRINTFORMW 堇子失去了【思慕】……
+            TALENT:106:K_106_TELENT_思慕 = 0
+        ENDIF
+        
+    CASE K_106_TELENT_反抗的
+        IF KEY == 1 && TALENT:106:K_106_TELENT_反抗的 != 1
+            PRINTFORMW 堇子变得抗拒了……
+            TALENT:106:K_106_TELENT_反抗的 ++
+
+        ELSEIF KEY == 0 && TALENT:106:K_106_TELENT_反抗的 != -1
+            PRINTFORMW 堇子不再那么抗拒……
+            TALENT:106:K_106_TELENT_反抗的 --
+        ENDIF
+
+    CASE K_106_TELENT_自尊心
+        IF KEY == 1 && TALENT:106:K_106_TELENT_自尊心 != 1
+            PRINTFORMW 堇子自尊心提高了……
+            TALENT:106:K_106_TELENT_自尊心 ++
+
+        ELSEIF KEY == 0 && TALENT:106:K_106_TELENT_自尊心 != -1
+            PRINTFORMW 堇子失去了【自尊心高】……
+            TALENT:106:K_106_TELENT_自尊心 --
+        ENDIF
+
+    CASE K_106_TELENT_難以越過的底線
+        IF KEY == 1 && TALENT:106:K_106_TELENT_難以越過的底線 != 1
+            PRINTFORMW 堇子获得了【難以越過的底線】……
+            TALENT:106:K_106_TELENT_難以越過的底線 = 1
+
+        ELSEIF KEY == 0 && TALENT:106:K_106_TELENT_難以越過的底線 != 0
+            PRINTFORMW 堇子失去了【難以越過的底線】……
+            TALENT:106:K_106_TELENT_難以越過的底線 = 0
+        ENDIF
+
+    CASE K_106_TELENT_痛覚
+        IF KEY == 1 && TALENT:106:K_106_TELENT_痛覚 != 1
+            PRINTFORMW 堇子变得开始害怕疼痛了……
+            TALENT:106:K_106_TELENT_痛覚 ++
+
+        ELSEIF KEY == 0 && TALENT:106:K_106_TELENT_痛覚 != -1
+            PRINTFORMW 堇子不再畏惧疼痛……
+            TALENT:106:K_106_TELENT_痛覚 --
+        ENDIF
+
+    CASE K_106_TELENT_抵抗
+        IF KEY == 1 && TALENT:106:K_106_TELENT_抵抗 != 1
+            PRINTFORMW 堇子获得了【抵抗】……
+            TALENT:106:K_106_TELENT_抵抗 = 1
+        ELSEIF KEY == 0 && TALENT:106:K_106_TELENT_抵抗 != 0
+            PRINTFORMW 堇子失去了【抵抗】……
+            TALENT:106:K_106_TELENT_抵抗 = 0
+        ENDIF
+
+    CASE K_106_ABL_親密
+        ABL:K_106_ABL_親密 = KEY
+
+    CASE K_106_ABL_従順
+        ABL:K_106_ABL_従順 = KEY
+        
+    CASE K_106_CFLAG_好感度
+        CFLAG:106:K_106_CFLAG_好感度 = KEY
+
+    CASE K_106_CFLAG_信頼度
+        CFLAG:106:K_106_CFLAG_信頼度 = KEY
+    
+    CASE K_106_CFLAG_前女友
+        IF K_106_CFLAG_前女友 == 1 && KEY == 0
+            PRINTFORMW 和堇子重归于好了……
+            CFLAG:106:K_106_CFLAG_前女友 = 0
+        ELSEIF K_106_CFLAG_前女友 == 0 && KEY == 1
+            PRINTFORMW 和堇子分手了……
+            CFLAG:106:K_106_CFLAG_前女友 = 1
+        ENDIF
+
+    CASEELSE
+        PRINTFORMW 素质处理系统出现预想之外的错误
+ENDSELECT

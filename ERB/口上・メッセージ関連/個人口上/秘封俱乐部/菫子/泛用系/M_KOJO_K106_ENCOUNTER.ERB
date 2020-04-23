@@ -1,0 +1,86 @@
+﻿;eraTheWorld 4.735用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;"ENCOUNTER"系口上
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_ENCOUNTER_K106
+	;初次见面
+	PRINTFORML 欢迎使用某可爱的魔法师希尔芙的堇子口上，适用版本V4.735，如有疏漏或者bug请提出
+	PRINTFORML 本口上还在制作中，所以部分口上会不全/缺失/奇奇怪怪的bug等等
+	PRINTFORML 专用型智能化口上搭载测试中
+	PRINTFORMW 如果不是新周目的话，推荐使用update对角色进行设定的更新
+	PRINTFORMW 攻略提示：一定不要让堇子到达反发刻印3级哦~~~
+	PRINTL
+	PRINTL
+	PRINTL
+	PRINTFORMW
+	PRINTFORMW 「那个？那边的那位……」
+	PRINTFORML %CALLNAME:MASTER%正走在路上，被人叫住了。
+	PRINTFORML 朝着声音的方向望去，有一个少女一直看着这边。
+	PRINTFORMW 「果然是外界人的气息，原来你就是大家嘴里说的%CALLNAME:MASTER%么！」少女盯着%CALLNAME:MASTER%说道。
+	PRINTFORML “这样说的话，你是……宇佐见堇子！？”
+	PRINTFORMW
+	PRINTFORMW
+	PRINTFORML 和她交换了信息之后，似乎是和传闻中的一样，和自己同样都来自于外界。
+	PRINTFORMW 「嗯哼，原来是这样一回事啊」
+	PRINTFORMW 「突然就穿越进入了幻想乡什么的啊……」
+	PRINTFORMW 「怪不得自从%TOSTR(DAY)%天前大家一直都在议论你……」
+	PRINTFORMW 「那么你也一定受到了大家的照顾了吧？」
+	PRINTFORML 能够稳定下来生活，真是多亏了大家的关照
+	PRINTFORML
+	PRINTFORML
+	PRINTFORMW 「原来如此，没想到竟然在这么近的地方有同样来自外界的人呢」
+	PRINTFORMW 「某种意义上事实真的比小说还要奇幻」
+	PRINTFORML 确实……没想到会以这样的形式和她萌生缘分。
+	PRINTFORML 作为同样在外界经历过的人，作为幻想乡的伙伴，我们要和睦相处呢。
+
+	IF  TALENT:PLAYER:2 == 1
+		PRINTFORML 「明明你也是女孩子，但是为什么就偏偏感觉会让人提不起劲来呢……」
+		PRINTFORML 「不过，看上去，你没有超能力的吧」
+		PRINTFORML 「不对，这个感觉，你有超能力，虽然不知道是什么能力……」
+		PRINTFORMW 少女一脸疑惑地盯着你……看上去对%CALLNAME:MASTER%提起了兴趣
+
+	ELSE
+		PRINTFORML ……话刚说完，少女的脸上露出嫌弃的表情
+		PRINTFORML 「切。反正你没有超能力的吧」
+		PRINTFORML 「这样的你，作为我的同伴什么的……」
+		PRINTFORML 「不对，这个感觉，你有超能力，虽然不知道是什么能力……」
+		PRINTFORMW 少女一脸疑惑地盯着你……看上去对%CALLNAME:MASTER%提起了兴趣
+	ENDIF
+
+	PRINTFORML 「既然%CALLNAME:MASTER%你这样恳求的话，那就勉为其难的关照你一下好了」
+	PRINTFORML 「那么，我该怎么称呼你呢？」
+
+	$INPUT_NAMELOOP
+		PRINTL
+		PRINTFORML [0]-叫我%CALLNAME:MASTER%就好
+		PRINTFORML [1] 自行決定(输入完毕后按回车键确认(Enter))
+		INPUT
+
+		SELECTCASE RESULT
+			CASE 0
+				MASTERNAME:106 = %CALLNAME:MASTER%
+				PRINTFORML 「这样叫就好了么？真是很随意的人呢」
+			CASE 1
+				INPUTS
+				MASTERNAME:106 = %RESULTS%
+				PRINTFORML 「%MASTERNAME:106%是么？如果是这样的话，我就这样称呼了～」
+			CASEELSE
+				GOTO INPUT_NAMELOOP
+		ENDSELECT
+
+	PRINTFORML 「可惜，为了大结界的稳定，我也已经和外界被彻底切断了，在幻想乡的我是没办法前往外界的，不然我也可以帮助你穿梭两边」
+	PRINTFORML 「你那是什么眼神？就连你都有能力，再怎么样，我也是有强大的能力的。」
+	PRINTFORML 「我可是现世的秘术师，在幻想乡里，你听听传闻就知道我的力量了！」
+	PRINTFORML 稍微露出了点疑问的目光，顿时引起了少女的不满，明明看上去很平静的眼神，却像是蕴含了风暴一般……
+	PRINTFORMW
+	PRINTFORMW
+	PRINTFORML 「遇到困难的话，如果我心情好的话，可以帮助你」
+	PRINTFORML ……虽然看上去勉为其难的说法，但是似乎是希望能够和%MASTERNAME:106%搞好关系
+	PRINTFORML 但这说法令人感到不快，于是停下了时间，在她的鞋子上放了一枚小石头
+	PRINTFORML 「唉……？什么时候？莫非是你做的么？」
+
+	CFLAG:106:1001 = DAY
+
+	RETURN 1

@@ -1,0 +1,939 @@
+﻿
+@PRINT_STATE_JUEL(選択中キャラID)
+#DIM 選択中キャラID
+#DIM 表示項目数
+
+PRINTL
+PRINTL □ 宝珠 □---------------------------------------------------------------------------
+表示項目数 = 0
+FOR LOCAL, 0, 22
+	;PALAM.CSVに名称が登録されていないとCONTINUE
+	SIF !STRLENS(PALAMNAME:LOCAL)
+		CONTINUE
+	;1000,1000000,単位で区切る
+	LOCALS = {JUEL:選択中キャラID:LOCAL}
+	SIF JUEL:選択中キャラID:LOCAL > 1000000
+		LOCALS = {JUEL:選択中キャラID:LOCAL / 1000}k
+	SIF JUEL:選択中キャラID:LOCAL > 1000000000
+		LOCALS = {JUEL:選択中キャラID:LOCAL / 1000000}m
+	PRINTFORM %PALAMNAME:LOCAL,6%の珠:%LOCALS,7,LEFT%
+	表示項目数 += 1
+	;改行or表示位置あけ
+	SIF 表示項目数 % 4 == 0
+		PRINTL 
+NEXT
+;否定の珠
+LOCALS = {JUEL:選択中キャラID:100}
+SIF JUEL:選択中キャラID:100 > 1000000
+	LOCALS = {JUEL:選択中キャラID:100 / 1000}k
+PRINTFORM %PALAMNAME:100,6%の珠:%LOCALS,7,LEFT%
+
+@PRINT_STATE_EX(選択中キャラID)
+#DIM 選択中キャラID
+#DIM 表示項目数
+
+SIF EX:選択中キャラID:Ｃ絶頂 + EX:選択中キャラID:Ｖ絶頂 + EX:選択中キャラID:Ａ絶頂 + EX:選択中キャラID:Ｂ絶頂 + EX:選択中キャラID:Ｍ絶頂 + EX:選択中キャラID:噴乳 + EX:選択中キャラID:射精 == 0
+	RETURN 0
+表示項目数 = 0
+PRINTL
+PRINTL □ 絶頂回数 □-----------------------------------------------------------------------
+FOR LOCAL, 0, VARSIZE("EX")
+	SIF !EX:選択中キャラID:LOCAL
+		CONTINUE
+	SIF !GROUPMATCH(EXNAME:LOCAL, "Ｃ絶頂", "Ｖ絶頂", "Ａ絶頂", "Ｂ絶頂", "Ｍ絶頂", "噴乳", "射精", "放尿")
+		CONTINUE
+	PRINTFORM %EXNAME:LOCAL,12%:{EX:選択中キャラID:LOCAL,5,LEFT} 
+	表示項目数 ++
+	SIF 表示項目数 % 4 == 0
+		PRINTL
+NEXT
+
+
+@PRINT_STATE_PERSONAL(選択中キャラID)
+#DIM 選択中キャラID
+#DIMS KARADAMEATE
+PRINTL
+PRINTL □ 個人情報 □-----------------------------------------------------------------------
+PRINTL  
+IF 選択中キャラID == MASTER
+	IF CFLAG:MASTER:睡眠
+		PRINTFORML 昨日就寝時刻：%時刻表示(CFLAG:MASTER:就寝時間 - DAY * 1440)%
+	ELSE
+		PRINTFORML 昨日就寝時刻：%時刻表示(CFLAG:MASTER:就寝時間 + 1440 - DAY * 1440)%
+	ENDIF
+	PRINTFORML 起床時刻：%時刻表示(TIME:3)%
+	IF FLAG:地主
+		PRINTFORML 
+		CALL SHOW_NOUMIN
+	ENDIF
+ELSE
+	PRINT 活動時間帯:
+	SELECTCASE 選択中キャラID
+	CASE 1
+		PRINTL 6～13時 14～23時
+	CASE 2
+		PRINTL 5～13時 14～24時
+	CASE 3
+		PRINTL 0～10時 17～24時
+	CASE 4
+		PRINTL 0～10時 16～24時
+	CASE 5
+		PRINTL 6～24時
+	CASE 6
+		PRINTL 0～2時 8～24時
+	CASE 7
+		PRINTL 0～1時 6～13時 14～24時
+	CASE 8
+		PRINTL 0～1時 6～13時 14～24時
+	CASE 9
+		PRINTL 0～5時 10～13時 14～24時
+	CASE 10
+		PRINTL 0～3時 10～24時
+	CASEELSE
+		IF CFLAG:選択中キャラID:神社在住 || CFLAG:MASTER:現在位置 == OMANEKIBEYA()
+			CALL 起床時間表示(選択中キャラID)
+		ELSE
+			CALL 滞在時間表示(選択中キャラID)
+		ENDIF
+	ENDSELECT
+	IF CFLAG:選択中キャラID:經常去的地方 >= 0
+		PRINTFORML 經常去的地方：%GET_MAPNAME(CFLAG:選択中キャラID:經常去的地方)%
+	ENDIF
+	IF CFLAG:選択中キャラID:自宅位置 && !CFLAG:選択中キャラID:神社在住
+		LOCAL = CFLAG:選択中キャラID:自宅位置 / 10 + 6000
+		PRINT 自宅位置：
+		PRINTFORML %STR:LOCAL%
+	ELSEIF CFLAG:選択中キャラID:神社在住
+		PRINT 自宅位置：
+		PRINTFORML %GET_MAPNAME(MAIN_MAP)%
+	ENDIF
+	PRINT 工作情报：
+	PRINTFORML %CSTR:選択中キャラID:工作情報%
+	PRINT 　職場　：
+	PRINTFORML %CSVCSTR(選択中キャラID, 2)%
+ENDIF
+
+PRINT 味覚嗜好：
+IF GETBIT(CFLAG:選択中キャラID:332, 0)
+	PRINTFORM ＜浓郁＞
+ELSEIF GETBIT(CFLAG:選択中キャラID:332, 1)
+	PRINTFORM ＜薄味＞
+ELSE
+	PRINTFORM ＜普通＞
+ENDIF
+SIF GETBIT(CFLAG:選択中キャラID:332, 3)
+	PRINTFORM ＜辣味耐性＞
+SIF GETBIT(CFLAG:選択中キャラID:332, 4)
+	PRINTFORM ＜甜味耐性＞
+SIF GETBIT(CFLAG:選択中キャラID:332, 5)
+	PRINTFORM ＜芥末耐性＞
+SIF GETBIT(CFLAG:選択中キャラID:332, 6)
+	PRINTFORM ＜柠檬耐性＞
+PRINTL 　
+PRINTL 喜欢的味道：
+CALL SHOW_TASTE(GET_STR(, "キャラデータ", 選択中キャラID, "料理：喜欢的味道"))
+PRINTL 讨厌的味道：
+CALL SHOW_TASTE(GET_STR(, "キャラデータ", 選択中キャラID, "料理：讨厌的味道"))
+PRINTL 助手効果：
+CALL SHOW_TASTE(GET_TASTE_ASSIBONUS(選択中キャラID))
+SIF 選択中キャラID == MASTER && STRLENS(DISHNAME)
+	CALL SHOW_DISHDATA
+
+IF CFLAG:選択中キャラID:喜欢的体位
+	PRINT 弱点：
+	SELECTCASE CFLAG:選択中キャラID:喜欢的体位
+	CASE 1
+		PRINTL 正常位
+	CASE 2 
+		PRINTL 後背位
+	CASE 3 
+		PRINTL 騎乗位
+	CASE 4 
+		PRINTL 対面座位 
+	CASE 5 
+		PRINTL 背面座位
+	CASE 6
+		PRINTL 正常位肛交
+	CASE 7 
+		PRINTL 後背位肛交
+	CASE 8 
+		PRINTL 騎乗位肛交
+	CASE 9 
+		PRINTL 対面座位肛交
+	CASE 10 
+		PRINTL 背面座位肛交
+	ENDSELECT
+	PRINTL 　
+ENDIF
+
+PRINTL 　
+IF 選択中キャラID == RANDOM_CHARANUM
+	;現状、複雑な種族分岐などは無しで
+	PRINTL □ 角色介绍 □---------------------------------------------------------------------
+	PRINTL 
+	PRINTFORML ～モブ%CSTR:選択中キャラID:路人子種族%～　●能力：%CSTR:RANDOM_CHARANUM:路人子能力%
+	PRINTFORML %CSTR:RANDOM_CHARANUM:路人子プロフィール１%
+	PRINTFORML %CSTR:RANDOM_CHARANUM:路人子プロフィール２%
+ELSEIF CSVCSTR(選択中キャラID, 10) != ""
+	PRINTL □ 角色介绍 □---------------------------------------------------------------------
+	PRINTL 
+	;キャラ紹介文を口上の展開によって改変したい場合「@CHARA_INFO_KOJO_KX」を使用する
+	TRYCALLFORM CHARA_INFO_KOJO_K{選択中キャラID}
+	IF !RESULT
+		FOR LOCAL,10,20
+			SIF CSVCSTR(選択中キャラID, LOCAL) != ""
+				PRINTFORML %CSVCSTR(選択中キャラID, LOCAL,)%
+		NEXT
+	ENDIF
+ENDIF
+SETCOLOR C_YELLOW
+IF 選択中キャラID == MASTER && FLAG:甲斐性無
+	PRINTFORML 是个不敢告白的窝囊废
+	PRINTFORML 
+ENDIF
+SETCOLOR C_PINK
+IF CFLAG:選択中キャラID:继承
+	SIF GETBIT (CFLAG:選択中キャラID:继承, 0)
+		PRINTL 以前的周回中取得过恋慕
+	SIF GETBIT (CFLAG:選択中キャラID:继承, 1)
+		PRINTL 以前的周回中取得过恋人
+ENDIF
+IF 選択中キャラID == MASTER
+	IF TALENT:選択中キャラID:恋人
+		LOCAL:3 = 1
+		FOR LOCAL:1 ,1 , CHARANUM
+			IF TALENT:(LOCAL:1):恋人
+				SIF !(LOCAL:3 % 15)
+					PRINTL 
+				LOCAL:3 ++
+				PRINTFORM ［%CALLNAME:(LOCAL:1)%］
+			ENDIF
+		NEXT
+		PRINTL 相恋
+	ENDIF
+ENDIF
+SIF CFLAG:選択中キャラID:清い交際
+	PRINTFORML 经过纯洁的交往恋上了%CALLNAME:MASTER%
+SIF CFLAG:選択中キャラID:既成事実 & 合意_接吻
+	PRINTFORML 和%CALLNAME:MASTER%接吻過
+IF CFLAG:選択中キャラID:既成事実 & 合意_诶嘿嘿
+	PRINTFORML 和%CALLNAME:MASTER%做過
+ELSEIF CFLAG:選択中キャラID:ヤラせちゃった
+	PRINTFORML 虽然是气氛导致的行为、可是我还是不打算原谅%CALLNAME:MASTER%
+ENDIF
+SIF TALENT:選択中キャラID:処女 && TALENT:選択中キャラID:風騷
+	PRINTFORML 虽然是处女、不过如果有请求的话大概就会贡献出来吧
+IF CFLAG:選択中キャラID:体目当て
+	IF TALENT:選択中キャラID:体型 == -2
+		KARADAMEATE = 那幼稚的
+	ELSEIF TALENT:選択中キャラID:胸圍 > 0
+		KARADAMEATE = 那豊満的
+	ELSEIF TALENT:選択中キャラID:処女 > 0
+		KARADAMEATE = 那洁净的
+	ELSE
+		KARADAMEATE = 那娇嫩的
+	ENDIF
+	PRINTFORML %CALLNAME:MASTER%看准%KARADAMEATE%的身体
+ENDIF
+RESETCOLOR
+IF TALENT:選択中キャラID:恋慕
+	IF TALENT:選択中キャラID:無知
+		PRINTFORML %CALLNAME:選択中キャラID%暗自决定成为%CALLNAME:MASTER%的新娘
+	ELSEIF !CFLAG:選択中キャラID:既成事実 & 合意_诶嘿嘿
+		IF TALENT:選択中キャラID:貞操 > 0
+			PRINTFORML 打算相互作为炮友的%CALLNAME:選択中キャラID%完全没有和%CALLNAME:MASTER%交心的想法
+		ELSE
+			PRINTFORML 因為至今還沒有被%CALLNAME:MASTER%得手而感到焦慮不安
+		ENDIF
+	ENDIF
+ENDIF
+
+IF CFLAG:選択中キャラID:バレンタイン
+	SELECTCASE CFLAG:選択中キャラID:バレンタイン % 100
+		CASE 1
+			LOCALS = 黑雷神巧克力
+		CASE 2
+			LOCALS = 普通的巧克力
+		CASE 3
+			LOCALS = 高級巧克力
+		CASE 4
+			LOCALS = 手制巧克力
+	ENDSELECT
+	PRINTFORML 在情人節給了我%LOCALS%\@ CFLAG:選択中キャラID:バレンタイン > 100? （已回禮）# \@
+ENDIF
+PRINTFORML 
+PRINTL □ 弾幕技能 □---------------------------------------------------------------------
+CALL DANMAKU_OPPONENT_STATUS(選択中キャラID, 1)
+IF PANGCI
+	PRINTL □ 胖次技能 □---------------------------------------------------------------------
+	CALL PANNOQIKALA_REVEAL_OUTPUT(選択中キャラID)
+ENDIF
+@滞在時間表示(選択中キャラID)
+#DIM 選択中キャラID
+
+IF CFLAG:選択中キャラID:来訪時間 < CFLAG:選択中キャラID:帰宅時間
+	PRINTFORML {CFLAG:選択中キャラID:来訪時間 / 60}時～{CFLAG:選択中キャラID:帰宅時間 / 60}時
+ELSE
+	PRINTFORML 0時～{CFLAG:選択中キャラID:帰宅時間 / 60}時 {CFLAG:選択中キャラID:来訪時間 / 60}時～24時
+ENDIF
+
+
+
+@起床時間表示(選択中キャラID)
+#DIM 選択中キャラID
+
+IF CFLAG:選択中キャラID:起床時間 < CFLAG:選択中キャラID:就寝時間
+	PRINTFORML {CFLAG:選択中キャラID:起床時間 / 60}時～{CFLAG:選択中キャラID:就寝時間 / 60}時
+ELSE
+	PRINTFORML 0時～{CFLAG:選択中キャラID:就寝時間 / 60}時 {CFLAG:選択中キャラID:起床時間 / 60}時～24時
+ENDIF
+
+
+
+@肉体情報(選択中キャラID)
+#DIM 選択中キャラID
+VARSET LOCALS
+VARSET LOCAL
+PRINTL
+PRINTL □ 肉体情報 □-----------------------------------------------------------------------
+PRINTL 
+PRINTL 【口】　
+PRINTFORM 初吻履歴：
+;IF !EXP:選択中キャラID:キス経験
+IF TALENT:選択中キャラID:無接吻経験
+	SELECTCASE CFLAG:選択中キャラID:初吻喪失対象
+		CASE 0
+			CALL COLORMESSAGE(@"还保有初吻",C_YELLOW,1)
+		CASE 1
+			CALL COLORMESSAGE(@"%CSTR:選択中キャラID:初吻喪失履歴%",C_PINK,1)
+		CASE 2
+			CALL COLORMESSAGE(@"还保有初吻",C_YELLOW,1)
+			PRINTFORM 的以为着、其实……
+			CALL COLORMESSAGE(@"%CSTR:選択中キャラID:初吻喪失履歴%",C_PINK,1)
+	ENDSELECT
+ELSEIF CFLAG:選択中キャラID:初吻喪失記念日
+	IF STRFIND(CSTR:選択中キャラID:初吻喪失履歴, "￥ＢＲ") > 0
+		LOCAL = RESULT
+		SPLIT CSTR:選択中キャラID:初吻喪失履歴, "￥ＢＲ", LOCALS
+		CALL COLORMESSAGE(@"%LOCALS:0%",C_PINK,1)
+		PRINTFORM 的以为着、其实……
+		CALL COLORMESSAGE(@"%LOCALS:1%",C_PINK,1)
+		RESULT = LOCAL
+		VARSET LOCALS
+	ELSE
+		CALL COLORMESSAGE(@"%CSTR:選択中キャラID:初吻喪失履歴%",C_PINK,1)
+	ENDIF
+ELSEIF 選択中キャラID != MASTER
+	CALL COLORMESSAGE(@"在和%CALLNAME:MASTER%相遇之前失去了",C_AQUA,1)
+	;だと思うんだけど…
+ENDIF
+
+
+SIF EXP:選択中キャラID:接吻経験
+	PRINTFORML 现在为止有过{EXP:選択中キャラID:接吻経験}次接吻経験
+SIF CFLAG:選択中キャラID:累計精飲
+	PRINTFORML 现在为止喝过{CFLAG:選択中キャラID:累計精飲}ml精液
+IF EXP:選択中キャラID:精飲経験 > 300 && ABL:選択中キャラID:精液中毒 >= 10
+	PRINTFORML 只要喝下精液、身体就会完全发情
+ELSEIF EXP:選択中キャラID:精飲経験 > 150 && ABL:選択中キャラID:精液中毒 >= 5
+	PRINTFORML 一尝到精液的味道身体就会躁动难耐
+ELSEIF TALENT:選択中キャラID:精愛味覚
+	PRINTFORML 闻到精液的味道会不自觉的兴奋
+ELSEIF ABL:選択中キャラID:精液中毒 >= 3
+	PRINTFORML 可以毫无排斥的喝下精液
+ENDIF
+SIF GETBIT (CFLAG:選択中キャラID:继承, 6)
+	PRINTFORML %CALLNAME:MASTER%非常清楚该怎么様做才最有感觉
+IF 選択中キャラID == MASTER
+	IF ABL:選択中キャラID:舌 >= 5
+		PRINTFORML 用卓越的舌技来俘虏少女
+	ELSEIF ABL:選択中キャラID:舌 >= 3
+		PRINTFORML 巧妙地使用舌头取悦少女
+	ENDIF
+ENDIF
+PRINTL 
+PRINTL 【胸】
+SELECTCASE ABL:選択中キャラID:Ｂ感覚
+	CASE IS >= 10
+		PRINTL 感度抜群　
+	CASE IS >= 5
+		PRINTL 感度良好　
+ENDSELECT
+IF TALENT:選択中キャラID:淫乳
+	PRINT 已经彻底調教的
+	IF TALENT:選択中キャラID:胸圍 < 0
+		PRINT 胸
+	ELSE
+		PRINT 乳房
+	ENDIF
+	PRINTFORML 只要一抚摸、就完全无法控制自己的腰的程度
+ENDIF
+
+SIF GETBIT (CFLAG:選択中キャラID:继承, 5)
+	PRINTFORML %CALLNAME:MASTER%非常清楚该怎么様做才最有感觉
+SIF CFLAG:選択中キャラID:累計精浴
+	PRINTFORML 现在为止沾过{CFLAG:選択中キャラID:累計精浴}次精液　
+IF TALENT:選択中キャラID:母乳体質
+	;PRINTFORML \@ ABL:選択中キャラID:噴乳中毒 >= 3 ? 甘みのあるミルクがたっぷりと詰まっている# 刺激してやれば甘みのあるミルクが滲みだすだろう\@
+	PRINTFORML 如果刺激的话就会分泌出甘甜的乳汁出来
+ENDIF
+SELECTCASE ABL:選択中キャラID:胸
+	CASE IS >= 5
+	CASE IS >= 3
+ENDSELECT
+PRINTL
+
+PRINTL 【指】
+SELECTCASE ABL:選択中キャラID:指
+	CASE IS >= 5
+		PRINTL 凶器　
+	CASE IS >= 3
+		PRINTL 達人　
+ENDSELECT
+IF 選択中キャラID == MASTER
+	IF ABL:選択中キャラID:指 >= 5
+		PRINTFORML 灵活的手指愛撫转眼间就能令少女心荡神驰
+	ELSEIF ABL:選択中キャラID:指 >= 3
+		PRINTFORML 用巧妙的指技来取悦少女
+	ENDIF
+ENDIF
+PRINTL
+PRINTL 【肛】
+PRINTFORM 尻穴処女喪失履歴：
+IF CSTR:選択中キャラID:尻穴処女喪失履歴 != ""
+	CALL COLORMESSAGE(@"%CSTR:選択中キャラID:尻穴処女喪失履歴%",C_PINK,1)
+ELSEIF !EXP:選択中キャラID:Ａ性交経験
+	CALL COLORMESSAGE(@"还没有被使用过",C_YELLOW,1)
+ELSE
+	PRINTFORML 
+ENDIF
+SELECTCASE ABL:選択中キャラID:Ａ感覚
+	CASE IS >= 10
+		PRINT 感度抜群　
+	CASE IS >= 5
+		PRINT 感度良好　
+ENDSELECT
+SIF GETBIT (CFLAG:選択中キャラID:继承, 4)
+	PRINTFORML %CALLNAME:MASTER%非常清楚该怎么様做才最有感觉
+IF 選択中キャラID
+	SELECTCASE 挿入不可(選択中キャラID)
+		CASE 3
+			PRINTFORML 无论如何也无法容纳%CALLNAME:MASTER%的陰茎的尺寸
+			LOCAL:6 ++
+		CASE 2
+			IF EXP:選択中キャラID:Ａ経験 < 50 && TALENT:MASTER:禁断的知識
+				PRINTFORML 不稍微放松一些就没办法把%CALLNAME:MASTER%的陰茎放进来吧
+				LOCAL:6 ++
+			ELSEIF !TALENT:MASTER:禁断的知識
+				PRINTFORML %CALLNAME:MASTER%的陰茎就这様插进去也太残酷了吧
+				LOCAL:6 ++
+			ENDIF
+		CASE 1
+			IF EXP:選択中キャラID:Ａ経験 < 50 || !TALENT:MASTER:禁断的知識
+				PRINTFORML 不稍微放松一些就没办法把%CALLNAME:MASTER%的陰茎放进来吧
+				LOCAL:6 ++
+			ENDIF
+		CASE -1
+			IF ABL:選択中キャラID:肛 < 2
+				PRINTFORML 与%CALLNAME:MASTER%陰茎的尺寸有些不合
+				LOCAL:6 ++
+			ENDIF
+		CASE -2
+			IF ABL:選択中キャラID:肛 < 3
+				PRINTFORML 太大了即使插进去也不会感到舒服的様子…
+				LOCAL:6 ++
+			ENDIF
+	ENDSELECT
+	SELECTCASE ABL:選択中キャラID:肛
+		CASE IS >= 5
+			PRINTL 極上名器
+			PRINTFORML 完全调适为%CALLNAME:MASTER%专用形态的菊穴肉襞一张一缩地蠢动着
+		CASE IS >= 3
+			PRINTL 名器
+			PRINTFORML 变成了非常好使极为融洽的穴了
+		CASE 2
+			PRINTFORML 已经习惯了%CALLNAME:MASTER%的插入了
+		CASE 1
+			PRINTL 开始松弛并变得好使了
+		CASE 0
+			IF !CFLAG:選択中キャラID:尻穴処女喪失記念日
+;				PRINTL 未開通
+			ELSEIF EXP:選択中キャラID:Ａ経験 < 20
+					PRINTL 还不太习惯被異物插入的様子
+			ENDIF
+	ENDSELECT
+ENDIF
+SIF CFLAG:選択中キャラID:累計肛門精液
+	PRINTFORML 现在为止{CFLAG:選択中キャラID:累計肛門精液}的精液注入了
+
+SELECTCASE ABL:選択中キャラID:肛射中毒
+	CASE IS >= 7
+		PRINTFORML 一被肛門内射精就会有幸福感
+	CASE IS >= 3
+		PRINTFORML 一被肛門内射精腸内就会躁动难耐
+ENDSELECT
+
+SIF ABL:選択中キャラID:Ａ感覚 >= 5 && CFLAG:選択中キャラID:积攒度 > 300 && 選択中キャラID
+	PRINTFORML 想和%CALLNAME:MASTER%做想的不得了
+
+IF 充填率(選択中キャラID,2) >= 100
+	PRINTFORML 直肠的所有容量完完全全的被精液填满
+ELSEIF 充填率(選択中キャラID,2) >= 50
+	PRINTFORML 直腸内蠢动着大量的精子
+ELSEIF 充填率(選択中キャラID,2) >= 20
+	PRINTFORML 直腸内精子在有活力地游来游去
+ENDIF
+
+PRINTL
+IF TALENT:選択中キャラID:2 & 1
+	PRINTL 【膣】
+	PRINTFORM 処女喪失履歴：
+	IF CSTR:選択中キャラID:処女喪失履歴 != ""
+		CALL COLORMESSAGE(@"%CSTR:選択中キャラID:処女喪失履歴%",C_PINK,1)
+	ELSEIF !CSVTALENT(選択中キャラID, GETNUM(TALENT, "処女")) && TALENT:選択中キャラID:処女 == 1 && !TALENT:選択中キャラID:路人
+		CALL COLORMESSAGE(@"世界线改变了、还没有被使用过",C_YELLOW,1)
+	ELSEIF !CSVTALENT(選択中キャラID, GETNUM(TALENT, "処女")) && TALENT:選択中キャラID:処女 == 0
+		CALL COLORMESSAGE(@"在和%CALLNAME:MASTER%相遇之前失去了",C_AQUA,1)
+	ELSE
+		IF TALENT:選択中キャラID:処女 == 1
+			SIF ABL:選択中キャラID:Ｖ感覚 >= 5
+				LOCALS:0 = 尽管如此、只要给予刺激的话、就会轻易的陷入绝顶的程度
+			CALL COLORMESSAGE(@"%LOCALS:0%还没被任何人进入",C_YELLOW,1)
+		ELSEIF TALENT:選択中キャラID:処女 == -1
+			CALL COLORMESSAGE(@"没有意识到已经被夺走了处女",C_PINK,1)
+		ENDIF
+	ENDIF
+
+	SELECTCASE ABL:選択中キャラID:Ｖ感覚
+		CASE IS >= 10
+			PRINT 感度抜群　
+		CASE IS >= 5
+			PRINT 感度良好　
+	ENDSELECT
+	SIF GETBIT (CFLAG:選択中キャラID:继承, 3)
+	PRINTFORML %CALLNAME:MASTER%非常清楚该怎么様做才最有感觉
+	IF 選択中キャラID
+		SELECTCASE 挿入不可(選択中キャラID)
+			CASE 3
+				PRINTFORML 无论如何也无法容纳%CALLNAME:MASTER%的陰茎的尺寸
+				LOCAL:5 ++
+			CASE 2
+				IF EXP:選択中キャラID:Ｖ経験 < 50 && TALENT:MASTER:禁断的知識
+					PRINTFORML 不稍微放松一些就没办法把%CALLNAME:MASTER%的陰茎放进来吧
+					LOCAL:5 ++
+				ELSEIF !TALENT:MASTER:禁断的知識
+					PRINTFORML %CALLNAME:MASTER%的陰茎就这様插进去也太残酷了吧
+					LOCAL:5 ++
+				ENDIF
+			CASE 1
+				IF EXP:選択中キャラID:Ｖ経験 < 50 || !TALENT:MASTER:禁断的知識
+					PRINTFORML 不稍微放松一些就没办法把%CALLNAME:MASTER%的陰茎放进来吧
+					LOCAL:5 ++
+				ENDIF
+			CASE -1
+				IF ABL:選択中キャラID:膣 < 2
+					PRINTFORML 与%CALLNAME:MASTER%陰茎的尺寸有些不合
+					LOCAL:5 ++
+				ENDIF
+			CASE -2
+				IF ABL:選択中キャラID:膣 < 3
+					PRINTFORML 太大了即使插进去也不会感到舒服的様子…
+					LOCAL:5 ++
+				ENDIF
+		ENDSELECT
+		IF !LOCAL:5
+			SELECTCASE ABL:選択中キャラID:膣
+				CASE IS >= 5
+					PRINTL 極上名器
+					IF TALENT:選択中キャラID:処女 == -1
+						PRINTFORML 在本人不知情的情况下、已经变成了只是为了取悦%CALLNAME:MASTER%的穴
+					ELSE
+						PRINTFORML 完全调适为%CALLNAME:MASTER%专用形态的陰道肉襞一张一缩地蠢动着
+					ENDIF
+				CASE IS >= 3
+					PRINTL 名器
+					IF TALENT:選択中キャラID:処女 == -1
+						PRINTFORML 不知不覺間被改変為了能讓%CALLNAME:MASTER%感到非常舒服的小穴
+					ELSE
+						PRINTFORML 变成了非常好使极为融洽的穴了
+					ENDIF
+				CASE 2
+					PRINTFORML 已经习惯了%CALLNAME:MASTER%的插入了
+				CASE 1
+					PRINTL 开始松弛并变得好使了
+				CASE 0
+					;IF EXP:選択中キャラID:Ｖ経験
+					IF TALENT:選択中キャラID:処女 == 1
+						PRINTL 不懂性的未使用过的陰道
+					ELSEIF EXP:選択中キャラID:Ｖ経験 < 10
+						PRINTL 开始懂得性、惶恐的接触着性知识的陰道用力的夹着
+					ELSEIF EXP:選択中キャラID:Ｖ経験 < 20
+						PRINTL 几乎没怎么用陰道里还很僵硬
+					ENDIF
+			ENDSELECT
+		ENDIF
+	ENDIF
+	
+	SIF CFLAG:選択中キャラID:累計膣内精液
+		PRINTFORML 现在为止{CFLAG:選択中キャラID:累計膣内精液}的精液注入了
+	SELECTCASE ABL:選択中キャラID:膣射中毒
+		CASE IS >= 7
+			PRINTFORML 一被膣内射精就会有幸福感
+		CASE IS >= 3
+			PRINTFORML 一被膣内射精子宮就会躁动难耐
+	ENDSELECT
+	
+	SIF ABL:選択中キャラID:Ｖ感覚 >= 5 && CFLAG:選択中キャラID:积攒度 > 300 && 選択中キャラID
+			PRINTFORML 想和%CALLNAME:MASTER%做想的不得了
+	
+	PRINTFORML
+	SIF CFLAG:選択中キャラID:强行内射
+		PRINTFORML 有被%CALLNAME:MASTER%强行中出过
+	SIF CFLAG:選択中キャラID:睡眠姦 == 1
+		PRINTFORML 被%CALLNAME:MASTER%在睡着时恶作剧的侵犯过
+	SIF CFLAG:選択中キャラID:睡眠姦 == 2
+		PRINTFORML 被%CALLNAME:MASTER%在睡着时侵犯过
+	IF CFLAG:選択中キャラID:烂酔奸 == 2
+		PRINTFORML 有被%CALLNAME:MASTER%趁酔侵犯过
+	ELSEIF CFLAG:選択中キャラID:烂酔奸 == 1
+		PRINTFORML 有被%CALLNAME:MASTER%趁酔侵犯过而且没有察觉
+	ENDIF
+	
+	IF 充填率(選択中キャラID,1) >= 100
+		PRINTFORML 腔内满满的都是%CALLNAME:MASTER%的精液
+	ELSEIF 充填率(選択中キャラID,1) >= 50
+		PRINTFORML 膣内蠢动着大量的精子
+	ELSEIF 充填率(選択中キャラID,1) >= 20
+		PRINTFORML 膣内精子在有活力地游来游去
+	ELSEIF CFLAG:選択中キャラID:生理周期 == 7 && FLAG:生理周期可視化 && 妊娠可否(選択中キャラID)
+		PRINTFORML 危険日的子宮里娇嫩的卵子正在等待着受精
+	ENDIF
+	IF 選択中キャラID == MASTER && EX:選択中キャラID:子宮内精液
+		PRINTFORML %CALLNAME:MASTER%の子宮内精液内訳
+		FOR LOCAL,1,CHARANUM
+			SIF !TCVAR:LOCAL:種付け量
+				CONTINUE
+			SIF TCVAR:LOCAL:種付け量 > 100
+				SETCOLOR C_YELLOW
+			PRINTFORMLC %CALLNAME:LOCAL%{TCVAR:LOCAL:種付け量}
+			RESETCOLOR
+		NEXT
+		PRINTFORML 
+	ENDIF
+	;PRINTFORML {EX:選択中キャラID:子宮内精液}
+	IF TALENT:選択中キャラID:妊娠
+		IF CFLAG:選択中キャラID:妊娠経過日数 < 20
+			PRINTFORML 生理期停了
+		ELSE
+			PRINTFORML 子宮内正孕育着%CALLNAME:MASTER%的孩子
+			PRINTFORML 現在妊娠{CFLAG:選択中キャラID:妊娠経過日数}日
+			CALL LOOK_BELLY(選択中キャラID)
+			SIF INRANGE(CFLAG:選択中キャラID:妊娠経過日数,20,29)
+					PRINT 還沒有肉眼可見的変化
+		ENDIF
+	ENDIF
+ENDIF
+
+
+SIF 選択中キャラID == MASTER
+	CALL ちん遍歴(MASTER)
+
+@ちん遍歴(選択中キャラID)
+#DIM 選択中キャラID
+#DIM 暫定一位の相手
+#DIM 暫定一位の量
+#DIM 暫定一位の種類
+SIF !GETBIT(TALENT:選択中キャラID:2, 1)
+	RETURN
+PRINTL 【男性器】
+SELECTCASE TALENT:選択中キャラID:形状
+CASE 1
+	LOCALS = 像兒童般可愛的
+CASE 2
+	LOCALS = 寒酸的
+CASE 3
+	LOCALS = 平淡无奇的
+CASE 4
+	LOCALS = 発光的
+CASE 5
+	LOCALS = 布满突起的
+CASE 6
+	LOCALS = 粗大的
+;OUJINJINDLC
+CASE 10
+	LOCALS = 像马屌般大的
+ENDSELECT
+PRINTFORM %CALLNAME:選択中キャラID%的%LOCALS%陰茎
+LOCAL:1 = SUMCARRAY(CFLAG:LOCAL:累計精飲,       1, CHARANUM)
+LOCAL:2 = SUMCARRAY(CFLAG:LOCAL:累計精浴,   1, CHARANUM)
+LOCAL:3 = SUMCARRAY(CFLAG:LOCAL:累計膣内精液,   1, CHARANUM)
+LOCAL:4 = SUMCARRAY(CFLAG:LOCAL:累計肛門精液, 1, CHARANUM)
+IF !TALENT:PLAYER:1
+	PRINTFORML 没有使用过
+ELSE
+	SIF FLAG:享用処女
+		PRINTFORML 到现在为止破了{FLAG:享用処女}人的処女、
+	PRINTFORML 在少女们的嘴里射了{LOCAL:1}、肢体上射了{LOCAL:2}、陰道里射了{LOCAL:3}、肛門里射了{LOCAL:4}的精液
+	;各射精シチュの最大値調査
+	;→もっとも大量に出したシチュの決定
+	;→もっとも大量に出した相手の決定
+	LOCAL:1 = MAXCARRAY(CFLAG:LOCAL:累計精飲,       1, CHARANUM)
+	LOCAL:2 = MAXCARRAY(CFLAG:LOCAL:累計精浴,   1, CHARANUM)
+	LOCAL:3 = MAXCARRAY(CFLAG:LOCAL:累計膣内精液,   1, CHARANUM)
+	LOCAL:4 = MAXCARRAY(CFLAG:LOCAL:累計肛門精液, 1, CHARANUM)
+	暫定一位の量 = 0
+	FOR LOCAL:0, 1, 5
+		SIF 暫定一位の量 > LOCAL:(LOCAL:0)
+			CONTINUE
+		暫定一位の種類 = LOCAL:0
+		暫定一位の量   = LOCAL:(LOCAL:0)
+	NEXT
+	SELECTCASE 暫定一位の種類
+	CASE 1
+		暫定一位の相手 = FINDCHARA(CFLAG:LOCAL:累計精飲,       LOCAL:1, 1, CHARANUM)
+		LOCALS = 口内
+	CASE 2
+		暫定一位の相手 = FINDCHARA(CFLAG:LOCAL:累計精浴,   LOCAL:2, 1, CHARANUM)
+		LOCALS = 肢体
+	CASE 3
+		暫定一位の相手 = FINDCHARA(CFLAG:LOCAL:累計膣内精液,   LOCAL:3, 1, CHARANUM)
+		LOCALS = 膣内
+	CASE 4
+		暫定一位の相手 = FINDCHARA(CFLAG:LOCAL:累計肛門精液, LOCAL:4, 1, CHARANUM)
+		LOCALS = 肛門
+	ENDSELECT
+	SIF 暫定一位の量 > 0
+	PRINTFORML 特别喜欢%CALLNAME:暫定一位の相手%的%LOCALS%
+ENDIF
+SIF FLAG:路人孕ませ数
+	PRINTFORML 导致怀孕的人数：{FLAG:路人孕ませ数}人
+SIF TALENT:MASTER:讓巫女懷孕
+	PRINTL 让巫女受孕的天杀的鸡鸡
+SIF TALENT:MASTER:讓妖精懷孕
+	PRINTL 让妖精受孕的犯罪的鸡鸡
+SIF TALENT:MASTER:讓妖怪懷孕
+	PRINTL 让妖怪受孕的胆大包天的鸡鸡
+SIF TALENT:MASTER:讓天狗懷孕
+	PRINTL 让天狗受孕的神速鸡鸡
+SIF TALENT:MASTER:讓鬼懷孕
+	PRINTL 让鬼受孕的能震慑鬼的鸡鸡
+SIF TALENT:MASTER:讓付喪神懷孕
+	PRINTL 让付喪神受孕的无节操鸡鸡
+SIF TALENT:MASTER:讓神霊懷孕
+	PRINTL 让神霊受孕的无恐鸡鸡
+SIF TALENT:MASTER:讓蓬莱懷孕
+	PRINTL 让蓬莱人受孕的超越时空的鸡鸡
+SIF TALENT:MASTER:万能孕
+	PRINTL 无论是机械还是幽灵都能让她们怀孕的超越人类智慧的陰茎
+SIF TALENT:MASTER:濃厚精液
+	PRINTFORML 不知道存了多少天精液的陰茎散发着令人作呕的雄性味道。
+;MASTER決め打ちでいいんじゃない？ あと個人的趣味としてふたなりに玉はない
+SIF BASE:選択中キャラID:精力 >= 1500 && !GETBIT(TALENT:選択中キャラID:性別,0)
+	PRINTL 沉甸甸的陰嚢里蓄积了大量的精子
+
+
+
+
+@妊娠関連(ARG)
+PRINTL
+PRINTL □ 妊娠関連 □-----------------------------------------------------------------------
+;PRINTL
+;PRINTFORM 前回体内射精量 : {EX:ARG:14}
+;PRINTL
+PRINTFORM 妊娠後経過時間: {CFLAG:ARG:903}
+;CFLAG:ARG:903 = 40
+;PRINTL
+;PRINTFORM 自覚 : {CFLAG:(ARG):910}
+;PRINTL
+;PRINTFORM 無自覚妊娠 : {CFLAG:ARG:無自覚妊娠}
+PRINTL
+PRINTFORM 現在育児中兒童数 : {CFLAG:ARG:育児人数}
+PRINTL
+PRINTFORM 現在育児経過時間 : {CFLAG:ARG:908}
+PRINTFORML 
+PRINTFORM 　　　　孩子数量 :{CFLAG:ARG:兒童人数}
+PRINTFORML 
+IF CFLAG:ARG:兒童人数
+	FOR LOCAL,1,11
+		IF CHILDNAME:ARG:LOCAL != ""
+			PRINTFORM 第{LOCAL}子：%CHILDNAME:ARG:LOCAL, 15, LEFT%　\@ CHILD_SEX:ARG:LOCAL == 1 ? ♀ # ♂ \@ 
+			CALL PRINT_DATE(CHILD_BIRTHDAY:ARG:LOCAL)
+			PRINTFORM 在({CHILD_BIRTHDAY:ARG:LOCAL}日目) 
+			SELECTCASE CHILD_WEATHER:ARG:LOCAL
+			CASE "Ｃ敏感"
+				PRINTFORM 大家的陰蒂都很敏感的
+			CASE "Ｖ敏感"
+				PRINTFORM 大家的小穴都很敏感的
+			CASE "Ａ敏感"
+				PRINTFORM 大家的都很肛門敏感的
+			CASE "Ｂ敏感"
+				PRINTFORM 大家的都很胸部敏感的
+			CASE "Ｍ敏感"
+				PRINTFORM 大家的都很嘴唇敏感的
+			CASE "裙子"
+				PRINTFORM 変得喜歡真空出門的
+			CASE "胖次"
+				PRINTFORM 胖次滿天飛的
+			CASEELSE
+				PRINTFORM %CHILD_WEATHER:ARG:LOCAL%的
+			ENDSELECT
+			PRINTFORM 日子出生了　
+			IF DAY - CHILD_BIRTHDAY:ARG:LOCAL < 120
+				IF CFLAG:ARG:出産経過日 < CHILD_語彙
+					PRINTFORML 幼児期
+				ELSEIF CFLAG:ARG:出産経過日 < CHILD_自立前
+					PRINTFORML 幼少期
+				ELSE
+					PRINTFORML 思春期
+				ENDIF
+			ELSE
+				PRINTFORML 現在{(DAY - CHILD_BIRTHDAY:ARG:LOCAL) / 124}歲
+			ENDIF
+		ENDIF
+	NEXT
+ENDIF
+
+
+
+@予定
+#DIM 依頼番号
+
+PRINTL □ 予定 □---------------------------------------------------------------------------
+PRINTL 
+SELECTCASE FLAG:抱負
+	CASE 1
+		LOCALS = 自慰奨励
+	CASE 2
+		LOCALS = 同性愛推進
+	CASE 3
+		LOCALS = 牝穴開拓
+	CASE 4
+		LOCALS = 尻穴開発
+	CASE 5
+		LOCALS = 乳挟振興
+	CASE 6
+		LOCALS = 子孫繁栄
+	CASE 9
+		LOCALS = 子孫繁栄
+ENDSELECT
+IF FLAG:抱負
+	PRINTFORML 今年的抱負: %LOCALS%
+	PRINTL
+ENDIF
+IF FLAG:宴会開催FLAG
+	IF FLAG:開始日 - DAY <= 0
+		PRINT 本日
+	ELSE
+		PRINTFORM {FLAG:開始日 - DAY}日後
+	ENDIF
+	CALL 宴会予定表示
+	PRINTL 
+	PRINT 宴会規模：
+		SELECTCASE FLAG:宴会規模
+			CASE IS >= 5000
+				PRINT 特大
+			CASE IS >= 2500
+				PRINT 大
+			CASE IS >= 1500
+				PRINT 中
+			CASEELSE
+				PRINT 小
+		ENDSELECT
+
+	SIF FLAG:36 > 0
+		PRINTL 　雨天中止
+ENDIF
+PRINTL
+IF FLAG:借书返还期限 >= 2
+	FOR LOCAL,1,6
+		SIF ITEM:(100 + LOCAL)
+			PRINTFORML 借来的书：%ITEMNAME:(100 + LOCAL)%
+	NEXT
+	PRINTL 
+	IF  FLAG:借书返还期限 == 2
+		PRINTFORML 借书的归还日：本日
+	ELSE
+		PRINTFORML 借书的归还日：{FLAG:借书返还期限 - 2}日後
+	ENDIF
+PRINTL
+ENDIF
+
+CALL SHOW_ALL_IRAI_SLOT
+
+SELECTCASE CFLAG:MASTER:小槌
+	CASE 4
+		PRINT 被小槌変大的那玩意
+		IF CFLAG:MASTER:魔力回収 == 6
+			PRINTL ている
+		ELSE
+			PRINTL た
+		ENDIF
+		SIF CFLAG:MASTER:魔力回収 < 6
+			PRINTFORML 距离魔力回収完毕还有{CFLAG:MASTER:魔力回収}日
+	CASE 5
+		PRINT 被小槌変成兩根的那玩意
+		IF CFLAG:MASTER:魔力回収 == 6
+			PRINTL ている
+		ELSE
+			PRINTL た
+		ENDIF
+		SIF CFLAG:MASTER:魔力回収 < 6
+			PRINTFORML 距离魔力回収完毕还有{CFLAG:MASTER:魔力回収}日
+	CASE 6
+		PRINT 被小槌変成了小人
+		IF CFLAG:MASTER:魔力回収 == 3
+			PRINTL ている
+		ELSE
+			PRINTL た
+		ENDIF
+		SIF CFLAG:MASTER:魔力回収 < 3
+			PRINTFORML 距离魔力回収完毕还有{CFLAG:MASTER:魔力回収}日
+	CASE 7
+		PRINTL 被小槌從小人変回去了
+		SIF CFLAG:MASTER:魔力回収 < 3
+			PRINTFORML 距离魔力回収完毕还有{CFLAG:MASTER:魔力回収}日
+ENDSELECT
+SIF CFLAG:MASTER:小槌
+	PRINTL 
+
+
+
+@胖次収集状況(選択中キャラID)
+#DIM 選択中キャラID
+PRINTL □ 胖次収集状況 □-----------------------------------------------------------------
+IF FLAG:胖次収集状況タイプB == 0
+	CALL DISPLAY_COLLECTION(選択中キャラID)
+	PRINTFORML 総数：{RESULT:0,4}枚　　種別：{RESULT:1,2}種　　重复：{RESULT:0 - RESULT:1,4}枚
+ELSE
+	CALL DISPLAY_COLLECTION_B(選択中キャラID)
+	PRINTFORML 総数：{RESULT:0,4}枚　　種別：{RESULT:1,2}/{RESULT:2}種　　重复：{RESULT:0 - RESULT:1,4}枚
+ENDIF
+
+@浮気把握状況(C_ID)
+#DIM C_ID
+#DIM LINE_BREAK
+LINE_BREAK = 0
+PRINT □ 
+CALL PRINTBUTTON_EX(@"%CALLNAME:C_ID%掌握的%CALLNAME:MASTER%的肉体关系 （黄字是公認）", 168, TFLAG:168)
+PRINTL  □------------------------------------------------------------
+IF !TFLAG:浮気歴表示
+	PRINTFORML 
+	FOR LOCAL,1,CHARANUM
+		SIF LOCAL == C_ID
+			CONTINUE
+		IF GET_UWAKI_HISTORY(C_ID, LOCAL)
+			SIF GET_UWAKI_HISTORY(C_ID, LOCAL) == 2
+				SETCOLOR C_YELLOW
+			SIF LINEISEMPTY()
+				PRINT 　
+			PRINTFORMLC %CALLNAME:LOCAL%
+			LINE_BREAK ++
+			SIF LINE_BREAK % (PRINTCPERLINE() - 1) == 0
+				PRINTL 
+		ENDIF
+		RESETCOLOR
+	NEXT
+	SIF LINE_BREAK % (PRINTCPERLINE() - 1) != 0
+		PRINTL 
+ENDIF
+

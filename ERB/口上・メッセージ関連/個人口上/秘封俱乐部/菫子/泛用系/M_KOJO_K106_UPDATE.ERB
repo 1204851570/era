@@ -1,0 +1,76 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;"UPDATE判定"
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+@M_KOJO_UPDATE_K106
+
+	#DIM CONST 堇子口上ver = 4733
+	#DIM S_TMP = 0
+	SETCOLOR 0xEE82EE
+	PRINTL 检测宇佐见堇子口上是否需要更新
+	IF CFLAG:106:1100 < 堇子口上ver
+		PRINTL 检测到堇子口上需要更新
+		PRINTL --宇佐见堇子口上更新--
+		PRINTL 
+		PRINTL 要继续吗？
+		PRINTL -如果你清楚自己为什么会进入到这个分歧的话再选择-
+		PRINTFORML [0]-进行口上版本更新
+		PRINTFORML [1]-还是算了
+		INPUT
+
+		IF !RESULT
+			PRINTL 更新确认，进入更新步骤
+
+			PRINTL 
+			PRINTL 开始进行口上版本更新
+			PRINTL 
+			PRINTL 
+			
+			PRINTL -----重置-----
+			SIF CFLAG:106:18 != 0
+				PRINTL 你现在已经认识了堇子
+	
+			PRINTL 推荐使用重置来重置堇子的属性
+			PRINTL V4.733新内容摘要：
+			PRINTL 实装分手设定，追加泛用型角色对策，追加防作弊测试，追加智能型AI测试
+			PRINTL 林林总总的汉化和追加文
+			PRINTL 完整重置会将堇子的全部属性重置为初始值！！！
+			PRINTL 
+			PRINTFORML [0]-完整重置喽（堇子的全部属性都会重置为初始值，推荐）
+			PRINTFORML [1]-才不要
+			PRINTFORML [2]-只重置面识（不重置任何其他属性，可以随后重新认识堇子）
+			INPUT
+	
+			IF RESULT == 0
+				FOR LOCAL,0,300
+					SIF TALENTNAME:LOCAL != ""
+						TALENT:106:LOCAL = 0
+				NEXT
+	
+				CALL RESET_KOJO_CHARA(106)
+	
+				FOR LOCAL,0,300
+					TALENT:106:LOCAL = CSVTALENT(106,LOCAL)
+				NEXT
+	
+				FOR LOCAL,0,25
+					BASE:106:LOCAL = CSVBASE(106,LOCAL)
+				NEXT
+	
+			ENDIF
+			IF RESULT != 1
+				CFLAG:106:18 = 0
+			ENDIF
+			PRINTFORMW 堇子口上已更新
+			RESETCOLOR
+			CFLAG:106:1100 = 堇子口上ver
+		ELSE
+			PRINTL 取消更新
+		ENDIF
+	ELSE
+		PRINTL 堇子口上已是最新，版本V4735！
+	ENDIF
+	RESETCOLOR
+RETURN 1

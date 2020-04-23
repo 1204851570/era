@@ -1,0 +1,3322 @@
+﻿; eraTheWorld 4.733用 宇佐见堇子口上
+;作者：希尔芙
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;"EVENT"系口上
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;部屋遭遇
+;==================================================
+@M_KOJO_EVENT_K106_1(ARG,ARG:1)
+
+	;口上启动开关
+	LOCAL = 1
+	IF LOCAL
+		;MASTER进入房间
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 1
+			;時間停止時
+			IF FLAG:70
+				PRINTFORMW %CALLNAME:MASTER%进入房间就发现了被固定在原地的堇子……
+
+			;通常
+			ELSE
+				IF TALENT:恋人
+					PRINTFORML 「嗯，%MASTERNAME:106%来了呢」
+					PRINTFORML 「很想你呢……这是什么话啦！」
+					PRINTFORML 「嗯，这种时候不见面就好了……」
+					PRINTFORMW 菫子的脸羞红了……
+
+				ELSEIF TALENT:恋慕
+					PRINTFORML 「啊，%MASTERNAME:106%来找我了么……？」
+					PRINTFORML 「我才没有想见你」
+					PRINTFORMW 菫子的脸颊微微羞红……
+
+				ELSEIF TALENT:愛欲
+					PRINTFORML 「啊，%MASTERNAME:106%来了啊」
+					PRINTFORML 「来找我，是为了……那个嘛？」
+					PRINTFORMW 堇子摆出了诱惑的姿势看着这边
+
+				ELSEIF TALENT:炮友
+					PRINTFORML 「啊，%MASTERNAME:106%竟然也会来这里」
+					PRINTFORML 「来找我，是为了什么事呢？」
+					PRINTFORMW %MASTERNAME:106%看着堇子突然变红的脸颊
+					PRINTFORMW 堇子在想什么呢？搞不明白
+
+				ELSE
+					PRINTFORML 「啊，%MASTERNAME:106%么？贵安。」
+					PRINTFORMW 堇子微微的弯腰问好
+				ENDIF
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;堇子进入房间
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 2
+			;時間停止時
+			IF FLAG:70
+				PRINTL 
+
+			;通常
+			ELSE
+				IF TALENT:恋人
+					PRINTFORML 「那个，这不是%MASTERNAME:106%嘛」
+					PRINTFORML 「在这里能遇见你，真是一件幸福的事情」
+					PRINTFORMW 菫子上前去，依偎在了%MASTERNAME:106%的身边……
+
+				ELSEIF TALENT:恋慕
+					PRINTFORML 「那个，这不是%MASTERNAME:106%嘛」
+					PRINTFORML 「嘛，难道是在找我么？」
+					PRINTFORMW 堇子看上去有些坐立不安……
+
+				ELSEIF TALENT:思慕
+					PRINTFORML 「那个，这不是%MASTERNAME:106%嘛」
+					PRINTFORML 「至少也打个招呼嘛？」
+
+				ELSEIF TALENT:愛欲
+					PRINTFORML 「那个，这不是%MASTERNAME:106%嘛」
+					PRINTFORML 「嘛，难道是在找我么？」
+					PRINTFORML 「是为了……那个么？」
+					PRINTFORMW 堇子仿佛是在诱惑一样的看着这边……
+
+				ELSEIF TALENT:炮友
+					PRINTFORML 「那个，这不是%MASTERNAME:106%嘛」
+					PRINTFORML 「为什么，会在这里遇到%MASTERNAME:106%啊……」
+					PRINTFORMW 堇子慌张的羞红了脸颊
+					PRINTFORMW %MASTERNAME:106%一头雾水，不知道她在想什么
+
+				ELSE
+					PRINTFORML 「那个，这不是%MASTERNAME:106%嘛」
+					PRINTFORML 「每次看到%MASTERNAME:106%都会让人感觉有点微妙呢……」
+					PRINTFORMW 堇子这是来找茬了么……
+				ENDIF
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;堇子和MASTER一起洗浴
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 3
+			;時間停止時
+			IF FLAG:70
+				PRINTL 
+
+			;通常
+			ELSE
+				IF TALENT:恋人
+					PRINTFORML 「啊……%MASTERNAME:106%发现」
+					PRINTFORML 扭过头去，少女完美无瑕的赤裸身躯完整的映在了眼里
+					PRINTFORML 「%MASTERNAME:106%竟然也在这里呢，可以一起洗么？」
+					PRINTFORML 在堇子期望的目光中，%MASTERNAME:106%慢慢的点了点头
+
+					;性别检测
+					IF TALENT:PLAYER:2 == 1
+						PRINTFORML 
+						PRINTFORML 
+						PRINTFORML 堇子大大方方的坐在了%MASTERNAME:106%的身边
+						PRINTFORML 「女孩子之间，没有什么需要好害羞的呢」
+						PRINTFORMW 说完，堇子搂住了%MASTERNAME:106%的一只手臂
+
+					ELSEIF TALENT:PLAYER:2 == 0
+						PRINTFORML 
+						PRINTFORML 
+						PRINTFORML 「要和%MASTERNAME:106%一起洗……」
+						PRINTFORML 堇子看上去微微害羞的样子
+						PRINTFORML 温柔的摸了摸头，堇子也温顺的钻进%MASTERNAME:106%的怀抱里
+						PRINTFORML 「%MASTERNAME:106%肯定不会使坏的吧~」
+
+					ELSE
+						PRINTFORML 「哎嘿嘿……%MASTERNAME:106%最好了」
+					ENDIF
+
+				ELSEIF TALENT:恋慕
+					PRINTFORML 「%MASTERNAME:106%怎么会在这里……不许看奇怪的地方哦」
+					PRINTFORML 虽然堇子这样说着，但是并没有遮掩自己的娇躯，任凭%MASTERNAME:106%欣赏着
+					PRINTFORML 「呜……不要再看了啦……」
+					PRINTFORMW %MASTERNAME:106%欣赏了一会美景之后，少女低声地哀求着，看起来快哭了的样子
+					PRINTFORMW %MASTERNAME:106%只好收回了目光……
+
+				ELSEIF TALENT:愛欲
+					PRINTFORML 「啊……扑捉到了%MASTERNAME:106%的踪影！」
+					PRINTFORML 扭过头去，少女完美无瑕的赤裸身躯完整的映在了眼里
+					PRINTFORML 「%MASTERNAME:106%竟然也在这里呢，可以一起洗么？」
+					PRINTFORML 在堇子期望的目光中，%MASTERNAME:106%慢慢的点了点头
+					PRINTFORML 「哎嘿嘿……和%MASTERNAME:106%一起洗澡」
+
+					IF ABL:露出癖 >= 3
+						PRINTFORML 
+						PRINTFORML 
+						PRINTFORML %MASTERNAME:106%毫不掩饰的目光被堇子察觉到了
+						PRINTFORML 「%MASTERNAME:106%真是毫不掩饰呢……就这么想看我的身体么……」
+						PRINTFORMW 坐在浴池边缘的堇子问着，%MASTERNAME:106%毫不犹豫的点了点头
+
+						IF TALENT:PLAYER:2 ==1
+							PRINTFORML 
+							PRINTFORML 「明明%MASTERNAME:106%也是女孩子……偏偏还要看别的女孩子的身体……」
+							PRINTFORMW 堇子一副无奈的样子
+						ENDIF
+
+						PRINTFORML 
+						PRINTFORML 
+						PRINTFORML 「%MASTERNAME:106%真是的……可以哦，是%MASTERNAME:106%的话……想看多久都可以，哪怕是看这里……也可以」
+						PRINTFORML 堇子坐在浴池边缘，分开了双腿，露出少女微微湿润的蜜处
+						PRINTFORML 「呜……%MASTERNAME:106%请尽情地看个够吧」
+						PRINTFORMW 虽然这样说着，但是头却扭到了另一边，看起来很难为情的样子
+
+					ELSE
+						PRINTFORML 
+						PRINTFORML 
+						PRINTFORML 少女慢慢的进入浴池里，然后马上就钻入了%MASTERNAME:106%的怀抱
+						PRINTFORML 「%MASTERNAME:106%的话，使坏也没问题的哦……动手动脚也可以的说……」
+						SIF TALENT:PLAYER:2 ==1
+							PRINTFORML 「%MASTERNAME:106%的话……同样是女孩子，肯定知道怎么样让女孩子更舒服的……」
+						PRINTFORMW 四周蒸腾的水蒸气，和少女微微湿润的眼睛，以及在渴望着什么的目光，让%MASTERNAME:106%不由得心猿意马起来……
+					ENDIF
+
+				ELSE
+					PRINTFORML 「啊……是%MASTERNAME:106%啊」
+					PRINTFORML 扭头看过去，不着寸缕的少女正站在门口
+					PRINTFORML 「%MASTERNAME:106%竟然也在这里……」
+					PRINTFORML 堇子看上去很难为情的样子
+					PRINTFORML 「一、一、一起洗什么的……也可以么？」
+					PRINTFORMW 通红着脸颊的堇子坐在了对面
+				ENDIF
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;堇子进入浴室后立即离开
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 4
+			PRINTFORML 「什么嘛，%MASTERNAME:106%竟然在这里……」
+			PRINTFORMW 堇子说完就出去了
+			RETURN 1
+		ENDIF
+
+		;堇子要求MASTER离开
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 5
+			;時間停止時
+			IF FLAG:70
+				PRINTL 
+
+			;通常
+			ELSE
+				PRINTFORML 堇子看到%MASTERNAME:106%进入浴室之后立马遮住身体扭开了头
+				PRINTFORML 「别人洗浴的时候要离开是起码的规矩吧」
+				PRINTFORMW %MASTERNAME:106%只好离开了……
+			ENDIF
+			RETURN 1
+
+		ENDIF
+
+		;外出时遭遇到
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 6
+			;時間停止時
+			IF FLAG:70
+				PRINTL  %MASTERNAME:106%发现了站在原地一动不动的堇子……
+
+			;通常
+			ELSE
+				IF TALENT:恋人
+					PRINTFORMW 从背后偷偷靠近没有完全注意到的堇子……
+					PRINTFORMW 然后突然温柔的抱住了
+					PRINTFORML 「呜噫！？ %MASTERNAME:106%怎么会在这里！？」
+					PRINTFORML 「又、又在做奇怪的事情……」
+					PRINTFORMW 堇子脸颊羞得通红……
+					PRINTFORML 「喂，我、我可没有说让你离我远一些的……」
+
+				ELSEIF TALENT:恋慕
+					PRINTFORMW 从背后偷偷靠近没有完全注意到的堇子……
+					PRINTFORMW 啪的一声，把手放在肩膀上
+					PRINTFORML 「噫呀！？ %MASTERNAME:106%怎么在这里！？」
+					PRINTFORML 「真是的……被吓了一跳……如果是别人的话，已经被打飞了哦」
+					PRINTFORMW 惊魂未定的堇子攥了攥拳头，展示给%MASTERNAME:106%看自己的力量
+
+				ELSEIF TALENT:思慕
+					PRINTFORMW 从背后偷偷靠近没有完全注意到的堇子……
+					PRINTFORMW 啪的一声，把手放在肩膀上
+					PRINTFORML 「噫呀！？ 痴汉！！」
+					PRINTFORMW 被吓到的堇子发出了悲鸣……
+					PRINTFORMW 挨了一记响亮的耳光……
+					PRINTFORML 「%MASTERNAME:106%太坏了！不，不要做奇怪的事情呀！」
+
+				ELSEIF TALENT:愛欲
+					PRINTFORMW 从背后偷偷靠近没有完全注意到的堇子……
+					PRINTFORML 「呜噫！？ %MASTERNAME:106%怎么在这里！？」
+					PRINTFORMW 堇子慌慌张张的想挣扎开，但是身子立马就软了下来
+					PRINTFORML 「呜……松开……再这样，会很麻烦的……」
+					PRINTFORMW 仿佛动了情一般的堇子，眼睛湿润着，目光充满了欲望
+					PRINTFORML 「呜……差点就要忍耐不住了」
+
+				ELSEIF TALENT:炮友
+					PRINTFORMW 从背后偷偷靠近没有完全注意到的堇子……
+					PRINTFORMW 啪的一声，把手放在肩膀上
+					PRINTFORML 「噫呀！？ 痴汉！！」
+					PRINTFORMW 被%MASTERNAME:106%吓到的堇子发出了悲鸣……
+					PRINTFORMW 连身子都被吓软了么，堇子看上去很奇怪的样子……
+
+				ELSE
+					PRINTFORMW 从背后偷偷靠近没有完全注意到的堇子……
+					PRINTFORML 「你在做什么？鬼鬼祟祟的，好恶心……」
+					PRINTFORMW 堇子朝这边翻了一个白眼
+					PRINTFORMW 被注意到了……%MASTERNAME:106%只好尴尬的离开
+				ENDIF
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;和他人的约会中遭遇
+		;ARG:1表示对手
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 7
+			SELECTCASE ARG:1
+				CASE 1, 11, 26, 38, 43, 56, 57, 61, 69, 71, 81, 82, 85, 109
+				;灵梦，魔理沙，紫，恋，华扇，神子，秦心，妹红，瑞藏，针妙丸，莲子，梅莉，一轮，哆来咪
+					IF TALENT:(ARG:1):恋人 && TALENT:恋人
+						SIF ARG:1 == 1
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是却还和灵梦小姐成为了恋人……」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是却还和这个金头发的笨蛋成为了恋人……」
+
+						SIF ARG:1 == 26
+							PRINTFORML 「尽管紫大人帮了很大的忙……但是%MASTERNAME:106%明明有了我了……但是却还和这个大妖怪贤者成为了恋人……」
+
+						SIF ARG:1 == 38
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是却还和这个无意识的大坏蛋成为了恋人……」
+
+						SIF ARG:1 == 43
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是却还和小华扇成为了恋人……」
+
+						SIF ARG:1 == 56
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是却还和这个神棍一样的人成为了恋人……」
+
+						SIF ARG:1 == 57
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是却还和这个吓人的家伙成为了恋人……」
+
+						SIF ARG:1 == 61
+							PRINTFORML 「竟然是妹红前辈……%MASTERNAME:106%明明有了我了……但是却还和前辈成为了恋人……」
+
+						SIF ARG:1 == 69
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是竟然还和这个狸猫妖怪成为了恋人……」
+
+						SIF ARG:1 == 71
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是竟然还喜欢着小人族，甚至还成为了恋人……」
+
+						SIF ARG:1 == 81 || ARG:1 == 82
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是却和我的后辈成为了恋人……」
+
+						SIF ARG:1 == 85
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是竟然还和这个喜欢学鸽子叫的家伙成为了恋人……」
+
+						SIF ARG:1 == 109
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是竟然还和这个控制梦境的貘成为了恋人……」
+
+						PRINTFORML 「和%MASTERNAME:106%明明做了约定……为什么欺骗我……」
+						PRINTFORMW 菫子恼怒的盯着%MASTERNAME:106%的背影……
+						PRINTFORMW 被自己心爱的人欺骗，甚至被迫分享自己的爱人，堇子被激怒了……
+
+						IF MARK:3 >= 3
+							MARK:3 = 3
+
+						ELSE
+							MARK:3 ++
+						ENDIF
+
+					ELSEIF TALENT:(ARG:1):恋人 && TALENT:恋慕
+						SIF ARG:1 == 1
+							PRINTFORML 「被灵梦小姐抢先一步占有了%MASTERNAME:106%么……」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「%MASTERNAME:106%最后还是被她得手了么……」
+
+						SIF ARG:1 == 26
+							PRINTFORML 「是紫大人……%MASTERNAME:106%和这个大妖怪贤者成为了恋人了么……晚了一步……」
+
+						SIF ARG:1 == 38
+							PRINTFORML 「%MASTERNAME:106%竟然征服了这个无意识的妖怪了么，还是沦陷了呢……」
+
+						SIF ARG:1 == 43
+							PRINTFORML 「%MASTERNAME:106%竟然能和小华扇成为了恋人……」
+
+						SIF ARG:1 == 56
+							PRINTFORML 「%MASTERNAME:106%和神子大人成为了恋人……」
+
+						SIF ARG:1 == 57
+							PRINTFORML 「%MASTERNAME:106%竟然是个面具控么……」
+
+						SIF ARG:1 == 61
+							PRINTFORML 「%MASTERNAME:106%和妹红前辈成为了恋人了么……」
+
+						SIF ARG:1 == 69
+							PRINTFORML 「%MASTERNAME:106%被这个狸猫妖怪诱惑了么？……」
+
+						SIF ARG:1 == 71
+							PRINTFORML 「%MASTERNAME:106%明明有了我了……但是竟然还喜欢着小人族，甚至还成为了恋人……」
+
+						SIF ARG:1 == 81
+							PRINTFORML 「啊，是%MASTERNAME:106%和莲子……」
+
+						SIF ARG:1 == 82
+							PRINTFORML 「啊，是%MASTERNAME:106%和梅莉……」
+
+						SIF ARG:1 == 85
+							PRINTFORML 「%MASTERNAME:106%和这个喜欢学鸽子叫的家伙成为了恋人……莫非有什么癖好么？」
+
+						SIF ARG:1 == 109
+							PRINTFORML 「%MASTERNAME:106%莫非是被这个控制梦境的貘影响到了么……」
+
+						PRINTFORML 「明明那个位置是我的……%MASTERNAME:106%本来该属于我的才对……好不甘心……」
+						PRINTFORMW 菫子悲伤的盯着看上去亲密无间的%MASTERNAME:106%和%CALLNAME:(ARG:1)%
+						PRINTFORMW 自己心爱的人别人抢先一步得手，堇子在角落里哭泣了起来……
+
+					ELSEIF TALENT:(ARG:1):恋人 && TALENT:愛欲
+						SIF ARG:1 == 1
+							PRINTFORML 「啊，是%MASTERNAME:106%和灵梦小姐」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「啊，是%MASTERNAME:106%和……魔理沙小姐」
+
+						PRINTFORML 「打扰了你们的约会，很抱歉呢……」
+						PRINTFORMW 菫子注视着%MASTERNAME:106%和%CALLNAME:(ARG:1)%二人幸福的样子……
+						PRINTFORML 「%MASTERNAME:106%有时间的话，也多多来疼爱我一下……」
+						PRINTFORMW 擦肩而过的时候，堇子用只有%MASTERNAME:106%听见的声音说道
+
+					ELSEIF TALENT:(ARG:1):恋慕 && TALENT:恋慕
+						SIF ARG:1 == 1
+							PRINTFORML 「啊，是%MASTERNAME:106%和灵梦小姐」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「啊，是%MASTERNAME:106%和……魔理沙小姐」
+
+						SIF ARG:1 == 81
+							PRINTFORML 「啊，是%MASTERNAME:106%和莲子……」
+
+						PRINTFORML 「打扰了你们的约会，很抱歉呢……」
+						PRINTFORMW 菫子注视着%MASTERNAME:106%和%CALLNAME:(ARG:1)%二人幸福的样子……
+						PRINTFORML 「……绝对不会输给%CALLNAME:(ARG:1)%的！」
+						PRINTFORMW 擦肩而过的时候，堇子用只有自己听见的声音说道
+
+					ELSEIF TALENT:(ARG:1):恋慕 && TALENT:思慕
+						SIF ARG:1 == 1
+							PRINTFORML 「啊，是%MASTERNAME:106%和灵梦小姐」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「啊，是%MASTERNAME:106%和……魔理沙小姐」
+
+						SIF ARG:1 == 81
+							PRINTFORML 「啊，是%MASTERNAME:106%和莲子……」
+
+						PRINTFORML 「打扰了你们的约会，很抱歉呢……」
+						PRINTFORMW 菫子注视着%MASTERNAME:106%和%CALLNAME:(ARG:1)%二人幸福的样子……
+						PRINTFORML 「……绝对不会输给%CALLNAME:(ARG:1)%的！」
+						PRINTFORMW 擦肩而过的时候，堇子用只有自己听见的声音说道
+
+					ELSEIF TALENT:(ARG:1):愛欲 && TALENT:恋慕
+						SIF ARG:1 == 1
+							PRINTFORML 「啊，是%MASTERNAME:106%和灵梦小姐」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「啊，是%MASTERNAME:106%和……魔理沙小姐」
+
+						SIF ARG:1 == 81
+							PRINTFORML 「啊，是%MASTERNAME:106%和莲子……」
+
+						PRINTFORML 「打扰了你们的约会，很抱歉呢……」
+						PRINTFORMW 菫子注视着%MASTERNAME:106%和%CALLNAME:(ARG:1)%二人幸福的样子……
+						PRINTFORML 「……绝对不会输给%CALLNAME:(ARG:1)%的，绝对不会，区区肉体上的关系，是永远无法击败我的！」
+						PRINTFORMW 擦肩而过的时候，堇子用只有%CALLNAME:(ARG:1)%听见的声音说道
+
+					ELSEIF TALENT:恋人
+						SIF ARG:1 == 1
+							PRINTFORML 「啊，是%MASTERNAME:106%和灵梦小姐」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「啊，是%MASTERNAME:106%和……魔理沙小姐」
+
+						SIF ARG:1 == 81
+							PRINTFORML 「啊，是%MASTERNAME:106%和莲子……」
+
+						PRINTFORML 「打扰了你们的约会，很抱歉呢……」
+						PRINTFORMW 菫子这样说着，但是眼神中的严厉令%MASTERNAME:106%感到不寒而栗
+						PRINTFORML 「……我不会和你分享%MASTERNAME:106%的！」
+						PRINTFORMW 堇子直面着%MASTERNAME:106%和%CALLNAME:(ARG:1)%二人，说出了自己的宣言
+
+					ELSE
+						SIF ARG:1 == 1
+							PRINTFORML 「啊，是%MASTERNAME:106%和灵梦小姐」
+
+						SIF ARG:1 == 11
+							PRINTFORML 「啊，是%MASTERNAME:106%和……魔理沙小姐」
+
+						SIF ARG:1 == 81
+							PRINTFORML 「啊，是%MASTERNAME:106%和莲子……」
+
+						PRINTFORML 「打扰了你们的约会，很抱歉呢……」	
+						PRINTFORML 「……%MASTERNAME:106%和%CALLNAME:(ARG:1)%很般配呢，祝你们幸福」
+						PRINTFORMW 堇子直面着满脸幸福的%MASTERNAME:106%和%CALLNAME:(ARG:1)%二人，送出了自己的祝福，然后转身离开了
+					ENDIF
+
+				CASEELSE
+					IF TALENT:恋人 && TALENT:(ARG:1):恋人
+						PRINTFORML 「和%MASTERNAME:106%明明做了约定……为什么欺骗我……」
+						PRINTFORMW 菫子恼怒的盯着%MASTERNAME:106%的背影……
+						PRINTFORMW 被自己心爱的人欺骗，甚至被迫分享自己的爱人，堇子被激怒了……
+
+						IF MARK:3 >= 3
+							MARK:3 = 3
+
+						ELSE
+							MARK:3 ++
+						ENDIF
+
+					ELSEIF TALENT:恋人 
+						PRINTFORML 「盯……」
+						PRINTFORML （决不允许……）
+						PRINTFORML （必须要好好和%MASTERNAME:106%算账……）
+						PRINTFORMW 菫子恼怒的盯着%MASTERNAME:106%的身影……
+						PRINTFORMW 看着自己心爱的人和别人在一起约会，堇子被激怒了……
+
+					ELSEIF TALENT:恋慕
+						PRINTFORML 「盯……」
+						PRINTFORMW 菫子盯着%MASTERNAME:106%的身影……
+
+					ELSEIF TALENT:思慕
+						PRINTFORML 「什么啊，在我面前这样子……」
+						PRINTFORMW 菫子满脸不满的看着%MASTERNAME:106%的身影……
+
+					ELSEIF TALENT:愛欲
+						PRINTFORMW 菫子注视着%MASTERNAME:106%和%CALLNAME:(ARG:1)%二人幸福的样子……
+						PRINTFORMW 脸颊上的红润像是动情了一般……
+
+					ELSE
+						PRINTFORML 「嗯哼，还挺不错的嘛」
+						PRINTFORML 「在幻想乡里面都敢约会」
+
+						SIF ARG:1 != 29
+							PRINTFORML 「小心被文文抓到现行哦」
+
+						PRINTFORMW 菫子盯着%MASTERNAME:106%的身影……
+					ENDIF
+			ENDSELECT
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+
+;==================================================
+;朝起きたとき（おはよう口上）
+;==================================================
+@M_KOJO_EVENT_K106_2(ARG,ARG:1)
+
+	CALL MESSAGE_GOODMONING(ARG,ARG:1)
+	;口上启动开关
+	LOCAL = 1
+	IF LOCAL
+		;小分岐
+		;非同棲かつ相手が先に起きてる
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 1
+			;TARGET私室にMASTERが入っている（恋慕時添い寝中就寝時のみ？
+			;口上启动开关
+			LOCAL:1 = 1
+			IF LOCAL:1 && !ARG:1
+				PRINTFORML 「%MASTERNAME:106%早上好」
+
+				IF TALENT:恋人
+					PRINTFORMW 堇子脸上露出了甜蜜的笑容
+
+				ELSEIF TALENT:恋慕
+					PRINTFORML 「感觉，在%MASTERNAME:106%身边，就会很安心」
+
+				ELSEIF TALENT:炮友
+					PRINTFORML 「今天……哎嘿嘿……要不要继续呢……？」
+					PRINTFORMW 真是被她打败了
+
+				ELSEIF TALENT:思慕
+					PRINTFORMW 看着面前的堇子，今天也很干劲满满呢
+
+				ELSEIF TALENT:愛欲
+					PRINTFORMW 看着面前的堇子，好像在想什么一样，但是搞不明白
+
+				ELSE
+					PRINTFORML 「又是新的一天呢，%MASTERNAME:106%今天打算做什么呢？」
+				ENDIF
+				RETURN 1
+			ENDIF
+
+			;MASTER私室にTARGETが入ってきてる(恋慕無しでも入ってくる可能性有り
+			;口上启动开关
+			LOCAL:1 = 1
+			IF LOCAL:1 && ARG:1 == 1
+				PRINTFORML 「%MASTERNAME:106%早上好」
+
+				IF TALENT:恋人
+					PRINTFORMW 堇子脸上露出了甜蜜的笑容
+
+				ELSEIF TALENT:恋慕
+					PRINTFORML 「感觉，在%MASTERNAME:106%身边，就会很安心」
+
+				ELSEIF TALENT:炮友
+					PRINTFORML 「今天……哎嘿嘿……」
+					PRINTFORMW 真是被她打败了
+
+				ELSEIF TALENT:思慕
+					PRINTFORMW 面前的堇子，看起来今天也很干劲满满呢
+
+				ELSEIF TALENT:愛欲
+					PRINTFORMW 面前的堇子，好像在想什么一样，但是搞不明白
+
+				ELSE
+					PRINTFORML 「又是新的一天呢，%MASTERNAME:106%今天打算做什么呢？」
+				ENDIF 
+			ENDIF
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+
+		;同棲かつ相手が起きている
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML 「%MASTERNAME:106%早上好」
+
+			IF TALENT:恋人
+				PRINTFORMW 堇子脸上露出了甜蜜的笑容	
+
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「感觉，在%MASTERNAME:106%身边，就会很安心」
+
+			ELSEIF TALENT:思慕
+				PRINTFORMW 面前的堇子，看起来今天也很干劲满满呢
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「今天……哎嘿嘿……」
+				PRINTFORMW 真是被她打败了
+
+			ELSEIF TALENT:炮友
+				PRINTFORMW 面前的堇子，好像在想什么一样，但是搞不明白
+
+			ELSE
+				PRINTFORML 「又是新的一天呢，%MASTERNAME:106%今天打算做什么呢？」
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;同棲かつ相手が寝ている
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 3
+			IF TALENT:恋人
+				PRINTFORML 「嗯……喜……喜欢……%MASTERNAME:106%最喜欢了」
+				PRINTFORMW 堇子发出了充斥着幸福的感觉的呢喃
+
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「%MASTERNAME:106%别走……」
+				PRINTFORMW 堇子在熟睡的身体蜷缩了起来
+
+			ELSEIF TALENT:思慕
+				PRINTFORML 「呜……」
+				PRINTFORMW 堇子睡得正香
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「%MASTERNAME:106%的……快塞满了……」
+				PRINTFORMW 堇子熟睡中的身体像是本能的动了起来，手指在自己湿润的秘处微微活动着
+
+			ELSEIF TALENT:炮友
+				PRINTFORML 「会坏掉的……」
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;MASTERが起きていて、相手が起きてきた
+		;添い寝時TARGET起床はこちら（TARGET衰弱or添い寝中TARGET睡魔負け後そのままMASTERが起き続けた上で相手が起床した場合限定
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 4
+			;非同棲
+			;口上启动开关
+			LOCAL:1 = 1
+			IF LOCAL:1 && !ARG:1
+				PRINTFORML 「啊，已经早上了么？」
+				PRINTFORMW 迷迷糊糊的堇子看着窗外，揉着眼睛慢慢坐起来
+
+				IF TALENT:恋人
+					IF CFLAG:MASTER:陪睡中
+						PRINTFORML 「啊，是%MASTERNAME:106%啊」
+						PRINTFORML 「%MASTERNAME:106%早安呢，又是有%MASTERNAME:106%陪伴的一天」
+					ENDIF
+
+					PRINTFORML 「一大早就有%MASTERNAME:106%的陪伴，感觉好幸福……」
+				
+				ELSEIF TALENT:恋慕
+					PRINTFORML 「%MASTERNAME:106%什么时候？！……」
+
+					SIF CFLAG:MASTER:陪睡中
+						PRINTFORMW 堇子吃惊的看着被窝里的%MASTERNAME:106%
+
+					PRINTFORMW 堇子吃惊的看着房间里的%MASTERNAME:106%
+					PRINTFORML 「呜！……」
+					PRINTFORMW 注意到自己披头散发的样子的堇子，发出了悲鸣
+
+				ELSEIF TALENT:思慕
+					PRINTFORML 「%MASTERNAME:106%什么时候？！……」
+
+					IF CFLAG:MASTER:陪睡中
+						PRINTFORMW 堇子吃惊的看着房间里的%MASTERNAME:106%
+						PRINTFORMW 堇子作势要把%MASTERNAME:106%踢下床的样子
+						PRINTFORML 「%MASTERNAME:106%也要注意一下，随便钻别人的被窝也是不礼貌的行为」
+
+					ELSE
+						PRINTFORML 「啊，是%MASTERNAME:106%啊」
+						PRINTFORML 「早上好」
+						PRINTFORML 「是为了来叫醒我的么」
+						PRINTFORML 「虽然很感激，但是还是请不要在别人睡觉的时候潜入房间」
+						PRINTFORMW 虽然没有生气，但是略微冷漠的样子还真的是……
+					ENDIF
+
+				ELSEIF TALENT:愛欲
+					PRINTFORML 「明明还是刚起床，%MASTERNAME:106%就已经……」
+					PRINTFORML 「%MASTERNAME:106%想的话，现在就可以哦……」
+					PRINTFORMW 堇子毫不掩饰的渴求的目光让%MASTERNAME:106%有点心慌
+
+				ELSE
+					PRINTFORML 「好困……」
+					PRINTFORML 「%MASTERNAME:106%为什么会在这里？为何要擅入别人的房间？」
+					PRINTFORMW 堇子微微的恼怒的直视着%MASTERNAME:106%的双眼
+				ENDIF
+				PRINTFORMW 
+				RETURN 1
+			ENDIF
+
+			;同棲中
+			;口上启动开关
+			LOCAL:1 = 1
+			IF LOCAL:1 && ARG:1 == 1
+				PRINTFORML 「啊，已经早上了么？」
+				PRINTFORMW 迷迷糊糊的堇子看着窗外，揉着眼睛慢慢坐起来
+
+				IF TALENT:恋人
+					IF CFLAG:MASTER:陪睡中
+						PRINTFORML 「啊，是%MASTERNAME:106%啊」
+						PRINTFORML 「%MASTERNAME:106%早安呢，又是有%MASTERNAME:106%陪伴的一天」
+					ENDIF
+
+					PRINTFORML 「一大早就有%MASTERNAME:106%的陪伴，感觉好幸福……」
+
+				ELSEIF TALENT:恋慕
+
+					PRINTFORML 「%MASTERNAME:106%什么时候？！……」
+
+					SIF CFLAG:MASTER:陪睡中
+						PRINTFORMW 堇子吃惊的看着被窝里的%MASTERNAME:106%
+
+					PRINTFORMW 堇子吃惊的看着房间里的%MASTERNAME:106%
+					PRINTFORML 「呜！……」
+					PRINTFORMW 注意到自己披头散发的样子的堇子，发出了悲鸣
+
+				ELSEIF TALENT:思慕
+
+					IF CFLAG:MASTER:陪睡中
+
+						PRINTFORML 「%MASTERNAME:106%什么时候？！……」
+						PRINTFORMW 堇子吃惊的看着房间里的%MASTERNAME:106%
+						PRINTFORMW 堇子作势要把%MASTERNAME:106%踢下床的样子
+						PRINTFORML 「%MASTERNAME:106%也要注意一下，随便钻别人的被窝也是不礼貌的行为」
+
+					ELSE
+						PRINTFORML 「啊，是%MASTERNAME:106%啊」
+						PRINTFORML 「早上好」
+						PRINTFORML 「是为了来叫醒我的么」
+						PRINTFORML 「虽然很感激，但是还是请不要在别人睡觉的时候潜入房间」
+						PRINTFORMW 虽然没有生气，但是略微冷漠的样子还真的是……
+					ENDIF
+
+				ELSEIF TALENT:愛欲
+					PRINTFORML 「明明还是刚起床，%MASTERNAME:106%就已经……」
+					PRINTFORML 「%MASTERNAME:106%想的话，现在就可以哦……」
+					PRINTFORMW 堇子毫不掩饰的渴求的目光让%MASTERNAME:106%有点心慌
+
+				ELSE
+					PRINTFORML 「好困……」
+					PRINTFORML 「%MASTERNAME:106%为什么会在这里？为何要擅入别人的房间？」
+					PRINTFORMW 堇子微微的恼怒的直视着%MASTERNAME:106%的双眼
+				ENDIF 
+				RETURN 1
+			ENDIF
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;夜寝るとき（おやすみ口上）
+;==================================================
+@M_KOJO_EVENT_K106_3(ARG,ARG:1)
+
+	;口上启动开关
+	LOCAL = 1
+	IF LOCAL
+		;自室に帰る（定時になって寝る）
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 1
+			IF TALENT:恋人
+				PRINTFORML 「%MASTERNAME:106%抱歉呐……」
+				PRINTFORML 「我已经坚持不住了……」
+				PRINTFORML 「%MASTERNAME:106%晚安呢……」
+				PRINTFORMW 亲吻了%MASTERNAME:106%之后，堇子打着哈欠的去睡觉了
+
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「%MASTERNAME:106%对不起……」
+				PRINTFORML 「我已经坚持不住了……」
+				PRINTFORML 「%MASTERNAME:106%晚安」
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「%MASTERNAME:106%还这么有精力啊……」
+				PRINTFORML 「我已经坚持不住了……」
+				PRINTFORML 「%MASTERNAME:106%晚安哦」
+				PRINTFORML 「不许夜袭的说，打飞你哦」
+				PRINTFORMW 虽然嘴上说着，但是眼神中的欲望像是要溢出来一样
+
+			ELSE
+				PRINTFORML 「睡觉去了……,晚安……」
+				PRINTFORML 「好困……」
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;眠そうにしている
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 2
+			IF TALENT:恋人
+				PRINTFORML 「%MASTERNAME:106%不困么？」
+				PRINTFORML 「感觉在%MASTERNAME:106%的身边，哪怕疲倦了，也很安心」
+				PRINTFORML 「如果我睡着了，%MASTERNAME:106%能不能把我抱到房间里？」
+				PRINTFORMW 堇子凑到了%MASTERNAME:106%的面前，带着些许哀求说道
+
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「%MASTERNAME:106%不困么？」
+				PRINTFORML 「如果我睡着了，%MASTERNAME:106%记得叫醒我」
+				PRINTFORMW 堇子叮嘱着%MASTERNAME:106%
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「为什么感觉这么困呢……」
+				PRINTFORML 「如果我睡着了，%MASTERNAME:106%能不能把我抱到房间里？」
+				PRINTFORML 「但是，不许动手动脚的哦」
+				PRINTFORMW %MASTERNAME:106%苦笑着答应了
+
+			ELSE
+				PRINTFORML 「呼姆……。好困……」
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;睡眠中（起きていないので会話というよりは寝言？）
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 3
+
+			IF TALENT:恋人
+				PRINTFORMW %MASTERNAME:106%注视着熟睡的堇子的可爱面容，轻轻的抚摸着头发
+				PRINTFORML 「%MASTERNAME:106%呜，唔姆…………」
+				PRINTFORMW 是梦到了什么吗？熟睡中的堇子的嘴角也翘了起来，似乎是个很幸福的梦呢
+
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「%MASTERNAME:106%……我有事对你说」
+				PRINTFORMW 熟睡中的堇子轻轻的呢喃着%MASTERNAME:106%的名字，微颦的眉头轻轻的抖着
+				PRINTFORMW 是梦到了什么东西么？好像很紧张的样子
+				PRINTFORMW %MASTERNAME:106%抚摸着堇子的头发
+				PRINTFORML 「%MASTERNAME:106%……」
+				PRINTFORMW 随着一声梦呓，堇子整个人都放松了一样，眉头也舒缓了起来
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「呜……%MASTERNAME:106%不要……」
+				PRINTFORMW 堇子微微的发出呻吟声，似乎是梦到了%MASTERNAME:106%
+				PRINTFORML 「%MASTERNAME:106%……呜……最里面已经装不下啦」
+				PRINTFORMW %MASTERNAME:106%努力的不去想堇子梦见了什么
+
+			ELSE
+				PRINTFORML 「…………」
+				PRINTFORMW ……沉睡的时候真安静。
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;イタズラ中
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 4
+			PRINTFORML 「呜……唔姆」
+			PRINTFORMW 睡得简直昏天黑地呢
+			RETURN 1
+		ENDIF
+
+		;衰弱中（恋慕付き拠点内キャラがMAIN_MAPで衰弱状態になった場合か、待客室で相手が衰弱した場合に発生
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 5
+			IF TALENT:恋人
+				PRINTFORML 「%MASTERNAME:106%抱歉呐……」
+				PRINTFORML 「已经没有力气陪伴%MASTERNAME:106%了」
+				PRINTFORML 「输在气力上，好不甘心」
+				PRINTFORML 「%MASTERNAME:106%如果可以的话，抱我回去好嘛？」
+				PRINTFORMW 看着面前的堇子困倦的面容，%MASTERNAME:106%心疼的把堇子抱在怀里，慢慢的抱回了家
+				PRINTFORML 「呜……」
+				PRINTFORMW %MASTERNAME:106%看到堇子已经睡熟了，便悄悄地离开了房间
+
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「%MASTERNAME:106%抱歉呐……」
+				PRINTFORMW 堇子突然软倒在地上，%MASTERNAME:106%连忙抱了起来
+				PRINTFORML 「输在气力上，好不甘心」
+				PRINTFORML 「%MASTERNAME:106%如果可以的话，扶我回去好嘛？」
+				PRINTFORMW 看着面前的堇子困倦的面容，%MASTERNAME:106%直接抱起了堇子
+				PRINTFORML 「呜……公主抱什么的」
+				PRINTFORMW 怀抱里的堇子害羞的捂着脸
+				PRINTFORMW %MASTERNAME:106%把堇子安放在了床铺上，便转身离开了房间
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「%MASTERNAME:106%抱歉呐……」
+				PRINTFORMW 堇子突然软倒在地上，%MASTERNAME:106%连忙抱了起来
+				PRINTFORML 「输在气力上，好不甘心」
+				PRINTFORML 「呐，%MASTERNAME:106%……扶我回去，好嘛？」
+				PRINTFORMW 看着面前的堇子困倦的面容，%MASTERNAME:106%扶着堇子慢慢的回到了房间里
+				PRINTFORML 「呜……不要再袭击了的说……拜托请饶了我」
+				PRINTFORMW 堇子害羞的捂着脸说着，然后慢慢的入睡了
+				PRINTFORMW %MASTERNAME:106%看着熟睡中的堇子，也只好离开了房间
+
+			ELSE
+				PRINTFORML 「好想睡觉……」
+				PRINTFORML 「%MASTERNAME:106%回头见」
+				PRINTFORMW 堇子拖着沉重的身体回去了
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;MASTERがダウン（部屋まで運ばれる）
+		;口上启动开关
+		LOCAL:1 = 1
+
+		IF LOCAL:1 && ARG == 6
+
+			PRINTFORML 「%MASTERNAME:106%……？！」
+			PRINTFORMW 堇子看着%MASTERNAME:106%软倒下去的一瞬间，立马扶住了
+			PRINTFORMW 虚弱的%MASTERNAME:106%勉强的告诉了堇子不要担心
+
+			IF TALENT:恋人
+				PRINTFORML 「%MASTERNAME:106%也太逞强了啦……真是的，明明有我在，至少……也依靠我一下」
+				PRINTFORML 堇子一脸嗔怪的盯着%MASTERNAME:106%
+				PRINTFORML 「疲倦了就要好好的去休息才是」
+				PRINTFORMW ……被堇子给训教了
+				PRINTFORMW 被堇子慢慢的扶回了家
+				PRINTFORML 「%MASTERNAME:106%要好好听话，没有休息好之前，不许再乱跑了」
+				PRINTFORML 「要听话，不然我会生气的」
+				PRINTFORMW %MASTERNAME:106%苦笑着钻进了被窝
+				PRINTFORML 「%MASTERNAME:106%好好休息，明天见哦」
+				PRINTFORMW 堇子附身亲吻了%MASTERNAME:106%的脸颊之后，离开了房间
+
+			ELSEIF TALENT:恋慕
+				PRINTFORML 「%MASTERNAME:106%不要这么逞强啦……真是的，有什么困难可以给我说啊，好歹……我也可以帮助你的」
+				PRINTFORMW 堇子担心的盯着%MASTERNAME:106%
+				PRINTFORML 「疲倦了就要好好的去休息才是」
+				PRINTFORMW ……被堇子给训教了
+				PRINTFORMW 被堇子慢慢的扶回了家
+				PRINTFORML 「%MASTERNAME:106%就好好休息吧」
+				PRINTFORMW %MASTERNAME:106%苦笑着钻进了被窝
+				PRINTFORML 「明天见哦」
+				PRINTFORMW 堇子担心地看了一眼之后，离开了房间
+
+			ELSEIF TALENT:愛欲
+				PRINTFORML 「%MASTERNAME:106%这就不行了吗？真是娇弱呢」
+				PRINTFORML 堇子一脸玩味的盯着%MASTERNAME:106%
+				PRINTFORML 「疲倦了就要好好的去休息才是」
+				PRINTFORMW ……被堇子给训教了
+				PRINTFORMW 被堇子慢慢的扶回了家
+				PRINTFORML 「%MASTERNAME:106%好好休息，不然的话会被榨干死掉的哦」
+				PRINTFORML %MASTERNAME:106%苦笑着钻进了被窝
+				PRINTFORML 「%MASTERNAME:106%明天见哦」
+				PRINTFORMW 堇子对着%MASTERNAME:106%神秘一笑，离开了房间
+
+			ELSE
+				PRINTFORML 「疲倦了就要好好的去休息才是」
+				PRINTFORMW ……被堇子给训教了
+				PRINTFORMW 被堇子慢慢的扶回了家
+			ENDIF
+			RETURN 1
+		ENDIF
+
+		;TARGETが自室まで戻ってきた
+		;口上启动开关
+		LOCAL:1 = 1
+		IF LOCAL:1 && ARG == 7
+
+			;そのまま着替えて寝た
+			;口上启动开关
+			LOCAL:1 = 1
+			IF LOCAL:1 && ARG:1 == 0
+				IF FLAG:15 == 106
+					IF TALENT:恋人
+						PRINTFORML 「%MASTERNAME:106%要一起睡么？」
+						PRINTFORML 「可以哦……」
+						PRINTFORMW
+					ELSEIF TALENT:恋慕
+					ELSEIF TALENT:愛欲
+					ELSE
+					ENDIF
+				ENDIF
+				RETURN 1
+			ENDIF
+
+			;部屋から追い出された
+			;口上启动开关
+			LOCAL:1 = 0
+			IF LOCAL:1 && ARG:1 == 1
+				RETURN 1
+			ENDIF
+
+			;他キャラとのＨを止めさせて寝た
+			;口上启动开关
+			LOCAL:1 = 0
+			IF LOCAL:1 && ARG:1 == 2
+				RETURN 1
+			ENDIF
+		ENDIF
+
+		;非在住TARGETがMAIN_MAPで休憩
+		;口上启动开关
+		LOCAL:1 = 0
+
+		IF LOCAL:1 && ARG == 8
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+
+		;前のターンから一緒的房間にいる状態で相手が寝る（待客室含む（
+		;口上启动开关
+		LOCAL:1 = 0
+		IF LOCAL:1 && ARG == 9
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;移動時すれちがい
+;==================================================
+@M_KOJO_EVENT_K106_4(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	
+	;口上启动开关
+	LOCAL = 1
+	
+
+	IF LOCAL
+	
+		
+		;小分岐
+		
+		;立ち止まった
+		;この後遭遇口上に接続
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;軽く会釈して街道過ぎた
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 2
+		
+			IF TALENT:恋人
+			
+				PRINTFORML 「%MASTERNAME:106%……」
+				PRINTFORMW 堇子似乎想跟上来，但是犹豫了一下又放弃了
+			
+			ELSEIF TALENT:恋慕
+			
+				PRINTFORML 「%MASTERNAME:106%，勤劳是好事，但是也没必要这样着急哎」
+				PRINTFORMW 堇子看上去竟然有点担心的样子
+			
+			ELSEIF TALENT:炮友
+			
+				PRINTFORML 「%MASTERNAME:106%？」
+				PRINTFORML 「嗯哼……」
+				PRINTFORMW 堇子看上去在盘算着什么一样，奇怪的眼神让%MASTERNAME:106%努力的不去想堇子的目的
+			
+			ELSE
+			
+				PRINTFORML 「就算为了生活奔波，也没必要急成这样子吧？」
+				PRINTFORMW 身后传来菫子惊讶的声音……
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;無視して街道過ぎた
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 3
+		
+			IF TALENT:恋人
+			
+				PRINTFORML 「%MASTERNAME:106%？」
+				PRINTFORML 「%MASTERNAME:106%……不理我了么」
+				PRINTFORMW 背后传来堇子伤心的声音……但是%MASTERNAME:106%甩了甩头，继续眼前的事情
+			
+			ELSEIF TALENT:恋慕
+			
+				PRINTFORML 「%MASTERNAME:106%？」
+				PRINTFORMW 被无视了的堇子看上去微微有些伤感
+			
+			ELSE
+			
+				PRINTFORML 「哼哼，真是自大啊」
+				PRINTFORMW 背后传来堇子嘲讽的声音……
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		;其他
+		PRINTFORML  
+	
+	ENDIF
+
+
+RETURN 1
+
+;==================================================
+;他者介入で情緒変化
+;==================================================
+@M_KOJO_EVENT_K106_5(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	;ARGに入ってきたキャラ（人数が膨大なので、自己把握自己責任で
+	
+	;口上启动开关
+	LOCAL = 1
+	
+
+	IF LOCAL
+	
+		
+		;小分岐
+		
+		;霊夢が入ってきた
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 1
+		
+			IF TALENT:1:恋人 && TALENT:恋慕
+			
+				PRINTFORMW 【是堇子啊，好久不见】灵梦淡淡的向堇子问好
+				PRINTFORML 「承蒙你的关照，现在我过得很好」堇子也礼貌的回礼
+				PRINTFORML 「就算是灵梦小姐……%MASTERNAME:106%也不会放走的」
+				PRINTFORMW %MASTERNAME:106%听到了堇子的低语，是错觉么？
+			
+			ELSEIF TALENT:1:恋慕 && TALENT:恋人
+			
+				PRINTFORMW 【是堇子啊，好久不见】灵梦淡淡的向堇子问好
+				PRINTFORML 「承蒙你的关照，现在我和%MASTERNAME:106%一起，过得很幸福」堇子也礼貌的回礼
+				PRINTFORML 「就算是灵梦小姐……也不会把%MASTERNAME:106%分享的」
+				PRINTFORMW %MASTERNAME:106%听到了堇子的低语，是错觉么？
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;魔理沙が入ってきた
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 11
+		
+			IF TALENT:11:恋人 && TALENT:恋慕
+			
+				PRINTFORMW （这个金头发的家伙竟然抢走我的%MASTERNAME:106%……）
+				PRINTFORMW （有机会就继续用她把大结界炸个窟窿好了）
+				PRINTFORMW 堇子在心里默默的想着
+			
+			ELSEIF TALENT:11:恋慕 && TALENT:恋人
+			
+				PRINTFORMW （这个金头发的家伙竟然偷偷暗恋着我的%MASTERNAME:106%……）
+				PRINTFORMW （有机会就继续用她把大结界炸个窟窿好了）
+				PRINTFORMW 堇子在心里默默的想着，示威似的走上前去亲吻了%MASTERNAME:106%
+				PRINTFORMW 看着对方铁青的脸色，堇子心里不由得一阵舒爽
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;紫が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 26
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;恋が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 38
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;华扇が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 43
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;神子が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 56
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;秦心が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 57
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;妹红が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 61
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;瑞藏が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 69
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;针妙丸が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 71
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;莲子が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 81
+		
+			IF TALENT:81:恋慕 && TALENT:恋人
+			
+				PRINTFORML 「被后辈抢走%MASTERNAME:106%这种事……决不允许」
+				PRINTFORMW %MASTERNAME:106%苦笑着听着堇子的宣言
+			
+			ELSEIF TALENT:81:恋人 && TALENT:恋慕
+			
+				PRINTFORML 「被后辈抢走%MASTERNAME:106%这种事……一定要再抢回来」
+				PRINTFORMW %MASTERNAME:106%苦笑着听着堇子的宣言
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;梅莉が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 82
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;一轮が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 85
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;哆来咪が入ってきた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 109
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		;其他（キャラ指定なし
+		PRINTFORML  
+		IF CFLAG:317
+		
+			PRINTFORML 「切,碍事……」
+		
+		ELSEIF TALENT:恋人
+		
+			PRINTFORML 「……啧，又一个电灯泡」
+			PRINTFORMW 堇子咬牙切齿的低语着，匆匆结束了和%MASTERNAME:106%的缠绵，连忙和%MASTERNAME:106%拉开了距离。
+		
+		ELSEIF TALENT:恋慕
+		
+			PRINTFORML 「……啊，是谁？」
+			PRINTFORMW 堇子咬牙切齿的低语着，匆匆结束了和%MASTERNAME:106%的缠绵，连忙和%MASTERNAME:106%拉开距离。
+		
+		ELSEIF TALENT:炮友
+		
+			PRINTFORML 「……啊，是谁？」
+			PRINTFORMW 堇子咬牙切齿的低语着，匆匆结束了和%MASTERNAME:106%的缠绵，连忙和%MASTERNAME:106%拉开距离。
+		
+		ELSEIF TALENT:思慕
+		
+			PRINTFORML 「……哎呀，是谁呢」
+			PRINTFORMW 堇子站起来看了过去。
+		
+		ELSE
+		
+			PRINTFORML 「……有人来了」
+			PRINTFORMW 堇子立马站了起来，看向脚步的方向
+		
+		ENDIF
+
+		RETURN 1
+	
+	ENDIF
+
+RETURN 1
+
+;==================================================
+;情事を目撃した
+;==================================================
+@M_KOJO_EVENT_K106_6(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	;ARGに情事相手
+	
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+	
+		
+		;小分岐
+		
+		;情事を目撃した（馴れ合い度:低）
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG:1 == 1
+		
+			IF TALENT:恋人
+			
+				PRINTFORML 「啊……」
+				PRINTFORML 「你们！」
+				PRINTFORMW 堇子羞的满脸通红，但是看起来好像生气了……
+			
+			ELSEIF TALENT:炮友
+			
+				PRINTFORML 「啊……」
+				PRINTFORML 「你们！」
+				PRINTFORMW 堇子羞的满脸通红，但是看起来好像很想加入一样……
+			
+			ELSEIF TALENT:恋慕
+			
+				PRINTFORML 「……哦，真是大胆啊……」
+				PRINTFORML 「你们继续吧！」
+				PRINTFORMW 堇子仿佛生气了……
+			
+			ELSE
+			
+				PRINTFORML 「你们……你们这是在干什么啊！」
+				PRINTFORMW 堇子变得惊慌失措……
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;負けじと参加（馴れ合い度:高）
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG:1 == 1
+		
+			IF TALENT:恋人
+			
+				PRINTFORML 「……哼……本命是我才对……！」
+				PRINTFORML 「我已经生气了！我会让你知道谁是最爱你的！」
+				PRINTFORMW 堇子气呼呼的走了过来……
+			
+			ELSE
+			
+				PRINTFORML 「不知廉耻……你在干什么啊，在这种地方！」
+				PRINTFORML 「…………」
+				PRINTFORML 「请……让我、我也来一起……」
+				PRINTFORMW 堇子慌忙的走了过来……
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;気まずそうに立ち去る
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG:1 == 3
+		
+			PRINTFORML 「不知廉耻……你在干什么啊，在这种地方！」
+			PRINTFORMW 菫子慌慌张张的……
+	
+			RETURN 1
+		
+		ENDIF
+		;其他
+		PRINTFORML  
+	
+	ENDIF
+
+RETURN 1
+
+;==================================================
+;情事を見られた
+;==================================================
+@M_KOJO_EVENT_K106_7(ARG,ARG:1)
+	;口上主はTARGET
+	;ARGに目撃者
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;情事を見られた（目撃者の馴れ合い度:低）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 1
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;目撃者が負けじと参加（目撃者の馴れ合い度:高）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;目撃者が立ち去る
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 3
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;目撃した情事を問い詰める（現在無し
+;==================================================
+@M_KOJO_EVENT_K106_8(ARG,ARG:1)
+RETURN 1
+
+;==================================================
+;胖次没収された
+;==================================================
+@M_KOJO_EVENT_K106_9(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+	
+		
+		;小分岐
+		
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG:1 == 1
+		
+			PRINTFORML 「%MASTERNAME:106%，等一下」
+			PRINTFORML 被这样说了的你停了下来，随着一阵无形的力量在身上游走过后，身上藏着的胖次飞了出来，稳稳的落入了堇子的手里
+			PRINTFORML 「你藏了什么啊？还想瞒过我的超能力么？」
+			IF TALENT:恋人 || TALENT:炮友
+			
+				PRINTFORML 「真的这么想要胖次的话，直接给我说就好了啦……」
+				PRINTFORML 「明明找我要就会好好洗干净给你的……」
+				PRINTFORML 「所以，不要做这样变态的事情，连带着会让我也觉得很丢人的……喜欢上了一个变态什么的」
+			
+			ELSE
+			
+				PRINTFORML 「哈？……变态」
+			
+			ENDIF
+			PRINTFORMW 你藏着的内裤被没收了……
+	
+			RETURN 1
+		
+		ENDIF
+		PRINTFORML  
+	
+	ENDIF
+
+RETURN 1
+
+;==================================================
+;押し倒した
+;==================================================
+@M_KOJO_EVENT_K106_10(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+	
+		
+		;小分岐
+		
+		;うふふ==2（開始時）
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 1
+		
+			
+			;MASTERを押し倒した（開始時）
+			;口上启动开关
+			LOCAL:1 = 1
+			
+			IF LOCAL:1 && !ARG:1
+			
+				IF TALENT:恋人
+				
+					PRINTFORMW 堇子的样子怎么看都很奇怪……
+					PRINTFORML 「哈、哈呜……%UNICODE(0x2764)%」
+					PRINTFORML 「抱歉……已经忍耐不下去了！」
+					PRINTFORMW 话音刚落，堇子便推倒了%MASTERNAME:106%
+					PRINTFORML 「%MASTERNAME:106%……%UNICODE(0x2764)%」
+					PRINTFORML 「我们这样的关系，不是很棒的么……%UNICODE(0x2764)%」
+					PRINTFORMW 堇子的脸颊微微泛红，湿润的眼睛里流露出欲情的光芒
+					PRINTFORMW 呜……身体要被欲望控制了……
+					PRINTFORML 「都是%MASTERNAME:106%的错……%UNICODE(0x2764)% 好好的负起责任来呐……%UNICODE(0x2764)%」
+					PRINTFORMW 菫子一边像是哀求着一样，一边脱下了%MASTERNAME:106%的衣服……
+			
+				
+				ENDIF
+			
+			ENDIF
+			
+			;MASTERに抱きついた（開始時）
+			;口上启动开关
+			LOCAL:1 = 1
+			
+			IF LOCAL:1 && ARG:1 == 1
+			
+				IF TALENT:恋人
+				
+					PRINTFORML 「吶……%MASTERNAME:106%……」
+					PRINTFORML 「这种事情，明明是只可以和自己最喜欢的人做的……」
+					PRINTFORML 「这种程度的话，你知道的吧？」
+					PRINTFORML 「所以…………」
+					PRINTFORMW 堇子的嘴唇慢慢的朝着%MASTERNAME:106%的嘴唇印了上去
+				
+				ELSEIF TALENT:恋慕
+				
+					PRINTFORML 「嗯……%MASTERNAME:106%……？」
+					PRINTFORML 「喜欢被%MASTERNAME:106%这样抱住……」
+					PRINTFORML 「呜……身体要融化了一样……」
+					PRINTFORMW %MASTERNAME:106%感受着怀抱里柔软的娇躯，抚摸着堇子的脑袋
+					PRINTFORML 「明明…………」
+					PRINTFORML 「明明这样的事情，是需要好好的心意相通才可以做的……」
+					PRINTFORML 「所以……」
+					PRINTFORML 「所以…………%MASTERNAME:106%……要好好负责才可以呢」
+					PRINTFORMW %MASTERNAME:106%注视着堇子已经变得湿润的眼眶，堇子害羞的慢慢的闭上了眼睛，仿佛在期待着什么
+				
+				ELSEIF TALENT:炮友
+				
+					PRINTFORML 「呜……又要被%MASTERNAME:106%注满欲望了……」
+					PRINTFORMW %MASTERNAME:106%慢慢的爱抚着堇子柔软而又敏感的地方
+					PRINTFORML 「坏、坏蛋……请温柔一点…………」
+					PRINTFORMW 堇子仿佛知道了接下来会发生的事情，闭上了眼睛，一副任君品尝的样子
+				
+				ELSE
+				
+					PRINTFORML 「这种事情，明明是要心意相通才可以做的……」
+					PRINTFORMW 堇子在怀抱里微微挣扎着，一副气鼓鼓的样子
+				
+				ENDIF
+		
+				RETURN 1
+			
+			ENDIF
+			PRINTFORML
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;なだめられた（終了時）
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 2
+		
+			
+			;抜け出した
+			;口上启动开关
+			LOCAL:1 = 1
+				
+			IF LOCAL:1 && !ARG:1
+			
+				IF TALENT:恋人
+				
+					PRINTFORML 「……」
+					PRINTFORML 「…………」
+					PRINTFORML 「是，是么……果然是太突然了么……」
+					PRINTFORMW 由于%MASTERNAME:106%的拒绝，堇子恢复了冷静
+					PRINTFORMW 赶紧离开%MASTERNAME:106%，整理好凌乱的衣服……
+					PRINTFORMW （呜哇，我怎么会这样呢……这不是和发情的动物一样……！）
+					PRINTFORMW %MASTERNAME:106%无言的轻轻地抚摸着沮丧的堇子的脑袋……
+				
+				ENDIF
+		
+				RETURN 1
+			
+			ENDIF
+			
+			;抱き着きモード満足終了
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 1
+				PRINTFORML
+				RETURN 1
+			ENDIF
+			
+			;抱き着きモード強制終了
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 2
+				PRINTFORML
+				RETURN 1
+			ENDIF
+		
+		ENDIF
+		
+		;抜け出す失敗
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 3
+		
+			
+			;好きにして状態から抜け出せなかった
+			;口上启动开关
+			LOCAL:1 = 1
+			
+			IF LOCAL:1 && ARG:1 == 1
+			
+				IF TALENT:恋人
+				
+					PRINTFORMW %MASTERNAME:106%想将堇子推开
+					PRINTFORMW ……哪怕动用了全身的力气，但是甚至连一根手指都无法活动！
+					PRINTFORMW 被堇子夺走了行动自由了么……
+					PRINTFORML 「呼呼……不能动吧？就算抵抗也没用的呢%UNICODE(0x2764)%」
+					PRINTFORML 「我会很温柔的哦……%MASTERNAME:106%好好的享受就可以了呢」
+					PRINTFORML 「……如果不想反抗超能力而伤到的话%UNICODE(0x2764)%」
+					PRINTFORMW 大概是感觉到了%MASTERNAME:106%的战栗吧，堇子用舌头轻舔着嘴唇，炫耀着自己……
+				
+				ENDIF
+		
+				RETURN 1
+			
+			ENDIF
+			
+			;欲求不満が高くて抜け出せなかった
+			;口上启动开关
+			LOCAL:1 = 1
+			
+			IF LOCAL:1 && ARG:1 == 2
+			
+				IF TALENT:恋人
+				
+					PRINTFORMW %MASTERNAME:106%想将堇子推开
+					PRINTFORMW ……哪怕动用了全身的力气，但是甚至连一根手指都无法活动！
+					PRINTFORMW 被堇子夺走了行动自由了么……
+					PRINTFORML 「呼呼……不能动吧？就算抵抗也没用的呢%UNICODE(0x2764)%」
+					PRINTFORML 「让我做出这种事情来，都是你的错……」
+					PRINTFORML 「%MASTERNAME:106%一次次的挑逗我……」
+					PRINTFORML 「在我满足之前，会好好的让你享受的%UNICODE(0x2764)%」
+					PRINTFORMW 把动弹不得的%MASTERNAME:106%压在身下，堇子满意的点了点头……
+				
+				ENDIF
+		
+				RETURN 1
+			
+			ENDIF
+			;其他
+			PRINTFORML  
+		
+		ENDIF
+	
+	ENDIF
+
+
+RETURN 1
+
+;==================================================
+;浴場で遭遇
+;==================================================
+@M_KOJO_EVENT_K106_11(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+	
+		
+		;小分岐
+		
+		;追い出された
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 1
+		
+			PRINTFORML 「嗯？是%MASTERNAME:106%啊」
+			PRINTFORML ……你和入浴中的堇子眼神接触了。
+			PRINTFORML 「喂、还在那里站着干什么、快点出去啊」
+			PRINTFORMW 感受到堇子的怒气，还是离开了……
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;目が合った（追い出されない）
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 2
+		
+			IF TALENT:恋人
+			
+				PRINTFORML 「什么啊，是%MASTERNAME:106%啊」
+				PRINTFORML 知道了进来的是你后，堇子放松了身体
+				PRINTFORML 「呜……是想和我一起进浴室吗？」
+				PRINTFORML 「好吧……%MASTERNAME:106%」
+				PRINTFORML 堇子向旁边挪了挪，留出了位置
+				PRINTFORMW 你坐到了堇子的旁边，堇子擦拭着身体的同时，仿佛在若有若无的触碰着%MASTERNAME:106%的身躯
+			
+			ELSEIF TALENT:恋慕
+			
+				PRINTFORML 「嗯？是%MASTERNAME:106%啊」
+				PRINTFORML ……你和入浴中的堇子眼神接触了
+				PRINTFORML 「难得遇到、要一起吗？」
+				PRINTFORML 堇子难为情的向旁边挪了挪
+				PRINTFORMW 难得被堇子邀请，于是欣然地接受了
+			
+			ELSE
+			
+				PRINTFORML 「啊，是%MASTERNAME:106%啊」
+				PRINTFORML ……你和入浴中的堇子眼神接触了
+				PRINTFORML 「难道说、想要一起吗？」
+				PRINTFORML 「嘛、好吧、不过绝对不能有奇怪的想法哦？」
+				PRINTFORMW 你带着疑惑的眼神进去了……
+			
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		;其他
+		PRINTFORML 
+	
+	ENDIF
+
+
+RETURN 1
+
+;==================================================
+;寝床に忍び込み
+;==================================================
+@M_KOJO_EVENT_K106_12(ARG,ARG:1)
+	;口上主はTARGET
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;追い出される（憤怒）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;寝床に侵入
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 1
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;寝床に侵入（相手が恋慕）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;寝床に侵入（相手が恋慕・衰弱）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 3
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;追い出される
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 4
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;追い出される（衰弱）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG:1 == 5
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;お仕事中
+;==================================================
+@M_KOJO_EVENT_K106_13(ARG,ARG:1)
+	;口上主はTARGET
+	;ARG:1に残っている工作量
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;仕事開始（職場へ移動する）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;業務中
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;仕事終了
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;吃飯系
+;==================================================
+@M_KOJO_EVENT_K106_14(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+	
+		
+		;持っていた食物を食べられた
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == -1
+		
+			PRINTFORML 「看起来是很好吃的东西呢」
+			PRINTFORML 「你瞒着我也没有用哦」
+			PRINTFORML 「……或者说，我已经抢到了哦」
+			PRINTFORML 不知道什么时候，料理已经被堇子拿在了手中
+			PRINTFORML 「嗯嗯，很棒呢，不错的食物」
+	
+			RETURN 1
+		
+		ENDIF
+		;其他
+		PRINTFORML  
+	
+	ENDIF
+
+
+RETURN 1
+
+;==================================================
+;MASTERが押し倒した
+;==================================================
+@M_KOJO_EVENT_K106_15(ARG,ARG:1)
+	;口上主はTARGET
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;未実装（押し倒し指令に統合？
+		;MASTERが押し倒した（ウフフ開始時）
+		;口上启动开关
+		;LOCAL:1 = 0
+		
+		;IF LOCAL:1 && ARG == 1
+			;PRINTFORML
+			;RETURN 1
+		;ENDIF
+		
+		;逢瀬終了（ウフフ終了時）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+		
+		;事後描写
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			
+			;精液が垂れてきた
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 1
+				PRINTFORML
+				RETURN 1
+			ENDIF
+			
+			;愛液が垂れてきた
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 2
+				PRINTFORML
+				RETURN 1
+			ENDIF
+			
+			;事後の情緒
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 3
+				PRINTFORML
+				RETURN 1
+			ENDIF
+			
+			;服を着る
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 4
+				PRINTFORML
+				RETURN 1
+			ENDIF
+		ENDIF
+	ENDIF
+RETURN 1
+
+;==================================================
+;陪睡
+;==================================================
+@M_KOJO_EVENT_K106_16(ARG,ARG:1)
+	;口上主はTARGET
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;添い寝を始めた（開始時）(存在せず
+		;記入チェック
+		;LOCAL:1 = 0
+		
+		;IF LOCAL:1 && ARG == 1
+			;PRINTFORML
+			;RETURN 1
+		;ENDIF
+		
+		;添い寝を終了した（終了時）
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;時止め終了時
+;==================================================
+@M_KOJO_EVENT_K106_17(ARG,ARG:1)
+	;口上主はTARGET
+	;排他と明記されていないモノは状況によっては連続で表示されるので注意
+	;ARGに射精状況
+	;ARG:1に射精状態
+
+	;口上启动开关
+	LOCAL = 0
+
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;ARG=1～3は排他
+		;謎の快感
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			RETURN 1
+		ENDIF
+		
+		;絶頂
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			RETURN 1
+		ENDIF
+		
+		;胖次紛失
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			RETURN 1
+		ENDIF
+		
+		;【無自覚口内射精】
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 4
+			;精液中毒低精飲
+			IF ARG:1 == 1
+			;精液中毒低吐き出し
+			ELSEIF ARG:1 == 2
+			;精液中毒低手で覆う
+			ELSEIF ARG:1 == 3
+			;精液中毒高精飲
+			ELSEIF ARG:1 == 4
+			;濃厚精液＆精液中毒低吐き出し
+			ELSEIF ARG:1 == 5
+			;濃厚精液＆精液中毒高精飲
+			ELSEIF ARG:1 == 6
+			ENDIF
+			RETURN 1
+		ENDIF
+		
+		;【無自覚顔面射精】
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 5
+			;無知持ち＆精液経験100未満
+			IF ARG:1 == 1
+			;通常ぬぐい取り
+			ELSEIF ARG:1 == 2
+			;顔射精液舐めとり
+			ELSEIF ARG:1 == 3
+			ENDIF
+			RETURN 1
+		ENDIF
+		
+		;【無自覚手淫射精】
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 6
+			;ぬぐい取り
+			IF ARG:1 == 1
+			;舐めとり
+			ELSEIF ARG:1 == 2
+			ENDIF
+			RETURN 1
+		ENDIF
+		
+		;【無自覚アナル射精】
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 7
+			;Ａ感覚2以下
+			IF ARG:1 == 1
+			;ソレ以外
+			ELSEIF ARG:1 == 2
+			ENDIF
+			RETURN 1
+		ENDIF
+		
+		;【無自覚処女喪失】
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 8
+			RETURN 1
+		ENDIF
+		
+		;【無自覚膣内射精】
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 9
+			;非処女膣内射精口服避孕薬なし
+			IF ARG:1 == 1
+			;非処女膣内射精口服避孕薬あり
+			ELSEIF ARG:1 == 2
+			;処女膣内射精
+			ELSEIF ARG:1 == 3
+			ENDIF
+			RETURN 1
+		ENDIF
+		
+		;時間停止解除共通
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 0
+			RETURN 1
+		ENDIF
+	ENDIF
+RETURN 1
+
+;==================================================
+;ナマでやらせろ時
+;==================================================
+@M_KOJO_EVENT_K106_18(ARG,ARG:1)
+	;口上主はTARGET
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;避妊要求台詞
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			RETURN 1
+		ENDIF
+		
+		;断った
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			RETURN 1
+		ENDIF
+		
+		;断ったのに粘られて切れた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			RETURN 1
+		ENDIF
+		
+		;危険日以外許可
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 4
+			RETURN 1
+		ENDIF
+		
+		;危険日許可
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 5
+			RETURN 1
+		ENDIF
+	ENDIF
+RETURN 1
+
+;==================================================
+;神社暮らしを承認して貰う
+;==================================================
+@M_KOJO_EVENT_K106_19(ARG,ARG:1)
+	;口上主はARG
+
+	;口上启动开关
+	LOCAL = 0
+	IF LOCAL
+		
+		;小分岐
+		
+		;認められる
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;認められない
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+	ENDIF
+RETURN 1
+
+;==================================================
+;帰宅時
+;==================================================
+@M_KOJO_EVENT_K106_20(ARG,ARG:1)
+	;口上主はLOCALS or RESULT
+
+	;口上启动开关
+	LOCAL = 0
+	IF LOCAL
+		
+		;小分岐
+		
+		;通常帰宅
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;デート中帰宅
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;玄関先でお見送り
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			PRINTFORML
+			RETURN 1
+		ENDIF
+	ENDIF
+RETURN 1
+
+;==================================================
+;陥落素質取得時
+;==================================================
+@M_KOJO_EVENT_K106_21(ARG,ARG:1)
+
+
+	;口上主はARG
+	
+	;口上启动开关
+	LOCAL = 1
+	IF LOCAL
+	
+		
+		;小分岐
+		
+		;恋慕取得
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 1
+		
+			PRINTFORMW （真糟糕……我做了些什么……）
+			PRINTFORMW 堇子一个人坐在床的角落里，双手抱着头
+			PRINTFORMW
+			PRINTFORMW
+			PRINTFORMW 最近，开始期待起来明天的样子了
+			PRINTFORMW 不，不对，并不是期待明天本身……
+			PRINTFORMW （每天和%MASTERNAME:106%在一起的时候，开心得不得了）
+			PRINTFORMW 在幻想乡里，似乎每个地点都一起留下了痕迹……
+			PRINTFORMW
+			PRINTFORMW
+			PRINTFORMW 现在堇子忍不住想着%MASTERNAME:106%的一举一动
+			PRINTFORMW （这样说的话，我喜欢上了这个家伙……？）
+			PRINTFORMW （这个家伙……和我有着莫名的缘分……）
+			PRINTFORMW （……而且，什么二人的共同秘密什么的，这简直就像是情侣漫画里面的剧情一样！）
+			PRINTFORMW （命中注定的伴侣……最后结婚什么的……！）
+			PRINTFORMW
+			PRINTFORMW
+			PRINTFORMW 想入非非的堇子，不由得被自己的想法羞耻的发出低低的悲鸣声
+			PRINTFORMW 堇子被脑子里各种各样的想法羞的不止如何是好，直到疲倦的入睡……	
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;思慕取得
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 2
+		
+			PRINTFORMW （最近，总觉得自己在很期待第二天会发生些什么）
+			PRINTFORMW 在苏醒和睡眠的夹缝中，堇子突然想到
+			PRINTFORMW
+			PRINTFORMW
+			PRINTFORMW （现实没有什么变化，和灵梦他们在一起发生的事情也很有趣）
+			PRINTFORMW （但是为什么会突然期盼着每天的相会呢？）
+			PRINTFORMW （最近，好像感觉哪里不太一样？）
+			PRINTFORMW
+			PRINTFORMW
+			PRINTFORMW ……不对，不可能想不到的
+			PRINTFORMW 那是因为，自己不想去承认
+			PRINTFORMW 一切的起因就是，和%MASTERNAME:106%的相遇
+			PRINTFORMW 自从在幻想乡和%MASTERNAME:106%遇到之后，思考的东西越来越多了……
+			PRINTFORMW
+			PRINTFORMW
+			PRINTFORMW （莫非是我在期待着和他相会？）
+			PRINTFORMW （……怎么可能呢，毫无优点的平庸的家伙）
+			PRINTFORMW （一定是心理的作用……一定是最近太累了的缘故……）
+			PRINTFORMW
+			PRINTFORMW
+			PRINTFORMW 堇子为了睡眠，慢慢做了几次深呼吸让心情平静下来
+			PRINTFORMW ……但是，脑子里面全是%MASTERNAME:106%的身影，根本睡不着
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;愛欲取得
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;愛人取得
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 4
+			PRINTFORML
+			RETURN 1
+		ENDIF
+		
+		;炮友取得
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 5
+			PRINTFORML
+			RETURN 1
+		ENDIF
+	
+	ENDIF
+
+
+RETURN 1
+
+
+;==================================================
+;調教終了時に自慰
+;==================================================
+@M_KOJO_EVENT_K106_22(ARG,ARG:1)
+	;口上主はARG
+	;ARG:0に自慰状況
+	;ARG:1に自慰種類
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		
+		;通常自慰
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			PRINTFORML  
+			RETURN 1
+		ENDIF
+		
+		;同室時自慰
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			PRINTFORML  
+			RETURN 1
+		ENDIF
+		
+		;中だし精液自慰
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			PRINTFORML  
+			RETURN 1
+		ENDIF
+		
+		;無知持ち（自慰経験(調教自慰経験は差し引き)による分岐あり
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 4
+			LOCAL:2 = EXP:自慰経験 - EXP:調教自慰経験
+			;無知消去イベントあり（表示は一度だけ
+			IF LOCAL:1 >= 25
+			;地の文分岐。書きたい場合は[SKIPSTART][SKIPEND]を削除してください
+			[SKIPSTART]
+			ELSEIF LOCAL:1 >= 20
+			ELSEIF LOCAL:1 >= 15
+			ELSEIF LOCAL:1 >= 10
+			ELSEIF LOCAL:1 >= 5
+			[SKIPEND]
+			ELSE
+			ENDIF
+			PRINTFORML  
+			RETURN 1
+		ENDIF
+		
+		;陥落素質あり自慰中毒高め
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 5
+			
+			;Ｃ敏感orＣ感覚10以上
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 1
+				PRINTFORML  
+				RETURN 1
+			ENDIF
+			
+			;Ｖ敏感orＶ感覚10以上
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 2
+				PRINTFORML  
+				RETURN 1
+			ENDIF
+			
+			;Ａ敏感orＡ感覚10以上
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 3
+				PRINTFORML  
+				RETURN 1
+			ENDIF
+			
+			;Ｂ敏感orＢ感覚10以上
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 4
+				PRINTFORML  
+				RETURN 1
+			ENDIF
+			
+			;部位指定無し
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 5
+				PRINTFORML  
+				RETURN 1
+			ENDIF
+			;其他
+			;上の分岐を一切書かずに、ここに書くことで陥落素質あり自慰中毒高め自慰の共通口上を表示することが出来ます
+			PRINTFORML  
+			RETURN 1
+		ENDIF
+		
+		;自慰中毒高め
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 6
+			
+			;尻穴膣腔同時
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 1
+				PRINTFORML  
+				RETURN 1
+			ENDIF
+			
+			;膣腔のみ
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1 && ARG:1 == 2
+				PRINTFORML  
+				RETURN 1
+			ENDIF
+			;其他
+			;上の分岐を一切書かずに、ここに書くことで自慰中毒高め自慰の共通口上を表示することが出来ます
+			PRINTFORML  
+			RETURN 1
+		ENDIF
+		
+		;我慢
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 7
+			PRINTFORML 
+			RETURN 1
+		ENDIF
+		;其他
+		;上の分岐を一切書かずに、ここに書くことで自慰の共通口上を表示することが出来ます
+		PRINTFORML  
+		RETURN 1
+	ENDIF
+RETURN 1
+
+;==================================================
+;浴場連れだし
+;==================================================
+@M_KOJO_EVENT_K106_23(ARG,ARG:1)
+	;口上主はLOCAL
+
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;断られた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			RETURN 1
+		ENDIF
+		
+		;一緒に入ってくれた
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;懐妊
+;==================================================
+@M_KOJO_EVENT_K106_24(ARG,ARG:1)
+	;口上主はLOCAL
+
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;恋慕
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			RETURN 1
+		ENDIF
+		
+		;思慕
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			RETURN 1
+		ENDIF
+		
+		;陥落素質無し
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			RETURN 1
+		ENDIF
+		
+		;無自覚
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 4
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;出産
+;==================================================
+@M_KOJO_EVENT_K106_25(ARG,ARG:1)
+	;口上主はLOCAL
+	;ARG:1	何人目の兒童か
+
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+		
+		;小分岐
+		
+		;恋慕
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 1
+			RETURN 1
+		ENDIF
+		
+		;思慕
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			RETURN 1
+		ENDIF
+		
+		;陥落素質無し
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 3
+			RETURN 1
+		ENDIF
+		
+		;無自覚
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 4
+			RETURN 1
+		ENDIF
+		;其他
+		PRINTFORML  
+	ENDIF
+RETURN 1
+
+;==================================================
+;オナバレ
+;==================================================
+@M_KOJO_EVENT_K106_26(ARG,ARG:1)
+
+
+	;口上启动开关
+	LOCAL = 0
+
+	IF LOCAL
+		SELECTCASE ARG
+			
+			CASE 0
+			;見られた瞬間
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 1
+			;什麼也不做
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 2
+			;そのまま続行
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 3
+			;追い出し
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 4
+			;やっちゃう
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 5
+			;事後
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 6
+			;事後お泊り
+			;口上启动开关
+			LOCAL:1 = 0
+			
+		ENDSELECT
+	ENDIF
+RETURN 1
+
+;==================================================
+;相手からデートのお誘い
+;==================================================
+@M_KOJO_EVENT_K106_27(ARG,ARG:1)
+
+	;口上主はLOCAL
+	;ARG:1は目的地
+
+	;口上启动开关
+	LOCAL = 1
+
+	IF LOCAL
+		SELECTCASE ARG
+			
+			CASE 0
+			;誘い文句
+			;口上启动开关
+			LOCAL:1 = 1
+			
+			IF LOCAL:1
+				PRINTFORML 「呐，今天也想和我一起出去吗？」
+		
+				RETURN 1
+			ENDIF
+			
+			CASE 1
+			;受けた
+			;口上启动开关
+			LOCAL:1 = 1
+			
+			IF LOCAL:1
+				PRINTFORML 「嘿嘿、就知道会同意」
+				PRINTFORML 「那咱们走吧♪」
+		
+				RETURN 1
+			ENDIF
+			
+			CASE 2
+			;断った
+			;口上启动开关
+			LOCAL:1 = 1
+			
+			IF LOCAL:1
+				PRINTFORML 「啊……不想和我一起出去吗」
+				PRINTFORML 「那我们下次再说吧？」
+		
+				RETURN 1
+			ENDIF
+			
+			CASE 3
+			;部屋に誘われた
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 4
+			;部屋に誘われたのを受けた
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+			
+			CASE 5
+			;部屋に誘われたのを断った
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				RETURN 1
+			ENDIF
+		ENDSELECT
+	ENDIF
+RETURN 1
+
+;==================================================
+;脱衣口上
+;==================================================
+@M_KOJO_EVENT_K106_28(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	;ARGに脱がし方選択
+	;ARG:1（ARG=3の場合のみあり）地の文の反応
+	
+	;口上启动开关
+	LOCAL = 1
+	
+	IF LOCAL
+	
+		SELECTCASE ARG
+		
+			
+			CASE 0
+			
+				;全裸にする
+				;口上启动开关
+				LOCAL:1 = 1
+				
+				IF LOCAL:1
+				
+					;時間停止時
+					IF FLAG:70
+					
+						PRINTFORMW %MASTERNAME:106%利落的脱下了堇子的衣服
+						PRINTFORMW 被凝滞了时间的堇子完全没有察觉到自己已经赤裸的状况
+						PRINTFORMW 仿佛一件艺术品一样的在那里
+					;通常
+					
+					ELSE
+					
+						IF TALENT:恋人
+						
+							PRINTFORML 「……%MASTERNAME:106%……我的身体，好看么？」
+							PRINTFORML 「感觉问出了很奇怪的问题……」
+							PRINTFORMW 看着遮遮掩掩的堇子，做出了肯定的回答
+						
+							IF TALENT:PLAYER:2 == 1
+							
+							PRINTFORML 「同样是女孩子，但是被称赞真的好开心……」
+							PRINTFORML 「最喜欢%MASTERNAME:106%了……」
+							
+							ELSE
+							
+								PRINTFORML 「呜……%MASTERNAME:106%总是会说这些让人没法无视掉的话」
+								PRINTFORML 「最喜欢%MASTERNAME:106%了……」
+							
+							ENDIF
+						
+							PRINTFORML 「想看的话……如果是%MASTERNAME:106%的话，可以哟」
+							PRINTFORMW 堇子努力的抑制住了羞耻，把自己赤裸的洁白身躯展示给了%MASTERNAME:106%
+							PRINTFORML 「呜……还没有看够么……%MASTERNAME:106%的话，想看多久都可以……」
+							PRINTFORMW 脸上看上去像是发烧了一样，堇子用着细若蚊呐的声音说着
+						
+						ELSEIF TALENT:恋慕
+						
+							PRINTFORML 「……%MASTERNAME:106%……我的身体，会不会很丑？」
+							PRINTFORMW 堇子看上去很紧张的样子……
+							PRINTFORMW 看着害羞的遮掩着自己的身体的堇子，很可爱的哦，%MASTERNAME:106%做出了回答
+						
+							IF TALENT:PLAYER:2 == 1
+							
+								PRINTFORML 「虽然同样是女孩子，但是被称赞真的好开心……」
+							
+							ELSE
+							
+								PRINTFORML 「呜……%MASTERNAME:106%总是会说这些让女孩子开心的话」
+								PRINTFORML 「但是一点也不讨厌呢……」
+							
+							ENDIF
+						
+							PRINTFORML 「想看的话……如果是%MASTERNAME:106%的话，也、也没问题的」
+							PRINTFORMW 堇子努力的抑制住了羞耻，把自己赤裸的洁白身躯展示给了%MASTERNAME:106%
+							PRINTFORML 「呜……还没有看够么……不要继续看了啦！」
+							PRINTFORMW 脸上看上去像是发烧了一样，堇子用着细若蚊呐的声音哀求着%MASTERNAME:106%
+						
+						ELSEIF TALENT:炮友
+						
+							PRINTFORML 「……%MASTERNAME:106%……我的身体，这样淫乱的身体，好看么？」
+							PRINTFORMW 看着毫不掩饰的展示着自己洁白无瑕的身躯的堇子，%MASTERNAME:106%做出了肯定的回答
+						
+							IF TALENT:PLAYER:2 == 1
+							
+								PRINTFORML 「同样是女孩子，但是已经这样淫乱的自己……」
+								PRINTFORMW 堇子看上去接受了称赞
+							
+							ELSE
+							
+								PRINTFORML 「呜……都是%MASTERNAME:106%的错……」
+								PRINTFORMW 虽然嘴上这样说着，但是并没有露出讨厌的表情，反而像是在撒娇一样
+							
+							ENDIF
+						
+							PRINTFORML 「想看的话……如果是%MASTERNAME:106%的话，看多久都可以哦」
+						
+						ELSEIF TALENT:思慕
+						
+							PRINTFORML 「……%MASTERNAME:106%……很想看我的身体？」
+							PRINTFORMW 堇子看着毫不掩饰的注视着自己的%MASTERNAME:106%……
+							PRINTFORMW 看着遮遮掩掩的堇子，做出了肯定的回答
+						
+							IF TALENT:PLAYER:2 == 1
+							
+								PRINTFORML 「同样是女孩子，大家都明明一样的说……」
+							
+							ELSE
+							
+								PRINTFORML 「呜……%MASTERNAME:106%最坏了……」
+								PRINTFORMW 虽然嘴上这样说着，但是并没有露出讨厌的表情
+							
+							ENDIF
+						
+							PRINTFORML 「真的那么想看的话……如果是%MASTERNAME:106%的话，就让你看一眼吧」
+							PRINTFORMW 堇子努力的抑制住了羞耻，把自己赤裸的洁白身躯展示给了%MASTERNAME:106%
+							PRINTFORML 「呜……不要继续看了啦！」
+							PRINTFORMW 脸上看上去像是发烧了一样，堇子又迅速地用手遮住了身体
+						
+						ELSEIF TALENT:愛欲
+						
+							PRINTFORML 「……%MASTERNAME:106%……我的身体，好看么？」
+							PRINTFORMW 看着遮遮掩掩的堇子，做出了肯定的回答
+							
+							IF TALENT:PLAYER:2 == 1
+							
+								PRINTFORML 「同样是女孩子，大家都明明一样的说……」
+							
+							ELSE
+							
+								PRINTFORML 「呜……%MASTERNAME:106%最坏了……」
+								PRINTFORMW 虽然嘴上这样说着，但是并没有露出讨厌的表情
+							
+							ENDIF
+							
+							PRINTFORML 「想看的话……如果是%MASTERNAME:106%的话，没问题的」
+							PRINTFORMW 堇子努力的抑制住了羞耻，把自己赤裸的洁白身躯展示给了%MASTERNAME:106%
+							PRINTFORML 「呜……这种慢慢习惯的感觉……」
+							PRINTFORMW 脸上看上去像是发烧了一样，堇子用着细若蚊呐的声音低声说着
+						
+						ELSE
+						
+							PRINTFORML 「……%MASTERNAME:106%……我的身体，好看么？」
+							PRINTFORML 「感觉问出了很奇怪的问题……」
+							PRINTFORMW 看着遮遮掩掩的堇子，做出了肯定的回答
+							PRINTFORML 「呜……%MASTERNAME:106%真是的……」
+							PRINTFORML 「想看的话……既然是%MASTERNAME:106%的请求，那就给你看一眼好了」
+							PRINTFORMW 堇子努力的抑制住了羞耻，把自己赤裸的洁白身躯展示给了%MASTERNAME:106%
+							PRINTFORML 「已经够了……不要继续看了啦！」
+							PRINTFORMW 脸上看上去像是发烧了一样，堇子又迅速地用手遮住了身躯
+						
+						ENDIF
+					
+					ENDIF
+			
+					RETURN 1
+				
+				ENDIF
+			
+			
+			CASE 1
+			;内衣姿にする
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				;時間停止時
+				IF FLAG:70
+				;通常
+				ELSE
+				ENDIF
+				RETURN 1
+			ENDIF
+			
+			CASE 2
+			;半脱ぎ
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				;時間停止時
+				IF FLAG:70
+				;通常
+				ELSE
+				ENDIF
+				RETURN 1
+			ENDIF
+			
+			CASE 3
+			;胖次ちょうだい
+			;口上启动开关
+			LOCAL:1 = 0
+			
+			IF LOCAL:1
+				SELECTCASE ARG:1
+					
+					CASE 0
+					;交換です
+					;口上启动开关
+					LOCAL:1 = 0
+					
+					IF LOCAL:1
+						RETURN 1
+					ENDIF
+					
+					CASE 1
+					;OK（嬉々
+					;口上启动开关
+					LOCAL:1 = 0
+					
+					IF LOCAL:1
+						RETURN 1
+					ENDIF
+					
+					CASE 2
+					;OK（渋々
+					;口上启动开关
+					LOCAL:1 = 0
+					
+					IF LOCAL:1
+						RETURN 1
+					ENDIF
+					
+					CASE 3
+					;嫌です
+					;口上启动开关
+					LOCAL:1 = 0
+					
+					IF LOCAL:1
+						RETURN 1
+					ENDIF
+					RETURN 1
+				ENDSELECT
+			ENDIF
+		
+		ENDSELECT
+	
+	ENDIF
+
+RETURN 1
+
+;==================================================
+;憤怒口上
+;==================================================
+@M_KOJO_EVENT_K106_29(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	;ARGはTARGETの胆量で分岐
+	
+	;口上启动开关
+	LOCAL = 1
+	
+	IF LOCAL
+		
+		;小分岐
+		
+		;怒らせてしまった
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 1
+		
+			IF MARK:反発刻印 == 3
+				PRINTFORML 「像你这种人，也配存在于这个幻想乡中？」
+				PRINTFORMW 堇子冷笑着说着狠话，笑容让%MASTERNAME:106%打了个寒战
+
+				IF TALENT:恋人
+					PRINTFORML 「废话少说」
+					PRINTFORML 「我不再想和垃圾有什么更多的交流了」
+					PRINTFORMW 堇子说完就走到了一边，不知道在想什么
+
+				ELSEIF TALENT:恋慕
+					PRINTFORML 「%MASTERNAME:106%你真的是太让我失望了」
+					PRINTFORML 「我真的没想到，你竟然是这种人」
+					PRINTFORML 「我还以为，你会哪天突然醒悟过来，然后来好好的给我道歉」
+					PRINTFORML 「看来是我想多了」
+					PRINTFORML 「我真傻，竟然还为了这种人茶饭不思什么的」
+					PRINTFORML 「……请好自为之吧」
+					PRINTFORMW 堇子用着愤怒的眼神看着这边
+					PRINTFORMW 不道歉的话，大概会完全不理这边的吧
+
+				ELSEIF TALENT:炮友
+				
+				
+				ELSEIF TALENT:思慕
+				
+				
+				ELSEIF TALENT:愛欲
+				
+				
+				ELSE
+					PRINTFORML 「不要忘记，我可是有超能力的啊」
+					PRINTFORML 「一个人走夜路的时候，一定要当心啊」
+					PRINTFORML 「一个人的时候，也要注意安全啊」
+					PRINTFORMW 再不离开的话，真的会被杀掉
+				ENDIF
+
+				IF FLAG:1300 == 1
+					PRINTFORMW 在身上的堇子的超能力加护也被收回了……
+					FLAG:1300 = 0
+				
+				ENDIF
+			
+			ELSEIF TALENT:恋人
+				PRINTFORML 「……」
+				PRINTFORMW 有说有笑的堇子看到%MASTERNAME:106%之后立马拉下了脸
+				PRINTFORMW 果然做得过火了么，还是好好道歉吧
+			
+			ELSEIF MARK:不埒刻印 == 3
+				PRINTFORMW 堇子皱着眉头盯着面前的%MASTERNAME:106%
+				PRINTFORMW 还是很生气的样子
+				PRINTFORMW 最好还是好好道歉比较好吧
+			
+			ELSE
+				PRINTFORML 「……不想死掉的话，差不多该给我适可而止了吧？」
+				PRINTFORMW 堇子用冷冷的目光看过来的同时，冷声的表达着愤怒
+			ENDIF
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;泣かせてしまった　[膽怯]持ち
+		;口上启动开关
+		LOCAL:1 = 0
+		
+		IF LOCAL:1 && ARG == 2
+			RETURN 1
+		ENDIF
+	
+	ENDIF
+
+RETURN 1
+
+;==================================================
+;相手が押し倒しを解除
+;==================================================
+@M_KOJO_EVENT_K106_30(ARG,ARG:1)
+
+
+	;口上主はTARGET
+	
+	;口上启动开关
+	LOCAL = 1
+	
+
+	IF LOCAL
+	
+		
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 1
+		
+			;疲れた
+			PRINTFORML 「哈、啊呜、已经没有力气了……」
+			PRINTFORML 「今天到此为止吧……」
+			PRINTFORMW 脸上写满了疲倦的堇子放开了你。
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 2
+		
+			;満足して解放
+			PRINTFORML 「嗯哼ー大满足~」
+			PRINTFORML 「舒服的乱七八糟的，真是的……」
+			PRINTFORMW 堇子看上去很开心的样子
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 3
+		
+			;満足したところを押し倒された
+			PRINTFORML 「噫、噫！？你竟然还有力气？」
+			PRINTFORML 「真的是拿你没办法啊……那就继续榨干你吧~」
+			PRINTFORML 「但是真没想到你还有这么多体力呢……」
+	
+			RETURN 1
+		
+		ENDIF
+		
+		;口上启动开关
+		LOCAL:1 = 1
+		
+		IF LOCAL:1 && ARG == 4
+		
+			;壊れるまでしてあげる
+			PRINTFORML 「诶？还想要更多吗？」
+			PRINTFORML 「呵呵~……或许会死掉的哦~？」
+			PRINTFORMW 堇子用诱惑的表情勾引着……
+	
+			RETURN 1
+		
+		ENDIF
+	
+	ENDIF
+
+
+RETURN 1

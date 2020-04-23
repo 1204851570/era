@@ -1,0 +1,418 @@
+﻿;-------------------------------------------------
+;着せ替え
+;日常系コマンド、レベル1
+;-------------------------------------------------
+@COM429
+#DIM C_ID
+#DIM ID_換装対象, 人物数量上限
+#DIM 換装可能人数
+#DIM L_ID ;使用リストのID
+CALLF MAKE_CHARA_LIST("可换装的角色列表", L_ID, ID_換装対象, 換装可能人数)
+IF 換装可能人数 <= 1
+	PRINTFORMW %CALLNAME:(MASTER)%は更衣ことにした
+	CALL 服装換装(MASTER)
+	CALL CLOTHES_SETTING_TRAIN(MASTER)
+	RETURN -1
+ENDIF
+
+;着替え対象の選択
+;リスト作成時に可否判定やってるのでここでは必要ないです
+PRINTFORML 服を更衣事ができます
+PRINTFORML 誰の着替えをしますか?
+PRINTFORML 
+CALL SIMPLE_CHARA_LIST(ID_換装対象, 換装可能人数)
+;キャンセルした
+SIF RESULT == 999
+	RETURN -1
+
+;RESULTはすぐ腐るので
+C_ID = ID_換装対象:(RESULT)
+SIF FLAG:時間停止 == 1 && !(C_ID == MASTER)
+	CFLAG:C_ID:時間停止換装 = 1
+CALL 服装換装(C_ID)
+CALL CLOTHES_SETTING_TRAIN(C_ID)
+RETURN 0
+
+
+
+
+;CLOTHES_SETTING_TRAINに靴脱ぎ処理を移動させたので
+;ここでCLOTHES_SETTING_TRAINすると靴を脱いでしまい、靴設定の保存ができません
+;呼び出し元でCLOTHES_SETTING_TRAINすること
+@服装換装(C_ID)
+#DIM C_ID
+CALL SHOW_CLOTHES(C_ID, "現在的衣装")
+PRINTFORML %CALLNAME:C_ID%のお着替え中
+PRINTFORML 
+PRINTFORML [6] - 衣装確認
+PRINTFORML [5] - 衣装のおきにいり指定
+PRINTFORML [4] - 睡衣的变更
+PRINTFORML [3] - 毎日の衣装の変更
+PRINTFORML [2] - 衣装の一時変更
+PRINTFORML [1] - 胖次
+PRINTFORML 
+PRINTFORML [0] - 返回
+DO
+	INPUT
+	SELECTCASE RESULT
+	CASE 6
+		CALL SHOW_CHARA_CLOTHES(C_ID, 0)
+	CASE 5
+		CALL SHOW_CLOTHES(C_ID, "套装")
+		PRINTFORML %CALLNAME:C_ID%の套装を設定中
+		PRINTFORML 
+		PRINTFORML [4] - 現在的衣装を指定する
+		PRINTFORML [3] - 衣装セットを指定する
+		PRINTFORML [2] - 特定キャラの便装の真似
+		PRINTFORML [1] - おきにいり指定のリセット
+		PRINTFORML 
+		PRINTFORML [0] - やめる
+		DO
+			INPUT
+			SELECTCASE RESULT
+			CASE 4
+				CALL DECIDE_CLOTHES(C_ID, "套装", "現在的衣装")
+			CASE 3
+				CALL COSPLAY_SET(C_ID, "套装")
+			CASE 2
+				CALL COSPLAY_CHARA(C_ID, "套装")
+			CASE 1
+				PRINTFORML 本当にリセットしますか？
+				PRINTFORML 
+				PRINTFORML [1] - リセットする
+				PRINTFORML [0] - やめる
+				DO
+					INPUT
+					SELECTCASE RESULT
+					CASE 1
+						CALL CTRL_CLOTHES_SET(C_ID, "套装のリセット")
+					CASE 0
+					CASEELSE
+						REUSELASTLINE 無効な入力です
+						CONTINUE
+					ENDSELECT
+					RESTART
+				LOOP 1
+			CASE 0
+				RESTART
+			CASEELSE
+			ENDSELECT
+			RESTART
+		LOOP 1
+	CASE 4
+		SIF C_ID == MASTER
+			RESTART
+		CALL SHOW_CLOTHES(C_ID, "今天的睡衣")
+		PRINTFORML %CALLNAME:C_ID%の睡衣を設定中
+		PRINTFORML 
+		PRINTFORML [5] - 随你喜欢
+		PRINTFORML [4] - 套装で寝てもらう
+		PRINTFORML [3] - 睡衣を指定する
+		PRINTFORML [2] - 全裸で寝てもらう
+		PRINTFORML [1] - パンツだけで寝てもらう
+		PRINTFORML 
+		PRINTFORML [0] - やめる
+		DO
+			INPUT
+			SELECTCASE RESULT
+			CASE 5
+				CFLAG:C_ID:睡衣指定 = 0
+			CASE 4
+				SIF CFLAG:C_ID:套装
+					CALL CTRL_CLOTHES_SET(C_ID, "睡衣的变更_套装")
+			CASE 3
+				CALL COSPLAY_SELECT(C_ID, "睡衣", "睡衣セット")
+			CASE 2
+				CALL CTRL_CLOTHES_SET(C_ID, "睡衣的变更_全裸")
+			CASE 1
+				CALL CTRL_CLOTHES_SET(C_ID, "睡衣的变更_针织衫")
+			CASE 0
+			CASEELSE
+				REUSELASTLINE 無効な入力です
+				CONTINUE
+			ENDSELECT
+			RESTART
+		LOOP 1
+	CASE 3
+		CALL SHOW_CLOTHES(C_ID, "便服")
+		PRINTFORML %CALLNAME:C_ID%の便装を設定中
+		PRINTFORML 
+		PRINTFORML [4] - 現在的衣装を指定する（おきにいりに上書きされます）
+		PRINTFORML [3] - 衣装セットを指定する
+		PRINTFORML [2] - 特定キャラの便装の真似
+		PRINTFORML [1] - 本人まかせ
+		PRINTFORML 
+		PRINTFORML [0] - やめる
+		DO
+			INPUT
+			SELECTCASE RESULT
+			CASE 4
+				CALL DECIDE_CLOTHES(C_ID, "便装", "現在的衣装")
+			CASE 3
+				CALL COSPLAY_SET(C_ID, "便装")
+			CASE 2
+				CALL COSPLAY_CHARA(C_ID, "便装")
+			CASE 1
+				PRINTFORMW 便装の設定は本人の気分に任せます
+				CFLAG:C_ID:基本服装セット = 0
+			CASE 0
+			ENDSELECT
+			RESTART
+		LOOP 1
+	CASE 2
+		;#;PRINTFORML CFLAG:C_ID:衣装一時変更{CFLAG:C_ID:衣装一時変更}
+		CALL SHOW_CLOTHES(C_ID, "現在的衣装")
+		PRINTFORML %CALLNAME:C_ID%の現在的衣装を換装中
+		PRINTFORML 
+		PRINTFORML [4] - 套装に換装
+		PRINTFORML [3] - 衣装セットを指定する
+		PRINTFORML [2] - 特定キャラの便装の真似
+		PRINTFORML [1] - 今日のデフォルトに戻す
+		PRINTFORML 
+		PRINTFORML [0] - やめる
+		DO
+			INPUT
+			SELECTCASE RESULT
+			CASE 4
+				SIF !CFLAG:C_ID:套装
+					RESTART
+				CALL DECIDE_CLOTHES(C_ID, "現在的衣装", "套装")
+			CASE 3
+				CALL COSPLAY_SET(C_ID, "現在的衣装")
+			CASE 2
+				CALL COSPLAY_CHARA(C_ID, "現在的衣装")
+			CASE 1
+				PRINTFORMW 便服を着せ直した
+				CALL CTRL_CLOTHES_SET(C_ID, "現在衣装の変更_便装")
+			CASE 0
+			ENDSELECT
+			RESTART
+		LOOP 1
+	CASE 1
+		PRINTFORML %CALLNAME:C_ID%の胖次を吟味中
+		PRINTFORML 現在着用中の胖次：%GET_STR(C_ID, "下半身下着_ずらし可能", EQUIP:C_ID:下半身下着２, "名前")%
+		SELECTCASE CFLAG:C_ID:指定パンツ
+		CASE 0
+			PRINTFORML 　現在的胖次設定：指定なし
+		CASE 100
+			PRINTFORML 　現在的胖次設定：没穿内裤指定
+		CASEELSE
+			PRINTFORML 　現在的胖次設定：%GET_STR(C_ID, "下半身下着_ずらし可能", CFLAG:C_ID:指定パンツ, "名前")%
+		ENDSELECT
+		PRINTFORML 
+		PRINTFORML 
+		PRINTFORML [2] - 現在的胖次をおきにいり指定
+		PRINTFORML [1] - 胖次のおきにいり指定を解除する
+		PRINTFORML 
+		PRINTFORML [0] - やめる
+		DO
+			INPUT
+			SELECTCASE RESULT
+			CASE 2
+				PRINTFORMW 現在的胖次をおきにいりに指定しました
+				CFLAG:C_ID:指定パンツ = EQUIP:C_ID:下半身下着２
+				SIF !CFLAG:C_ID:指定パンツ
+					CFLAG:C_ID:指定パンツ = 100
+			CASE 1
+				PRINTFORMW 胖次のおきにいり指定を解除しました
+				CFLAG:C_ID:指定パンツ = 0
+			CASE 0
+			ENDSELECT
+			RESTART
+		LOOP 1
+	CASE 0
+		RETURN
+	CASEELSE
+		REUSELASTLINE 無効な入力です
+		CONTINUE
+	ENDSELECT
+	RESTART
+LOOP 1
+
+
+
+;模倣させる対象キャラの選択
+@COSPLAY_CHARA(C_ID, TYPE)
+#DIM  C_ID
+#DIMS TYPE
+#DIM  COS_CHARA
+PRINTFORML %CALLNAME:C_ID%の%TYPE%を設定中
+PRINTFORML 誰の衣装を真似させますか？
+CALL SHOW_CHARA_LIST("可以穿同款衣服的角色列表", "体力気力")
+COS_CHARA = RESULT
+IF GROUPMATCH(COS_CHARA, 0, 999)
+	PRINTFORMW 衣装の設定を中断した
+	RETURN
+ELSEIF COS_CHARA == C_ID
+	SELECTCASE TYPE
+	CASE "套装"
+		PRINTFORMW 衣装の設定を中断した
+	CASE "便装"
+		PRINTFORMW 便装の設定は本人の気分に任せます
+		CFLAG:C_ID:基本服装セット = 0
+	CASE "現在的衣装"
+		PRINTFORMW 便服を着せ直した
+		CALL CTRL_CLOTHES_SET(C_ID, "現在衣装の変更_便装")
+	ENDSELECT
+	RETURN
+ENDIF
+CALL DECIDE_CLOTHES(C_ID, TYPE, "キャラ便装", COS_CHARA)
+SIF RESULT
+	RESTART
+
+
+;衣装セットのカテゴリ選択
+@COSPLAY_SET(C_ID, TYPE)
+#DIM  C_ID
+#DIM  SET_ID
+#DIMS TYPE
+#DIMS CATEGORY
+CALL SHOW_CLOTHES(C_ID, TYPE)
+PRINTFORML %CALLNAME:C_ID%の%TYPE%を設定中
+PRINTFORML 衣装の種類の選択
+PRINTFORML 
+PRINTFORML [3] - 基本套装
+PRINTFORML [2] - cosplay服装
+PRINTFORML [1] - 角色特殊服装集
+PRINTFORML 
+PRINTFORML [0] - やめる
+DO
+	INPUT
+	SELECTCASE RESULT
+	CASE 3
+		CATEGORY '= "基本套装"
+	CASE 2
+		CATEGORY '= "cosplay服装"
+	CASE 1
+		CATEGORY '= "角色特殊服装集"
+	CASE 0
+		RETURN
+	CASEELSE
+		REUSELASTLINE 無効な入力です
+		CONTINUE
+	ENDSELECT
+	BREAK
+LOOP 1 
+CALL COSPLAY_SELECT(C_ID, TYPE, CATEGORY)
+
+
+
+;個々の衣装セットの選択
+@COSPLAY_SELECT(C_ID, TYPE, CATEGORY)
+#DIM  C_ID
+#DIM  SET_ID
+#DIMS TYPE
+#DIMS CATEGORY
+PRINTFORML %CALLNAME:C_ID%の%TYPE%を設定中（%CATEGORY%）
+PRINTFORML 使用する衣装セットを選択して下さい
+PRINTFORML 
+CALL CLASS_LIST("衣装セット", CATEGORY)
+PRINTFORML 
+PRINTFORML [0] - やめる
+DO
+	INPUT
+	SET_ID = RESULT
+	SELECTCASE SET_ID
+	CASE 0
+		RETURN
+	CASEELSE
+		SIF GET_INT(0, "衣装セット" , SET_ID, CATEGORY)
+			BREAK
+		REUSELASTLINE 無効な入力です
+		CONTINUE
+	ENDSELECT
+LOOP 1 
+CALL DECIDE_CLOTHES(C_ID, TYPE, "衣装セット", SET_ID)
+SIF RESULT
+	RESTART
+
+
+
+;衣装決定の最終確認
+@DECIDE_CLOTHES(C_ID, COS_SAVE, COS_LOAD, SET_ID)
+#DIM  C_ID     ;設定するキャラ
+#DIMS COS_SAVE ;衣装の保存先
+#DIMS COS_LOAD ;衣装の参照元
+#DIM  SET_ID   ;参照衣装等のID
+;#; PRINTFORML C_ID{C_ID}, COS_SAVE%COS_SAVE%, COS_LOAD%COS_LOAD%, SET_ID{SET_ID}
+PRINTFORMW 最終確認
+CALL SHOW_CLOTHES(C_ID, COS_LOAD, SET_ID)
+PRINTFORML 
+PRINTFORML この衣装でよいですか？
+PRINTFORML 
+PRINTFORML [1] - 決定
+PRINTFORML [0] - 考えなおす
+PRINTFORML 
+PRINTFORML [9] - やめる
+DO
+	INPUT
+	SELECTCASE RESULT
+	CASE 1
+		BREAK
+	CASE 0
+		RETURN 1
+	CASE 9
+		RETURN
+	CASEELSE
+		REUSELASTLINE 無効な入力です
+		CONTINUE
+	ENDSELECT
+LOOP 1
+
+
+SELECTCASE COS_LOAD
+CASE "現在的衣装"
+	SELECTCASE COS_SAVE
+	CASE "便装"
+		PRINTFORMW いま着用している衣装を毎日着てもらうことにした
+		CFLAG:C_ID:基本服装セット = 100
+		CALL CTRL_CLOTHES_SET(C_ID, "現在衣装の保存_おきにいり")
+	CASE "套装"
+		PRINTFORMW いま着用している衣装をおきにいりに指定した
+		CALL CTRL_CLOTHES_SET(C_ID, "現在衣装の保存_おきにいり")
+	ENDSELECT
+	
+CASE "衣装セット"
+	PRINTFORMW %CALLNAME:C_ID%の%COS_SAVE%に%GET_STR(C_ID, "衣装セット", SET_ID, "名前")%を指定しました
+	SELECTCASE COS_SAVE
+	CASE "現在的衣装"
+		CALL CTRL_CLOTHES_SET(C_ID, "現在衣装の変更_衣装セット", SET_ID)
+	CASE "便装"
+		CALL CTRL_CLOTHES_SET(C_ID, "便装の変更_衣装セット", SET_ID)
+	CASE "套装"
+		CALL CTRL_CLOTHES_SET(C_ID, "套装の変更_衣装セット", SET_ID)
+	CASE "睡衣"
+		CALL CTRL_CLOTHES_SET(C_ID, "睡衣的变更_衣装セット", SET_ID)
+	ENDSELECT
+
+CASE "キャラ便装"
+	PRINTFORMW %CALLNAME:C_ID%に%CALLNAME:SET_ID%の格好を真似させることにした
+	SELECTCASE COS_SAVE
+	CASE "現在的衣装"
+		CALL CTRL_CLOTHES_SET(C_ID, "現在衣装の変更_キャラ衣装", SET_ID, "便装")
+	CASE "便装"
+		CALL CTRL_CLOTHES_SET(C_ID, "便装の変更_キャラ衣装", SET_ID, "便装")
+	CASE "套装"
+		CALL CTRL_CLOTHES_SET(C_ID, "套装の変更_キャラ衣装", SET_ID, "便装")
+	ENDSELECT
+
+ENDSELECT
+
+
+
+;着せ替え
+@COM_ABLE429
+;移動実行判定
+SIF !TFLAG:100
+	RETURN 0
+;一括管理
+SIF GLOBAL_COMABLE(429)
+	RETURN RESULT
+;私室設定
+SIF (CFLAG:MASTER:現在位置 != CFLAG:MASTER:311) && (CFLAG:現在位置 != CFLAG:311)
+	RETURN 0
+SIF !GETBIT(CFLAG:TARGET:既成事実, 1) && TARGET
+	RETURN 0
+SIF CFLAG:诶嘿嘿
+	RETURN 0
+RETURN 1

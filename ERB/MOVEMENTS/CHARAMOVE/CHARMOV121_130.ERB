@@ -1,0 +1,409 @@
+﻿;FileName_MOVEMENT.ERB ----------------------------- Rev1.00
+;キャラ別_各種データ
+;121～130番までのキャラ
+;CALL		USER
+;ARG		0:呼出データNO, 1:移動傾向取得時の部屋NO
+;RETURN		キャラ別呼出データ値
+;COMMENT	
+;-----------------------------------------------------------
+;成美
+@CHARAMOVE_DATA_121(ARG,ARG:2)
+LOCAL = 121
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 5
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 51, 52, 53, 54, 56, 57
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;舞
+@CHARAMOVE_DATA_122(ARG,ARG:2)
+LOCAL = 122
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+		;連動処理（里乃の方が高いときは里乃を参照）
+		IF TALENT:123:恋慕 || (TALENT:123:思慕 && !TALENT:123:思慕)
+			CFLAG:LOCAL:現在位置 = CFLAG:123:遭遇位置 ? CFLAG:123:遭遇位置 # SUKIMA()
+		ELSE
+			CFLAG:LOCAL:現在位置 = CFLAG:122:遭遇位置 ? CFLAG:122:遭遇位置 # SUKIMA()
+		ENDIF
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 2, 4, 5
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 21, 22, 23, 41, 42, 43, 46, 47, 51, 52, 53, 56, 57
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;里乃
+@CHARAMOVE_DATA_123(ARG,ARG:2)
+LOCAL = 123
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+		;連動処理（舞と一緒）
+		IF TALENT:123:恋慕 || (TALENT:123:思慕 && !TALENT:123:思慕)
+			CFLAG:LOCAL:現在位置 = CFLAG:123:遭遇位置 ? CFLAG:123:遭遇位置 # SUKIMA()
+		ELSE
+			CFLAG:LOCAL:現在位置 = CFLAG:122:遭遇位置 ? CFLAG:122:遭遇位置 # SUKIMA()
+		ENDIF
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 2, 4, 5
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 21, 22, 23, 41, 42, 43, 46, 47, 51, 52, 53, 56, 57
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;隠岐奈
+@CHARAMOVE_DATA_124(ARG,ARG:2)
+LOCAL = 124
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 2, 5, 6, 8
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 21, 22, 23, 51, 52, 53, 54, 56, 57, 61, 62, 63, 81, 82, 83
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;女苑
+@CHARAMOVE_DATA_125(ARG,ARG:2)
+LOCAL = 125
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;命蓮寺メンバーの私室（経堂と物置除く）
+			CASE 113, 114, 115, 116, 117, 118
+				RETURN -5
+			;離れと墓地と神霊廟内部
+			CASE 119, 121, 125 TO 133
+				RETURN -100
+			;居間と本堂に行きやすい
+			CASE 108
+				RETURN 5
+			;白蓮が本堂にいる時はやってくる
+			CASE 103
+				SIF  CFLAG:55:現在位置 == 103
+					RETURN 10
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 1, 2
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 9, 11, 12, 13, 14, 16, 21, 22, 23, 27
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;紫苑
+@CHARAMOVE_DATA_126(ARG,ARG:2)
+LOCAL = 126
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 0, 8
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 1, 2, 4, 82, 83, 89
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;瓔花
+@CHARAMOVE_DATA_127(ARG,ARG:2)
+LOCAL = 127
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 6
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 61, 62
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;潤美
+@CHARAMOVE_DATA_128(ARG,ARG:2)
+LOCAL = 128
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 2, 6
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 21, 22, 23, 61, 62
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;久侘歌
+@CHARAMOVE_DATA_129(ARG,ARG:2)
+LOCAL = 129
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 6, 7, 8
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 61, 62, 64, 65, 66, 67, 71, 72, 73, 75, 81, 82, 83, 84
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
+
+;八千慧
+@CHARAMOVE_DATA_130(ARG,ARG:2)
+LOCAL = 130
+SELECTCASE ARG
+	;移動対象メンバーチェック
+	CASE 1
+	;移動確率
+	CASE 2
+	;起床時間帯
+	CASE 3
+		RETURN 睡眠時間(LOCAL)
+	;移動傾向
+	CASE 4
+		SELECTCASE ARG:2
+			;とくになし
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;仕事時間帯
+	CASE 5
+	;行く地域(0=博1=寺2=里3=湖4=竹5=森6=冥7=山8=守9=地10=月）
+	CASE 6
+		SELECTCASE ARG:2
+			CASE 0, 2, 5, 6
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+	;出現場所
+	CASE 7
+		SELECTCASE ARG:2
+			CASE 1, 2, 3, 4, 21, 22, 23, 51, 53, 54, 56, 57, 61, 62, 64, 67, 68
+				RETURN 1
+			CASEELSE
+				RETURN 0
+		ENDSELECT
+ENDSELECT
